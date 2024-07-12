@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div id="game-container">
+        <h1>Number Guessing Game</h1>
+        <div id="home-page">
+            <h2>Best Score: <span id="best-score">Not set</span></h2>
+            <button id="play-button">Play</button>
+        </div>
+        <div id="game-page" style="display:none;">
+            <p>Guess the 4-digit number:</p>
+            <div id="input-container">
+                <input type="text" maxlength="1" class="digit-input">
+                <input type="text" maxlength="1" class="digit-input">
+                <input type="text" maxlength="1" class="digit-input">
+                <input type="text" maxlength="1" class="digit-input">
+            </div>
+            <button id="submit-guess">Submit Guess</button>
+            <p id="feedback"></p>
+            <p>Attempts: <span id="attempts">0</span></p>
+            <p>Time: <span id="timer">00:00</span></p>
+        </div>
+        <div id="result-page" style="display:none;">
+            <h2 id="result-message"></h2>
+            <p>Number of guesses: <span id="final-attempts"></span></p>
+            <p>Time taken: <span id="final-time"></span></p>
+            <button id="play-again">Play Again</button>
+            <button id="quit">Quit</button>
+        </div>
+    </div>
+    <script src="/js/script.js"></script>
+</body>
+</html>
