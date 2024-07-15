@@ -20,7 +20,7 @@ public class GameController {
     @PostMapping("/start-game")
     public ResponseEntity<String> startNewGame(@RequestParam int difficulty) {
         if (difficulty < 0 || difficulty > 2) {
-            return ResponseEntity.badRequest().body("Invalid difficulty level");
+            return ResponseEntity.badRequest().body("Invalid difficulty level. Please try again...!");
         }
         this.difficulty = difficulty;
         Random random = new Random();
