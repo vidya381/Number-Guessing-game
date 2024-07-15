@@ -9,23 +9,34 @@
 <body>
     <div id="game-container">
         <h1>Number Guessing Game</h1>
+
         <div id="home-page">
             <h2>Best Score: <span id="best-score">Not set</span></h2>
-            <button id="play-button">Play</button>
-        </div>
-        <div id="game-page" style="display:none;">
-            <p>Guess the 4-digit number:</p>
-            <div id="input-container">
-                <input type="text" maxlength="1" class="digit-input">
-                <input type="text" maxlength="1" class="digit-input">
-                <input type="text" maxlength="1" class="digit-input">
-                <input type="text" maxlength="1" class="digit-input">
+            <button id="play-easy">Play Easy</button>
+            <button id="play-medium">Play Medium</button>
+            <button id="play-hard">Play Hard</button>
+
+            <div id="instructions">
+                <h3>How to Play:</h3>
+                <ol>
+                    <li>Choose a difficulty level.</li>
+                    <li>Try to guess the secret number.</li>
+                    <li>Enter your guess in the input fields.</li>
+                    <li>You'll receive feedback on correct digits and positions.</li>
+                    <li>Keep guessing until you find the correct number or run out of attempts.</li>
+                </ol>
             </div>
+        </div>
+
+        <div id="game-page" style="display:none;">
+            <p>Guess the number:</p>
+            <div id="input-container"></div>
             <button id="submit-guess">Submit Guess</button>
-            <p id="feedback"></p>
             <p>Attempts: <span id="attempts">0</span></p>
             <p>Time: <span id="timer">00:00</span></p>
+            <div id="feedback"></div>
         </div>
+
         <div id="result-page" style="display:none;">
             <h2 id="result-message"></h2>
             <p>Number of guesses: <span id="final-attempts"></span></p>

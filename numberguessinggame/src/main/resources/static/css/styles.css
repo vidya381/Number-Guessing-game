@@ -47,3 +47,59 @@ button {
 .misplaced {
     color: orange;
 }
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.shake {
+    animation: shake 0.5s;
+}
+
+@keyframes celebrate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.celebrate {
+    animation: celebrate 0.5s;
+}
+
+#instructions {
+    text-align: left;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+}
+
+#instructions h3 {
+    margin-top: 0;
+}
+
+#instructions ol {
+    padding-left: 20px;
+}
+
+@media (max-width: 600px) {
+    #game-container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    .digit-input {
+        width: 25px;
+        height: 25px;
+        font-size: 16px;
+    }
+
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
