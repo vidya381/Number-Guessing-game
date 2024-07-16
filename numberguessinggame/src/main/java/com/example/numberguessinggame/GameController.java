@@ -1,8 +1,10 @@
 package com.example.numberguessinggame;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GameController {
 
-    private static final int[] MIN_NUMBERS = { 100, 1000, 10000 };
-    private static final int[] MAX_NUMBERS = { 999, 9999, 99999 };
+    // private static final int[] MIN_NUMBERS = { 100, 1000, 10000 };
+    // private static final int[] MAX_NUMBERS = { 999, 9999, 99999 };
     private int targetNumber;
     private int difficulty = 1; // 0 for easy, 1 for medium, 2 for hard
 
@@ -23,8 +25,8 @@ public class GameController {
             return ResponseEntity.badRequest().body("Invalid difficulty level. Please try again...!");
         }
         this.difficulty = difficulty;
-        Random random = new Random();
-        targetNumber = random.nextInt(MAX_NUMBERS[difficulty] - MIN_NUMBERS[difficulty] + 1) + MIN_NUMBERS[difficulty];
+        targetNumber = generateUniqueDigitNumber(difficulty);
+        System.out.println("Target number: " + targetNumber);
         return ResponseEntity.ok("New game started with difficulty " + difficulty);
     }
 
@@ -75,4 +77,25 @@ public class GameController {
         }
         return digits;
     }
+
+    private int generateUniqueDigitNumber(int difficulty) {
+        int digitCount = difficulty == 0 ? 3 : (difficulty == 1 ? 4 : 5);
+        List<Integer> digits = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            digits.add(i);
+        }
+        Collections.shuffle(digits);
+
+        StringBuilder numberBuilder = new StringBuilder();
+        for (int i = 0; i < digitCount; i++) {
+            if (i == 0 && digits.get(i) == 0) {
+                // Swap with a non-zero digit if the first digit is 0
+                Collections.swap(digits, i, digits.indexOf(Collections.max(digits)));
+            }
+            numberBuilder.append(digits.get(i));
+        }
+
+        return Integer.parseInt(numberBuilder.toString());
+    }
+
 }
