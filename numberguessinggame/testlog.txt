@@ -1,0 +1,108 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< com.example:number-guessing-game >------------------
+[INFO] Building number-guessing-game 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ number-guessing-game ---
+[INFO] Deleting /Users/vidyasagar/Documents/GitHub/Git Repositories/Number-Guessing-game/numberguessinggame/target
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ number-guessing-game ---
+[INFO] Copying 1 resource from src/main/resources to target/classes
+[INFO] Copying 3 resources from src/main/resources to target/classes
+[INFO] 
+[INFO] --- compiler:3.11.0:compile (default-compile) @ number-guessing-game ---
+[INFO] Changes detected - recompiling the module! :source
+[INFO] Compiling 2 source files with javac [debug release 21] to target/classes
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ number-guessing-game ---
+[INFO] skip non existing resourceDirectory /Users/vidyasagar/Documents/GitHub/Git Repositories/Number-Guessing-game/numberguessinggame/src/test/resources
+[INFO] 
+[INFO] --- compiler:3.11.0:testCompile (default-testCompile) @ number-guessing-game ---
+[INFO] Changes detected - recompiling the module! :dependency
+[INFO] Compiling 2 source files with javac [debug release 21] to target/test-classes
+[INFO] /Users/vidyasagar/Documents/GitHub/Git Repositories/Number-Guessing-game/numberguessinggame/src/test/java/com/example/numberguessinggame/GameControllerTest.java: /Users/vidyasagar/Documents/GitHub/Git Repositories/Number-Guessing-game/numberguessinggame/src/test/java/com/example/numberguessinggame/GameControllerTest.java uses or overrides a deprecated API.
+[INFO] /Users/vidyasagar/Documents/GitHub/Git Repositories/Number-Guessing-game/numberguessinggame/src/test/java/com/example/numberguessinggame/GameControllerTest.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- surefire:3.0.0:test (default-test) @ number-guessing-game ---
+[INFO] Using auto detected provider org.apache.maven.surefire.junitplatform.JUnitPlatformProvider
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running com.example.numberguessinggame.NumberGuessingGameApplicationTests
+12:47:00.965 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.example.numberguessinggame.NumberGuessingGameApplicationTests]: NumberGuessingGameApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+12:47:01.022 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.example.numberguessinggame.NumberGuessingGameApplication for test class com.example.numberguessinggame.NumberGuessingGameApplicationTests
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.1.0)
+
+2024-07-15T12:47:01.216-04:00  INFO 29793 --- [           main] c.e.n.NumberGuessingGameApplicationTests : Starting NumberGuessingGameApplicationTests using Java 22.0.1 with PID 29793 (started by vidyasagar in /Users/vidyasagar/Documents/GitHub/Git Repositories/Number-Guessing-game/numberguessinggame)
+2024-07-15T12:47:01.217-04:00  INFO 29793 --- [           main] c.e.n.NumberGuessingGameApplicationTests : No active profile set, falling back to 1 default profile: "default"
+2024-07-15T12:47:01.588-04:00  INFO 29793 --- [           main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2024-07-15T12:47:01.642-04:00  INFO 29793 --- [           main] c.e.n.NumberGuessingGameApplicationTests : Started NumberGuessingGameApplicationTests in 0.562 seconds (process running for 1.031)
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.159 s - in com.example.numberguessinggame.NumberGuessingGameApplicationTests
+[INFO] Running com.example.numberguessinggame.GameControllerTest
+Target number: 1269
+Target number: 8650
+Target number: 3960
+Target number: 936
+Target number: 9713
+Target number: 63497
+Target number: 401
+Target number: 4963
+Target number: 81560
+Target number: 145
+Target number: 5462
+Target number: 19784
+Target number: 534
+Target number: 8769
+Target number: 93026
+Target number: 391
+Target number: 5743
+Target number: 97264
+Target number: 740
+Target number: 9853
+Target number: 10642
+Target number: 620
+Target number: 7924
+Target number: 84739
+Target number: 732
+Target number: 5463
+Target number: 23578
+Target number: 185
+Target number: 6218
+Target number: 18632
+Target number: 431
+Target number: 5802
+Target number: 95206
+Target number: 2148
+[INFO] Tests run: 15, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.021 s - in com.example.numberguessinggame.GameControllerTest
+[INFO] 
+[INFO] Results:
+[INFO] 
+[INFO] Tests run: 16, Failures: 0, Errors: 0, Skipped: 0
+[INFO] 
+[INFO] 
+[INFO] --- jar:3.3.0:jar (default-jar) @ number-guessing-game ---
+[INFO] Building jar: /Users/vidyasagar/Documents/GitHub/Git Repositories/Number-Guessing-game/numberguessinggame/target/number-guessing-game-0.0.1-SNAPSHOT.jar
+[INFO] 
+[INFO] --- spring-boot:3.1.0:repackage (repackage) @ number-guessing-game ---
+[INFO] Replacing main artifact /Users/vidyasagar/Documents/GitHub/Git Repositories/Number-Guessing-game/numberguessinggame/target/number-guessing-game-0.0.1-SNAPSHOT.jar with repackaged archive, adding nested dependencies in BOOT-INF/.
+[INFO] The original artifact has been renamed to /Users/vidyasagar/Documents/GitHub/Git Repositories/Number-Guessing-game/numberguessinggame/target/number-guessing-game-0.0.1-SNAPSHOT.jar.original
+[INFO] 
+[INFO] --- install:3.1.1:install (default-install) @ number-guessing-game ---
+[INFO] Installing /Users/vidyasagar/Documents/GitHub/Git Repositories/Number-Guessing-game/numberguessinggame/pom.xml to /Users/vidyasagar/.m2/repository/com/example/number-guessing-game/0.0.1-SNAPSHOT/number-guessing-game-0.0.1-SNAPSHOT.pom
+[INFO] Installing /Users/vidyasagar/Documents/GitHub/Git Repositories/Number-Guessing-game/numberguessinggame/target/number-guessing-game-0.0.1-SNAPSHOT.jar to /Users/vidyasagar/.m2/repository/com/example/number-guessing-game/0.0.1-SNAPSHOT/number-guessing-game-0.0.1-SNAPSHOT.jar
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  3.251 s
+[INFO] Finished at: 2024-07-15T12:47:02-04:00
+[INFO] ------------------------------------------------------------------------

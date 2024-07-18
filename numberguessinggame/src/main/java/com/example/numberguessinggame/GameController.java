@@ -26,7 +26,7 @@ public class GameController {
         }
         this.difficulty = difficulty;
         targetNumber = generateUniqueDigitNumber(difficulty);
-        System.out.println("Target number: " + targetNumber);
+        // System.out.println("Target number: " + targetNumber);
         return ResponseEntity.ok("New game started with difficulty " + difficulty);
     }
 
@@ -96,6 +96,20 @@ public class GameController {
         }
 
         return Integer.parseInt(numberBuilder.toString());
+    }
+
+    /**
+     * @return int return the targetNumber
+     */
+    public int getTargetNumber() {
+        return targetNumber;
+    }
+
+    /**
+     * @param targetNumber the targetNumber to set
+     */
+    public void setTargetNumber(int targetNumber) {
+        this.targetNumber = targetNumber;
     }
 
 }
