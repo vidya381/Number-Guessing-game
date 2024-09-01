@@ -5,17 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Number Guessing Game</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <div id="game-container">
-        <h1>Number Guessing Game</h1>
+        <div id="theme-toggle">
+            <input type="checkbox" id="dark-mode-toggle">
+            <label for="dark-mode-toggle" class="toggle-label">
+                <i class="fas fa-sun"></i>
+                <i class="fas fa-moon"></i>
+            </label>
+        </div>
 
-        <div id="home-page">
+        <div id="home-page" class="card">
+            <h1>Number Guessing Game</h1>
+            <div id="game-illustration">
+                <!-- Add your game illustration or animation here -->
+                <i class="fas fa-question-circle fa-5x"></i>
+            </div>
             <h2>Best Score: <span id="best-score">Not set</span></h2>
-            <button id="play-easy">Play Easy</button>
-            <button id="play-medium">Play Medium</button>
-            <button id="play-hard">Play Hard</button>
-
+            <div id="difficulty-selection">
+                <button id="play-easy" class="difficulty-btn" data-tooltip="Guess a 3-digit number">
+                    <i class="fas fa-baby"></i> Easy
+                </button>
+                <button id="play-medium" class="difficulty-btn" data-tooltip="Guess a 4-digit number">
+                    <i class="fas fa-user"></i> Medium
+                </button>
+                <button id="play-hard" class="difficulty-btn" data-tooltip="Guess a 5-digit number">
+                    <i class="fas fa-dragon"></i> Hard
+                </button>
+            </div>
+            <div id="leaderboard">
+                <h3>Recent Scores</h3>
+                <ul id="recent-scores">
+                    <!-- Recent scores will be populated here -->
+                </ul>
+            </div>
             <div id="instructions">
                 <h3>How to Play:</h3>
                 <ol>
@@ -28,23 +53,44 @@
             </div>
         </div>
 
-        <div id="game-page" style="display:none;">
-            <p>Guess the number:</p>
+        <div id="game-page" class="card" style="display:none;">
+            <h2>Guess the number:</h2>
             <div id="input-container"></div>
             <button id="submit-guess">Submit Guess</button>
-            <p>Attempts: <span id="attempts">0</span></p>
-            <p>Time: <span id="timer">00:00</span></p>
+            <div id="game-info">
+                <div id="attempts-container">
+                    Attempts: <span id="attempts">0</span> / 10
+                    <div id="attempts-progress"></div>
+                </div>
+                <div id="timer-container">
+                    <div id="timer-progress">
+                        <span id="timer">00:00</span>
+                    </div>
+                </div>
+            </div>
             <div id="feedback"></div>
         </div>
 
-        <div id="result-page" style="display:none;">
+        <div id="result-page" class="card" style="display:none;">
             <h2 id="result-message"></h2>
-            <p>Number of guesses: <span id="final-attempts"></span></p>
-            <p>Time taken: <span id="final-time"></span></p>
+            <div id="confetti-container"></div>
+            <div id="result-stats">
+                <p>Number of guesses: <span id="final-attempts"></span></p>
+                <p>Time taken: <span id="final-time"></span></p>
+                <p>Average guess time: <span id="avg-guess-time"></span></p>
+                <p>Comparison to best: <span id="comparison-to-best"></span></p>
+            </div>
             <button id="play-again">Play Again</button>
             <button id="quit">Quit</button>
         </div>
     </div>
+
+    <div id="sound-control">
+        <button id="toggle-sound">
+            <i class="fas fa-volume-up"></i>
+        </button>
+    </div>
+
     <script src="/js/script.js"></script>
 </body>
 </html>
