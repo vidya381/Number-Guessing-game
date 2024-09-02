@@ -4,7 +4,10 @@
     --background-color: #f0f0f0;
     --card-background: #ffffff;
     --text-color: #333333;
+    --button-text-color: #ffffff;
     --shadow-color: rgba(0, 0, 0, 0.1);
+    --input-background: #ffffff;
+    --input-border: #cccccc;
 }
 
 body {
@@ -15,7 +18,8 @@ body {
     min-height: 100vh;
     margin: 0;
     background-color: var(--background-color);
-    transition: background-color 0.3s ease;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #game-container {
@@ -30,7 +34,7 @@ body {
     box-shadow: 0 4px 6px var(--shadow-color);
     padding: 20px;
     margin-bottom: 20px;
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 h1, h2, h3 {
@@ -39,16 +43,16 @@ h1, h2, h3 {
 
 button {
     background-color: var(--primary-color);
-    color: white;
+    color: var(--button-text-color);
     border: none;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 button:hover {
-    background-color: darken(var(--primary-color), 10%);
+    background-color: var(--secondary-color);
 }
 
 #theme-toggle {
@@ -61,16 +65,18 @@ button:hover {
     display: inline-block;
     width: 60px;
     height: 34px;
-    background-color: #ccc;
+    background-color: var(--primary-color);
     border-radius: 34px;
     position: relative;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .toggle-label i {
     position: absolute;
     top: 7px;
     transition: opacity 0.3s ease;
+    color: var(--button-text-color);
 }
 
 .toggle-label .fa-sun {
@@ -84,7 +90,7 @@ button:hover {
 }
 
 #dark-mode-toggle:checked + .toggle-label {
-    background-color: var(--primary-color);
+    background-color: var(--secondary-color);
 }
 
 #dark-mode-toggle:checked + .toggle-label .fa-sun {
@@ -124,7 +130,7 @@ button:hover {
     transform: translateX(-50%);
     padding: 5px 10px;
     background-color: var(--text-color);
-    color: white;
+    color: var(--card-background);
     border-radius: 5px;
     font-size: 14px;
     opacity: 0;
@@ -153,14 +159,14 @@ button:hover {
     align-items: center;
     font-size: 18px;
     font-weight: bold;
-    background: conic-gradient(var(--primary-color) 0deg, #f0f0f0 0deg);
+    background: conic-gradient(var(--primary-color) 0deg, var(--card-background) 0deg);
     transition: background 0.3s ease;
 }
 
 #attempts-progress {
     width: 100%;
     height: 10px;
-    background-color: #f0f0f0;
+    background-color: var(--background-color);
     border-radius: 5px;
     margin-top: 10px;
     overflow: hidden;
@@ -175,47 +181,22 @@ button:hover {
     transition: width 0.3s ease;
 }
 
-#game-illustration {
-    text-align: center;
-    margin: 20px 0;
-    font-size: 48px;
-    color: var(--primary-color);
-}
-
-#leaderboard {
-    margin-top: 20px;
-}
-
-#recent-scores {
-    list-style-type: none;
-    padding: 0;
-}
-
-#recent-scores li {
-    margin-bottom: 5px;
-}
-
-#sound-control {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-}
-
-#toggle-sound {
-    background-color: transparent;
-    border: none;
+.digit-input {
+    width: 40px;
+    height: 40px;
     font-size: 24px;
+    text-align: center;
+    margin: 0 5px;
+    border: 2px solid var(--input-border);
+    border-radius: 5px;
+    background-color: var(--input-background);
     color: var(--text-color);
-    cursor: pointer;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
 
-#confetti-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
+.digit-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
 }
 
 /* Dark mode styles */
@@ -223,7 +204,10 @@ body.dark-mode {
     --background-color: #2c3e50;
     --card-background: #34495e;
     --text-color: #ecf0f1;
+    --button-text-color: #ffffff;
     --shadow-color: rgba(0, 0, 0, 0.3);
+    --input-background: #2c3e50;
+    --input-border: #4a6278;
 }
 
 body.dark-mode h1,
@@ -237,5 +221,35 @@ body.dark-mode button {
 }
 
 body.dark-mode button:hover {
-    background-color: darken(var(--secondary-color), 10%);
+    background-color: var(--primary-color);
 }
+
+body.dark-mode .toggle-label {
+    background-color: var(--secondary-color);
+}
+
+body.dark-mode #dark-mode-toggle:checked + .toggle-label {
+    background-color: var(--primary-color);
+}
+
+#guess-history {
+    margin-top: 20px;
+  }
+  
+  .history-item {
+    margin-bottom: 10px;
+  }
+  
+  .history-item .guess {
+    font-weight: bold;
+    margin-right: 10px;
+  }
+  
+  .history-item .correct {
+    color: green;
+    margin-right: 10px;
+  }
+  
+  .history-item .misplaced {
+    color: orange;
+  }

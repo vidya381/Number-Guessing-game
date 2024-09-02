@@ -6,11 +6,12 @@ let bestScore = localStorage.getItem('bestScore') || 'Not set';
 let currentDifficulty = 1;
 let soundEnabled = true;
 let recentScores = JSON.parse(localStorage.getItem('recentScores')) || [];
+let guessHistory = [];
 
 // Sound effects
-const correctSound = new Audio('correct-sound.mp3');
-const incorrectSound = new Audio('incorrect-sound.mp3');
-const winSound = new Audio('win-sound.mp3');
+const correctSound = new Audio('/audio/correct-sound.mp3');
+const incorrectSound = new Audio('/audio/incorrect-sound.mp3');
+const winSound = new Audio('/audio/win-sound.mp3');
 
 document.addEventListener('DOMContentLoaded', function() {
     updateBestScore();
@@ -42,19 +43,39 @@ function attachEventListeners() {
     document.getElementById('quit').addEventListener('click', showHomePage);
     document.getElementById('toggle-sound').addEventListener('click', toggleSound);
     document.getElementById('dark-mode-toggle').addEventListener('change', toggleDarkMode);
+    document.getElementById('quit-game').addEventListener('click', quitGame);
 }
 
 function initializeDarkMode() {
     const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
     document.getElementById('dark-mode-toggle').checked = darkModeEnabled;
-    if (darkModeEnabled) {
-        document.body.classList.add('dark-mode');
-    }
+    setTheme(darkModeEnabled);
 }
 
 function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    const darkModeEnabled = document.getElementById('dark-mode-toggle').checked;
+    setTheme(darkModeEnabled);
+    localStorage.setItem('darkMode', darkModeEnabled);
+}
+
+function setTheme(isDarkMode) {
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
+    }
+    updateThemeColors(isDarkMode);
+}
+
+function updateThemeColors(isDarkMode) {
+    const root = document.documentElement;
+    if (isDarkMode) {
+        root.style.setProperty('--primary-color', '#f39c12');
+        root.style.setProperty('--secondary-color', '#4a90e2');
+    } else {
+        root.style.setProperty('--primary-color', '#4a90e2');
+        root.style.setProperty('--secondary-color', '#f39c12');
+    }
 }
 
 function toggleSound() {
@@ -66,6 +87,7 @@ function toggleSound() {
 function startGame(difficulty) {
     currentDifficulty = difficulty;
     attempts = 0;
+    guessHistory = []; // Reset guess history
     updateGamePage();
     startTimer();
     
@@ -78,6 +100,7 @@ function startGame(difficulty) {
         .then(data => {
             console.log(data);
             updateInputFields(difficulty);
+            updateGuessHistory();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -108,8 +131,6 @@ function updateInputFields(difficulty) {
             if (this.value) {
                 if (this.nextElementSibling) {
                     this.nextElementSibling.focus();
-                } else {
-                    submitGuess();
                 }
             }
         });
@@ -130,7 +151,12 @@ function submitGuess() {
         guess += input.value;
     }
 
-    if (guess.length !== inputs.length || !/^\d+$/.test(guess) || new Set(guess).size !== guess.length) {
+    if (guess.length !== inputs.length) {
+        alert('Please enter all digits before submitting your guess.');
+        return;
+    }
+
+    if (!/^\d+$/.test(guess) || new Set(guess).size !== guess.length) {
         alert('Please enter a valid number with unique digits.');
         return;
     }
@@ -152,6 +178,7 @@ function submitGuess() {
         } else {
             if (soundEnabled) incorrectSound.play();
             displayFeedback(data.correctPosition, data.correctButWrongPosition);
+            addToGuessHistory(guess, data.correctPosition, data.correctButWrongPosition);
             if (attempts >= 10) {
                 endGame(false);
             }
@@ -166,6 +193,26 @@ function submitGuess() {
         input.value = '';
     }
     inputs[0].focus();
+}
+
+function addToGuessHistory(guess, correctPosition, correctButWrongPosition) {
+    guessHistory.unshift({ guess, correctPosition, correctButWrongPosition });
+    updateGuessHistory();
+}
+
+function updateGuessHistory() {
+    const historyContainer = document.getElementById('guess-history');
+    historyContainer.innerHTML = '';
+    guessHistory.forEach(entry => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+        historyItem.innerHTML = `
+            <span class="guess">${entry.guess}</span>
+            <span class="correct">Correct: ${entry.correctPosition}</span>
+            <span class="misplaced">Misplaced: ${entry.correctButWrongPosition}</span>
+        `;
+        historyContainer.appendChild(historyItem);
+    });
 }
 
 function displayFeedback(correctPosition, correctButWrongPosition) {
@@ -269,6 +316,13 @@ function showHomePage() {
     document.getElementById('home-page').style.display = 'block';
     document.getElementById('game-page').style.display = 'none';
     document.getElementById('result-page').style.display = 'none';
+}
+
+function quitGame() {
+    if (confirm("Are you sure you want to quit? Your progress will be lost.")) {
+        clearInterval(timerInterval);
+        showHomePage();
+    }
 }
 
 function createConfetti() {
