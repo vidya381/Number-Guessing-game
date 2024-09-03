@@ -254,29 +254,6 @@ body.dark-mode #dark-mode-toggle:checked + .toggle-label {
     color: orange;
   }
 
-  /* @keyframes rotate-numbers {
-    0%, 9% { content: "0"; }
-    10%, 19% { content: "1"; }
-    20%, 29% { content: "2"; }
-    30%, 39% { content: "3"; }
-    40%, 49% { content: "4"; }
-    50%, 59% { content: "5"; }
-    60%, 69% { content: "6"; }
-    70%, 79% { content: "7"; }
-    80%, 89% { content: "8"; }
-    90%, 99% { content: "9"; }
-  }
-  
-  .rotating-number {
-    font-size: 80px;
-    color: #4A90E2;
-  }
-  
-  .rotating-number::after {
-    content: "1";
-    animation: rotate-numbers 10s infinite;
-  } */
-
   @keyframes rotate-numbers {
     0%, 20% { content: "1"; }
     20%, 40% { content: "6"; }
