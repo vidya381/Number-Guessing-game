@@ -19,20 +19,21 @@
 
         <div id="home-page" class="card">
             <h1>Number Guessing Game</h1>
-            <div id="game-illustration">
-                <!-- Add your game illustration or animation here -->
-                <i class="fas fa-question-circle fa-5x"></i>
+            <div id="game-illustration" class="game-illustration">
+                <div class="rotating-number"></div>
+                <div class="guess-indicator">?</div>
+                <div class="feedback-indicator"></div>
             </div>
             <h2>Best Score: <span id="best-score">Not set</span></h2>
             <div id="difficulty-selection">
                 <button id="play-easy" class="difficulty-btn" data-tooltip="Guess a 3-digit number">
-                    <i class="fas fa-baby"></i> Easy
+                    <i class="fas fa-sun"></i> Easy
                 </button>
                 <button id="play-medium" class="difficulty-btn" data-tooltip="Guess a 4-digit number">
-                    <i class="fas fa-user"></i> Medium
+                    <i class="fas fa-cloud-sun"></i> Medium
                 </button>
                 <button id="play-hard" class="difficulty-btn" data-tooltip="Guess a 5-digit number">
-                    <i class="fas fa-dragon"></i> Hard
+                    <i class="fas fa-bolt"></i> Hard
                 </button>
             </div>
             <div id="leaderboard">

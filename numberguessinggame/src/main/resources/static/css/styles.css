@@ -253,3 +253,96 @@ body.dark-mode #dark-mode-toggle:checked + .toggle-label {
   .history-item .misplaced {
     color: orange;
   }
+
+  /* @keyframes rotate-numbers {
+    0%, 9% { content: "0"; }
+    10%, 19% { content: "1"; }
+    20%, 29% { content: "2"; }
+    30%, 39% { content: "3"; }
+    40%, 49% { content: "4"; }
+    50%, 59% { content: "5"; }
+    60%, 69% { content: "6"; }
+    70%, 79% { content: "7"; }
+    80%, 89% { content: "8"; }
+    90%, 99% { content: "9"; }
+  }
+  
+  .rotating-number {
+    font-size: 80px;
+    color: #4A90E2;
+  }
+  
+  .rotating-number::after {
+    content: "1";
+    animation: rotate-numbers 10s infinite;
+  } */
+
+  @keyframes rotate-numbers {
+    0%, 20% { content: "1"; }
+    20%, 40% { content: "6"; }
+    40%, 60% { content: "2"; }
+    60%, 80% { content: "5"; }
+    80%, 100% { content: "7"; }
+  }
+  
+  .game-illustration {
+    width: 200px;
+    height: 200px;
+    background-color: #f0f0f0;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .rotating-number {
+    font-size: 100px;
+    font-weight: bold;
+    color: #4A90E2;
+  }
+  
+  .rotating-number::after {
+    content: "5";
+    animation: rotate-numbers 5s infinite;
+  }
+  
+  .guess-indicator {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-color: #2ECC71;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    animation: guess-animation 5s infinite;
+  }
+  
+  @keyframes guess-animation {
+    0%, 90% { transform: translateY(120px); }
+    95% { transform: translateY(0); }
+    100% { transform: translateY(120px); }
+  }
+  
+  .feedback-indicator {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  
+  .feedback-indicator.correct {
+    background-color: #2ECC71;
+  }
+  
+  .feedback-indicator.incorrect {
+    background-color: #E74C3C;
+  }

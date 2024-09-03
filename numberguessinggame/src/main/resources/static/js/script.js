@@ -7,6 +7,8 @@ let currentDifficulty = 1;
 let soundEnabled = true;
 let recentScores = JSON.parse(localStorage.getItem('recentScores')) || [];
 let guessHistory = [];
+const feedbackIndicator = document.querySelector('.feedback-indicator');
+const guessIndicator = document.querySelector('.guess-indicator');
 
 // Sound effects
 const correctSound = new Audio('/audio/correct-sound.mp3');
@@ -344,3 +346,18 @@ function getRandomColor() {
     const b = Math.floor(Math.random() * 256);
     return `rgb(${r}, ${g}, ${b})`;
 }
+
+function showFeedback() {
+    const isCorrect = Math.random() < 0.3; // 30% chance of being correct
+    feedbackIndicator.classList.add(isCorrect ? 'correct' : 'incorrect');
+    feedbackIndicator.style.opacity = '1';
+    setTimeout(() => {
+      feedbackIndicator.style.opacity = '0';
+      feedbackIndicator.classList.remove('correct', 'incorrect');
+    }, 1000);
+  }
+  
+  setInterval(() => {
+    guessIndicator.textContent = Math.floor(Math.random() * 10);
+    setTimeout(showFeedback, 500);
+  }, 5000);
