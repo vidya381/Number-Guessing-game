@@ -37,8 +37,17 @@ body {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-h1, h2, h3 {
+h2, h3 {
     color: var(--primary-color);
+}
+
+h1 {
+    font-family: 'Cinzel Decorative', cursive;
+    text-align: center;
+    font-size: 65px;
+    color: var(--primary-color);
+    /* width: 40px; */
+    height: 40px;
 }
 
 button {
@@ -272,6 +281,7 @@ body.dark-mode #dark-mode-toggle:checked + .toggle-label {
     align-items: center;
     position: relative;
     overflow: hidden;
+    margin: 0 auto; 
   }
   
   .rotating-number {
