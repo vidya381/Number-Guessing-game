@@ -295,6 +295,11 @@ function compareToaBestScore(attempts) {
 }
 
 function updateBestScore(score) {
+    if (score === undefined) {
+        document.getElementById('best-score').textContent = bestScore;
+        return;
+    }
+
     if (bestScore === 'Not set' || score < parseInt(bestScore)) {
         bestScore = score.toString();
         localStorage.setItem('bestScore', bestScore);
