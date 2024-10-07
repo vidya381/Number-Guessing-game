@@ -5,7 +5,8 @@ NumVana is an engaging, web-based number guessing game that challenges players t
 
 NumVana Game:
 
-<img width="1703" alt="NumVana Homapage" src="https://github.com/user-attachments/assets/c68dead6-5136-4685-b414-7208b11621ba">
+<img width="1710" alt="NumVana Home" src="https://github.com/user-attachments/assets/21d02929-90c0-463c-a71d-c0d8bf3b9eeb">
+
 
 
 ## 🌟 Features
