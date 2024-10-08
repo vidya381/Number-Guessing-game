@@ -26,6 +26,7 @@ body {
     width: 100%;
     max-width: 600px;
     padding: 20px;
+    box-sizing: border-box;
 }
 
 .card {
@@ -44,10 +45,10 @@ h2, h3 {
 h1 {
     font-family: 'Cinzel Decorative', cursive;
     text-align: center;
-    font-size: 65px;
+    font-size: clamp(40px, 10vw, 65px);
     color: var(--primary-color);
-    /* width: 40px; */
-    height: 40px;
+    height: auto;
+    margin-bottom: 20px;
 }
 
 button {
@@ -58,6 +59,9 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, color 0.3s ease;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 10px;
 }
 
 button:hover {
@@ -243,35 +247,35 @@ body.dark-mode #dark-mode-toggle:checked + .toggle-label {
 
 #guess-history {
     margin-top: 20px;
-  }
-  
-  .history-item {
+}
+
+.history-item {
     margin-bottom: 10px;
-  }
-  
-  .history-item .guess {
+}
+
+.history-item .guess {
     font-weight: bold;
     margin-right: 10px;
-  }
-  
-  .history-item .correct {
+}
+
+.history-item .correct {
     color: green;
     margin-right: 10px;
-  }
-  
-  .history-item .misplaced {
-    color: orange;
-  }
+}
 
-  @keyframes rotate-numbers {
+.history-item .misplaced {
+    color: orange;
+}
+
+@keyframes rotate-numbers {
     0%, 20% { content: "1"; }
     20%, 40% { content: "6"; }
     40%, 60% { content: "2"; }
     60%, 80% { content: "5"; }
     80%, 100% { content: "7"; }
-  }
-  
-  .game-illustration {
+}
+
+.game-illustration {
     width: 200px;
     height: 200px;
     background-color: #f0f0f0;
@@ -282,20 +286,20 @@ body.dark-mode #dark-mode-toggle:checked + .toggle-label {
     position: relative;
     overflow: hidden;
     margin: 0 auto; 
-  }
-  
-  .rotating-number {
+}
+
+.rotating-number {
     font-size: 100px;
     font-weight: bold;
     color: #4A90E2;
-  }
-  
-  .rotating-number::after {
+}
+
+.rotating-number::after {
     content: "5";
     animation: rotate-numbers 5s infinite;
-  }
-  
-  .guess-indicator {
+}
+
+.guess-indicator {
     position: absolute;
     width: 40px;
     height: 40px;
@@ -307,15 +311,15 @@ body.dark-mode #dark-mode-toggle:checked + .toggle-label {
     color: white;
     font-weight: bold;
     animation: guess-animation 5s infinite;
-  }
-  
-  @keyframes guess-animation {
+}
+
+@keyframes guess-animation {
     0%, 90% { transform: translateY(120px); }
     95% { transform: translateY(0); }
     100% { transform: translateY(120px); }
-  }
-  
-  .feedback-indicator {
+}
+
+.feedback-indicator {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -324,12 +328,94 @@ body.dark-mode #dark-mode-toggle:checked + .toggle-label {
     border-radius: 50%;
     opacity: 0;
     transition: opacity 0.3s ease;
-  }
-  
-  .feedback-indicator.correct {
+}
+
+.feedback-indicator.correct {
     background-color: #2ECC71;
-  }
-  
-  .feedback-indicator.incorrect {
+}
+
+.feedback-indicator.incorrect {
     background-color: #E74C3C;
-  }
+}
+
+/* Responsive design */
+@media screen and (max-width: 768px) {
+    #game-container {
+        padding: 10px;
+    }
+
+    .card {
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: clamp(30px, 8vw, 50px);
+    }
+
+    button {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+
+    .digit-input {
+        width: 30px;
+        height: 30px;
+        font-size: 18px;
+        margin: 0 3px;
+    }
+
+    #timer-container {
+        width: 60px;
+        height: 60px;
+    }
+
+    #timer-progress {
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: clamp(24px, 7vw, 40px);
+    }
+
+    .digit-input {
+        width: 25px;
+        height: 25px;
+        font-size: 16px;
+        margin: 0 2px;
+    }
+
+    #timer-container {
+        width: 50px;
+        height: 50px;
+    }
+
+    #timer-progress {
+        font-size: 12px;
+    }
+}
+
+/* Flexible layout for different orientations */
+@media screen and (orientation: landscape) and (max-height: 500px) {
+    #game-container {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-start;
+        max-width: 100%;
+    }
+
+    .card {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    #game-illustration {
+        width: 150px;
+        height: 150px;
+    }
+
+    .rotating-number {
+        font-size: 80px;
+    }
+}
