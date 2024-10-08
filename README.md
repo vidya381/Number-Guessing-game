@@ -1,8 +1,13 @@
+
 # NumVana: The Ultimate Number Guessing Game
 
 NumVana is an engaging, web-based number guessing game that challenges players to deduce a secret number using logic and intuition. Built with Spring Boot and JavaScript, this game offers a sleek interface and multiple difficulty levels to keep players entertained.
 
-NumVana Game Screenshot
+NumVana Game:
+
+<img width="1710" alt="NumVana Home" src="https://github.com/user-attachments/assets/21d02929-90c0-463c-a71d-c0d8bf3b9eeb">
+
+
 
 ## 🌟 Features
 
@@ -33,18 +38,19 @@ NumVana Game Screenshot
 To run NumVana locally:
 
 1. Clone the repository:
-   
+   ```
    git clone https://github.com/your-username/NumVana.git
-
+   ```
 2. Navigate to the project directory:
-   
+   ```
    cd NumVana
-
+   ```
 3. Run the Spring Boot application:
-   
+   ```
    mvn spring-boot:run
-
+   ```
 4. Open your browser and visit `http://localhost:8080`
+
 
 ## 🌐 Live Demo
 
