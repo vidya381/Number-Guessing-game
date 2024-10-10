@@ -43,9 +43,11 @@ function attachEventListeners() {
     document.getElementById('submit-guess').addEventListener('click', submitGuess);
     document.getElementById('play-again').addEventListener('click', () => startGame(currentDifficulty));
     document.getElementById('quit').addEventListener('click', showHomePage);
-    document.getElementById('toggle-sound').addEventListener('click', toggleSound);
-    document.getElementById('dark-mode-toggle').addEventListener('change', toggleDarkMode);
+    // document.getElementById('toggle-sound').addEventListener('click', toggleSound);
+    // document.getElementById('dark-mode-toggle').addEventListener('change', toggleDarkMode);
     document.getElementById('quit-game').addEventListener('click', quitGame);
+    document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
+    document.getElementById('sound-toggle').addEventListener('click', toggleSound);
 }
 
 function initializeDarkMode() {
@@ -54,10 +56,24 @@ function initializeDarkMode() {
     setTheme(darkModeEnabled);
 }
 
+// function toggleDarkMode() {
+//     const darkModeEnabled = document.getElementById('dark-mode-toggle').checked;
+//     setTheme(darkModeEnabled);
+//     localStorage.setItem('darkMode', darkModeEnabled);
+// }
+
 function toggleDarkMode() {
-    const darkModeEnabled = document.getElementById('dark-mode-toggle').checked;
-    setTheme(darkModeEnabled);
-    localStorage.setItem('darkMode', darkModeEnabled);
+    document.body.classList.toggle('dark-mode');
+    const themeIcon = document.querySelector('#theme-toggle i');
+    themeIcon.classList.toggle('fa-moon');
+    themeIcon.classList.toggle('fa-sun');
+}
+
+function toggleSound() {
+    soundEnabled = !soundEnabled;
+    const soundIcon = document.querySelector('#sound-toggle i');
+    soundIcon.classList.toggle('fa-volume-up');
+    soundIcon.classList.toggle('fa-volume-mute');
 }
 
 function setTheme(isDarkMode) {
@@ -80,11 +96,11 @@ function updateThemeColors(isDarkMode) {
     }
 }
 
-function toggleSound() {
-    soundEnabled = !soundEnabled;
-    const soundIcon = document.querySelector('#toggle-sound i');
-    soundIcon.className = soundEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
-}
+// function toggleSound() {
+//     soundEnabled = !soundEnabled;
+//     const soundIcon = document.querySelector('#toggle-sound i');
+//     soundIcon.className = soundEnabled ? 'fas fa-volume-up' : 'fas fa-volume-mute';
+// }
 
 function startGame(difficulty) {
     currentDifficulty = difficulty;

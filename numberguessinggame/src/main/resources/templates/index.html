@@ -17,94 +17,66 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 <body>
-    <div id="game-container">
-        <div id="theme-toggle">
-            <input type="checkbox" id="dark-mode-toggle">
-            <label for="dark-mode-toggle" class="toggle-label">
-                <i class="fas fa-sun"></i>
+    <div id="game-header">
+        <h1 class="game-title">NumVana</h1>
+        <div id="controls">
+            <button id="theme-toggle" aria-label="Toggle dark mode">
                 <i class="fas fa-moon"></i>
-            </label>
+            </button>
+            <button id="sound-toggle" aria-label="Toggle sound">
+                <i class="fas fa-volume-up"></i>
+            </button>
         </div>
+    </div>
 
+    <div id="game-container">
         <div id="home-page" class="card">
-            <h1>NumVana</h1>
-            <div id="game-illustration" class="game-illustration">
-                <div class="rotating-number"></div>
-                <div class="guess-indicator">?</div>
-                <div class="feedback-indicator"></div>
-            </div>
-            <br>
-            <div id="difficulty-selection">
-                <button id="play-easy" class="difficulty-btn" data-tooltip="Guess a 3-digit number">
-                    <i class="fas fa-sun"></i> Easy
-                </button>
-                <button id="play-medium" class="difficulty-btn" data-tooltip="Guess a 4-digit number">
-                    <i class="fas fa-cloud-sun"></i> Medium
-                </button>
-                <button id="play-hard" class="difficulty-btn" data-tooltip="Guess a 5-digit number">
-                    <i class="fas fa-bolt"></i> Hard
-                </button>
-            </div>
-            <h2>Best Score: <span id="best-score">Not set</span></h2>
-            <div id="leaderboard">
-                <h3>Recent Scores</h3>
-                <ul id="recent-scores">
-                    <!-- Recent scores will be populated here -->
-                </ul>
-            </div>
-            <div id="instructions">
-                <h3>How to Play:</h3>
-                <ol>
-                    <li>Choose a difficulty level.</li>
-                    <li>Try to guess the secret number.</li>
-                    <li>Enter your guess in the input fields.</li>
-                    <li>You'll receive feedback on correct digits and positions.</li>
-                    <li>Keep guessing until you find the correct number or run out of attempts.</li>
-                </ol>
+            <h2>Welcome to NumVana</h2>
+            <p>Choose a difficulty level to start the game:</p>
+            <button id="play-easy" class="difficulty-btn" data-tooltip="3-digit number">Easy</button>
+            <button id="play-medium" class="difficulty-btn" data-tooltip="4-digit number">Medium</button>
+            <button id="play-hard" class="difficulty-btn" data-tooltip="5-digit number">Hard</button>
+            
+            <div class="game-stats">
+                <h3>Game Statistics</h3>
+                <p>Best Score: <span id="best-score"></span></p>
+                <h4>Recent Scores:</h4>
+                <ul id="recent-scores"></ul>
             </div>
         </div>
 
-        <div id="game-page" class="card" style="display:none;">
-            <h2>Guess the number:</h2>
-            <div id="input-container"></div>
-            <button id="submit-guess">Submit Guess</button>
-            <div id="quit-container">
-                <button id="quit-game">Quit</button>
-            </div>
+        <div id="game-page" class="card" style="display: none;">
             <div id="game-info">
-                <div id="attempts-container">
-                    Attempts: <span id="attempts">0</span> / 10
-                    <div id="attempts-progress"></div>
-                </div>
                 <div id="timer-container">
                     <div id="timer-progress">
                         <span id="timer">00:00</span>
                     </div>
                 </div>
+                <p>Attempts: <span id="attempts">0</span> / 10</p>
+                <div id="attempts-progress"></div>
             </div>
-            <div id="feedback"></div>
+            
+            <div id="input-container" class="guess-input"></div>
+            <button id="submit-guess">Submit Guess</button>
+            <p id="feedback"></p>
+            
             <div id="guess-history"></div>
+            
+            <button id="quit-game">Quit Game</button>
         </div>
 
-        <div id="result-page" class="card" style="display:none;">
+        <div id="result-page" class="card" style="display: none;">
             <h2 id="result-message"></h2>
-            <div id="confetti-container"></div>
-            <div id="result-stats">
-                <p>Number of guesses: <span id="final-attempts"></span></p>
-                <p>Time taken: <span id="final-time"></span></p>
-                <p>Average guess time: <span id="avg-guess-time"></span></p>
-                <p>Comparison to best: <span id="comparison-to-best"></span></p>
-            </div>
+            <p>Number of guesses: <span id="final-attempts"></span></p>
+            <p>Time taken: <span id="final-time"></span></p>
+            <p>Average guess time: <span id="avg-guess-time"></span></p>
+            <p>Comparison to best: <span id="comparison-to-best"></span></p>
             <button id="play-again">Play Again</button>
             <button id="quit">Quit</button>
         </div>
     </div>
 
-    <div id="sound-control">
-        <button id="toggle-sound">
-            <i class="fas fa-volume-up"></i>
-        </button>
-    </div>
+    <div id="confetti-container"></div>
 
     <script src="/js/script.js"></script>
 </body>

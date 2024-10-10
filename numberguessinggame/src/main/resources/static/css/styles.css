@@ -1,17 +1,62 @@
 :root {
-    --primary-color: #4a90e2;
-    --secondary-color: #f39c12;
-    --background-color: #f0f0f0;
+    --primary-color: #6a4c93;
+    --secondary-color: #1982c4;
+    --background-color: #f8f9fa;
     --card-background: #ffffff;
     --text-color: #333333;
     --button-text-color: #ffffff;
     --shadow-color: rgba(0, 0, 0, 0.1);
     --input-background: #ffffff;
-    --input-border: #cccccc;
+    --input-border: #ced4da;
+}
+
+#game-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--background-color);
+    padding: 10px 20px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px var(--shadow-color);
+}
+
+.game-title {
+    font-family: 'Cinzel Decorative', cursive;
+    font-size: clamp(24px, 5vw, 40px);
+    color: var(--primary-color);
+    margin: 0;
+}
+
+#controls {
+    display: flex;
+    gap: 10px;
+}
+
+#theme-toggle, #sound-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    background-color: var(--primary-color);
+    color: var(--button-text-color);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#theme-toggle:hover, #sound-toggle:hover {
+    background-color: var(--secondary-color);
 }
 
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Poppins', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -20,6 +65,7 @@ body {
     background-color: var(--background-color);
     color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
+    padding-top: 100px;
 }
 
 #game-container {
@@ -31,23 +77,15 @@ body {
 
 .card {
     background-color: var(--card-background);
-    border-radius: 10px;
-    box-shadow: 0 4px 6px var(--shadow-color);
-    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px var(--shadow-color);
+    padding: 30px;
     margin-bottom: 20px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-h2, h3 {
+h1, h2, h3, h4 {
     color: var(--primary-color);
-}
-
-h1 {
-    font-family: 'Cinzel Decorative', cursive;
-    text-align: center;
-    font-size: clamp(40px, 10vw, 65px);
-    color: var(--primary-color);
-    height: auto;
     margin-bottom: 20px;
 }
 
@@ -55,80 +93,29 @@ button {
     background-color: var(--primary-color);
     color: var(--button-text-color);
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 12px 24px;
+    border-radius: 50px;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease;
     font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
     width: 100%;
-    margin-bottom: 10px;
 }
 
 button:hover {
     background-color: var(--secondary-color);
-}
-
-#theme-toggle {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-
-.toggle-label {
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-    background-color: var(--primary-color);
-    border-radius: 34px;
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.toggle-label i {
-    position: absolute;
-    top: 7px;
-    transition: opacity 0.3s ease;
-    color: var(--button-text-color);
-}
-
-.toggle-label .fa-sun {
-    left: 7px;
-    opacity: 1;
-}
-
-.toggle-label .fa-moon {
-    right: 7px;
-    opacity: 0;
-}
-
-#dark-mode-toggle:checked + .toggle-label {
-    background-color: var(--secondary-color);
-}
-
-#dark-mode-toggle:checked + .toggle-label .fa-sun {
-    opacity: 0;
-}
-
-#dark-mode-toggle:checked + .toggle-label .fa-moon {
-    opacity: 1;
-}
-
-#dark-mode-toggle {
-    display: none;
+    transform: translateY(-2px);
 }
 
 .difficulty-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     font-size: 18px;
-}
-
-.difficulty-btn i {
-    margin-right: 10px;
 }
 
 [data-tooltip] {
@@ -157,8 +144,8 @@ button:hover {
 }
 
 #timer-container {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     position: relative;
     margin: 20px auto;
 }
@@ -170,7 +157,7 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 18px;
+    font-size: 24px;
     font-weight: bold;
     background: conic-gradient(var(--primary-color) 0deg, var(--card-background) 0deg);
     transition: background 0.3s ease;
@@ -195,13 +182,13 @@ button:hover {
 }
 
 .digit-input {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     font-size: 24px;
     text-align: center;
     margin: 0 5px;
     border: 2px solid var(--input-border);
-    border-radius: 5px;
+    border-radius: 10px;
     background-color: var(--input-background);
     color: var(--text-color);
     transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
@@ -212,7 +199,6 @@ button:hover {
     outline: none;
 }
 
-/* Dark mode styles */
 body.dark-mode {
     --background-color: #2c3e50;
     --card-background: #34495e;
@@ -225,7 +211,8 @@ body.dark-mode {
 
 body.dark-mode h1,
 body.dark-mode h2,
-body.dark-mode h3 {
+body.dark-mode h3,
+body.dark-mode h4 {
     color: var(--secondary-color);
 }
 
@@ -237,185 +224,111 @@ body.dark-mode button:hover {
     background-color: var(--primary-color);
 }
 
-body.dark-mode .toggle-label {
-    background-color: var(--secondary-color);
-}
-
-body.dark-mode #dark-mode-toggle:checked + .toggle-label {
-    background-color: var(--primary-color);
-}
-
 #guess-history {
     margin-top: 20px;
 }
 
 .history-item {
+    background-color: var(--input-background);
+    border-radius: 10px;
+    padding: 10px;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .history-item .guess {
     font-weight: bold;
-    margin-right: 10px;
+    font-size: 18px;
 }
 
 .history-item .correct {
-    color: green;
+    color: #2ecc71;
     margin-right: 10px;
 }
 
 .history-item .misplaced {
-    color: orange;
+    color: #f39c12;
 }
 
-@keyframes rotate-numbers {
-    0%, 20% { content: "1"; }
-    20%, 40% { content: "6"; }
-    40%, 60% { content: "2"; }
-    60%, 80% { content: "5"; }
-    80%, 100% { content: "7"; }
+@keyframes confetti-fall {
+    0% { transform: translateY(-100vh) rotate(0deg); }
+    100% { transform: translateY(100vh) rotate(720deg); }
 }
 
-.game-illustration {
-    width: 200px;
-    height: 200px;
-    background-color: #f0f0f0;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    margin: 0 auto; 
+.confetti {
+    position: fixed;
+    width: 10px;
+    height: 10px;
+    background-color: #f39c12;
+    animation: confetti-fall 5s linear infinite;
 }
 
-.rotating-number {
-    font-size: 100px;
-    font-weight: bold;
-    color: #4A90E2;
-}
-
-.rotating-number::after {
-    content: "5";
-    animation: rotate-numbers 5s infinite;
-}
-
-.guess-indicator {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background-color: #2ECC71;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: white;
-    font-weight: bold;
-    animation: guess-animation 5s infinite;
-}
-
-@keyframes guess-animation {
-    0%, 90% { transform: translateY(120px); }
-    95% { transform: translateY(0); }
-    100% { transform: translateY(120px); }
-}
-
-.feedback-indicator {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.feedback-indicator.correct {
-    background-color: #2ECC71;
-}
-
-.feedback-indicator.incorrect {
-    background-color: #E74C3C;
-}
-
-/* Responsive design */
 @media screen and (max-width: 768px) {
     #game-container {
         padding: 10px;
     }
 
     .card {
-        padding: 15px;
+        padding: 20px;
     }
 
-    h1 {
-        font-size: clamp(30px, 8vw, 50px);
+    body {
+        padding-top: 80px;
     }
+
+    .game-title {
+        font-size: clamp(20px, 4vw, 30px);
+    }
+
+    #theme-toggle, #sound-toggle {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+
 
     button {
         font-size: 14px;
-        padding: 8px 16px;
+        padding: 10px 20px;
     }
 
     .digit-input {
-        width: 30px;
-        height: 30px;
-        font-size: 18px;
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
         margin: 0 3px;
     }
 
     #timer-container {
-        width: 60px;
-        height: 60px;
+        width: 80px;
+        height: 80px;
     }
 
     #timer-progress {
-        font-size: 14px;
+        font-size: 18px;
     }
 }
 
 @media screen and (max-width: 480px) {
-    h1 {
-        font-size: clamp(24px, 7vw, 40px);
+    .game-title {
+        font-size: 28px;
     }
 
     .digit-input {
-        width: 25px;
-        height: 25px;
-        font-size: 16px;
+        width: 35px;
+        height: 35px;
+        font-size: 18px;
         margin: 0 2px;
     }
 
     #timer-container {
-        width: 50px;
-        height: 50px;
+        width: 70px;
+        height: 70px;
     }
 
     #timer-progress {
-        font-size: 12px;
-    }
-}
-
-/* Flexible layout for different orientations */
-@media screen and (orientation: landscape) and (max-height: 500px) {
-    #game-container {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        max-width: 100%;
-    }
-
-    .card {
-        flex: 1;
-        margin-right: 10px;
-    }
-
-    #game-illustration {
-        width: 150px;
-        height: 150px;
-    }
-
-    .rotating-number {
-        font-size: 80px;
+        font-size: 16px;
     }
 }
