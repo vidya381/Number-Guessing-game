@@ -24,7 +24,7 @@ public class GameController {
         }
         this.difficulty = difficulty;
         targetNumber = generateUniqueDigitNumber(difficulty);
-        // System.out.println("Target number: " + targetNumber);
+        System.out.println("Target number: " + targetNumber);
         return ResponseEntity.ok("New game started with difficulty " + difficulty);
     }
 

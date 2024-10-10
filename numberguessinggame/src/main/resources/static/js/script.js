@@ -361,6 +361,51 @@ function createConfetti() {
     setTimeout(() => confettiContainer.innerHTML = '', 5000);
 }
 
+function createConfetti() {
+    const confettiContainer = document.getElementById('confetti-container');
+    confettiContainer.innerHTML = ''; // Clear any existing confetti
+
+    const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#f7797d', '#6a0dad', '#1e90ff'];
+    const numConfetti = 150;
+
+    for (let i = 0; i < numConfetti; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti-number';
+        
+        // Set random number
+        confetti.textContent = Math.floor(Math.random() * 10);
+        
+        // Randomize confetti properties
+        confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.left = '50%';
+        confetti.style.top = '50%';
+        
+        // Randomize the direction, distance, and rotation of burst
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 30 + Math.random() * 70; // Percentage of viewport
+        const rotation = Math.random() * 720 - 360; // -360 to 360 degrees
+        
+        confetti.style.setProperty('--end-x', `${Math.cos(angle) * distance}vw`);
+        confetti.style.setProperty('--end-y', `${Math.sin(angle) * distance}vh`);
+        confetti.style.setProperty('--rotation', `${rotation}deg`);
+        
+        // Randomize size
+        const size = 16 + Math.random() * 24;
+        confetti.style.fontSize = `${size}px`;
+        
+        // Randomize animation duration and delay
+        confetti.style.animationDuration = `${3 + Math.random() * 2}s`;
+        confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+        
+        confettiContainer.appendChild(confetti);
+    }
+
+    // Remove confetti after animation
+    setTimeout(() => {
+        confettiContainer.innerHTML = '';
+    }, 6000);
+}
+
 function getRandomColor() {
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);

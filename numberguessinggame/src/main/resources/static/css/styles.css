@@ -252,19 +252,6 @@ body.dark-mode button:hover {
     color: #f39c12;
 }
 
-@keyframes confetti-fall {
-    0% { transform: translateY(-100vh) rotate(0deg); }
-    100% { transform: translateY(100vh) rotate(720deg); }
-}
-
-.confetti {
-    position: fixed;
-    width: 10px;
-    height: 10px;
-    background-color: #f39c12;
-    animation: confetti-fall 5s linear infinite;
-}
-
 @media screen and (max-width: 768px) {
     #game-container {
         padding: 10px;
@@ -331,4 +318,37 @@ body.dark-mode button:hover {
     #timer-progress {
         font-size: 16px;
     }
+}
+#confetti-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
+    overflow: hidden;
+}
+
+.confetti-number {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+    opacity: 0;
+    user-select: none;
+}
+
+@keyframes confetti-burst {
+    0% {
+        transform: translate(-50%, -50%) scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(var(--end-x), var(--end-y)) scale(1) rotate(var(--rotation));
+        opacity: 0;
+    }
+}
+
+.confetti-number {
+    animation: confetti-burst 4s ease-out forwards;
 }
