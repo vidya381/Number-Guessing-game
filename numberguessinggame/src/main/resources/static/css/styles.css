@@ -111,12 +111,19 @@ button:hover {
 }
 
 .difficulty-btn {
+    animation: pulsate 2.5s infinite;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 15px;
     font-size: 18px;
 }
+
+@keyframes pulsate {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+  }
 
 [data-tooltip] {
     position: relative;
