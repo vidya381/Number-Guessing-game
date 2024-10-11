@@ -55,6 +55,8 @@ function createFloatingNumbers() {
     const numbers = [];
     const speeds = [20, 30, 40];
     const curves = ['float-curve1', 'float-curve2', 'float-curve3'];
+    const numberSets = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '247', '162', '60', '106', '381', '13', '16'];
+
 
     for (let i = 0; i < numberCount; i++) {
         const number = document.createElement('div');
@@ -73,7 +75,8 @@ function createFloatingNumbers() {
     setInterval(() => {
         numbers.forEach(number => {
             if (Math.random() < 0.1) { // 10% chance to change number
-                number.textContent = Math.floor(Math.random() * 10);
+                // number.textContent = Math.floor(Math.random() * 10);
+                number.textContent = numberSets[Math.floor(Math.random() * numberSets.length)];
             }
         });
     }, 2000);
