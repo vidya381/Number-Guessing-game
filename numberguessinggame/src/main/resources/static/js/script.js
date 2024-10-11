@@ -53,33 +53,38 @@ function createFloatingNumbers() {
     const container = document.body;
     const numberCount = 40;
     const numbers = [];
-    const speeds = [20, 30, 40];
-    const curves = ['float-curve1', 'float-curve2', 'float-curve3'];
-    const numberSets = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '247', '162', '60', '106', '381', '13', '16'];
-
 
     for (let i = 0; i < numberCount; i++) {
         const number = document.createElement('div');
         number.className = 'floating-number';
         number.style.left = `${Math.random() * 100}vw`;
-        number.style.top = `${Math.random() * 100}vh`; // Randomize initial vertical position
-        number.style.animationDuration = `${speeds[Math.floor(Math.random() * speeds.length)]}s`;
-        number.style.animationDelay = `${Math.random() * -15}s`; // Negative delay for immediate start
+        number.style.top = `${Math.random() * 100}vh`; 
+        number.style.animationDuration = `${30 + Math.random() * 40}s`;
+        number.style.animationDelay = `${Math.random() * -15}s`; 
         number.textContent = Math.floor(Math.random() * 10);
-        number.style.animationName = curves[Math.floor(Math.random() * curves.length)];
+        
+        const fontSize = 12 + Math.random() * 9;
+        number.style.fontSize = `${fontSize}px`;
+
+        number.addEventListener('click', () => {
+            number.style.color = getRandomColor();
+        });
         container.appendChild(number);
         numbers.push(number);
     }
 
-    // Periodically update numbers
     setInterval(() => {
         numbers.forEach(number => {
             if (Math.random() < 0.1) { // 10% chance to change number
-                // number.textContent = Math.floor(Math.random() * 10);
-                number.textContent = numberSets[Math.floor(Math.random() * numberSets.length)];
+                number.textContent = Math.floor(Math.random() * 10);
             }
         });
-    }, 2000);
+    }, 5000);
+}
+
+function getRandomColor() {
+    const hue = Math.floor(Math.random() * 360);
+    return `hsl(${hue}, 70%, 50%)`;
 }
 
 function initializeDarkMode() {

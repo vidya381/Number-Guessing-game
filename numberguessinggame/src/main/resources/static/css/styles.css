@@ -370,40 +370,36 @@ body.dark-mode button:hover {
     animation: shake 0.5s;
   }
 
-  .floating-number {
+.floating-number {
     position: fixed;
-    font-size: 24px;
+    font-size: 20px;
     color: rgba(74, 144, 226, 0.15);
-    animation: float-numbers 15s linear infinite;
-    z-index: -1;
+    animation: float-numbers linear infinite;
+    z-index: 1;
     user-select: none;
-    pointer-events: none;
+    pointer-events: auto;
+    transition: color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
     will-change: transform;
-}
-
-@keyframes float-curve1 {
-    0% { transform: translate(0, 100vh) rotate(0deg); }
-    50% { transform: translate(100px, 50vh) rotate(180deg); }
-    100% { transform: translate(0, -20vh) rotate(360deg); }
-}
-
-@keyframes float-curve2 {
-    0% { transform: translate(0, 100vh) rotate(0deg); }
-    50% { transform: translate(-50px, 50vh) rotate(-180deg); }
-    100% { transform: translate(0, -20vh) rotate(-360deg); }
-}
-
-@keyframes float-curve3 {
-    0% { transform: translate(0, 100vh) scale(1); }
-    50% { transform: translate(75px, 50vh) scale(1.5); }
-    100% { transform: translate(0, -20vh) scale(1); }
-}
-
-body.dark-mode .floating-number {
-    color: rgba(255, 255, 255, 0.1);
 }
 
 .floating-number:hover {
     color: var(--primary-color);
-    transform: scale(1.5);
+    transform: scale(1.2); 
+}
+
+body.dark-mode .floating-number:hover {
+    color: var(--secondary-color);
+}
+
+@keyframes float-numbers {
+    0% {
+        transform: translateY(100vh) translateX(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(50vh) translateX(100px) rotate(180deg);
+    }
+    100% {
+        transform: translateY(-20vh) translateX(0) rotate(360deg);
+    }
 }
