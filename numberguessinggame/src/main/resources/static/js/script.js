@@ -43,8 +43,6 @@ function attachEventListeners() {
     document.getElementById('submit-guess').addEventListener('click', submitGuess);
     document.getElementById('play-again').addEventListener('click', () => startGame(currentDifficulty));
     document.getElementById('quit').addEventListener('click', showHomePage);
-    // document.getElementById('toggle-sound').addEventListener('click', toggleSound);
-    // document.getElementById('dark-mode-toggle').addEventListener('change', toggleDarkMode);
     document.getElementById('quit-game').addEventListener('click', quitGame);
     document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
     document.getElementById('sound-toggle').addEventListener('click', toggleSound);
@@ -185,6 +183,7 @@ function submitGuess() {
             if (soundEnabled) incorrectSound.play();
             displayFeedback(data.correctPosition, data.correctButWrongPosition);
             addToGuessHistory(guess, data.correctPosition, data.correctButWrongPosition);
+            shakeInputs();
             if (attempts >= 10) {
                 endGame(false);
             }
@@ -410,3 +409,9 @@ function showFeedback() {
     guessIndicator.textContent = Math.floor(Math.random() * 10);
     setTimeout(showFeedback, 500);
   }, 5000);
+
+  function shakeInputs() {
+    const inputContainer = document.getElementById('input-container');
+    inputContainer.classList.add('shake');
+    setTimeout(() => inputContainer.classList.remove('shake'), 500);
+  }
