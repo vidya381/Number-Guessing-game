@@ -369,3 +369,41 @@ body.dark-mode button:hover {
   .shake {
     animation: shake 0.5s;
   }
+
+  .floating-number {
+    position: fixed;
+    font-size: 24px;
+    color: rgba(74, 144, 226, 0.15);
+    animation: float-numbers 15s linear infinite;
+    z-index: -1;
+    user-select: none;
+    pointer-events: none;
+    will-change: transform;
+}
+
+@keyframes float-curve1 {
+    0% { transform: translate(0, 100vh) rotate(0deg); }
+    50% { transform: translate(100px, 50vh) rotate(180deg); }
+    100% { transform: translate(0, -20vh) rotate(360deg); }
+}
+
+@keyframes float-curve2 {
+    0% { transform: translate(0, 100vh) rotate(0deg); }
+    50% { transform: translate(-50px, 50vh) rotate(-180deg); }
+    100% { transform: translate(0, -20vh) rotate(-360deg); }
+}
+
+@keyframes float-curve3 {
+    0% { transform: translate(0, 100vh) scale(1); }
+    50% { transform: translate(75px, 50vh) scale(1.5); }
+    100% { transform: translate(0, -20vh) scale(1); }
+}
+
+body.dark-mode .floating-number {
+    color: rgba(255, 255, 255, 0.1);
+}
+
+.floating-number:hover {
+    color: var(--primary-color);
+    transform: scale(1.5);
+}

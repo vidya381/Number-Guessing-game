@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
     updateRecentScores();
     attachEventListeners();
     initializeDarkMode();
+    createFloatingNumbers();
 });
 
 function updateBestScore() {
@@ -48,17 +49,61 @@ function attachEventListeners() {
     document.getElementById('sound-toggle').addEventListener('click', toggleSound);
 }
 
+function createFloatingNumbers() {
+    const container = document.body;
+    const numberCount = 40;
+    const numbers = [];
+    const speeds = [20, 30, 40];
+    const curves = ['float-curve1', 'float-curve2', 'float-curve3'];
+
+    for (let i = 0; i < numberCount; i++) {
+        const number = document.createElement('div');
+        number.className = 'floating-number';
+        number.style.left = `${Math.random() * 100}vw`;
+        number.style.top = `${Math.random() * 100}vh`; // Randomize initial vertical position
+        number.style.animationDuration = `${speeds[Math.floor(Math.random() * speeds.length)]}s`;
+        number.style.animationDelay = `${Math.random() * -15}s`; // Negative delay for immediate start
+        number.textContent = Math.floor(Math.random() * 10);
+        number.style.animationName = curves[Math.floor(Math.random() * curves.length)];
+        container.appendChild(number);
+        numbers.push(number);
+    }
+
+    // Periodically update numbers
+    setInterval(() => {
+        numbers.forEach(number => {
+            if (Math.random() < 0.1) { // 10% chance to change number
+                number.textContent = Math.floor(Math.random() * 10);
+            }
+        });
+    }, 2000);
+}
+
 function initializeDarkMode() {
     const darkModeEnabled = localStorage.getItem('darkMode') === 'true';
-    document.getElementById('dark-mode-toggle').checked = darkModeEnabled;
     setTheme(darkModeEnabled);
+    updateThemeToggleButton(darkModeEnabled);
+}
+
+function updateThemeToggleButton(isDarkMode) {
+    const themeToggleButton = document.getElementById('theme-toggle');
+    if (themeToggleButton) {
+        const icon = themeToggleButton.querySelector('i');
+        if (isDarkMode) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+        }
+    }
 }
 
 function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-    const themeIcon = document.querySelector('#theme-toggle i');
-    themeIcon.classList.toggle('fa-moon');
-    themeIcon.classList.toggle('fa-sun');
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    setTheme(!isDarkMode);
+    localStorage.setItem('darkMode', !isDarkMode);
+    updateThemeToggleButton(!isDarkMode);
 }
 
 function toggleSound() {
@@ -80,11 +125,17 @@ function setTheme(isDarkMode) {
 function updateThemeColors(isDarkMode) {
     const root = document.documentElement;
     if (isDarkMode) {
-        root.style.setProperty('--primary-color', '#f39c12');
-        root.style.setProperty('--secondary-color', '#4a90e2');
+        root.style.setProperty('--primary-color', '#f39c12');  // Orange for dark mode
+        root.style.setProperty('--secondary-color', '#4a90e2'); // Blue for dark mode
+        root.style.setProperty('--background-color', '#2c3e50');
+        root.style.setProperty('--card-background', '#34495e');
+        root.style.setProperty('--text-color', '#ecf0f1');
     } else {
-        root.style.setProperty('--primary-color', '#4a90e2');
-        root.style.setProperty('--secondary-color', '#f39c12');
+        root.style.setProperty('--primary-color', '#6a4c93');  // purple for light mode
+        root.style.setProperty('--secondary-color', '#f39c12'); // Orange for light mode
+        root.style.setProperty('--background-color', '#f0f0f0');
+        root.style.setProperty('--card-background', '#ffffff');
+        root.style.setProperty('--text-color', '#333333');
     }
 }
 
