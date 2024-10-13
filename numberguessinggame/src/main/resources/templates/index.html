@@ -30,49 +30,63 @@
     </div>
 
     <div id="game-container">
-        <div id="home-page" class="card">
-            <h2>Welcome to NumVana</h2>
-            <p>Choose a difficulty level to start the game:</p>
-            <button id="play-easy" class="difficulty-btn" data-tooltip="3-digit number">Easy</button>
-            <button id="play-medium" class="difficulty-btn" data-tooltip="4-digit number">Medium</button>
-            <button id="play-hard" class="difficulty-btn" data-tooltip="5-digit number">Hard</button>
-            
-            <div class="game-stats">
-                <h3>Game Statistics</h3>
-                <p>Best Score: <span id="best-score"></span></p>
-                <h4>Recent Scores:</h4>
-                <ul id="recent-scores"></ul>
-            </div>
-        </div>
-
-        <div id="game-page" class="card" style="display: none;">
-            <div id="game-info">
-                <div id="timer-container">
-                    <div id="timer-progress">
-                        <span id="timer">00:00</span>
-                    </div>
+        <h1 class="game-title">NumVana</h1>
+        <div id="home-page">
+            <section class="section">
+                <h2>Choose Difficulty</h2>
+                <div class="button-group">
+                    <button id="play-easy" class="difficulty-btn" data-tooltip="3-digit number">Easy</button>
+                    <button id="play-medium" class="difficulty-btn" data-tooltip="4-digit number">Medium</button>
+                    <button id="play-hard" class="difficulty-btn" data-tooltip="5-digit number">Hard</button>
                 </div>
-                <p>Attempts: <span id="attempts">0</span> / 10</p>
-                <div id="attempts-progress"></div>
-            </div>
-            
-            <div id="input-container" class="guess-input"></div>
-            <button id="submit-guess">Submit Guess</button>
-            <p id="feedback"></p>
-            
-            <div id="guess-history"></div>
-            
+            </section>
+    
+            <section class="section">
+                <h2>Game Statistics</h2>
+                <p>Best Score: <span id="best-score"></span></p>
+                <h3>Recent Scores:</h3>
+                <ul id="recent-scores"></ul>
+            </section>
+        </div>
+    
+        <div id="game-page" style="display: none;">
+            <section class="section">
+                <div id="game-info">
+                    <div id="timer-container">
+                        <div id="timer-progress">
+                            <span id="timer">00:00</span>
+                        </div>
+                    </div>
+                    <p>Attempts: <span id="attempts">0</span> / 10</p>
+                    <div id="attempts-progress"></div>
+                </div>
+            </section>
+    
+            <section class="section">
+                <h2>Enter Your Guess</h2>
+                <div id="input-container"></div>
+                <button id="submit-guess">Submit Guess</button>
+                <p id="feedback"></p>
+            </section>
+    
+            <section class="section">
+                <h2>Guess History</h2>
+                <div id="guess-history"></div>
+            </section>
+    
             <button id="quit-game">Quit Game</button>
         </div>
-
-        <div id="result-page" class="card" style="display: none;">
+    
+        <div id="result-page" style="display: none;">
             <h2 id="result-message"></h2>
             <p>Number of guesses: <span id="final-attempts"></span></p>
             <p>Time taken: <span id="final-time"></span></p>
             <p>Average guess time: <span id="avg-guess-time"></span></p>
             <p>Comparison to best: <span id="comparison-to-best"></span></p>
-            <button id="play-again">Play Again</button>
-            <button id="quit">Quit</button>
+            <div class="button-group">
+                <button id="play-again">Play Again</button>
+                <button id="quit">Quit</button>
+            </div>
         </div>
     </div>
 

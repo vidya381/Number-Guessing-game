@@ -51,16 +51,16 @@ function attachEventListeners() {
 
 function createFloatingNumbers() {
     const container = document.body;
-    const numberCount = 40;
+    const numberCount = 50;
     const numbers = [];
 
     for (let i = 0; i < numberCount; i++) {
         const number = document.createElement('div');
         number.className = 'floating-number';
         number.style.left = `${Math.random() * 100}vw`;
-        number.style.top = `${Math.random() * 100}vh`; 
-        number.style.animationDuration = `${30 + Math.random() * 40}s`;
-        number.style.animationDelay = `${Math.random() * -15}s`; 
+        number.style.top = `${Math.random() * 200}vh`;
+        number.style.animationDuration = `${40 + Math.random() * 60}s`;
+        number.style.animationDelay = `${Math.random() * -40}s`;
         number.textContent = Math.floor(Math.random() * 10);
         
         const fontSize = 12 + Math.random() * 9;
@@ -77,6 +77,11 @@ function createFloatingNumbers() {
         numbers.forEach(number => {
             if (Math.random() < 0.1) { // 10% chance to change number
                 number.textContent = Math.floor(Math.random() * 10);
+            }
+            
+            if (number.getBoundingClientRect().bottom < 0) {
+                number.style.top = `${100 + Math.random() * 100}vh`;
+                number.style.animationDuration = `${40 + Math.random() * 60}s`;
             }
         });
     }, 5000);
