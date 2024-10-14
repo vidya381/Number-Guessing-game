@@ -513,3 +513,21 @@ body.dark-mode .floating-number:hover {
     font-size: 24px;
     font-weight: bold;
 }
+
+#game-stats {
+    background-color: var(--card-background);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.stat-item i {
+    margin-right: 10px;
+    color: var(--primary-color);
+}

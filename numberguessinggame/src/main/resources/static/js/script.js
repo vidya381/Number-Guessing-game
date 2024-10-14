@@ -349,8 +349,7 @@ function endGame(won) {
     const time = document.getElementById('timer').textContent;
     document.getElementById('game-page').style.display = 'none';
     document.getElementById('result-page').style.display = 'block';
-    
-    // const resultMessage = won ? 'Congratulations! You guessed the number!' : 'Game Over. You ran out of attempts.';
+
     let resultMessage;
     if (won) {
         resultMessage = 'Congratulations! You guessed the number!';
@@ -360,21 +359,39 @@ function endGame(won) {
         resultMessage = 'Game Over. You ran out of time.';
     }
 
-    document.getElementById('result-message').textContent = resultMessage;
-    document.getElementById('final-attempts').textContent = attempts;
-    document.getElementById('final-time').textContent = time;
-
-    const avgGuessTime = calculateAverageGuessTime(time, attempts);
-    document.getElementById('avg-guess-time').textContent = avgGuessTime;
-
-    const comparisonToBest = compareToaBestScore(attempts);
-    document.getElementById('comparison-to-best').textContent = comparisonToBest;
+    const statsContainer = document.getElementById('game-stats');
+    statsContainer.innerHTML = `
+        <h2>${resultMessage}</h2>
+        <div class="stat-item">
+            <i class="fas fa-stopwatch"></i>
+            <span>Time Taken: ${time}</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-chart-line"></i>
+            <span>Attempts: ${attempts}/10</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>Avg. Time per Guess: ${calculateAverageGuessTime(time, attempts)}</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-trophy"></i>
+            <span>Best Score: ${bestScore}</span>
+        </div>
+        <div class="stat-item">
+            <i class="fas fa-chart-bar"></i>
+            <span>Comparison to Best: ${compareToaBestScore(attempts)}</span>
+        </div>
+    `;
 
     if (won) {
         createConfetti();
         updateBestScore(attempts);
         addToRecentScores(currentDifficulty, attempts, time);
     }
+
+    document.getElementById('play-again').style.display = 'inline-block';
+    document.getElementById('quit').style.display = 'inline-block';
 }
 
 function calculateAverageGuessTime(totalTime, attempts) {
