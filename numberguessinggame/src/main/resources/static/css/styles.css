@@ -479,3 +479,37 @@ body.dark-mode .floating-number:hover {
 .fade-in {
     animation: fadeIn 0.5s ease-out;
 }
+
+#timer-container {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin: 20px auto;
+}
+
+.timer-svg {
+    transform: rotate(-90deg);
+}
+
+.timer-background {
+    fill: none;
+    stroke: #e0e0e0;
+    stroke-width: 8;
+}
+
+.timer-progress {
+    fill: none;
+    stroke: var(--primary-color);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+.timer-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: bold;
+}

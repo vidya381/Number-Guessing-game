@@ -307,11 +307,29 @@ function updateTimer() {
     const seconds = elapsedTime.getSeconds().toString().padStart(2, '0');
     const timeString = `${minutes}:${seconds}`;
     document.getElementById('timer').textContent = timeString;
-    
-    const progress = (elapsedTime.getTime() / (10 * 60 * 1000)) * 360; // 10 minutes max
-    const color = getTimerColor(progress);
-    document.getElementById('timer-progress').style.background = 
-        `conic-gradient(${color} ${progress}deg, #f0f0f0 ${progress}deg)`;
+
+    // Update circular progress bar
+    const totalSeconds = elapsedTime.getTime() / 1000;
+    const maxSeconds = 10 * 60; // 10 minutes max
+    const progress = (totalSeconds / maxSeconds) * 283;
+    const timerProgress = document.querySelector('.timer-progress');
+    timerProgress.style.strokeDasharray = 283;
+    timerProgress.style.strokeDashoffset = 283 - progress;
+
+    // Change color based on time remaining
+    let color;
+    if (totalSeconds < maxSeconds * 0.5) {
+        color = '#4CAF50'; // Green for first half
+    } else if (totalSeconds < maxSeconds * 0.75) {
+        color = '#FFC107'; // Yellow for next quarter
+    } else {
+        color = '#F44336'; // Red for last quarter
+    }
+    timerProgress.style.stroke = color;
+
+    if (totalSeconds >= maxSeconds) {
+        endGame(false); // End the game with a loss
+    }
 }
 
 function getTimerColor(progress) {
@@ -332,7 +350,16 @@ function endGame(won) {
     document.getElementById('game-page').style.display = 'none';
     document.getElementById('result-page').style.display = 'block';
     
-    const resultMessage = won ? 'Congratulations! You guessed the number!' : 'Game Over. You ran out of attempts.';
+    // const resultMessage = won ? 'Congratulations! You guessed the number!' : 'Game Over. You ran out of attempts.';
+    let resultMessage;
+    if (won) {
+        resultMessage = 'Congratulations! You guessed the number!';
+    } else if (attempts >= 10) {
+        resultMessage = 'Game Over. You ran out of attempts.';
+    } else {
+        resultMessage = 'Game Over. You ran out of time.';
+    }
+
     document.getElementById('result-message').textContent = resultMessage;
     document.getElementById('final-attempts').textContent = attempts;
     document.getElementById('final-time').textContent = time;
