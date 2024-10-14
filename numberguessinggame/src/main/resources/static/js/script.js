@@ -287,9 +287,12 @@ function updateGuessHistory() {
 function displayFeedback(correctPosition, correctButWrongPosition) {
     const feedbackElement = document.getElementById('feedback');
     feedbackElement.innerHTML = `
-        <p>Correct digits in correct position: <span class="correct">${correctPosition}</span></p>
-        <p>Correct digits in wrong position: <span class="misplaced">${correctButWrongPosition}</span></p>
+        <p>Correct digits in correct position: ${correctPosition}</p>
+        <p>Correct digits in wrong position: ${correctButWrongPosition}</p>
     `;
+    feedbackElement.classList.remove('fade-in');
+    void feedbackElement.offsetWidth;
+    feedbackElement.classList.add('fade-in');
 }
 
 function startTimer() {
