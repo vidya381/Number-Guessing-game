@@ -553,3 +553,26 @@ function showFeedback() {
             break;
     }
 }
+
+function updateAttemptsProgress() {
+    const attemptsText = document.getElementById('attempts');
+    attemptsText.textContent = attempts;
+
+    const progressCircle = document.querySelector('.attempts-progress');
+    const radius = progressCircle.r.baseVal.value;
+    const circumference = radius * 2 * Math.PI;
+    const progress = (attempts / 10) * circumference;
+
+    progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
+    progressCircle.style.strokeDashoffset = circumference - progress;
+
+    let color;
+    if (attempts <= 3) {
+        color = '#4CAF50'; // Green for first 3 attempts
+    } else if (attempts <= 6) {
+        color = '#FFC107'; // Yellow for next 3 attempts
+    } else {
+        color = '#F44336'; // Red for last 4 attempts
+    }
+    progressCircle.style.stroke = color;
+}
