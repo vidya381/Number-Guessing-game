@@ -8,7 +8,7 @@ let soundEnabled = true;
 let recentScores = JSON.parse(localStorage.getItem('recentScores')) || [];
 let guessHistory = [];
 const feedbackIndicator = document.querySelector('.feedback-indicator');
-const guessIndicator = document.querySelector('.guess-indicator');
+// const guessIndicator = document.querySelector('.guess-indicator');
 
 // Sound effects
 const correctSound = new Audio('/audio/correct-sound.mp3');
@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
     attachEventListeners();
     initializeDarkMode();
     createFloatingNumbers();
+    updateGameStatus('welcome');
+    showHomePage();
 });
 
 function updateBestScore() {
@@ -43,6 +45,7 @@ function attachEventListeners() {
     document.getElementById('play-hard').addEventListener('click', () => startGame(2));
     document.getElementById('submit-guess').addEventListener('click', submitGuess);
     document.getElementById('play-again').addEventListener('click', () => startGame(currentDifficulty));
+    document.getElementById('game-title-header').addEventListener('click', showHomePage);
     document.getElementById('quit').addEventListener('click', showHomePage);
     document.getElementById('quit-game').addEventListener('click', quitGame);
     document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
@@ -158,6 +161,7 @@ function startGame(difficulty) {
     guessHistory = []; // Reset guess history
     updateGamePage();
     startTimer();
+    updateGameStatus('playing');
     
     fetch('/start-game', { 
         method: 'POST',
@@ -230,6 +234,8 @@ function submitGuess() {
     }
 
     attempts++;
+    updateAttemptsProgress();
+
     document.getElementById('attempts').textContent = attempts;
     updateAttemptsProgress();
 
@@ -350,18 +356,10 @@ function endGame(won) {
     document.getElementById('game-page').style.display = 'none';
     document.getElementById('result-page').style.display = 'block';
 
-    let resultMessage;
-    if (won) {
-        resultMessage = 'Congratulations! You guessed the number!';
-    } else if (attempts >= 10) {
-        resultMessage = 'Game Over. You ran out of attempts.';
-    } else {
-        resultMessage = 'Game Over. You ran out of time.';
-    }
+    updateGameStatus(won ? 'won' : 'lost');
 
     const statsContainer = document.getElementById('game-stats');
     statsContainer.innerHTML = `
-        <h2>${resultMessage}</h2>
         <div class="stat-item">
             <i class="fas fa-stopwatch"></i>
             <span>Time Taken: ${time}</span>
@@ -434,6 +432,7 @@ function addToRecentScores(difficulty, attempts, time) {
 }
 
 function showHomePage() {
+    updateGameStatus('welcome');
     document.getElementById('home-page').style.display = 'block';
     document.getElementById('game-page').style.display = 'none';
     document.getElementById('result-page').style.display = 'none';
@@ -442,8 +441,18 @@ function showHomePage() {
 function quitGame() {
     if (confirm("Are you sure you want to quit? Your progress will be lost.")) {
         clearInterval(timerInterval);
+        resetGameState();
         showHomePage();
     }
+}
+
+function resetGameState() {
+    attempts = 0;
+    guessHistory = [];
+    document.getElementById('timer').textContent = '00:00';
+    document.getElementById('attempts').textContent = '0';
+    document.getElementById('feedback').textContent = '';
+    updateAttemptsProgress();
 }
 
 function createConfetti() {
@@ -461,7 +470,7 @@ function createConfetti() {
 
 function createConfetti() {
     const confettiContainer = document.getElementById('confetti-container');
-    confettiContainer.innerHTML = ''; // Clear any existing confetti
+    confettiContainer.innerHTML = '';
 
     const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#f7797d', '#6a0dad', '#1e90ff'];
     const numConfetti = 150;
@@ -493,7 +502,6 @@ function createConfetti() {
         confettiContainer.appendChild(confetti);
     }
 
-    // Remove confetti after animation
     setTimeout(() => {
         confettiContainer.innerHTML = '';
     }, 6000);
@@ -515,14 +523,33 @@ function showFeedback() {
       feedbackIndicator.classList.remove('correct', 'incorrect');
     }, 1000);
   }
-  
-  setInterval(() => {
-    guessIndicator.textContent = Math.floor(Math.random() * 10);
-    setTimeout(showFeedback, 500);
-  }, 5000);
 
   function shakeInputs() {
     const inputContainer = document.getElementById('input-container');
     inputContainer.classList.add('shake');
     setTimeout(() => inputContainer.classList.remove('shake'), 500);
   }
+
+  function updateGameStatus(status) {
+    const statusIcon = document.getElementById('game-status-icon');
+    const statusText = document.getElementById('game-status-text');
+
+    switch(status) {
+        case 'welcome':
+            statusIcon.innerHTML = '<i class="fas fa-dice"></i>';
+            statusText.textContent = 'Welcome to NumVana!';
+            break;
+        case 'playing':
+            statusIcon.innerHTML = '<i class="fas fa-brain"></i>';
+            statusText.textContent = 'Game in Progress - Good Luck!';
+            break;
+        case 'won':
+            statusIcon.innerHTML = '<i class="fas fa-trophy"></i>';
+            statusText.textContent = 'Congratulations! You Won!';
+            break;
+        case 'lost':
+            statusIcon.innerHTML = '<i class="fas fa-undo"></i>';
+            statusText.textContent = 'Game Over - Try Again!';
+            break;
+    }
+}
