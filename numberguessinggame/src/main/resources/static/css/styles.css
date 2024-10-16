@@ -166,21 +166,6 @@ button:hover {
     box-shadow: 0 6px 8px rgba(var(--primary-color-rgb), 0.2);
 }
 
-/* button {
-    background-color: var(--primary-color);
-    color: var(--button-text-color);
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: var(--secondary-color);
-} */
-
 .difficulty-btn {
     animation: pulsate 2.5s infinite;
     display: flex;
@@ -611,6 +596,8 @@ body.dark-mode .floating-number:hover {
 
 #recent-scores {
     max-height: 150px;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
     overflow-y: auto;
 }
 
@@ -618,7 +605,7 @@ body.dark-mode .floating-number:hover {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: 10px;
     margin-bottom: 20px;
     padding: 15px;
     background-color: var(--card-background);
