@@ -197,23 +197,33 @@ function updateInputFields(difficulty) {
     for (let i = 0; i < digitCount; i++) {
         const input = document.createElement('input');
         input.type = 'text';
+        input.inputMode = 'numeric';
+        input.pattern = '[0-9]*';
         input.maxLength = 1;
         input.className = 'digit-input';
+        
         input.addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
             if (this.value) {
                 if (this.nextElementSibling) {
                     this.nextElementSibling.focus();
+                } else {
+                    document.getElementById('submit-guess').focus();
                 }
             }
         });
+        
         input.addEventListener('keydown', function(e) {
             if (e.key === 'Backspace' && !this.value && this.previousElementSibling) {
                 this.previousElementSibling.focus();
             }
         });
+        
         inputContainer.appendChild(input);
     }
-    inputContainer.firstChild.focus();
+    
+    // Focus on the first input
+    inputContainer.firstElementChild.focus();
 }
 
 function submitGuess() {
