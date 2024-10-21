@@ -60,5 +60,3 @@ Experience NumVana now at [https://numvana.onrender.com](https://numvana.onrende
 
 Enjoy the thrill of NumVana and may your guesses be ever in your favor! 🎲🔢
 
-
-
