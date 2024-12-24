@@ -5,40 +5,61 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpSession;
+
 @RestController
 public class GameController {
 
     private int targetNumber;
     private int difficulty = 1; // 0 for easy, 1 for medium, 2 for hard
+    // private Map<String, GameSession> gameSessions = new HashMap<>();
+    private Map<String, GameSession> gameSessions = new ConcurrentHashMap<>();
 
     @PostMapping("/start-game")
-    public ResponseEntity<String> startNewGame(@RequestParam int difficulty) {
+    public ResponseEntity<String> startNewGame(@RequestParam int difficulty, @RequestParam String tabId,
+            HttpSession session) {
         if (difficulty < 0 || difficulty > 2) {
             return ResponseEntity.badRequest().body("Invalid difficulty level. Please try again...!");
         }
-        this.difficulty = difficulty;
-        targetNumber = generateUniqueDigitNumber(difficulty);
-        // System.out.println("Target number: " + targetNumber);
+
+        String sessionId = session.getId();
+        String compositeKey = sessionId + ":" + tabId;
+        int targetNumber = generateUniqueDigitNumber(difficulty);
+        GameSession gameSession = new GameSession(tabId, targetNumber, difficulty);
+        gameSessions.put(compositeKey, gameSession);
+
+        System.out.println("Target number for session " + compositeKey + ": " + targetNumber);
         return ResponseEntity.ok("New game started with difficulty " + difficulty);
     }
 
     @PostMapping("/submit-guess")
-    public Map<String, Object> processGuess(@RequestParam String guess) {
+    public Map<String, Object> processGuess(@RequestParam String guess, @RequestParam String tabId,
+            HttpSession session) {
+        String sessionId = session.getId();
+        String compositeKey = sessionId + ":" + tabId;
+        GameSession gameSession = gameSessions.get(compositeKey);
+
+        if (gameSession == null) {
+            throw new IllegalStateException("No active game session found");
+        }
+
+        int targetNumber = gameSession.getTargetNumber();
+        int difficulty = gameSession.getDifficulty();
+
         int[] target = getDigits(targetNumber);
         int[] guessDigits = getDigits(Integer.parseInt(guess));
-
         int correctPosition = 0;
         int correctButWrongPosition = 0;
-
         boolean[] used = new boolean[target.length];
 
-        // Check for correct position
+        // First pass: Check for correct positions
         for (int i = 0; i < target.length; i++) {
             if (guessDigits[i] == target[i]) {
                 correctPosition++;
@@ -46,7 +67,7 @@ public class GameController {
             }
         }
 
-        // Check for correct but wrong position
+        // Second pass: Check for correct digits in wrong positions
         for (int i = 0; i < target.length; i++) {
             if (guessDigits[i] != target[i]) {
                 for (int j = 0; j < target.length; j++) {
@@ -67,11 +88,10 @@ public class GameController {
     }
 
     private int[] getDigits(int number) {
-        int digitCount = difficulty == 0 ? 3 : (difficulty == 1 ? 4 : 5);
-        int[] digits = new int[digitCount];
-        for (int i = digitCount - 1; i >= 0; i--) {
-            digits[i] = number % 10;
-            number /= 10;
+        String numberString = String.valueOf(number);
+        int[] digits = new int[numberString.length()];
+        for (int i = 0; i < numberString.length(); i++) {
+            digits[i] = Character.getNumericValue(numberString.charAt(i));
         }
         return digits;
     }

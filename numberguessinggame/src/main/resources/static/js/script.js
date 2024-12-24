@@ -9,13 +9,14 @@ let recentScores = JSON.parse(localStorage.getItem('recentScores')) || [];
 let guessHistory = [];
 const feedbackIndicator = document.querySelector('.feedback-indicator');
 // const guessIndicator = document.querySelector('.guess-indicator');
+let tabId = Date.now().toString(36) + Math.random().toString(36).substr(2);
 
 // Sound effects
 const correctSound = new Audio('/audio/correct-sound.mp3');
 const incorrectSound = new Audio('/audio/incorrect-sound.mp3');
 const winSound = new Audio('/audio/win-sound.mp3');
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     updateBestScore();
     updateRecentScores();
     attachEventListeners();
@@ -65,7 +66,7 @@ function createFloatingNumbers() {
         number.style.animationDuration = `${40 + Math.random() * 60}s`;
         number.style.animationDelay = `${Math.random() * -40}s`;
         number.textContent = Math.floor(Math.random() * 10);
-        
+
         const fontSize = 12 + Math.random() * 9;
         number.style.fontSize = `${fontSize}px`;
 
@@ -81,7 +82,7 @@ function createFloatingNumbers() {
             if (Math.random() < 0.1) { // 10% chance to change number
                 number.textContent = Math.floor(Math.random() * 10);
             }
-            
+
             if (number.getBoundingClientRect().bottom < 0) {
                 number.style.top = `${100 + Math.random() * 100}vh`;
                 number.style.animationDuration = `${40 + Math.random() * 60}s`;
@@ -158,15 +159,18 @@ function updateThemeColors(isDarkMode) {
 function startGame(difficulty) {
     currentDifficulty = difficulty;
     attempts = 0;
-    guessHistory = []; // Reset guess history
+    guessHistory = [];
     updateGamePage();
     startTimer();
     updateGameStatus('playing');
-    
-    fetch('/start-game', { 
+
+    fetch('/start-game', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `difficulty=${difficulty}`
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `difficulty=${difficulty}&tabId=${tabId}`,
+        credentials: 'include' // This ensures cookies (including session ID) are sent with the request
     })
         .then(response => response.text())
         .then(data => {
@@ -193,7 +197,7 @@ function updateInputFields(difficulty) {
     const inputContainer = document.getElementById('input-container');
     inputContainer.innerHTML = '';
     const digitCount = difficulty === 0 ? 3 : (difficulty === 1 ? 4 : 5);
-    
+
     for (let i = 0; i < digitCount; i++) {
         const input = document.createElement('input');
         input.type = 'text';
@@ -201,8 +205,8 @@ function updateInputFields(difficulty) {
         input.pattern = '[0-9]*';
         input.maxLength = 1;
         input.className = 'digit-input';
-        
-        input.addEventListener('input', function(e) {
+
+        input.addEventListener('input', function (e) {
             this.value = this.value.replace(/[^0-9]/g, '');
             if (this.value) {
                 if (this.nextElementSibling) {
@@ -212,16 +216,16 @@ function updateInputFields(difficulty) {
                 }
             }
         });
-        
-        input.addEventListener('keydown', function(e) {
+
+        input.addEventListener('keydown', function (e) {
             if (e.key === 'Backspace' && !this.value && this.previousElementSibling) {
                 this.previousElementSibling.focus();
             }
         });
-        
+
         inputContainer.appendChild(input);
     }
-    
+
     // Focus on the first input
     inputContainer.firstElementChild.focus();
 }
@@ -251,28 +255,31 @@ function submitGuess() {
 
     fetch('/submit-guess', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `guess=${guess}`
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: `guess=${guess}&tabId=${tabId}`,
+        credentials: 'include' // This ensures cookies (including session ID) are sent with the request
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.correct) {
-            if (soundEnabled) winSound.play();
-            endGame(true);
-        } else {
-            if (soundEnabled) incorrectSound.play();
-            displayFeedback(data.correctPosition, data.correctButWrongPosition);
-            addToGuessHistory(guess, data.correctPosition, data.correctButWrongPosition);
-            shakeInputs();
-            if (attempts >= 10) {
-                endGame(false);
+        .then(response => response.json())
+        .then(data => {
+            if (data.correct) {
+                if (soundEnabled) winSound.play();
+                endGame(true);
+            } else {
+                if (soundEnabled) incorrectSound.play();
+                displayFeedback(data.correctPosition, data.correctButWrongPosition);
+                addToGuessHistory(guess, data.correctPosition, data.correctButWrongPosition);
+                shakeInputs();
+                if (attempts >= 10) {
+                    endGame(false);
+                }
             }
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to submit guess. Please try again.');
-    });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to submit guess. Please try again.');
+        });
 
     for (let input of inputs) {
         input.value = '';
@@ -298,6 +305,17 @@ function updateGuessHistory() {
         `;
         historyContainer.appendChild(historyItem);
     });
+}
+
+function displayFeedback(correctPosition, correctButWrongPosition) {
+    const feedbackElement = document.getElementById('feedback');
+    feedbackElement.innerHTML = `
+        <p>Correct digits in correct position: ${correctPosition}</p>
+        <p>Correct digits in wrong position: ${correctButWrongPosition}</p>
+    `;
+    feedbackElement.classList.remove('fade-in');
+    void feedbackElement.offsetWidth;
+    feedbackElement.classList.add('fade-in');
 }
 
 function displayFeedback(correctPosition, correctButWrongPosition) {
@@ -488,27 +506,27 @@ function createConfetti() {
     for (let i = 0; i < numConfetti; i++) {
         const confetti = document.createElement('div');
         confetti.className = 'confetti-number';
-        
+
         confetti.textContent = Math.floor(Math.random() * 10);
-        
+
         confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
         confetti.style.left = '50%';
         confetti.style.top = '50%';
-        
+
         const angle = Math.random() * Math.PI * 2;
         const distance = 30 + Math.random() * 70;
         const rotation = Math.random() * 720 - 360;
-        
+
         confetti.style.setProperty('--end-x', `${Math.cos(angle) * distance}vw`);
         confetti.style.setProperty('--end-y', `${Math.sin(angle) * distance}vh`);
         confetti.style.setProperty('--rotation', `${rotation}deg`);
-        
+
         const size = 16 + Math.random() * 24;
         confetti.style.fontSize = `${size}px`;
-        
+
         confetti.style.animationDuration = `${3 + Math.random() * 2}s`;
         confetti.style.animationDelay = `${Math.random() * 0.5}s`;
-        
+
         confettiContainer.appendChild(confetti);
     }
 
@@ -529,22 +547,22 @@ function showFeedback() {
     feedbackIndicator.classList.add(isCorrect ? 'correct' : 'incorrect');
     feedbackIndicator.style.opacity = '1';
     setTimeout(() => {
-      feedbackIndicator.style.opacity = '0';
-      feedbackIndicator.classList.remove('correct', 'incorrect');
+        feedbackIndicator.style.opacity = '0';
+        feedbackIndicator.classList.remove('correct', 'incorrect');
     }, 1000);
-  }
+}
 
-  function shakeInputs() {
+function shakeInputs() {
     const inputContainer = document.getElementById('input-container');
     inputContainer.classList.add('shake');
     setTimeout(() => inputContainer.classList.remove('shake'), 500);
-  }
+}
 
-  function updateGameStatus(status) {
+function updateGameStatus(status) {
     const statusIcon = document.getElementById('game-status-icon');
     const statusText = document.getElementById('game-status-text');
 
-    switch(status) {
+    switch (status) {
         case 'welcome':
             statusIcon.innerHTML = '<i class="fas fa-dice"></i>';
             statusText.textContent = 'Welcome to NumVana!';
