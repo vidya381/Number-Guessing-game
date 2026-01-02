@@ -18,10 +18,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(authorize -> authorize
                 .anyRequest().permitAll()
             )
-            // Enable CSRF protection with cookie-based tokens
-            .csrf(csrf -> csrf
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-            );
+            // Disable CSRF protection for this simple game application
+            // CSRF is not needed as there are no sensitive operations
+            .csrf(csrf -> csrf.disable());
 
         return http.build();
     }

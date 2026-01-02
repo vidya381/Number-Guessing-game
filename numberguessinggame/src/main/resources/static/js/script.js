@@ -104,19 +104,6 @@ window.addEventListener('beforeunload', function () {
     }
 });
 
-// Helper function to get CSRF token from cookies
-function getCsrfToken() {
-    const name = 'XSRF-TOKEN=';
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookies = decodedCookie.split(';');
-    for (let i = 0; i < cookies.length; i++) {
-        let cookie = cookies[i].trim();
-        if (cookie.indexOf(name) === 0) {
-            return cookie.substring(name.length, cookie.length);
-        }
-    }
-    return null;
-}
 
 function updateBestScore() {
     document.getElementById('best-score').textContent = bestScore;
@@ -270,17 +257,22 @@ function startGame(difficulty) {
     startTimer();
     updateGameStatus('playing');
 
-    const csrfToken = getCsrfToken();
     fetch('/start-game', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-XSRF-TOKEN': csrfToken || ''
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: `difficulty=${difficulty}`,
         credentials: 'include' // This ensures cookies (including session ID) are sent with the request
     })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(text || 'Failed to start game');
+                });
+            }
+            return response.json();
+        })
         .then(data => {
             // Check for error response from server
             if (data.error) {
@@ -300,7 +292,7 @@ function startGame(difficulty) {
             }
         })
         .catch(error => {
-            alert('Failed to start the game. Please try again.');
+            alert('Error: ' + error.message);
             showHomePage();
         });
 }
@@ -401,12 +393,10 @@ function submitGuess() {
     document.getElementById('attempts').textContent = attempts;
     updateAttemptsProgress();
 
-    const csrfToken = getCsrfToken();
     fetch('/submit-guess', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-XSRF-TOKEN': csrfToken || ''
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: `guess=${guess}&tabId=${tabId}`,
         credentials: 'include' // This ensures cookies (including session ID) are sent with the request
@@ -556,12 +546,10 @@ function endGame(won) {
     // Clean up server session when game ends (lost or quit)
     // Note: Won games are cleaned up automatically by the server
     if (!won && tabId) {
-        const csrfToken = getCsrfToken();
         fetch('/end-game', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'X-XSRF-TOKEN': csrfToken || ''
+                'Content-Type': 'application/x-www-form-urlencoded'
             },
             body: `tabId=${tabId}`,
             credentials: 'include'
