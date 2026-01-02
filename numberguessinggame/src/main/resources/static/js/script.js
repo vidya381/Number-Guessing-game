@@ -474,19 +474,6 @@ function resetGameState() {
 
 function createConfetti() {
     const confettiContainer = document.getElementById('confetti-container');
-    for (let i = 0; i < 100; i++) {
-        const confetti = document.createElement('div');
-        confetti.className = 'confetti';
-        confetti.style.left = `${Math.random() * 100}%`;
-        confetti.style.animationDelay = `${Math.random() * 5}s`;
-        confetti.style.backgroundColor = getRandomColor();
-        confettiContainer.appendChild(confetti);
-    }
-    setTimeout(() => confettiContainer.innerHTML = '', 5000);
-}
-
-function createConfetti() {
-    const confettiContainer = document.getElementById('confetti-container');
     confettiContainer.innerHTML = '';
 
     const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#f7797d', '#6a0dad', '#1e90ff'];
