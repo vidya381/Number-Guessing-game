@@ -1,3 +1,62 @@
+// Game Constants
+const GAME_CONFIG = {
+    MAX_ATTEMPTS: 10,
+    MAX_RECENT_SCORES: 5,
+    EASY_DIGITS: 3,
+    MEDIUM_DIGITS: 4,
+    HARD_DIGITS: 5,
+    DIFFICULTY_NAMES: ['Easy', 'Medium', 'Hard']
+};
+
+const TIMER_CONFIG = {
+    UPDATE_INTERVAL_MS: 1000,
+    MAX_SECONDS: 600, // 10 minutes
+    SVG_CIRCUMFERENCE: 283,
+    COLOR_THRESHOLD_HALF: 0.5,
+    COLOR_THRESHOLD_THREE_QUARTERS: 0.75
+};
+
+const ATTEMPTS_CONFIG = {
+    THRESHOLD_GREEN: 3,
+    THRESHOLD_YELLOW: 6
+};
+
+const FLOATING_NUMBERS_CONFIG = {
+    COUNT: 50,
+    MIN_ANIMATION_DURATION: 40,
+    MAX_ANIMATION_DURATION: 60,
+    MIN_FONT_SIZE: 12,
+    MAX_FONT_SIZE: 21,
+    CHANGE_PROBABILITY: 0.1,
+    UPDATE_INTERVAL_MS: 5000
+};
+
+const CONFETTI_CONFIG = {
+    COUNT: 150,
+    MIN_DISTANCE: 30,
+    MAX_DISTANCE: 70,
+    MAX_ROTATION: 720,
+    HALF_ROTATION: 360,
+    MIN_SIZE: 16,
+    MAX_SIZE: 40,
+    MIN_DURATION: 3,
+    MAX_DURATION: 5,
+    MAX_DELAY: 0.5,
+    CLEANUP_TIMEOUT_MS: 6000,
+    COLORS: ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#f7797d', '#6a0dad', '#1e90ff']
+};
+
+const ANIMATION_CONFIG = {
+    SHAKE_DURATION_MS: 500
+};
+
+const COLOR_CONFIG = {
+    RGB_MAX: 256,
+    HSL_HUE_MAX: 360,
+    HSL_SATURATION: 70,
+    HSL_LIGHTNESS: 50
+};
+
 // Global variables
 let attempts = 0;
 let startTime;
@@ -31,7 +90,7 @@ function updateBestScore() {
 function updateRecentScores() {
     const recentScoresList = document.getElementById('recent-scores');
     recentScoresList.innerHTML = '';
-    recentScores.slice(0, 5).forEach(score => {
+    recentScores.slice(0, GAME_CONFIG.MAX_RECENT_SCORES).forEach(score => {
         const li = document.createElement('li');
         li.textContent = `${score.difficulty} - ${score.attempts} attempts, ${score.time}`;
         recentScoresList.appendChild(li);
@@ -53,7 +112,7 @@ function attachEventListeners() {
 
 function createFloatingNumbers() {
     const container = document.body;
-    const numberCount = 50;
+    const numberCount = FLOATING_NUMBERS_CONFIG.COUNT;
     const numbers = [];
 
     for (let i = 0; i < numberCount; i++) {
@@ -61,11 +120,11 @@ function createFloatingNumbers() {
         number.className = 'floating-number';
         number.style.left = `${Math.random() * 100}vw`;
         number.style.top = `${Math.random() * 200}vh`;
-        number.style.animationDuration = `${40 + Math.random() * 60}s`;
-        number.style.animationDelay = `${Math.random() * -40}s`;
+        number.style.animationDuration = `${FLOATING_NUMBERS_CONFIG.MIN_ANIMATION_DURATION + Math.random() * FLOATING_NUMBERS_CONFIG.MAX_ANIMATION_DURATION}s`;
+        number.style.animationDelay = `${Math.random() * -FLOATING_NUMBERS_CONFIG.MIN_ANIMATION_DURATION}s`;
         number.textContent = Math.floor(Math.random() * 10);
 
-        const fontSize = 12 + Math.random() * 9;
+        const fontSize = FLOATING_NUMBERS_CONFIG.MIN_FONT_SIZE + Math.random() * (FLOATING_NUMBERS_CONFIG.MAX_FONT_SIZE - FLOATING_NUMBERS_CONFIG.MIN_FONT_SIZE);
         number.style.fontSize = `${fontSize}px`;
 
         number.addEventListener('click', () => {
@@ -77,21 +136,21 @@ function createFloatingNumbers() {
 
     setInterval(() => {
         numbers.forEach(number => {
-            if (Math.random() < 0.1) { // 10% chance to change number
+            if (Math.random() < FLOATING_NUMBERS_CONFIG.CHANGE_PROBABILITY) {
                 number.textContent = Math.floor(Math.random() * 10);
             }
 
             if (number.getBoundingClientRect().bottom < 0) {
                 number.style.top = `${100 + Math.random() * 100}vh`;
-                number.style.animationDuration = `${40 + Math.random() * 60}s`;
+                number.style.animationDuration = `${FLOATING_NUMBERS_CONFIG.MIN_ANIMATION_DURATION + Math.random() * FLOATING_NUMBERS_CONFIG.MAX_ANIMATION_DURATION}s`;
             }
         });
-    }, 5000);
+    }, FLOATING_NUMBERS_CONFIG.UPDATE_INTERVAL_MS);
 }
 
 function getRandomColor() {
-    const hue = Math.floor(Math.random() * 360);
-    return `hsl(${hue}, 70%, 50%)`;
+    const hue = Math.floor(Math.random() * COLOR_CONFIG.HSL_HUE_MAX);
+    return `hsl(${hue}, ${COLOR_CONFIG.HSL_SATURATION}%, ${COLOR_CONFIG.HSL_LIGHTNESS}%)`;
 }
 
 function initializeDarkMode() {
@@ -194,7 +253,7 @@ function updateGamePage() {
 function updateInputFields(difficulty) {
     const inputContainer = document.getElementById('input-container');
     inputContainer.innerHTML = '';
-    const digitCount = difficulty === 0 ? 3 : (difficulty === 1 ? 4 : 5);
+    const digitCount = difficulty === 0 ? GAME_CONFIG.EASY_DIGITS : (difficulty === 1 ? GAME_CONFIG.MEDIUM_DIGITS : GAME_CONFIG.HARD_DIGITS);
 
     for (let i = 0; i < digitCount; i++) {
         const input = document.createElement('input');
@@ -269,7 +328,7 @@ function submitGuess() {
                 displayFeedback(data.correctPosition, data.correctButWrongPosition);
                 addToGuessHistory(guess, data.correctPosition, data.correctButWrongPosition);
                 shakeInputs();
-                if (attempts >= 10) {
+                if (attempts >= GAME_CONFIG.MAX_ATTEMPTS) {
                     endGame(false);
                 }
             }
@@ -318,7 +377,7 @@ function displayFeedback(correctPosition, correctButWrongPosition) {
 
 function startTimer() {
     startTime = new Date();
-    timerInterval = setInterval(updateTimer, 1000);
+    timerInterval = setInterval(updateTimer, TIMER_CONFIG.UPDATE_INTERVAL_MS);
 }
 
 function updateTimer() {
@@ -331,17 +390,17 @@ function updateTimer() {
 
     // Update circular progress bar
     const totalSeconds = elapsedTime.getTime() / 1000;
-    const maxSeconds = 10 * 60; // 10 minutes max
-    const progress = (totalSeconds / maxSeconds) * 283;
+    const maxSeconds = TIMER_CONFIG.MAX_SECONDS;
+    const progress = (totalSeconds / maxSeconds) * TIMER_CONFIG.SVG_CIRCUMFERENCE;
     const timerProgress = document.querySelector('.timer-progress');
-    timerProgress.style.strokeDasharray = 283;
-    timerProgress.style.strokeDashoffset = 283 - progress;
+    timerProgress.style.strokeDasharray = TIMER_CONFIG.SVG_CIRCUMFERENCE;
+    timerProgress.style.strokeDashoffset = TIMER_CONFIG.SVG_CIRCUMFERENCE - progress;
 
     // Change color based on time remaining
     let color;
-    if (totalSeconds < maxSeconds * 0.5) {
+    if (totalSeconds < maxSeconds * TIMER_CONFIG.COLOR_THRESHOLD_HALF) {
         color = '#4CAF50'; // Green for first half
-    } else if (totalSeconds < maxSeconds * 0.75) {
+    } else if (totalSeconds < maxSeconds * TIMER_CONFIG.COLOR_THRESHOLD_THREE_QUARTERS) {
         color = '#FFC107'; // Yellow for next quarter
     } else {
         color = '#F44336'; // Red for last quarter
@@ -353,15 +412,9 @@ function updateTimer() {
     }
 }
 
-function getTimerColor(progress) {
-    if (progress < 120) return 'green';
-    if (progress < 240) return 'yellow';
-    return 'red';
-}
-
 function updateAttemptsProgress() {
     const progressElement = document.getElementById('attempts-progress');
-    const progress = (attempts / 10) * 100;
+    const progress = (attempts / GAME_CONFIG.MAX_ATTEMPTS) * 100;
     progressElement.style.width = `${progress}%`;
 }
 
@@ -381,7 +434,7 @@ function endGame(won) {
         </div>
         <div class="stat-item">
             <i class="fas fa-chart-line"></i>
-            <span>Attempts: ${attempts}/10</span>
+            <span>Attempts: ${attempts}/${GAME_CONFIG.MAX_ATTEMPTS}</span>
         </div>
         <div class="stat-item">
             <i class="fas fa-tachometer-alt"></i>
@@ -435,13 +488,12 @@ function updateBestScore(score) {
 }
 
 function addToRecentScores(difficulty, attempts, time) {
-    const difficultyNames = ['Easy', 'Medium', 'Hard'];
     recentScores.unshift({
-        difficulty: difficultyNames[difficulty],
+        difficulty: GAME_CONFIG.DIFFICULTY_NAMES[difficulty],
         attempts: attempts,
         time: time
     });
-    if (recentScores.length > 5) recentScores.pop();
+    if (recentScores.length > GAME_CONFIG.MAX_RECENT_SCORES) recentScores.pop();
     localStorage.setItem('recentScores', JSON.stringify(recentScores));
     updateRecentScores();
 }
@@ -474,8 +526,7 @@ function createConfetti() {
     const confettiContainer = document.getElementById('confetti-container');
     confettiContainer.innerHTML = '';
 
-    const colors = ['#ffd700', '#ff6b6b', '#4ecdc4', '#45b7d1', '#f7797d', '#6a0dad', '#1e90ff'];
-    const numConfetti = 150;
+    const numConfetti = CONFETTI_CONFIG.COUNT;
 
     for (let i = 0; i < numConfetti; i++) {
         const confetti = document.createElement('div');
@@ -483,43 +534,43 @@ function createConfetti() {
 
         confetti.textContent = Math.floor(Math.random() * 10);
 
-        confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.color = CONFETTI_CONFIG.COLORS[Math.floor(Math.random() * CONFETTI_CONFIG.COLORS.length)];
         confetti.style.left = '50%';
         confetti.style.top = '50%';
 
         const angle = Math.random() * Math.PI * 2;
-        const distance = 30 + Math.random() * 70;
-        const rotation = Math.random() * 720 - 360;
+        const distance = CONFETTI_CONFIG.MIN_DISTANCE + Math.random() * (CONFETTI_CONFIG.MAX_DISTANCE - CONFETTI_CONFIG.MIN_DISTANCE);
+        const rotation = Math.random() * CONFETTI_CONFIG.MAX_ROTATION - CONFETTI_CONFIG.HALF_ROTATION;
 
         confetti.style.setProperty('--end-x', `${Math.cos(angle) * distance}vw`);
         confetti.style.setProperty('--end-y', `${Math.sin(angle) * distance}vh`);
         confetti.style.setProperty('--rotation', `${rotation}deg`);
 
-        const size = 16 + Math.random() * 24;
+        const size = CONFETTI_CONFIG.MIN_SIZE + Math.random() * (CONFETTI_CONFIG.MAX_SIZE - CONFETTI_CONFIG.MIN_SIZE);
         confetti.style.fontSize = `${size}px`;
 
-        confetti.style.animationDuration = `${3 + Math.random() * 2}s`;
-        confetti.style.animationDelay = `${Math.random() * 0.5}s`;
+        confetti.style.animationDuration = `${CONFETTI_CONFIG.MIN_DURATION + Math.random() * (CONFETTI_CONFIG.MAX_DURATION - CONFETTI_CONFIG.MIN_DURATION)}s`;
+        confetti.style.animationDelay = `${Math.random() * CONFETTI_CONFIG.MAX_DELAY}s`;
 
         confettiContainer.appendChild(confetti);
     }
 
     setTimeout(() => {
         confettiContainer.innerHTML = '';
-    }, 6000);
+    }, CONFETTI_CONFIG.CLEANUP_TIMEOUT_MS);
 }
 
 function getRandomColor() {
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
+    const r = Math.floor(Math.random() * COLOR_CONFIG.RGB_MAX);
+    const g = Math.floor(Math.random() * COLOR_CONFIG.RGB_MAX);
+    const b = Math.floor(Math.random() * COLOR_CONFIG.RGB_MAX);
     return `rgb(${r}, ${g}, ${b})`;
 }
 
 function shakeInputs() {
     const inputContainer = document.getElementById('input-container');
     inputContainer.classList.add('shake');
-    setTimeout(() => inputContainer.classList.remove('shake'), 500);
+    setTimeout(() => inputContainer.classList.remove('shake'), ANIMATION_CONFIG.SHAKE_DURATION_MS);
 }
 
 function updateGameStatus(status) {
@@ -553,15 +604,15 @@ function updateAttemptsProgress() {
     const progressCircle = document.querySelector('.attempts-progress');
     const radius = progressCircle.r.baseVal.value;
     const circumference = radius * 2 * Math.PI;
-    const progress = (attempts / 10) * circumference;
+    const progress = (attempts / GAME_CONFIG.MAX_ATTEMPTS) * circumference;
 
     progressCircle.style.strokeDasharray = `${circumference} ${circumference}`;
     progressCircle.style.strokeDashoffset = circumference - progress;
 
     let color;
-    if (attempts <= 3) {
+    if (attempts <= ATTEMPTS_CONFIG.THRESHOLD_GREEN) {
         color = '#4CAF50'; // Green for first 3 attempts
-    } else if (attempts <= 6) {
+    } else if (attempts <= ATTEMPTS_CONFIG.THRESHOLD_YELLOW) {
         color = '#FFC107'; // Yellow for next 3 attempts
     } else {
         color = '#F44336'; // Red for last 4 attempts
