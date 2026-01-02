@@ -645,6 +645,7 @@ function showHomePage() {
     document.getElementById('home-page').style.display = 'block';
     document.getElementById('game-page').style.display = 'none';
     document.getElementById('result-page').style.display = 'none';
+    loadLeaderboard(); // Refresh leaderboard when returning to home
 }
 
 function quitGame() {
