@@ -282,13 +282,26 @@ function startGame(difficulty) {
     })
         .then(response => response.json())
         .then(data => {
+            // Check for error response from server
+            if (data.error) {
+                alert(data.error);
+                showHomePage();
+                return;
+            }
+
             // Store server-generated tabId for security
-            tabId = data.tabId;
-            updateInputFields(difficulty);
-            updateGuessHistory();
+            if (data.tabId) {
+                tabId = data.tabId;
+                updateInputFields(difficulty);
+                updateGuessHistory();
+            } else {
+                alert('Failed to start the game. Please try again.');
+                showHomePage();
+            }
         })
         .catch(error => {
             alert('Failed to start the game. Please try again.');
+            showHomePage();
         });
 }
 
@@ -350,6 +363,13 @@ function submitGuess() {
     // Prevent double submission
     if (isSubmitting) return;
 
+    // Check if game session exists
+    if (!tabId) {
+        alert('Game session not found. Please start a new game.');
+        showHomePage();
+        return;
+    }
+
     const inputs = document.getElementsByClassName('digit-input');
     let guess = '';
     for (let input of inputs) {
@@ -393,6 +413,16 @@ function submitGuess() {
     })
         .then(response => response.json())
         .then(data => {
+            // Check for error response from server
+            if (data.error) {
+                alert(data.error);
+                // Reset attempts counter since this wasn't a valid guess
+                attempts--;
+                updateAttemptsProgress();
+                document.getElementById('attempts').textContent = attempts;
+                return;
+            }
+
             if (data.correct) {
                 if (soundEnabled) winSound.play();
                 endGame(true);
@@ -408,6 +438,10 @@ function submitGuess() {
         })
         .catch(error => {
             alert('Failed to submit guess. Please try again.');
+            // Reset attempts counter on error
+            attempts--;
+            updateAttemptsProgress();
+            document.getElementById('attempts').textContent = attempts;
         })
         .finally(() => {
             // Reset loading state
