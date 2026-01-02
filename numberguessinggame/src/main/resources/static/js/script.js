@@ -61,12 +61,13 @@ const COLOR_CONFIG = {
 let attempts = 0;
 let startTime;
 let timerInterval;
+let floatingNumbersInterval;
 let bestScore = localStorage.getItem('bestScore') || 'Not set';
 let currentDifficulty = 1;
 let soundEnabled = true;
 let recentScores = JSON.parse(localStorage.getItem('recentScores')) || [];
 let guessHistory = [];
-let tabId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+let tabId = null; // Will be generated server-side for security
 
 // Sound effects
 const correctSound = new Audio('/audio/correct-sound.mp3');
@@ -82,6 +83,28 @@ document.addEventListener('DOMContentLoaded', function () {
     updateGameStatus('welcome');
     showHomePage();
 });
+
+// Cleanup intervals when page unloads to prevent memory leaks
+window.addEventListener('beforeunload', function () {
+    cleanupFloatingNumbers();
+    if (timerInterval) {
+        clearInterval(timerInterval);
+    }
+});
+
+// Helper function to get CSRF token from cookies
+function getCsrfToken() {
+    const name = 'XSRF-TOKEN=';
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookies = decodedCookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.indexOf(name) === 0) {
+            return cookie.substring(name.length, cookie.length);
+        }
+    }
+    return null;
+}
 
 function updateBestScore() {
     document.getElementById('best-score').textContent = bestScore;
@@ -134,7 +157,7 @@ function createFloatingNumbers() {
         numbers.push(number);
     }
 
-    setInterval(() => {
+    floatingNumbersInterval = setInterval(() => {
         numbers.forEach(number => {
             if (Math.random() < FLOATING_NUMBERS_CONFIG.CHANGE_PROBABILITY) {
                 number.textContent = Math.floor(Math.random() * 10);
@@ -146,6 +169,13 @@ function createFloatingNumbers() {
             }
         });
     }, FLOATING_NUMBERS_CONFIG.UPDATE_INTERVAL_MS);
+}
+
+function cleanupFloatingNumbers() {
+    if (floatingNumbersInterval) {
+        clearInterval(floatingNumbersInterval);
+        floatingNumbersInterval = null;
+    }
 }
 
 function getRandomColor() {
@@ -221,17 +251,20 @@ function startGame(difficulty) {
     startTimer();
     updateGameStatus('playing');
 
+    const csrfToken = getCsrfToken();
     fetch('/start-game', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-XSRF-TOKEN': csrfToken || ''
         },
-        body: `difficulty=${difficulty}&tabId=${tabId}`,
+        body: `difficulty=${difficulty}`,
         credentials: 'include' // This ensures cookies (including session ID) are sent with the request
     })
-        .then(response => response.text())
+        .then(response => response.json())
         .then(data => {
-            console.log(data);
+            // Store server-generated tabId for security
+            tabId = data.tabId;
             updateInputFields(difficulty);
             updateGuessHistory();
         })
@@ -310,10 +343,12 @@ function submitGuess() {
     document.getElementById('attempts').textContent = attempts;
     updateAttemptsProgress();
 
+    const csrfToken = getCsrfToken();
     fetch('/submit-guess', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-XSRF-TOKEN': csrfToken || ''
         },
         body: `guess=${guess}&tabId=${tabId}`,
         credentials: 'include' // This ensures cookies (including session ID) are sent with the request
@@ -410,12 +445,6 @@ function updateTimer() {
     if (totalSeconds >= maxSeconds) {
         endGame(false); // End the game with a loss
     }
-}
-
-function updateAttemptsProgress() {
-    const progressElement = document.getElementById('attempts-progress');
-    const progress = (attempts / GAME_CONFIG.MAX_ATTEMPTS) * 100;
-    progressElement.style.width = `${progress}%`;
 }
 
 function endGame(won) {
@@ -558,13 +587,6 @@ function createConfetti() {
     setTimeout(() => {
         confettiContainer.innerHTML = '';
     }, CONFETTI_CONFIG.CLEANUP_TIMEOUT_MS);
-}
-
-function getRandomColor() {
-    const r = Math.floor(Math.random() * COLOR_CONFIG.RGB_MAX);
-    const g = Math.floor(Math.random() * COLOR_CONFIG.RGB_MAX);
-    const b = Math.floor(Math.random() * COLOR_CONFIG.RGB_MAX);
-    return `rgb(${r}, ${g}, ${b})`;
 }
 
 function shakeInputs() {

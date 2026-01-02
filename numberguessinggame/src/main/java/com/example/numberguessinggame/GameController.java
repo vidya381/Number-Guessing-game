@@ -23,20 +23,27 @@ public class GameController {
     private Map<String, GameSession> gameSessions = new ConcurrentHashMap<>();
 
     @PostMapping("/start-game")
-    public ResponseEntity<String> startNewGame(@RequestParam int difficulty, @RequestParam String tabId,
-            HttpSession session) {
+    public ResponseEntity<Map<String, Object>> startNewGame(@RequestParam int difficulty, HttpSession session) {
         if (difficulty < 0 || difficulty > 2) {
-            return ResponseEntity.badRequest().body("Invalid difficulty level. Please try again...!");
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Invalid difficulty level. Please try again...!");
+            return ResponseEntity.badRequest().body(errorResponse);
         }
 
         String sessionId = session.getId();
+        // Generate tabId server-side for security
+        String tabId = java.util.UUID.randomUUID().toString();
         String compositeKey = sessionId + ":" + tabId;
         int targetNumber = generateUniqueDigitNumber(difficulty);
         GameSession gameSession = new GameSession(tabId, targetNumber, difficulty);
         gameSessions.put(compositeKey, gameSession);
 
         System.out.println("Target number for session " + compositeKey + ": " + targetNumber);
-        return ResponseEntity.ok("New game started with difficulty " + difficulty);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "New game started with difficulty " + difficulty);
+        response.put("tabId", tabId);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/submit-guess")
