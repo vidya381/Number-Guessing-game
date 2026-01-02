@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NumVana</title>
+    <title>NumVana - Number Guessing Game</title>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
@@ -18,7 +18,7 @@
 </head>
 <body>
     <div id="game-header">
-        <h1 class="game-title" id="game-title-header">NumVana</h1>
+        <h1 class="game-title" id="game-title-header">NumVana 🎮</h1>
         <div id="controls">
             <button id="theme-toggle" aria-label="Toggle dark mode">
                 <i class="fas fa-moon"></i>
@@ -27,10 +27,10 @@
                 <i class="fas fa-volume-up"></i>
             </button>
             <div id="auth-controls">
-                <button id="login-btn" class="auth-btn">Login</button>
+                <button id="login-btn" class="auth-btn">LOGIN</button>
                 <div id="user-profile" style="display: none;">
                     <span id="username-display"></span>
-                    <button id="logout-btn" class="auth-btn">Logout</button>
+                    <button id="logout-btn" class="auth-btn">LOGOUT</button>
                 </div>
             </div>
         </div>
@@ -38,29 +38,29 @@
 
     <div id="game-container">
         <div id="game-status-display">
-            <div id="game-status-icon"><i class="fas fa-dice"></i></div>
-            <h2 id="game-status-text">Welcome to NumVana!</h2>
+            <div id="game-status-icon"><i class="fas fa-trophy"></i></div>
+            <h2 id="game-status-text">GAME READY</h2>
         </div>
 
         <div id="home-page">
             <section class="section">
-                <h2>Choose Difficulty</h2>
+                <h2>⚡ SELECT DIFFICULTY</h2>
                 <div class="button-group">
-                    <button id="play-easy" class="difficulty-btn" data-tooltip="3-digit number">Easy</button>
-                    <button id="play-medium" class="difficulty-btn" data-tooltip="4-digit number">Medium</button>
-                    <button id="play-hard" class="difficulty-btn" data-tooltip="5-digit number">Hard</button>
+                    <button id="play-easy" class="difficulty-btn" data-tooltip="3-digit code">EASY</button>
+                    <button id="play-medium" class="difficulty-btn" data-tooltip="4-digit code">MEDIUM</button>
+                    <button id="play-hard" class="difficulty-btn" data-tooltip="5-digit code">HARD</button>
                 </div>
             </section>
-    
+
             <section class="section">
-                <h2>Game Statistics</h2>
+                <h2>📊 YOUR STATS</h2>
                 <p>Best Score: <span id="best-score"></span></p>
-                <h3>Recent Scores:</h3>
+                <h3>Recent Games:</h3>
                 <ul id="recent-scores"></ul>
             </section>
 
             <section class="section" id="leaderboard-section">
-                <h2>🏆 Top Players</h2>
+                <h2>🏅 TOP PLAYERS</h2>
                 <div id="leaderboard-container">
                     <div id="leaderboard-loading">Loading leaderboard...</div>
                     <div id="leaderboard-content" style="display: none;"></div>
@@ -95,24 +95,24 @@
             </section>
     
             <section class="section">
-                <h2>Enter Your Guess</h2>
+                <h2>🔐 ENTER YOUR GUESS</h2>
                 <div id="input-container"></div>
-                <button id="submit-guess">Submit Guess</button>
+                <button id="submit-guess">⚡ SUBMIT GUESS</button>
                 <div id="feedback" class="fade-in"></div>
             </section>
-    
+
             <section class="section">
-                <h2>Guess History</h2>
+                <h2>📋 GUESS HISTORY</h2>
                 <div id="guess-history"></div>
             </section>
-    
-            <button id="quit-game">Quit Game</button>
+
+            <button id="quit-game">❌ QUIT GAME</button>
         </div>
-    
+
         <div id="result-page" class="card" style="display: none;">
             <div id="game-stats"></div>
-            <button id="play-again">Play Again</button>
-            <button id="quit">Quit</button>
+            <button id="play-again">🎮 PLAY AGAIN</button>
+            <button id="quit">🏠 MAIN MENU</button>
         </div>
     </div>
 
@@ -123,42 +123,42 @@
 
             <!-- Login Form -->
             <div id="login-form" class="auth-form">
-                <h2>Login</h2>
+                <h2>🔐 LOGIN</h2>
                 <form id="login-form-element">
                     <div class="form-group">
-                        <label for="login-username">Username</label>
-                        <input type="text" id="login-username" required>
+                        <label for="login-username">USERNAME</label>
+                        <input type="text" id="login-username" required placeholder="Enter username">
                     </div>
                     <div class="form-group">
-                        <label for="login-password">Password</label>
-                        <input type="password" id="login-password" required>
+                        <label for="login-password">PASSWORD</label>
+                        <input type="password" id="login-password" required placeholder="Enter password">
                     </div>
                     <div id="login-error" class="error-message"></div>
-                    <button type="submit" class="auth-submit-btn">Login</button>
+                    <button type="submit" class="auth-submit-btn">⚡ LOGIN</button>
                 </form>
-                <p class="auth-switch">Don't have an account? <a href="#" id="show-signup">Sign up</a></p>
+                <p class="auth-switch">New Player? <a href="#" id="show-signup">Register</a></p>
             </div>
 
             <!-- Signup Form -->
             <div id="signup-form" class="auth-form" style="display: none;">
-                <h2>Sign Up</h2>
+                <h2>✓ REGISTER</h2>
                 <form id="signup-form-element">
                     <div class="form-group">
-                        <label for="signup-username">Username</label>
-                        <input type="text" id="signup-username" required>
+                        <label for="signup-username">USERNAME</label>
+                        <input type="text" id="signup-username" required placeholder="Choose username">
                     </div>
                     <div class="form-group">
-                        <label for="signup-email">Email</label>
-                        <input type="email" id="signup-email" required>
+                        <label for="signup-email">EMAIL</label>
+                        <input type="email" id="signup-email" required placeholder="your@email.com">
                     </div>
                     <div class="form-group">
-                        <label for="signup-password">Password</label>
-                        <input type="password" id="signup-password" required minlength="6">
+                        <label for="signup-password">PASSWORD</label>
+                        <input type="password" id="signup-password" required minlength="6" placeholder="Min 6 characters">
                     </div>
                     <div id="signup-error" class="error-message"></div>
-                    <button type="submit" class="auth-submit-btn">Sign Up</button>
+                    <button type="submit" class="auth-submit-btn">✓ REGISTER</button>
                 </form>
-                <p class="auth-switch">Already have an account? <a href="#" id="show-login">Login</a></p>
+                <p class="auth-switch">Already Registered? <a href="#" id="show-login">Login</a></p>
             </div>
         </div>
     </div>
