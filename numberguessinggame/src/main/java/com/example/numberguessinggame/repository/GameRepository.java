@@ -19,4 +19,6 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     long countByUser(User user);
 
     long countByUserAndWon(User user, Boolean won);
+
+    List<Game> findByUserAndWonTrue(User user);
 }

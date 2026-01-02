@@ -85,6 +85,10 @@ try {
 let guessHistory = [];
 let tabId = null; // Will be generated server-side for security
 
+// Achievement state
+let achievementCount = 0;
+let achievementSummary = null;
+
 // Sound effects
 const correctSound = new Audio('/audio/correct-sound.mp3');
 const incorrectSound = new Audio('/audio/incorrect-sound.mp3');
@@ -595,6 +599,13 @@ function endGame(won) {
         addToRecentScores(currentDifficulty, attempts, time);
     }
 
+    // Refresh achievement badge after game completion (with delay for server processing)
+    if (currentUser && authToken) {
+        setTimeout(() => {
+            loadAchievementSummary();
+        }, 1000);
+    }
+
     document.getElementById('play-again').style.display = 'inline-block';
     document.getElementById('quit').style.display = 'inline-block';
 }
@@ -771,11 +782,12 @@ function updateAttemptsProgress() {
 function initializeAuth() {
     const storedToken = localStorage.getItem('authToken');
     const storedUser = localStorage.getItem('currentUser');
-    
+
     if (storedToken && storedUser) {
         authToken = storedToken;
         currentUser = JSON.parse(storedUser);
         updateAuthUI();
+        loadAchievementSummary();
     }
 }
 
@@ -851,6 +863,12 @@ function attachAuthListeners() {
     if (signupFormElement) {
         signupFormElement.addEventListener('submit', handleSignup);
     }
+
+    // Achievement icon click handler
+    const achievementIcon = document.getElementById('achievement-icon');
+    if (achievementIcon) {
+        achievementIcon.addEventListener('click', showAchievementsModal);
+    }
 }
 
 function showLoginForm() {
@@ -925,14 +943,15 @@ async function handleLogin(e) {
                 totalGames: data.totalGames,
                 totalWins: data.totalWins
             };
-            
+
             localStorage.setItem('authToken', authToken);
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            
+
             updateAuthUI();
+            loadAchievementSummary();
             document.getElementById('auth-modal').style.display = 'none';
             clearAuthForms();
-            
+
             alert('Login successful!');
         }
     } catch (error) {
@@ -991,7 +1010,107 @@ function logout() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('currentUser');
     updateAuthUI();
+    updateAchievementBadge(0); // Reset badge on logout
     alert('Logged out successfully!');
+}
+
+// Achievement Functions
+async function loadAchievementSummary() {
+    if (!authToken || !currentUser) {
+        updateAchievementBadge(0);
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/achievements/summary', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + authToken
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.summary) {
+            achievementSummary = data.summary;
+            achievementCount = data.summary.unlockedCount || 0;
+            updateAchievementBadge(achievementCount);
+        } else {
+            updateAchievementBadge(0);
+        }
+    } catch (error) {
+        console.error('Failed to load achievement summary:', error);
+        updateAchievementBadge(0);
+    }
+}
+
+function updateAchievementBadge(count) {
+    const badge = document.getElementById('achievement-count');
+    const container = document.getElementById('achievement-badge-container');
+
+    if (!badge || !container) return;
+
+    if (count > 0) {
+        badge.textContent = count;
+        badge.style.display = 'flex';
+        badge.classList.add('has-achievements');
+    } else {
+        badge.style.display = 'none';
+        badge.classList.remove('has-achievements');
+    }
+}
+
+async function showAchievementsModal() {
+    if (!authToken || !currentUser) {
+        alert('Please log in to view your achievements!');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/achievements', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + authToken
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.achievements) {
+            displayAchievements(data.achievements);
+        } else {
+            alert('Failed to load achievements');
+        }
+    } catch (error) {
+        console.error('Failed to load achievements:', error);
+        alert('Failed to load achievements');
+    }
+}
+
+function displayAchievements(achievements) {
+    // Simple alert display for now - can be upgraded to modal later
+    let message = '🏆 YOUR ACHIEVEMENTS 🏆\n\n';
+
+    const unlocked = achievements.filter(a => a.unlocked);
+    const locked = achievements.filter(a => !a.unlocked);
+
+    if (unlocked.length > 0) {
+        message += `✅ UNLOCKED (${unlocked.length}):\n`;
+        unlocked.forEach(a => {
+            message += `\n${a.name}\n${a.description}\n`;
+        });
+    }
+
+    message += `\n\n🔒 LOCKED (${locked.length}):\n`;
+    locked.slice(0, 5).forEach(a => {
+        message += `\n${a.name}\n${a.description}\n`;
+    });
+
+    if (locked.length > 5) {
+        message += `\n... and ${locked.length - 5} more!`;
+    }
+
+    alert(message);
 }
 
 // Leaderboard Functions

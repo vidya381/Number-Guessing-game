@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.numberguessinggame.entity.Achievement;
 import com.example.numberguessinggame.entity.Game;
 import com.example.numberguessinggame.entity.User;
 import com.example.numberguessinggame.repository.GameRepository;
+import com.example.numberguessinggame.service.AchievementService;
 import com.example.numberguessinggame.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
@@ -41,6 +43,9 @@ public class GameController {
 
     @Autowired
     private GameRepository gameRepository;
+
+    @Autowired
+    private AchievementService achievementService;
 
     private Map<String, GameSession> gameSessions = new ConcurrentHashMap<>();
 
@@ -221,6 +226,17 @@ public class GameController {
 
         // Update user stats
         userService.updateUserStats(user.getId(), won, gameSession.getAttemptsCount());
+
+        // Check and unlock achievements
+        try {
+            List<Achievement> newAchievements = achievementService.checkAndUnlockAchievements(user, game);
+            if (!newAchievements.isEmpty()) {
+                System.out.println("User " + user.getUsername() + " unlocked " + newAchievements.size() + " achievement(s)");
+            }
+        } catch (Exception e) {
+            // Don't fail game save if achievement check fails
+            System.err.println("Achievement check failed: " + e.getMessage());
+        }
     }
 
 }
