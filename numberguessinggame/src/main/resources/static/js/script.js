@@ -62,9 +62,11 @@ let attempts = 0;
 let startTime;
 let timerInterval;
 let floatingNumbersInterval;
+let confettiTimeout;
 let bestScore = localStorage.getItem('bestScore') || 'Not set';
 let currentDifficulty = 1;
 let soundEnabled = true;
+let isSubmitting = false;
 let recentScores = [];
 try {
     const stored = localStorage.getItem('recentScores');
@@ -301,6 +303,8 @@ function updateGamePage() {
 
 function updateInputFields(difficulty) {
     const inputContainer = document.getElementById('input-container');
+    if (!inputContainer) return;
+
     inputContainer.innerHTML = '';
     const digitCount = difficulty === 0 ? GAME_CONFIG.EASY_DIGITS : (difficulty === 1 ? GAME_CONFIG.MEDIUM_DIGITS : GAME_CONFIG.HARD_DIGITS);
 
@@ -327,16 +331,25 @@ function updateInputFields(difficulty) {
             if (e.key === 'Backspace' && !this.value && this.previousElementSibling) {
                 this.previousElementSibling.focus();
             }
+            // Submit on Enter key
+            if (e.key === 'Enter') {
+                submitGuess();
+            }
         });
 
         inputContainer.appendChild(input);
     }
 
     // Focus on the first input
-    inputContainer.firstElementChild.focus();
+    if (inputContainer.firstElementChild) {
+        inputContainer.firstElementChild.focus();
+    }
 }
 
 function submitGuess() {
+    // Prevent double submission
+    if (isSubmitting) return;
+
     const inputs = document.getElementsByClassName('digit-input');
     let guess = '';
     for (let input of inputs) {
@@ -351,6 +364,15 @@ function submitGuess() {
     if (!/^\d+$/.test(guess) || new Set(guess).size !== guess.length) {
         alert('Please enter a valid number with unique digits.');
         return;
+    }
+
+    // Set loading state
+    isSubmitting = true;
+    const submitButton = document.getElementById('submit-guess');
+    if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.style.opacity = '0.6';
+        submitButton.style.cursor = 'not-allowed';
     }
 
     attempts++;
@@ -386,12 +408,21 @@ function submitGuess() {
         })
         .catch(error => {
             alert('Failed to submit guess. Please try again.');
+        })
+        .finally(() => {
+            // Reset loading state
+            isSubmitting = false;
+            if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.style.opacity = '1';
+                submitButton.style.cursor = 'pointer';
+            }
         });
 
     for (let input of inputs) {
         input.value = '';
     }
-    inputs[0].focus();
+    if (inputs[0]) inputs[0].focus();
 }
 
 function addToGuessHistory(guess, correctPosition, correctButWrongPosition) {
@@ -602,6 +633,12 @@ function resetGameState() {
 
 function createConfetti() {
     const confettiContainer = document.getElementById('confetti-container');
+    if (!confettiContainer) return;
+
+    // Clear any existing timeout and confetti
+    if (confettiTimeout) {
+        clearTimeout(confettiTimeout);
+    }
     confettiContainer.innerHTML = '';
 
     const numConfetti = CONFETTI_CONFIG.COUNT;
@@ -633,8 +670,9 @@ function createConfetti() {
         confettiContainer.appendChild(confetti);
     }
 
-    setTimeout(() => {
+    confettiTimeout = setTimeout(() => {
         confettiContainer.innerHTML = '';
+        confettiTimeout = null;
     }, CONFETTI_CONFIG.CLEANUP_TIMEOUT_MS);
 }
 
@@ -670,9 +708,13 @@ function updateGameStatus(status) {
 
 function updateAttemptsProgress() {
     const attemptsText = document.getElementById('attempts');
-    attemptsText.textContent = attempts;
+    if (attemptsText) {
+        attemptsText.textContent = attempts;
+    }
 
     const progressCircle = document.querySelector('.attempts-progress');
+    if (!progressCircle) return;
+
     const radius = progressCircle.r.baseVal.value;
     const circumference = radius * 2 * Math.PI;
     const progress = (attempts / GAME_CONFIG.MAX_ATTEMPTS) * circumference;

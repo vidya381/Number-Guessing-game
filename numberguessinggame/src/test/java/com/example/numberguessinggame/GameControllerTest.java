@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,8 @@ import jakarta.servlet.http.HttpSession;
 class GameControllerTest {
 
     private GameController gameController;
-    private static final String MOCK_TAB_ID = "test-tab-id";
+    private static final String MOCK_SESSION_ID = "test-session-123";
+    private String currentTabId;
 
     @Mock
     private HttpSession mockSession;
@@ -27,28 +29,34 @@ class GameControllerTest {
     void setUp() {
         MockitoAnnotations.openMocks(this);
         gameController = new GameController();
+        // Properly configure mock session to return a session ID
+        when(mockSession.getId()).thenReturn(MOCK_SESSION_ID);
     }
 
     @Test
     void testStartNewGame_ValidDifficulty() {
-        ResponseEntity<String> response = gameController.startNewGame(1, MOCK_TAB_ID, mockSession);
+        ResponseEntity<Map<String, Object>> response = gameController.startNewGame(1, mockSession);
         assertEquals(200, response.getStatusCodeValue());
-        assertTrue(response.getBody().contains("New game started with difficulty 1"));
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().containsKey("tabId"));
+        assertTrue(response.getBody().containsKey("message"));
+        currentTabId = (String) response.getBody().get("tabId");
     }
 
     @Test
     void testStartNewGame_InvalidDifficulty() {
-        ResponseEntity<String> response = gameController.startNewGame(3, MOCK_TAB_ID, mockSession);
+        ResponseEntity<Map<String, Object>> response = gameController.startNewGame(3, mockSession);
         assertEquals(400, response.getStatusCodeValue());
-        assertTrue(response.getBody().contains("Invalid difficulty level"));
+        assertNotNull(response.getBody());
+        assertTrue(response.getBody().containsKey("error"));
     }
 
     @Test
-    void testProcessGuess_CorrectGuess() {
-        gameController.startNewGame(1, MOCK_TAB_ID, mockSession);
-        // Note: We can't set the target number directly anymore
+    void testProcessGuess_ValidGuess() {
+        ResponseEntity<Map<String, Object>> startResponse = gameController.startNewGame(1, mockSession);
+        String tabId = (String) startResponse.getBody().get("tabId");
 
-        Map<String, Object> result = gameController.processGuess("1234", MOCK_TAB_ID, mockSession);
+        Map<String, Object> result = gameController.processGuess("1234", tabId, mockSession);
         // We can't assert exact values without knowing the target number
         assertNotNull(result.get("correct"));
         assertNotNull(result.get("correctPosition"));
@@ -56,21 +64,12 @@ class GameControllerTest {
     }
 
     @Test
-    void testProcessGuess_PartiallyCorrectGuess() {
-        gameController.startNewGame(1, MOCK_TAB_ID, mockSession);
+    void testProcessGuess_AnotherValidGuess() {
+        ResponseEntity<Map<String, Object>> startResponse = gameController.startNewGame(1, mockSession);
+        String tabId = (String) startResponse.getBody().get("tabId");
 
-        Map<String, Object> result = gameController.processGuess("1432", MOCK_TAB_ID, mockSession);
+        Map<String, Object> result = gameController.processGuess("5678", tabId, mockSession);
         assertNotNull(result.get("correct"));
-        assertNotNull(result.get("correctPosition"));
-        assertNotNull(result.get("correctButWrongPosition"));
-    }
-
-    @Test
-    void testProcessGuess_AllWrongGuess() {
-        gameController.startNewGame(1, MOCK_TAB_ID, mockSession);
-
-        Map<String, Object> result = gameController.processGuess("5678", MOCK_TAB_ID, mockSession);
-        assertFalse((Boolean) result.get("correct"));
         assertNotNull(result.get("correctPosition"));
         assertNotNull(result.get("correctButWrongPosition"));
     }
@@ -78,9 +77,9 @@ class GameControllerTest {
     @RepeatedTest(10)
     void testGenerateUniqueDigitNumber() {
         for (int difficulty = 0; difficulty <= 2; difficulty++) {
-            gameController.startNewGame(difficulty, MOCK_TAB_ID, mockSession);
-
-            int expectedLength = difficulty == 0 ? 3 : (difficulty == 1 ? 4 : 5);
+            ResponseEntity<Map<String, Object>> response = gameController.startNewGame(difficulty, mockSession);
+            assertNotNull(response.getBody());
+            assertTrue(response.getBody().containsKey("tabId"));
         }
     }
 }

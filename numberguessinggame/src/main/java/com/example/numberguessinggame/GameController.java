@@ -17,11 +17,21 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 public class GameController {
 
+    // Game configuration constants
+    private static final int DIFFICULTY_EASY = 0;
+    private static final int DIFFICULTY_MEDIUM = 1;
+    private static final int DIFFICULTY_HARD = 2;
+    private static final int EASY_DIGITS = 3;
+    private static final int MEDIUM_DIGITS = 4;
+    private static final int HARD_DIGITS = 5;
+    private static final int MIN_DIGIT = 0;
+    private static final int MAX_DIGIT = 9;
+
     private Map<String, GameSession> gameSessions = new ConcurrentHashMap<>();
 
     @PostMapping("/start-game")
     public ResponseEntity<Map<String, Object>> startNewGame(@RequestParam int difficulty, HttpSession session) {
-        if (difficulty < 0 || difficulty > 2) {
+        if (difficulty < DIFFICULTY_EASY || difficulty > DIFFICULTY_HARD) {
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("error", "Invalid difficulty level. Please try again...!");
             return ResponseEntity.badRequest().body(errorResponse);
@@ -56,7 +66,7 @@ public class GameController {
 
         int targetNumber = gameSession.getTargetNumber();
         int difficulty = gameSession.getDifficulty();
-        int expectedDigits = (difficulty == 0) ? 3 : (difficulty == 1) ? 4 : 5;
+        int expectedDigits = (difficulty == DIFFICULTY_EASY) ? EASY_DIGITS : (difficulty == DIFFICULTY_MEDIUM) ? MEDIUM_DIGITS : HARD_DIGITS;
 
         // Validate input
         if (guess == null || guess.isEmpty()) {
@@ -132,16 +142,16 @@ public class GameController {
     }
 
     private int generateUniqueDigitNumber(int difficulty) {
-        int digitCount = difficulty == 0 ? 3 : (difficulty == 1 ? 4 : 5);
+        int digitCount = (difficulty == DIFFICULTY_EASY) ? EASY_DIGITS : (difficulty == DIFFICULTY_MEDIUM) ? MEDIUM_DIGITS : HARD_DIGITS;
         List<Integer> digits = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = MIN_DIGIT; i <= MAX_DIGIT; i++) {
             digits.add(i);
         }
         Collections.shuffle(digits);
 
         StringBuilder numberBuilder = new StringBuilder();
         for (int i = 0; i < digitCount; i++) {
-            if (i == 0 && digits.get(i) == 0) {
+            if (i == 0 && digits.get(i) == MIN_DIGIT) {
                 // Swap with a non-zero digit if the first digit is 0
                 Collections.swap(digits, i, digits.indexOf(Collections.max(digits)));
             }
