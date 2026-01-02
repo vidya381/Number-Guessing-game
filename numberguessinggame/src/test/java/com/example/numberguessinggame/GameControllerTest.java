@@ -35,7 +35,7 @@ class GameControllerTest {
 
     @Test
     void testStartNewGame_ValidDifficulty() {
-        ResponseEntity<Map<String, Object>> response = gameController.startNewGame(1, mockSession);
+        ResponseEntity<Map<String, Object>> response = gameController.startNewGame(1, null, mockSession);
         assertEquals(200, response.getStatusCodeValue());
         assertNotNull(response.getBody());
         assertTrue(response.getBody().containsKey("tabId"));
@@ -45,7 +45,7 @@ class GameControllerTest {
 
     @Test
     void testStartNewGame_InvalidDifficulty() {
-        ResponseEntity<Map<String, Object>> response = gameController.startNewGame(3, mockSession);
+        ResponseEntity<Map<String, Object>> response = gameController.startNewGame(3, null, mockSession);
         assertEquals(400, response.getStatusCodeValue());
         assertNotNull(response.getBody());
         assertTrue(response.getBody().containsKey("error"));
@@ -53,7 +53,7 @@ class GameControllerTest {
 
     @Test
     void testProcessGuess_ValidGuess() {
-        ResponseEntity<Map<String, Object>> startResponse = gameController.startNewGame(1, mockSession);
+        ResponseEntity<Map<String, Object>> startResponse = gameController.startNewGame(1, null, mockSession);
         String tabId = (String) startResponse.getBody().get("tabId");
 
         Map<String, Object> result = gameController.processGuess("1234", tabId, mockSession);
@@ -65,7 +65,7 @@ class GameControllerTest {
 
     @Test
     void testProcessGuess_AnotherValidGuess() {
-        ResponseEntity<Map<String, Object>> startResponse = gameController.startNewGame(1, mockSession);
+        ResponseEntity<Map<String, Object>> startResponse = gameController.startNewGame(1, null, mockSession);
         String tabId = (String) startResponse.getBody().get("tabId");
 
         Map<String, Object> result = gameController.processGuess("5678", tabId, mockSession);
@@ -77,7 +77,7 @@ class GameControllerTest {
     @RepeatedTest(10)
     void testGenerateUniqueDigitNumber() {
         for (int difficulty = 0; difficulty <= 2; difficulty++) {
-            ResponseEntity<Map<String, Object>> response = gameController.startNewGame(difficulty, mockSession);
+            ResponseEntity<Map<String, Object>> response = gameController.startNewGame(difficulty, null, mockSession);
             assertNotNull(response.getBody());
             assertTrue(response.getBody().containsKey("tabId"));
         }
