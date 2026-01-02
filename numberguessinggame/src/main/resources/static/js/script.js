@@ -68,6 +68,10 @@ let currentDifficulty = 1;
 let soundEnabled = true;
 let isSubmitting = false;
 let recentScores = [];
+
+// Auth state
+let currentUser = null;
+let authToken = null;
 try {
     const stored = localStorage.getItem('recentScores');
     if (stored) {
@@ -87,9 +91,11 @@ const incorrectSound = new Audio('/audio/incorrect-sound.mp3');
 const winSound = new Audio('/audio/win-sound.mp3');
 
 document.addEventListener('DOMContentLoaded', function () {
+    initializeAuth();
     updateBestScore();
     updateRecentScores();
     attachEventListeners();
+    attachAuthListeners();
     initializeDarkMode();
     createFloatingNumbers();
     updateGameStatus('welcome');
@@ -257,12 +263,16 @@ function startGame(difficulty) {
     startTimer();
     updateGameStatus('playing');
 
+    // Include userId if user is logged in
+    const userId = currentUser ? currentUser.id : '';
+    const bodyParams = userId ? `difficulty=${difficulty}&userId=${userId}` : `difficulty=${difficulty}`;
+
     fetch('/start-game', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: `difficulty=${difficulty}`,
+        body: bodyParams,
         credentials: 'include' // This ensures cookies (including session ID) are sent with the request
     })
         .then(response => {
@@ -753,4 +763,231 @@ function updateAttemptsProgress() {
         color = '#F44336'; // Red for last 4 attempts
     }
     progressCircle.style.stroke = color;
+}
+
+// Authentication Functions
+function initializeAuth() {
+    const storedToken = localStorage.getItem('authToken');
+    const storedUser = localStorage.getItem('currentUser');
+    
+    if (storedToken && storedUser) {
+        authToken = storedToken;
+        currentUser = JSON.parse(storedUser);
+        updateAuthUI();
+    }
+}
+
+function updateAuthUI() {
+    const loginBtn = document.getElementById('login-btn');
+    const userProfile = document.getElementById('user-profile');
+    const usernameDisplay = document.getElementById('username-display');
+    
+    if (!loginBtn || !userProfile || !usernameDisplay) return;
+    
+    if (currentUser) {
+        loginBtn.style.display = 'none';
+        userProfile.style.display = 'flex';
+        usernameDisplay.textContent = currentUser.username;
+    } else {
+        loginBtn.style.display = 'block';
+        userProfile.style.display = 'none';
+        usernameDisplay.textContent = '';
+    }
+}
+
+function attachAuthListeners() {
+    const loginBtn = document.getElementById('login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+    const authModal = document.getElementById('auth-modal');
+    const closeModal = document.querySelector('.close-modal');
+    const showSignup = document.getElementById('show-signup');
+    const showLogin = document.getElementById('show-login');
+    const loginFormElement = document.getElementById('login-form-element');
+    const signupFormElement = document.getElementById('signup-form-element');
+    
+    if (!loginBtn || !authModal || !closeModal) return;
+    
+    loginBtn.addEventListener('click', () => {
+        authModal.style.display = 'flex';
+        showLoginForm();
+    });
+    
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', logout);
+    }
+    
+    closeModal.addEventListener('click', () => {
+        authModal.style.display = 'none';
+        clearAuthForms();
+    });
+    
+    authModal.addEventListener('click', (e) => {
+        if (e.target === authModal) {
+            authModal.style.display = 'none';
+            clearAuthForms();
+        }
+    });
+    
+    if (showSignup) {
+        showSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSignupForm();
+        });
+    }
+    
+    if (showLogin) {
+        showLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showLoginForm();
+        });
+    }
+    
+    if (loginFormElement) {
+        loginFormElement.addEventListener('submit', handleLogin);
+    }
+    
+    if (signupFormElement) {
+        signupFormElement.addEventListener('submit', handleSignup);
+    }
+}
+
+function showLoginForm() {
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    
+    if (loginForm && signupForm) {
+        loginForm.style.display = 'block';
+        signupForm.style.display = 'none';
+        clearAuthForms();
+    }
+}
+
+function showSignupForm() {
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    
+    if (loginForm && signupForm) {
+        loginForm.style.display = 'none';
+        signupForm.style.display = 'block';
+        clearAuthForms();
+    }
+}
+
+function clearAuthForms() {
+    const loginUsername = document.getElementById('login-username');
+    const loginPassword = document.getElementById('login-password');
+    const signupUsername = document.getElementById('signup-username');
+    const signupEmail = document.getElementById('signup-email');
+    const signupPassword = document.getElementById('signup-password');
+    const loginError = document.getElementById('login-error');
+    const signupError = document.getElementById('signup-error');
+    
+    if (loginUsername) loginUsername.value = '';
+    if (loginPassword) loginPassword.value = '';
+    if (signupUsername) signupUsername.value = '';
+    if (signupEmail) signupEmail.value = '';
+    if (signupPassword) signupPassword.value = '';
+    if (loginError) loginError.textContent = '';
+    if (signupError) signupError.textContent = '';
+}
+
+async function handleLogin(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('login-username').value;
+    const password = document.getElementById('login-password').value;
+    const errorDiv = document.getElementById('login-error');
+    
+    try {
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+        
+        const data = await response.json();
+        
+        if (data.error) {
+            errorDiv.textContent = data.error;
+            return;
+        }
+        
+        if (data.success) {
+            authToken = data.token;
+            currentUser = {
+                id: data.userId,
+                username: data.username,
+                bestScore: data.bestScore,
+                totalGames: data.totalGames,
+                totalWins: data.totalWins
+            };
+            
+            localStorage.setItem('authToken', authToken);
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            updateAuthUI();
+            document.getElementById('auth-modal').style.display = 'none';
+            clearAuthForms();
+            
+            alert('Login successful!');
+        }
+    } catch (error) {
+        errorDiv.textContent = 'An error occurred. Please try again.';
+    }
+}
+
+async function handleSignup(e) {
+    e.preventDefault();
+    
+    const username = document.getElementById('signup-username').value;
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    const errorDiv = document.getElementById('signup-error');
+    
+    try {
+        const response = await fetch('/api/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ username, email, password })
+        });
+        
+        const data = await response.json();
+        
+        if (data.error) {
+            errorDiv.textContent = data.error;
+            return;
+        }
+        
+        if (data.success) {
+            authToken = data.token;
+            currentUser = {
+                id: data.userId,
+                username: data.username
+            };
+            
+            localStorage.setItem('authToken', authToken);
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            updateAuthUI();
+            document.getElementById('auth-modal').style.display = 'none';
+            clearAuthForms();
+            
+            alert('Signup successful! Welcome to NumVana!');
+        }
+    } catch (error) {
+        errorDiv.textContent = 'An error occurred. Please try again.';
+    }
+}
+
+function logout() {
+    currentUser = null;
+    authToken = null;
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('currentUser');
+    updateAuthUI();
+    alert('Logged out successfully!');
 }

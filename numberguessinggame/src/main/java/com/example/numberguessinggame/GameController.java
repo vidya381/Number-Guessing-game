@@ -1,16 +1,25 @@
 package com.example.numberguessinggame;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.example.numberguessinggame.entity.Game;
+import com.example.numberguessinggame.entity.User;
+import com.example.numberguessinggame.repository.GameRepository;
+import com.example.numberguessinggame.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -27,10 +36,19 @@ public class GameController {
     private static final int MIN_DIGIT = 0;
     private static final int MAX_DIGIT = 9;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private GameRepository gameRepository;
+
     private Map<String, GameSession> gameSessions = new ConcurrentHashMap<>();
 
     @PostMapping("/start-game")
-    public ResponseEntity<Map<String, Object>> startNewGame(@RequestParam int difficulty, HttpSession session) {
+    public ResponseEntity<Map<String, Object>> startNewGame(
+            @RequestParam int difficulty,
+            @RequestParam(required = false) Long userId,
+            HttpSession session) {
         if (difficulty < DIFFICULTY_EASY || difficulty > DIFFICULTY_HARD) {
             Map<String, Object> errorResponse = new HashMap<>();
             errorResponse.put("error", "Invalid difficulty level. Please try again...!");
@@ -42,7 +60,7 @@ public class GameController {
         String tabId = java.util.UUID.randomUUID().toString();
         String compositeKey = sessionId + ":" + tabId;
         int targetNumber = generateUniqueDigitNumber(difficulty);
-        GameSession gameSession = new GameSession(tabId, targetNumber, difficulty);
+        GameSession gameSession = new GameSession(tabId, targetNumber, difficulty, userId);
         gameSessions.put(compositeKey, gameSession);
 
         System.out.println("Target number for session " + compositeKey + ": " + targetNumber);
@@ -111,13 +129,17 @@ public class GameController {
 
         boolean isCorrect = correctPosition == target.length;
 
+        // Increment attempts count
+        gameSession.incrementAttempts();
+
         Map<String, Object> response = new HashMap<>();
         response.put("correct", isCorrect);
         response.put("correctPosition", correctPosition);
         response.put("correctButWrongPosition", correctButWrongPosition);
 
-        // Clean up session when game ends (won or max attempts reached)
+        // Save game and clean up session when game ends (won)
         if (isCorrect) {
+            saveGameToDatabase(gameSession, true);
             gameSessions.remove(compositeKey);
         }
 
@@ -128,6 +150,13 @@ public class GameController {
     public ResponseEntity<String> endGame(@RequestParam String tabId, HttpSession session) {
         String sessionId = session.getId();
         String compositeKey = sessionId + ":" + tabId;
+        GameSession gameSession = gameSessions.get(compositeKey);
+
+        // Save game as lost if session exists
+        if (gameSession != null) {
+            saveGameToDatabase(gameSession, false);
+        }
+
         gameSessions.remove(compositeKey);
         return ResponseEntity.ok("Game session ended");
     }
@@ -159,6 +188,39 @@ public class GameController {
         }
 
         return Integer.parseInt(numberBuilder.toString());
+    }
+
+    private void saveGameToDatabase(GameSession gameSession, boolean won) {
+        // Only save if user is logged in
+        if (gameSession.getUserId() == null) {
+            return;
+        }
+
+        Optional<User> userOptional = userService.findById(gameSession.getUserId());
+        if (userOptional.isEmpty()) {
+            return;
+        }
+
+        User user = userOptional.get();
+
+        // Calculate time taken
+        Duration duration = Duration.between(gameSession.getStartTime(), LocalDateTime.now());
+        long seconds = duration.getSeconds();
+        String timeTaken = String.format("%02d:%02d", seconds / 60, seconds % 60);
+
+        // Create and save game record
+        Game game = new Game(
+                user,
+                gameSession.getDifficulty(),
+                gameSession.getTargetNumber(),
+                gameSession.getAttemptsCount(),
+                won,
+                timeTaken
+        );
+        gameRepository.save(game);
+
+        // Update user stats
+        userService.updateUserStats(user.getId(), won, gameSession.getAttemptsCount());
     }
 
 }
