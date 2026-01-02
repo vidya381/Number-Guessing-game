@@ -17,9 +17,6 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 public class GameController {
 
-    private int targetNumber;
-    private int difficulty = 1; // 0 for easy, 1 for medium, 2 for hard
-    // private Map<String, GameSession> gameSessions = new HashMap<>();
     private Map<String, GameSession> gameSessions = new ConcurrentHashMap<>();
 
     @PostMapping("/start-game")
@@ -59,6 +56,21 @@ public class GameController {
 
         int targetNumber = gameSession.getTargetNumber();
         int difficulty = gameSession.getDifficulty();
+        int expectedDigits = (difficulty == 0) ? 3 : (difficulty == 1) ? 4 : 5;
+
+        // Validate input
+        if (guess == null || guess.isEmpty()) {
+            throw new IllegalArgumentException("Guess cannot be empty");
+        }
+        if (!guess.matches("\\d+")) {
+            throw new IllegalArgumentException("Guess must contain only digits");
+        }
+        if (guess.length() != expectedDigits) {
+            throw new IllegalArgumentException("Guess must have exactly " + expectedDigits + " digits");
+        }
+        if (guess.chars().distinct().count() != guess.length()) {
+            throw new IllegalArgumentException("Guess must have unique digits");
+        }
 
         int[] target = getDigits(targetNumber);
         int[] guessDigits = getDigits(Integer.parseInt(guess));
@@ -87,11 +99,27 @@ public class GameController {
             }
         }
 
+        boolean isCorrect = correctPosition == target.length;
+
         Map<String, Object> response = new HashMap<>();
-        response.put("correct", correctPosition == target.length);
+        response.put("correct", isCorrect);
         response.put("correctPosition", correctPosition);
         response.put("correctButWrongPosition", correctButWrongPosition);
+
+        // Clean up session when game ends (won or max attempts reached)
+        if (isCorrect) {
+            gameSessions.remove(compositeKey);
+        }
+
         return response;
+    }
+
+    @PostMapping("/end-game")
+    public ResponseEntity<String> endGame(@RequestParam String tabId, HttpSession session) {
+        String sessionId = session.getId();
+        String compositeKey = sessionId + ":" + tabId;
+        gameSessions.remove(compositeKey);
+        return ResponseEntity.ok("Game session ended");
     }
 
     private int[] getDigits(int number) {
@@ -121,20 +149,6 @@ public class GameController {
         }
 
         return Integer.parseInt(numberBuilder.toString());
-    }
-
-    /**
-     * @return int return the targetNumber
-     */
-    public int getTargetNumber() {
-        return targetNumber;
-    }
-
-    /**
-     * @param targetNumber the targetNumber to set
-     */
-    public void setTargetNumber(int targetNumber) {
-        this.targetNumber = targetNumber;
     }
 
 }

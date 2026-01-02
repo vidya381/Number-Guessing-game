@@ -65,7 +65,17 @@ let floatingNumbersInterval;
 let bestScore = localStorage.getItem('bestScore') || 'Not set';
 let currentDifficulty = 1;
 let soundEnabled = true;
-let recentScores = JSON.parse(localStorage.getItem('recentScores')) || [];
+let recentScores = [];
+try {
+    const stored = localStorage.getItem('recentScores');
+    if (stored) {
+        recentScores = JSON.parse(stored);
+    }
+} catch (error) {
+    // If corrupted, reset to empty array
+    recentScores = [];
+    localStorage.removeItem('recentScores');
+}
 let guessHistory = [];
 let tabId = null; // Will be generated server-side for security
 
@@ -247,6 +257,13 @@ function startGame(difficulty) {
     currentDifficulty = difficulty;
     attempts = 0;
     guessHistory = [];
+
+    // Clear any existing timer to prevent race conditions
+    if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+    }
+
     updateGamePage();
     startTimer();
     updateGameStatus('playing');
@@ -269,7 +286,6 @@ function startGame(difficulty) {
             updateGuessHistory();
         })
         .catch(error => {
-            console.error('Error:', error);
             alert('Failed to start the game. Please try again.');
         });
 }
@@ -369,7 +385,6 @@ function submitGuess() {
             }
         })
         .catch(error => {
-            console.error('Error:', error);
             alert('Failed to submit guess. Please try again.');
         });
 
@@ -390,21 +405,39 @@ function updateGuessHistory() {
     guessHistory.forEach(entry => {
         const historyItem = document.createElement('div');
         historyItem.className = 'history-item';
-        historyItem.innerHTML = `
-            <span class="guess">${entry.guess}</span>
-            <span class="correct">Correct: ${entry.correctPosition}</span>
-            <span class="misplaced">Misplaced: ${entry.correctButWrongPosition}</span>
-        `;
+
+        const guessSpan = document.createElement('span');
+        guessSpan.className = 'guess';
+        guessSpan.textContent = entry.guess;
+
+        const correctSpan = document.createElement('span');
+        correctSpan.className = 'correct';
+        correctSpan.textContent = `Correct: ${entry.correctPosition}`;
+
+        const misplacedSpan = document.createElement('span');
+        misplacedSpan.className = 'misplaced';
+        misplacedSpan.textContent = `Misplaced: ${entry.correctButWrongPosition}`;
+
+        historyItem.appendChild(guessSpan);
+        historyItem.appendChild(correctSpan);
+        historyItem.appendChild(misplacedSpan);
         historyContainer.appendChild(historyItem);
     });
 }
 
 function displayFeedback(correctPosition, correctButWrongPosition) {
     const feedbackElement = document.getElementById('feedback');
-    feedbackElement.innerHTML = `
-        <p>Correct digits in correct position: ${correctPosition}</p>
-        <p>Correct digits in wrong position: ${correctButWrongPosition}</p>
-    `;
+    feedbackElement.textContent = '';
+
+    const p1 = document.createElement('p');
+    p1.textContent = `Correct digits in correct position: ${correctPosition}`;
+
+    const p2 = document.createElement('p');
+    p2.textContent = `Correct digits in wrong position: ${correctButWrongPosition}`;
+
+    feedbackElement.appendChild(p1);
+    feedbackElement.appendChild(p2);
+
     feedbackElement.classList.remove('fade-in');
     void feedbackElement.offsetWidth;
     feedbackElement.classList.add('fade-in');
@@ -455,29 +488,42 @@ function endGame(won) {
 
     updateGameStatus(won ? 'won' : 'lost');
 
+    // Clean up server session when game ends (lost or quit)
+    // Note: Won games are cleaned up automatically by the server
+    if (!won && tabId) {
+        const csrfToken = getCsrfToken();
+        fetch('/end-game', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'X-XSRF-TOKEN': csrfToken || ''
+            },
+            body: `tabId=${tabId}`,
+            credentials: 'include'
+        }).catch(() => {
+            // Silently fail - session will eventually timeout
+        });
+    }
+
     const statsContainer = document.getElementById('game-stats');
-    statsContainer.innerHTML = `
-        <div class="stat-item">
-            <i class="fas fa-stopwatch"></i>
-            <span>Time Taken: ${time}</span>
-        </div>
-        <div class="stat-item">
-            <i class="fas fa-chart-line"></i>
-            <span>Attempts: ${attempts}/${GAME_CONFIG.MAX_ATTEMPTS}</span>
-        </div>
-        <div class="stat-item">
-            <i class="fas fa-tachometer-alt"></i>
-            <span>Avg. Time per Guess: ${calculateAverageGuessTime(time, attempts)}</span>
-        </div>
-        <div class="stat-item">
-            <i class="fas fa-trophy"></i>
-            <span>Best Score: ${bestScore}</span>
-        </div>
-        <div class="stat-item">
-            <i class="fas fa-chart-bar"></i>
-            <span>Comparison to Best: ${compareToaBestScore(attempts)}</span>
-        </div>
-    `;
+    statsContainer.textContent = '';
+
+    // Helper function to create stat items safely
+    const createStatItem = (iconClass, text) => {
+        const div = document.createElement('div');
+        div.className = 'stat-item';
+        div.innerHTML = `<i class="${iconClass}"></i>`; // Safe: hardcoded icon classes
+        const span = document.createElement('span');
+        span.textContent = text;
+        div.appendChild(span);
+        return div;
+    };
+
+    statsContainer.appendChild(createStatItem('fas fa-stopwatch', `Time Taken: ${time}`));
+    statsContainer.appendChild(createStatItem('fas fa-chart-line', `Attempts: ${attempts}/${GAME_CONFIG.MAX_ATTEMPTS}`));
+    statsContainer.appendChild(createStatItem('fas fa-tachometer-alt', `Avg. Time per Guess: ${calculateAverageGuessTime(time, attempts)}`));
+    statsContainer.appendChild(createStatItem('fas fa-trophy', `Best Score: ${bestScore}`));
+    statsContainer.appendChild(createStatItem('fas fa-chart-bar', `Comparison to Best: ${compareToaBestScore(attempts)}`));
 
     if (won) {
         createConfetti();
@@ -498,7 +544,9 @@ function calculateAverageGuessTime(totalTime, attempts) {
 
 function compareToaBestScore(attempts) {
     if (bestScore === 'Not set') return 'This is your first game!';
-    const difference = attempts - parseInt(bestScore);
+    const parsedScore = parseInt(bestScore, 10);
+    if (isNaN(parsedScore)) return 'This is your first game!';
+    const difference = attempts - parsedScore;
     if (difference === 0) return 'You matched your best score!';
     return difference > 0 ? `${difference} more than your best` : `${Math.abs(difference)} less than your best`;
 }
@@ -509,7 +557,8 @@ function updateBestScore(score) {
         return;
     }
 
-    if (bestScore === 'Not set' || score < parseInt(bestScore)) {
+    const parsedBestScore = parseInt(bestScore, 10);
+    if (bestScore === 'Not set' || isNaN(parsedBestScore) || score < parsedBestScore) {
         bestScore = score.toString();
         localStorage.setItem('bestScore', bestScore);
         document.getElementById('best-score').textContent = bestScore;
