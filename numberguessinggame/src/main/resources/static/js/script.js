@@ -100,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
     createFloatingNumbers();
     updateGameStatus('welcome');
     showHomePage();
+    loadLeaderboard();
 });
 
 // Cleanup intervals when page unloads to prevent memory leaks
@@ -990,4 +991,68 @@ function logout() {
     localStorage.removeItem('currentUser');
     updateAuthUI();
     alert('Logged out successfully!');
+}
+
+// Leaderboard Functions
+async function loadLeaderboard() {
+    const loadingDiv = document.getElementById('leaderboard-loading');
+    const contentDiv = document.getElementById('leaderboard-content');
+
+    if (!loadingDiv || !contentDiv) return;
+
+    try {
+        const response = await fetch('/api/leaderboard?limit=10');
+        const data = await response.json();
+
+        if (data.success && data.leaderboard && data.leaderboard.length > 0) {
+            contentDiv.innerHTML = createLeaderboardHTML(data.leaderboard);
+            loadingDiv.style.display = 'none';
+            contentDiv.style.display = 'block';
+        } else {
+            loadingDiv.textContent = 'No players on the leaderboard yet. Be the first!';
+        }
+    } catch (error) {
+        loadingDiv.textContent = 'Failed to load leaderboard';
+    }
+}
+
+function createLeaderboardHTML(players) {
+    let html = '<table class="leaderboard-table"><thead><tr>';
+    html += '<th>Rank</th>';
+    html += '<th>Player</th>';
+    html += '<th>Best Score</th>';
+    html += '<th>Win Rate</th>';
+    html += '<th>Games</th>';
+    html += '</tr></thead><tbody>';
+
+    players.forEach(player => {
+        const rankClass = player.rank <= 3 ? 'rank-' + player.rank : '';
+        const rankIcon = getRankIcon(player.rank);
+
+        html += '<tr class="' + rankClass + '">';
+        html += '<td class="rank-cell">' + rankIcon + ' ' + player.rank + '</td>';
+        html += '<td class="username-cell">' + escapeHtml(player.username) + '</td>';
+        html += '<td class="score-cell">' + player.bestScore + ' attempts</td>';
+        html += '<td class="winrate-cell">' + player.winRate + '%</td>';
+        html += '<td class="games-cell">' + player.totalWins + '/' + player.totalGames + '</td>';
+        html += '</tr>';
+    });
+
+    html += '</tbody></table>';
+    return html;
+}
+
+function getRankIcon(rank) {
+    switch(rank) {
+        case 1: return '🥇';
+        case 2: return '🥈';
+        case 3: return '🥉';
+        default: return '';
+    }
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }

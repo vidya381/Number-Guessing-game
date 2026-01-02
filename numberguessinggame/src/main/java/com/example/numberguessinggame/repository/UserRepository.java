@@ -1,9 +1,12 @@
 package com.example.numberguessinggame.repository;
 
 import com.example.numberguessinggame.entity.User;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,4 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByUsername(String username);
 
     boolean existsByEmail(String email);
+
+    @Query("SELECT u FROM User u WHERE u.bestScore IS NOT NULL ORDER BY u.bestScore ASC, u.totalWins DESC")
+    List<User> findTopPlayersByBestScore(Pageable pageable);
 }

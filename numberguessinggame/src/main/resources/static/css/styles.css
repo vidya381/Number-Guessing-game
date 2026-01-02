@@ -809,3 +809,131 @@ body.dark-mode .form-group input {
 body.dark-mode .close-modal {
     color: var(--text-color);
 }
+
+/* Leaderboard Styles */
+#leaderboard-section {
+    margin-top: 20px;
+}
+
+#leaderboard-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+#leaderboard-loading {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-color);
+    font-style: italic;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    background-color: var(--card-background);
+}
+
+.leaderboard-table thead {
+    background-color: var(--primary-color);
+    color: var(--button-text-color);
+}
+
+.leaderboard-table th {
+    padding: 12px;
+    text-align: left;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.leaderboard-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--input-border);
+    color: var(--text-color);
+}
+
+.leaderboard-table tr:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.leaderboard-table tr.rank-1 {
+    background-color: rgba(255, 215, 0, 0.15);
+    font-weight: bold;
+}
+
+.leaderboard-table tr.rank-2 {
+    background-color: rgba(192, 192, 192, 0.15);
+    font-weight: bold;
+}
+
+.leaderboard-table tr.rank-3 {
+    background-color: rgba(205, 127, 50, 0.15);
+    font-weight: bold;
+}
+
+.rank-cell {
+    width: 80px;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.username-cell {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.score-cell {
+    text-align: center;
+    font-weight: 500;
+    color: var(--secondary-color);
+}
+
+.winrate-cell {
+    text-align: center;
+}
+
+.games-cell {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* Dark mode leaderboard styles */
+body.dark-mode .leaderboard-table {
+    background-color: var(--card-background);
+}
+
+body.dark-mode .leaderboard-table tr:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .leaderboard-table tr.rank-1 {
+    background-color: rgba(255, 215, 0, 0.1);
+}
+
+body.dark-mode .leaderboard-table tr.rank-2 {
+    background-color: rgba(192, 192, 192, 0.1);
+}
+
+body.dark-mode .leaderboard-table tr.rank-3 {
+    background-color: rgba(205, 127, 50, 0.1);
+}
+
+/* Responsive leaderboard */
+@media (max-width: 600px) {
+    .leaderboard-table th,
+    .leaderboard-table td {
+        padding: 8px 6px;
+        font-size: 12px;
+    }
+
+    .rank-cell {
+        width: 60px;
+        font-size: 14px;
+    }
+
+    .games-cell {
+        font-size: 11px;
+    }
+}
