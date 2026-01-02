@@ -11,8 +11,8 @@ COPY src ./src
 # Package the application (this will create the target directory with the jar)
 RUN mvn clean package -DskipTests
 
-# Use the official OpenJDK image to run the app
-FROM openjdk:17-jdk-alpine
+# Use Eclipse Temurin (official OpenJDK successor) to run the app
+FROM eclipse-temurin:17-jre-alpine
 
 # Set the working directory inside the container
 WORKDIR /app
