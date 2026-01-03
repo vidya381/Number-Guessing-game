@@ -55,10 +55,12 @@
 
 #controls {
     display: flex;
+    align-items: center;
     gap: 12px;
 }
 
-#theme-toggle, #sound-toggle {
+/* Legacy sound-toggle styles (if needed) */
+#sound-toggle {
     width: 45px;
     height: 45px;
     border-radius: 50%;
@@ -74,7 +76,7 @@
     box-shadow: 0 4px 15px var(--shadow-color);
 }
 
-#theme-toggle:hover, #sound-toggle:hover {
+#sound-toggle:hover {
     background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 6px 20px rgba(78, 168, 222, 0.35);
@@ -483,7 +485,7 @@ body.dark-mode #game-status-display {
         font-size: clamp(20px, 4vw, 30px);
     }
 
-    #theme-toggle, #sound-toggle {
+    #sound-toggle {
         width: 30px;
         height: 30px;
         font-size: 14px;
@@ -969,6 +971,9 @@ body.dark-mode .form-group input:focus {
 }
 
 .auth-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     padding: 10px 20px;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     color: var(--button-text-color);
@@ -979,6 +984,10 @@ body.dark-mode .form-group input:focus {
     font-weight: 700;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.auth-btn i {
+    font-size: 15px;
 }
 
 .auth-btn:hover {
@@ -2161,9 +2170,12 @@ body.dark-mode .achievement-summary-card {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     color: var(--button-text-color);
     border: none;
+    margin: 0;
+    padding: 0;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px var(--shadow-color);
+    flex-shrink: 0;
 }
 
 .header-icon-btn:hover {
@@ -2172,35 +2184,50 @@ body.dark-mode .achievement-summary-card {
     box-shadow: 0 6px 20px rgba(78, 168, 222, 0.35);
 }
 
-/* Header streak display */
+/* Header streak display - aligned with icon buttons */
 .header-streak {
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: 6px;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
-    color: white;
-    padding: 8px 14px;
-    border-radius: 25px;
-    font-size: 16px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+    color: #2c3e50;
+    padding: 0 16px;
+    margin: 0;
+    height: 45px;
+    min-width: 70px;
+    border-radius: 22.5px;
+    font-size: 15px;
     font-weight: 700;
-    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    line-height: 1;
+    vertical-align: middle;
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
     transition: all 0.3s ease;
     cursor: default;
+    flex-shrink: 0;
 }
 
 .header-streak i {
-    font-size: 18px;
-    animation: flicker 2s infinite;
+    font-size: 16px;
+    color: #f39c12;
+    animation: electric-pulse 1.5s infinite;
 }
 
 .header-streak:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
 }
 
-@keyframes flicker {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.8; }
+@keyframes electric-pulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 2px #f39c12);
+    }
+    50% {
+        transform: scale(1.1);
+        filter: drop-shadow(0 0 4px #f39c12);
+    }
 }
 
 /* Guest and User controls layout */
@@ -2208,12 +2235,20 @@ body.dark-mode .achievement-summary-card {
 #user-controls {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 12px;
+    height: 45px;
+}
+
+#user-controls > * {
+    flex-shrink: 0;
 }
 
 /* Profile Dropdown Styles */
 .profile-dropdown-container {
     position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .profile-dropdown {
@@ -2455,12 +2490,17 @@ body.dark-mode .setting-item:hover {
 }
 
 body.dark-mode .header-streak {
-    background: linear-gradient(135deg, #e74c3c 0%, #ff6b6b 100%);
-    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+    background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+    color: #1a1a1a;
+    box-shadow: 0 4px 12px rgba(241, 196, 15, 0.4);
 }
 
 body.dark-mode .header-streak:hover {
-    box-shadow: 0 6px 16px rgba(231, 76, 60, 0.5);
+    box-shadow: 0 6px 16px rgba(241, 196, 15, 0.5);
+}
+
+body.dark-mode .header-streak i {
+    color: #d68910;
 }
 
 /* Responsive Design for New Header */
@@ -2479,12 +2519,17 @@ body.dark-mode .header-streak:hover {
     }
 
     .header-streak {
-        padding: 6px 12px;
+        height: 40px;
+        padding: 0 14px;
         font-size: 14px;
+        min-width: 65px;
+        border-radius: 20px;
+        line-height: 1;
+        box-sizing: border-box;
     }
 
     .header-streak i {
-        font-size: 16px;
+        font-size: 14px;
     }
 
     .settings-modal-content {
@@ -2506,13 +2551,18 @@ body.dark-mode .header-streak:hover {
     }
 
     .header-streak {
-        padding: 5px 10px;
+        height: 40px;
+        padding: 0 12px;
         font-size: 13px;
         gap: 4px;
+        min-width: 60px;
+        border-radius: 20px;
+        line-height: 1;
+        box-sizing: border-box;
     }
 
     .header-streak i {
-        font-size: 14px;
+        font-size: 13px;
     }
 
     .settings-title {

@@ -21,35 +21,38 @@
         <h1 class="game-title" id="game-title-header">NumVana 🎮</h1>
         <div id="controls">
             <!-- Theme Toggle (Always visible) -->
-            <button id="theme-toggle" aria-label="Toggle dark mode">
+            <button id="theme-toggle" class="header-icon-btn" aria-label="Toggle dark mode" title="Theme">
                 <i class="fas fa-moon"></i>
             </button>
 
             <!-- Guest Controls (Visible when NOT logged in) -->
             <div id="guest-controls" style="display: none;">
                 <button id="settings-btn" class="header-icon-btn" aria-label="Settings" title="Settings">
-                    <i class="fas fa-cog"></i>
+                    <i class="fas fa-sliders-h"></i>
                 </button>
-                <button id="login-btn" class="auth-btn">LOGIN</button>
+                <button id="login-btn" class="auth-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>LOGIN</span>
+                </button>
             </div>
 
             <!-- User Controls (Visible when logged in) -->
             <div id="user-controls" style="display: none;">
                 <!-- Win Streak Display -->
                 <div id="streak-display" class="header-streak">
-                    <i class="fas fa-fire"></i>
+                    <i class="fas fa-bolt"></i>
                     <span id="win-streak-count">0</span>
                 </div>
 
                 <!-- Profile Dropdown -->
                 <div class="profile-dropdown-container">
                     <button id="profile-dropdown-btn" class="header-icon-btn" aria-label="Profile" title="Profile">
-                        <i class="fas fa-user-circle"></i>
+                        <i class="fas fa-gamepad"></i>
                     </button>
                     <div id="profile-dropdown" class="profile-dropdown" style="display: none;">
                         <div class="dropdown-user-info">
                             <div class="dropdown-avatar">
-                                <i class="fas fa-user-circle"></i>
+                                <i class="fas fa-gamepad"></i>
                             </div>
                             <div class="dropdown-user-details">
                                 <div class="dropdown-username" id="dropdown-username">Username</div>
@@ -58,16 +61,16 @@
                         </div>
                         <div class="dropdown-divider"></div>
                         <button class="dropdown-item" id="dropdown-view-profile">
-                            <i class="fas fa-chart-bar"></i>
+                            <i class="fas fa-trophy"></i>
                             <span>View Profile</span>
                         </button>
                         <button class="dropdown-item" id="dropdown-settings">
-                            <i class="fas fa-cog"></i>
+                            <i class="fas fa-sliders-h"></i>
                             <span>Settings</span>
                         </button>
                         <div class="dropdown-divider"></div>
                         <button class="dropdown-item" id="dropdown-logout">
-                            <i class="fas fa-sign-out-alt"></i>
+                            <i class="fas fa-power-off"></i>
                             <span>Logout</span>
                         </button>
                     </div>
