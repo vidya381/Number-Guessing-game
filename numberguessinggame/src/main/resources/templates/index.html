@@ -167,6 +167,39 @@
         </div>
     </div>
 
+    <!-- Achievements Modal -->
+    <div id="achievements-modal" class="modal" style="display: none;">
+        <div class="modal-content achievements-modal-content">
+            <span class="close-modal" id="close-achievements">&times;</span>
+            <h2 class="achievements-title">🏆 YOUR ACHIEVEMENTS</h2>
+
+            <div id="achievements-stats" class="achievements-stats">
+                <div class="stat-box">
+                    <span class="stat-number" id="unlocked-count">0</span>
+                    <span class="stat-label">Unlocked</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number" id="total-count">19</span>
+                    <span class="stat-label">Total</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-number" id="completion-percent">0%</span>
+                    <span class="stat-label">Complete</span>
+                </div>
+            </div>
+
+            <div class="achievements-tabs">
+                <button class="achievement-tab active" data-filter="all">All</button>
+                <button class="achievement-tab" data-filter="unlocked">Unlocked</button>
+                <button class="achievement-tab" data-filter="locked">Locked</button>
+            </div>
+
+            <div id="achievements-list" class="achievements-list">
+                <!-- Achievements will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
     <script src="/js/script.js"></script>
     <div id="confetti-container"></div>
 </body>

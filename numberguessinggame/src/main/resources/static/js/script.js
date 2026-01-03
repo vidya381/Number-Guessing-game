@@ -100,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updateRecentScores();
     attachEventListeners();
     attachAuthListeners();
+    setupAchievementModalListeners();
     initializeDarkMode();
     createFloatingNumbers();
     updateGameStatus('welcome');
@@ -1060,6 +1061,9 @@ function updateAchievementBadge(count) {
     }
 }
 
+let currentAchievements = [];
+let currentFilter = 'all';
+
 async function showAchievementsModal() {
     if (!authToken || !currentUser) {
         alert('Please log in to view your achievements!');
@@ -1077,7 +1081,9 @@ async function showAchievementsModal() {
         const data = await response.json();
 
         if (data.success && data.achievements) {
+            currentAchievements = data.achievements;
             displayAchievements(data.achievements);
+            document.getElementById('achievements-modal').style.display = 'flex';
         } else {
             alert('Failed to load achievements');
         }
@@ -1088,29 +1094,149 @@ async function showAchievementsModal() {
 }
 
 function displayAchievements(achievements) {
-    // Simple alert display for now - can be upgraded to modal later
-    let message = '🏆 YOUR ACHIEVEMENTS 🏆\n\n';
-
     const unlocked = achievements.filter(a => a.unlocked);
     const locked = achievements.filter(a => !a.unlocked);
+    const total = achievements.length;
+    const completionPercent = Math.round((unlocked.length / total) * 100);
 
-    if (unlocked.length > 0) {
-        message += `✅ UNLOCKED (${unlocked.length}):\n`;
-        unlocked.forEach(a => {
-            message += `\n${a.name}\n${a.description}\n`;
+    // Update stats
+    document.getElementById('unlocked-count').textContent = unlocked.length;
+    document.getElementById('total-count').textContent = total;
+    document.getElementById('completion-percent').textContent = completionPercent + '%';
+
+    // Render achievements list
+    renderAchievementsList(achievements);
+}
+
+function renderAchievementsList(achievements) {
+    const listContainer = document.getElementById('achievements-list');
+    listContainer.innerHTML = '';
+
+    // Filter achievements based on current filter
+    let filteredAchievements = achievements;
+    if (currentFilter === 'unlocked') {
+        filteredAchievements = achievements.filter(a => a.unlocked);
+    } else if (currentFilter === 'locked') {
+        filteredAchievements = achievements.filter(a => !a.unlocked);
+    }
+
+    // Sort: unlocked first, then by name
+    filteredAchievements.sort((a, b) => {
+        if (a.unlocked && !b.unlocked) return -1;
+        if (!a.unlocked && b.unlocked) return 1;
+        return a.name.localeCompare(b.name);
+    });
+
+    filteredAchievements.forEach(achievement => {
+        const item = createAchievementCard(achievement);
+        listContainer.appendChild(item);
+    });
+
+    if (filteredAchievements.length === 0) {
+        listContainer.innerHTML = '<p style="text-align: center; color: var(--text-color); opacity: 0.7; padding: 40px;">No achievements in this category yet.</p>';
+    }
+}
+
+function createAchievementCard(achievement) {
+    const card = document.createElement('div');
+    card.className = 'achievement-item ' + (achievement.unlocked ? 'unlocked' : 'locked');
+
+    const iconWrapper = document.createElement('div');
+    iconWrapper.className = 'achievement-icon-wrapper';
+    iconWrapper.style.color = achievement.iconColor || '#8b7abf';
+
+    const icon = document.createElement('i');
+    icon.className = achievement.iconClass + ' achievement-icon';
+    iconWrapper.appendChild(icon);
+
+    const info = document.createElement('div');
+    info.className = 'achievement-info';
+
+    const header = document.createElement('div');
+    header.className = 'achievement-header';
+
+    const name = document.createElement('div');
+    name.className = 'achievement-name';
+    name.textContent = achievement.name;
+    header.appendChild(name);
+
+    if (achievement.unlocked) {
+        const badge = document.createElement('span');
+        badge.className = 'achievement-badge-unlocked';
+        badge.textContent = '✓';
+        header.appendChild(badge);
+    }
+
+    const description = document.createElement('div');
+    description.className = 'achievement-description';
+    description.textContent = achievement.description;
+
+    const meta = document.createElement('div');
+    meta.className = 'achievement-meta';
+
+    const type = document.createElement('div');
+    type.className = 'achievement-type';
+    type.innerHTML = '<i class="fas fa-tag"></i> ' + formatType(achievement.type);
+
+    const points = document.createElement('div');
+    points.className = 'achievement-points';
+    points.innerHTML = '<i class="fas fa-star"></i> ' + achievement.points + ' pts';
+
+    meta.appendChild(type);
+    meta.appendChild(points);
+
+    info.appendChild(header);
+    info.appendChild(description);
+    info.appendChild(meta);
+
+    card.appendChild(iconWrapper);
+    card.appendChild(info);
+
+    return card;
+}
+
+function formatType(type) {
+    const typeMap = {
+        'MILESTONE': 'Milestone',
+        'SKILL': 'Skill',
+        'DIFFICULTY': 'Difficulty',
+        'STREAK': 'Streak'
+    };
+    return typeMap[type] || type;
+}
+
+function setupAchievementModalListeners() {
+    // Close modal
+    const closeBtn = document.getElementById('close-achievements');
+    const modal = document.getElementById('achievements-modal');
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
         });
     }
 
-    message += `\n\n🔒 LOCKED (${locked.length}):\n`;
-    locked.slice(0, 5).forEach(a => {
-        message += `\n${a.name}\n${a.description}\n`;
-    });
-
-    if (locked.length > 5) {
-        message += `\n... and ${locked.length - 5} more!`;
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
     }
 
-    alert(message);
+    // Tab filtering
+    const tabs = document.querySelectorAll('.achievement-tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Update active state
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Update filter and re-render
+            currentFilter = tab.dataset.filter;
+            renderAchievementsList(currentAchievements);
+        });
+    });
 }
 
 // Leaderboard Functions
