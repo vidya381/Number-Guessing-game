@@ -20,26 +20,57 @@
     <div id="game-header">
         <h1 class="game-title" id="game-title-header">NumVana 🎮</h1>
         <div id="controls">
+            <!-- Theme Toggle (Always visible) -->
             <button id="theme-toggle" aria-label="Toggle dark mode">
                 <i class="fas fa-moon"></i>
             </button>
-            <button id="sound-toggle" aria-label="Toggle sound">
-                <i class="fas fa-volume-up"></i>
-            </button>
-            <div id="auth-controls">
+
+            <!-- Guest Controls (Visible when NOT logged in) -->
+            <div id="guest-controls" style="display: none;">
+                <button id="settings-btn" class="header-icon-btn" aria-label="Settings" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </button>
                 <button id="login-btn" class="auth-btn">LOGIN</button>
-                <div id="user-profile" style="display: none;">
-                    <div id="streak-display" style="display: none; margin-right: 10px;">
-                        <span class="streak-badge" id="win-streak-badge" title="Current Win Streak">
-                            <i class="fas fa-fire"></i>
-                            <span id="win-streak-count">0</span>
-                        </span>
-                    </div>
-                    <button id="profile-btn" class="profile-btn" title="View Profile">
-                        <i class="fas fa-user"></i>
-                        <span id="username-display"></span>
+            </div>
+
+            <!-- User Controls (Visible when logged in) -->
+            <div id="user-controls" style="display: none;">
+                <!-- Win Streak Display -->
+                <div id="streak-display" class="header-streak">
+                    <i class="fas fa-fire"></i>
+                    <span id="win-streak-count">0</span>
+                </div>
+
+                <!-- Profile Dropdown -->
+                <div class="profile-dropdown-container">
+                    <button id="profile-dropdown-btn" class="header-icon-btn" aria-label="Profile" title="Profile">
+                        <i class="fas fa-user-circle"></i>
                     </button>
-                    <button id="logout-btn" class="auth-btn">LOGOUT</button>
+                    <div id="profile-dropdown" class="profile-dropdown" style="display: none;">
+                        <div class="dropdown-user-info">
+                            <div class="dropdown-avatar">
+                                <i class="fas fa-user-circle"></i>
+                            </div>
+                            <div class="dropdown-user-details">
+                                <div class="dropdown-username" id="dropdown-username">Username</div>
+                                <div class="dropdown-email" id="dropdown-email">email@example.com</div>
+                            </div>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" id="dropdown-view-profile">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>View Profile</span>
+                        </button>
+                        <button class="dropdown-item" id="dropdown-settings">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </button>
+                        <div class="dropdown-divider"></div>
+                        <button class="dropdown-item" id="dropdown-logout">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -326,6 +357,43 @@
                 <h3>📜 RECENT GAMES</h3>
                 <div class="recent-games-list" id="profile-recent-games">
                     <!-- Recent games will be inserted here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal" style="display: none;">
+        <div class="modal-content settings-modal-content">
+            <span class="close-modal" id="close-settings">&times;</span>
+            <h2 class="settings-title">⚙️ SETTINGS</h2>
+
+            <div class="settings-section">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-label">
+                            <i class="fas fa-volume-up"></i>
+                            <span>Sound Effects</span>
+                        </div>
+                        <div class="setting-description">Play sounds during gameplay</div>
+                    </div>
+                    <button id="sound-toggle-setting" class="toggle-btn" aria-label="Toggle sound">
+                        <i class="fas fa-volume-up"></i>
+                    </button>
+                </div>
+
+                <!-- Future settings can be added here -->
+                <div class="setting-item disabled">
+                    <div class="setting-info">
+                        <div class="setting-label">
+                            <i class="fas fa-bell"></i>
+                            <span>Notifications</span>
+                        </div>
+                        <div class="setting-description">Coming soon...</div>
+                    </div>
+                    <div class="toggle-btn-placeholder">
+                        <span class="coming-soon-badge">Soon</span>
+                    </div>
                 </div>
             </div>
         </div>

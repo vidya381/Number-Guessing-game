@@ -2144,3 +2144,390 @@ body.dark-mode .achievement-summary-card {
         text-align: left;
     }
 }
+
+/* ===== New Header Layout ===== */
+
+/* Header icon button styling */
+.header-icon-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--button-text-color);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.header-icon-btn:hover {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(78, 168, 222, 0.35);
+}
+
+/* Header streak display */
+.header-streak {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+    color: white;
+    padding: 8px 14px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.header-streak i {
+    font-size: 18px;
+    animation: flicker 2s infinite;
+}
+
+.header-streak:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255, 107, 107, 0.4);
+}
+
+@keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+}
+
+/* Guest and User controls layout */
+#guest-controls,
+#user-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* Profile Dropdown Styles */
+.profile-dropdown-container {
+    position: relative;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    min-width: 280px;
+    background: var(--card-background);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(var(--primary-color-rgb), 0.2);
+    z-index: 1000;
+    animation: dropdownFadeIn 0.2s ease;
+    overflow: hidden;
+}
+
+@keyframes dropdownFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    background: linear-gradient(135deg, rgba(var(--primary-color-rgb), 0.1) 0%, rgba(var(--secondary-color-rgb), 0.05) 100%);
+}
+
+.dropdown-avatar {
+    font-size: 42px;
+    color: var(--primary-color);
+}
+
+.dropdown-user-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.dropdown-username {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-color);
+    margin-bottom: 2px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-email {
+    font-size: 13px;
+    color: var(--text-secondary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: rgba(var(--primary-color-rgb), 0.1);
+    margin: 4px 0;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    color: var(--text-color);
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
+}
+
+.dropdown-item i {
+    font-size: 16px;
+    width: 20px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.dropdown-item:hover {
+    background: rgba(var(--primary-color-rgb), 0.08);
+}
+
+.dropdown-item:active {
+    background: rgba(var(--primary-color-rgb), 0.15);
+}
+
+/* Settings Modal Styles */
+.settings-modal-content {
+    max-width: 500px;
+    padding: 35px 30px;
+}
+
+.settings-title {
+    text-align: center;
+    color: var(--primary-color);
+    margin: 0 0 30px 0;
+    font-size: 26px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.settings-section {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 20px;
+    background: var(--card-background);
+    border-radius: 12px;
+    border: 1px solid rgba(var(--primary-color-rgb), 0.15);
+    transition: all 0.3s ease;
+}
+
+.setting-item:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 15px var(--shadow-color);
+    transform: translateY(-2px);
+}
+
+.setting-item.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.setting-item.disabled:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.setting-info {
+    flex: 1;
+}
+
+.setting-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 4px;
+}
+
+.setting-label i {
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.setting-description {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.toggle-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--button-text-color);
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.toggle-btn:hover {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(78, 168, 222, 0.35);
+}
+
+.toggle-btn-placeholder {
+    display: flex;
+    align-items: center;
+}
+
+.coming-soon-badge {
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 15px;
+    text-transform: uppercase;
+}
+
+/* Dark Mode Overrides for New Components */
+body.dark-mode .profile-dropdown {
+    background: var(--card-background);
+    border-color: rgba(167, 139, 250, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+body.dark-mode .dropdown-user-info {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(78, 168, 222, 0.08) 100%);
+}
+
+body.dark-mode .dropdown-divider {
+    background: rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode .dropdown-item:hover {
+    background: rgba(167, 139, 250, 0.12);
+}
+
+body.dark-mode .setting-item {
+    background: var(--input-background);
+    border-color: rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode .setting-item:hover {
+    border-color: var(--secondary-color);
+    box-shadow: 0 4px 15px rgba(167, 139, 250, 0.3);
+}
+
+body.dark-mode .header-streak {
+    background: linear-gradient(135deg, #e74c3c 0%, #ff6b6b 100%);
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+}
+
+body.dark-mode .header-streak:hover {
+    box-shadow: 0 6px 16px rgba(231, 76, 60, 0.5);
+}
+
+/* Responsive Design for New Header */
+@media (max-width: 768px) {
+    .profile-dropdown {
+        min-width: 260px;
+        right: -10px;
+    }
+
+    .dropdown-username {
+        font-size: 15px;
+    }
+
+    .dropdown-email {
+        font-size: 12px;
+    }
+
+    .header-streak {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    .header-streak i {
+        font-size: 16px;
+    }
+
+    .settings-modal-content {
+        max-width: 90%;
+        padding: 25px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .profile-dropdown {
+        min-width: 240px;
+        right: -20px;
+    }
+
+    .header-icon-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .header-streak {
+        padding: 5px 10px;
+        font-size: 13px;
+        gap: 4px;
+    }
+
+    .header-streak i {
+        font-size: 14px;
+    }
+
+    .settings-title {
+        font-size: 22px;
+    }
+
+    .setting-item {
+        padding: 14px 16px;
+    }
+
+    .setting-label {
+        font-size: 14px;
+    }
+
+    .toggle-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+}

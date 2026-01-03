@@ -163,7 +163,7 @@ function attachEventListeners() {
     document.getElementById('quit').addEventListener('click', showHomePage);
     document.getElementById('quit-game').addEventListener('click', quitGame);
     document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
-    document.getElementById('sound-toggle').addEventListener('click', toggleSound);
+    // Sound toggle moved to settings modal - handled by setupSettingsModal()
 }
 
 function createFloatingNumbers() {
@@ -839,94 +839,87 @@ function initializeAuth() {
 }
 
 function updateAuthUI() {
-    const loginBtn = document.getElementById('login-btn');
-    const userProfile = document.getElementById('user-profile');
-    const usernameDisplay = document.getElementById('username-display');
-    const streakDisplay = document.getElementById('streak-display');
+    const guestControls = document.getElementById('guest-controls');
+    const userControls = document.getElementById('user-controls');
     const winStreakCount = document.getElementById('win-streak-count');
+    const dropdownUsername = document.getElementById('dropdown-username');
+    const dropdownEmail = document.getElementById('dropdown-email');
 
-    if (!loginBtn || !userProfile || !usernameDisplay) return;
+    if (!guestControls || !userControls) return;
 
     if (currentUser) {
-        loginBtn.style.display = 'none';
-        userProfile.style.display = 'flex';
-        usernameDisplay.textContent = currentUser.username;
+        // Show user controls, hide guest controls
+        guestControls.style.display = 'none';
+        userControls.style.display = 'flex';
+
+        // Update dropdown user info
+        if (dropdownUsername) dropdownUsername.textContent = currentUser.username || 'User';
+        if (dropdownEmail) dropdownEmail.textContent = currentUser.email || '';
 
         // Update streak display
-        if (streakDisplay && winStreakCount) {
-            if (currentStreak > 0) {
-                streakDisplay.style.display = 'block';
-                winStreakCount.textContent = currentStreak;
-            } else {
-                streakDisplay.style.display = 'none';
-            }
+        if (winStreakCount) {
+            winStreakCount.textContent = currentStreak || 0;
         }
     } else {
-        loginBtn.style.display = 'block';
-        userProfile.style.display = 'none';
-        usernameDisplay.textContent = '';
-
-        // Hide streak display when logged out
-        if (streakDisplay) {
-            streakDisplay.style.display = 'none';
-        }
+        // Show guest controls, hide user controls
+        guestControls.style.display = 'flex';
+        userControls.style.display = 'none';
     }
 }
 
 function attachAuthListeners() {
     const loginBtn = document.getElementById('login-btn');
-    const logoutBtn = document.getElementById('logout-btn');
     const authModal = document.getElementById('auth-modal');
     const closeModal = document.querySelector('.close-modal');
     const showSignup = document.getElementById('show-signup');
     const showLogin = document.getElementById('show-login');
     const loginFormElement = document.getElementById('login-form-element');
     const signupFormElement = document.getElementById('signup-form-element');
-    
+
     if (!loginBtn || !authModal || !closeModal) return;
-    
+
     loginBtn.addEventListener('click', () => {
         authModal.style.display = 'flex';
         showLoginForm();
     });
-    
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', logout);
-    }
-    
+
     closeModal.addEventListener('click', () => {
         authModal.style.display = 'none';
         clearAuthForms();
     });
-    
+
     authModal.addEventListener('click', (e) => {
         if (e.target === authModal) {
             authModal.style.display = 'none';
             clearAuthForms();
         }
     });
-    
+
     if (showSignup) {
         showSignup.addEventListener('click', (e) => {
             e.preventDefault();
             showSignupForm();
         });
     }
-    
+
     if (showLogin) {
         showLogin.addEventListener('click', (e) => {
             e.preventDefault();
             showLoginForm();
         });
     }
-    
+
     if (loginFormElement) {
         loginFormElement.addEventListener('submit', handleLogin);
     }
-    
+
     if (signupFormElement) {
         signupFormElement.addEventListener('submit', handleSignup);
     }
+
+    // Setup dropdown and settings listeners
+    setupHeaderDropdown();
+    setupSettingsModal();
 }
 
 function showLoginForm() {
@@ -1075,6 +1068,117 @@ function logout() {
     localStorage.removeItem('currentUser');
     updateAuthUI();
     alert('Logged out successfully!');
+}
+
+function setupHeaderDropdown() {
+    const dropdownBtn = document.getElementById('profile-dropdown-btn');
+    const dropdown = document.getElementById('profile-dropdown');
+    const viewProfileBtn = document.getElementById('dropdown-view-profile');
+    const settingsBtn = document.getElementById('dropdown-settings');
+    const logoutBtn = document.getElementById('dropdown-logout');
+
+    if (!dropdownBtn || !dropdown) return;
+
+    // Toggle dropdown on button click
+    dropdownBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!dropdown.contains(e.target) && !dropdownBtn.contains(e.target)) {
+            dropdown.style.display = 'none';
+        }
+    });
+
+    // View Profile
+    if (viewProfileBtn) {
+        viewProfileBtn.addEventListener('click', () => {
+            dropdown.style.display = 'none';
+            loadAndShowProfile();
+        });
+    }
+
+    // Settings
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', () => {
+            dropdown.style.display = 'none';
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) {
+                settingsModal.style.display = 'flex';
+            }
+        });
+    }
+
+    // Logout
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            dropdown.style.display = 'none';
+            logout();
+        });
+    }
+}
+
+function setupSettingsModal() {
+    const settingsModal = document.getElementById('settings-modal');
+    const closeSettingsBtn = document.getElementById('close-settings');
+    const settingsBtnGuest = document.getElementById('settings-btn');
+    const soundToggleSetting = document.getElementById('sound-toggle-setting');
+
+    if (!settingsModal) return;
+
+    // Open settings modal from guest controls
+    if (settingsBtnGuest) {
+        settingsBtnGuest.addEventListener('click', () => {
+            settingsModal.style.display = 'flex';
+        });
+    }
+
+    // Close settings modal
+    if (closeSettingsBtn) {
+        closeSettingsBtn.addEventListener('click', () => {
+            settingsModal.style.display = 'none';
+        });
+    }
+
+    // Close when clicking outside modal
+    settingsModal.addEventListener('click', (e) => {
+        if (e.target === settingsModal) {
+            settingsModal.style.display = 'none';
+        }
+    });
+
+    // Sound toggle in settings
+    if (soundToggleSetting) {
+        // Initialize button state
+        updateSoundToggleButton(soundToggleSetting);
+
+        soundToggleSetting.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            localStorage.setItem('soundEnabled', soundEnabled);
+            updateSoundToggleButton(soundToggleSetting);
+
+            // Also update the old sound toggle button if it exists
+            const oldSoundToggle = document.getElementById('sound-toggle');
+            if (oldSoundToggle) {
+                updateSoundToggleButton(oldSoundToggle);
+            }
+        });
+    }
+}
+
+function updateSoundToggleButton(button) {
+    if (!button) return;
+
+    const icon = button.querySelector('i');
+    if (icon) {
+        if (soundEnabled) {
+            icon.className = 'fas fa-volume-up';
+        } else {
+            icon.className = 'fas fa-volume-mute';
+        }
+    }
 }
 
 // Achievement Functions (achievement summary and badge functions removed - now shown in profile)
