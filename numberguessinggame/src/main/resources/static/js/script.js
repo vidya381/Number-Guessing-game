@@ -833,9 +833,11 @@ function initializeAuth() {
         authToken = storedToken;
         currentUser = JSON.parse(storedUser);
         currentStreak = currentUser.currentWinStreak || 0;
-        updateAuthUI();
         updateStreakStats();
     }
+
+    // Always call updateAuthUI to show correct controls (guest or user)
+    updateAuthUI();
 }
 
 function updateAuthUI() {
