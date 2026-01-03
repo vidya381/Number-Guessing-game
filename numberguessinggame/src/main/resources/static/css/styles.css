@@ -1103,19 +1103,13 @@ body.dark-mode .close-modal {
 
 .username-cell {
     font-weight: 700;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
 }
 
 .score-cell {
     text-align: center;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--accent-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--accent-color);
 }
 
 .winrate-cell {
@@ -1148,6 +1142,14 @@ body.dark-mode .leaderboard-table tr.rank-2 td {
 
 body.dark-mode .leaderboard-table tr.rank-3 td {
     background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(184, 115, 51, 0.1) 100%);
+}
+
+body.dark-mode .username-cell {
+    color: var(--primary-color);
+}
+
+body.dark-mode .score-cell {
+    color: var(--accent-color);
 }
 
 /* Responsive leaderboard */

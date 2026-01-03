@@ -600,6 +600,9 @@ function endGame(won) {
 
     updateGameStatus(won ? 'won' : 'lost');
 
+    // Mark that a game was just completed so leaderboard can refresh
+    gameJustCompleted = true;
+
     // Reset streak to 0 on loss
     if (!won && currentUser) {
         currentStreak = 0;
@@ -696,13 +699,18 @@ function addToRecentScores(difficulty, attempts, time) {
     updateRecentScores();
 }
 
+let gameJustCompleted = false;
+
 function showHomePage() {
     updateGameStatus('welcome');
     document.getElementById('home-page').style.display = 'block';
     document.getElementById('game-page').style.display = 'none';
     document.getElementById('result-page').style.display = 'none';
     updateStreakStats(); // Update streak stats display
-    loadLeaderboard(); // Refresh leaderboard when returning to home
+
+    // Force refresh leaderboard if game was just completed, otherwise use cache
+    loadLeaderboard(gameJustCompleted);
+    gameJustCompleted = false;
 }
 
 function quitGame() {
@@ -1413,17 +1421,35 @@ function createAchievementConfetti() {
 }
 
 // Leaderboard Functions
-async function loadLeaderboard() {
+let leaderboardCache = null;
+let leaderboardCacheTime = 0;
+const LEADERBOARD_CACHE_DURATION = 30000; // 30 seconds
+
+async function loadLeaderboard(forceRefresh = false) {
     const loadingDiv = document.getElementById('leaderboard-loading');
     const contentDiv = document.getElementById('leaderboard-content');
 
     if (!loadingDiv || !contentDiv) return;
+
+    // Check if we have cached data and it's still valid
+    const now = Date.now();
+    if (!forceRefresh && leaderboardCache && (now - leaderboardCacheTime) < LEADERBOARD_CACHE_DURATION) {
+        // Use cached data
+        contentDiv.innerHTML = createLeaderboardHTML(leaderboardCache);
+        loadingDiv.style.display = 'none';
+        contentDiv.style.display = 'block';
+        return;
+    }
 
     try {
         const response = await fetch('/api/leaderboard?limit=10');
         const data = await response.json();
 
         if (data.success && data.leaderboard && data.leaderboard.length > 0) {
+            // Update cache
+            leaderboardCache = data.leaderboard;
+            leaderboardCacheTime = now;
+
             contentDiv.innerHTML = createLeaderboardHTML(data.leaderboard);
             loadingDiv.style.display = 'none';
             contentDiv.style.display = 'block';
