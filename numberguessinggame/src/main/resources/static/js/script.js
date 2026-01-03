@@ -104,7 +104,6 @@ document.addEventListener('DOMContentLoaded', function () {
     updateRecentScores();
     attachEventListeners();
     attachAuthListeners();
-    setupAchievementModalListeners();
     setupProfileListeners();
     initializeDarkMode();
     createFloatingNumbers();
@@ -650,12 +649,7 @@ function endGame(won) {
         addToRecentScores(currentDifficulty, attempts, time);
     }
 
-    // Refresh achievement badge after game completion (with delay for server processing)
-    if (currentUser && authToken) {
-        setTimeout(() => {
-            loadAchievementSummary();
-        }, 1000);
-    }
+    // Achievement data will be refreshed when user opens profile
 
     document.getElementById('play-again').style.display = 'inline-block';
     document.getElementById('quit').style.display = 'inline-block';
@@ -840,7 +834,6 @@ function initializeAuth() {
         currentUser = JSON.parse(storedUser);
         currentStreak = currentUser.currentWinStreak || 0;
         updateAuthUI();
-        loadAchievementSummary();
         updateStreakStats();
     }
 }
@@ -934,12 +927,6 @@ function attachAuthListeners() {
     if (signupFormElement) {
         signupFormElement.addEventListener('submit', handleSignup);
     }
-
-    // Achievement icon click handler
-    const achievementIcon = document.getElementById('achievement-icon');
-    if (achievementIcon) {
-        achievementIcon.addEventListener('click', showAchievementsModal);
-    }
 }
 
 function showLoginForm() {
@@ -1025,7 +1012,6 @@ async function handleLogin(e) {
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
             updateAuthUI();
-            loadAchievementSummary();
             updateStreakStats();
             document.getElementById('auth-modal').style.display = 'none';
             clearAuthForms();
@@ -1088,131 +1074,13 @@ function logout() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('currentUser');
     updateAuthUI();
-    updateAchievementBadge(0); // Reset badge on logout
     alert('Logged out successfully!');
 }
 
-// Achievement Functions
-async function loadAchievementSummary() {
-    if (!authToken || !currentUser) {
-        updateAchievementBadge(0);
-        return;
-    }
-
-    try {
-        const response = await fetch('/api/achievements/summary', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken
-            }
-        });
-
-        const data = await response.json();
-
-        if (data.success && data.summary) {
-            achievementSummary = data.summary;
-            achievementCount = data.summary.unlockedCount || 0;
-            updateAchievementBadge(achievementCount);
-        } else {
-            updateAchievementBadge(0);
-        }
-    } catch (error) {
-        console.error('Failed to load achievement summary:', error);
-        updateAchievementBadge(0);
-    }
-}
-
-function updateAchievementBadge(count) {
-    const badge = document.getElementById('achievement-count');
-    const container = document.getElementById('achievement-badge-container');
-
-    if (!badge || !container) return;
-
-    if (count > 0) {
-        badge.textContent = count;
-        badge.style.display = 'flex';
-        badge.classList.add('has-achievements');
-    } else {
-        badge.style.display = 'none';
-        badge.classList.remove('has-achievements');
-    }
-}
+// Achievement Functions (achievement summary and badge functions removed - now shown in profile)
 
 let currentAchievements = [];
 let currentFilter = 'all';
-
-async function showAchievementsModal() {
-    if (!authToken || !currentUser) {
-        alert('Please log in to view your achievements!');
-        return;
-    }
-
-    try {
-        const response = await fetch('/api/achievements', {
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authToken
-            }
-        });
-
-        const data = await response.json();
-
-        if (data.success && data.achievements) {
-            currentAchievements = data.achievements;
-            displayAchievements(data.achievements);
-            document.getElementById('achievements-modal').style.display = 'flex';
-        } else {
-            alert('Failed to load achievements');
-        }
-    } catch (error) {
-        console.error('Failed to load achievements:', error);
-        alert('Failed to load achievements');
-    }
-}
-
-function displayAchievements(achievements) {
-    const unlocked = achievements.filter(a => a.unlocked);
-    const locked = achievements.filter(a => !a.unlocked);
-    const total = achievements.length;
-    const completionPercent = Math.round((unlocked.length / total) * 100);
-
-    // Update stats
-    document.getElementById('unlocked-count').textContent = unlocked.length;
-    document.getElementById('total-count').textContent = total;
-    document.getElementById('completion-percent').textContent = completionPercent + '%';
-
-    // Render achievements list
-    renderAchievementsList(achievements);
-}
-
-function renderAchievementsList(achievements) {
-    const listContainer = document.getElementById('achievements-list');
-    listContainer.innerHTML = '';
-
-    // Filter achievements based on current filter
-    let filteredAchievements = achievements;
-    if (currentFilter === 'unlocked') {
-        filteredAchievements = achievements.filter(a => a.unlocked);
-    } else if (currentFilter === 'locked') {
-        filteredAchievements = achievements.filter(a => !a.unlocked);
-    }
-
-    // Sort: unlocked first, then by name
-    filteredAchievements.sort((a, b) => {
-        if (a.unlocked && !b.unlocked) return -1;
-        if (!a.unlocked && b.unlocked) return 1;
-        return a.name.localeCompare(b.name);
-    });
-
-    filteredAchievements.forEach(achievement => {
-        const item = createAchievementCard(achievement);
-        listContainer.appendChild(item);
-    });
-
-    if (filteredAchievements.length === 0) {
-        listContainer.innerHTML = '<p style="text-align: center; color: var(--text-color); opacity: 0.7; padding: 40px;">No achievements in this category yet.</p>';
-    }
-}
 
 function createAchievementCard(achievement) {
     const card = document.createElement('div');
@@ -1280,40 +1148,6 @@ function formatType(type) {
         'STREAK': 'Streak'
     };
     return typeMap[type] || type;
-}
-
-function setupAchievementModalListeners() {
-    // Close modal
-    const closeBtn = document.getElementById('close-achievements');
-    const modal = document.getElementById('achievements-modal');
-
-    if (closeBtn) {
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-        });
-    }
-
-    if (modal) {
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.style.display = 'none';
-            }
-        });
-    }
-
-    // Tab filtering
-    const tabs = document.querySelectorAll('.achievement-tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            // Update active state
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            // Update filter and re-render
-            currentFilter = tab.dataset.filter;
-            renderAchievementsList(currentAchievements);
-        });
-    });
 }
 
 // Achievement Notification System
@@ -1592,6 +1426,8 @@ async function loadAndShowProfile() {
 
         if (data.success && data.profile) {
             populateProfileModal(data.profile);
+            // Load achievements into profile
+            await loadProfileAchievements();
             if (loadingIndicator) loadingIndicator.style.display = 'none';
             if (profileContent) profileContent.style.display = 'block';
         } else {
@@ -1772,4 +1608,107 @@ function formatGameTime(seconds) {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+// Profile Achievements Functions
+let profileCurrentFilter = 'all';
+let profileAchievements = [];
+
+async function loadProfileAchievements() {
+    if (!authToken || !currentUser) {
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/achievements', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + authToken
+            }
+        });
+
+        const data = await response.json();
+
+        if (data.success && data.achievements) {
+            profileAchievements = data.achievements;
+            displayProfileAchievements(data.achievements);
+            setupProfileAchievementTabs();
+        }
+    } catch (error) {
+        console.error('Failed to load achievements in profile:', error);
+    }
+}
+
+function displayProfileAchievements(achievements) {
+    const unlocked = achievements.filter(a => a.unlocked);
+    const total = achievements.length;
+    const completionPercent = Math.round((unlocked.length / total) * 100);
+
+    // Update stats
+    const unlockedCountEl = document.getElementById('profile-unlocked-count');
+    const totalCountEl = document.getElementById('profile-total-count');
+    const completionPercentEl = document.getElementById('profile-completion-percent');
+
+    if (unlockedCountEl) unlockedCountEl.textContent = unlocked.length;
+    if (totalCountEl) totalCountEl.textContent = total;
+    if (completionPercentEl) completionPercentEl.textContent = completionPercent + '%';
+
+    // Render achievements list
+    renderProfileAchievementsList(achievements);
+}
+
+function renderProfileAchievementsList(achievements) {
+    const listContainer = document.getElementById('profile-achievements-list');
+    if (!listContainer) return;
+
+    listContainer.innerHTML = '';
+
+    // Filter achievements based on current filter
+    let filteredAchievements = achievements;
+    if (profileCurrentFilter === 'unlocked') {
+        filteredAchievements = achievements.filter(a => a.unlocked);
+    } else if (profileCurrentFilter === 'locked') {
+        filteredAchievements = achievements.filter(a => !a.unlocked);
+    }
+
+    // Sort: unlocked first, then by name
+    filteredAchievements.sort((a, b) => {
+        if (a.unlocked && !b.unlocked) return -1;
+        if (!a.unlocked && b.unlocked) return 1;
+        return a.name.localeCompare(b.name);
+    });
+
+    filteredAchievements.forEach(achievement => {
+        const item = createAchievementCard(achievement);
+        listContainer.appendChild(item);
+    });
+
+    if (filteredAchievements.length === 0) {
+        listContainer.innerHTML = '<p style="text-align: center; color: var(--text-color); opacity: 0.7; padding: 40px;">No achievements in this category yet.</p>';
+    }
+}
+
+function setupProfileAchievementTabs() {
+    const modal = document.getElementById('profile-modal');
+    if (!modal) return;
+
+    const tabs = modal.querySelectorAll('.achievement-tab');
+    tabs.forEach(tab => {
+        // Remove any existing listeners
+        tab.replaceWith(tab.cloneNode(true));
+    });
+
+    // Re-query after replacing
+    const newTabs = modal.querySelectorAll('.achievement-tab');
+    newTabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            // Update active state
+            newTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Update filter and re-render
+            profileCurrentFilter = tab.dataset.filter;
+            renderProfileAchievementsList(profileAchievements);
+        });
+    });
 }
