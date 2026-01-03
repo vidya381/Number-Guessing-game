@@ -144,7 +144,23 @@ public class GameController {
 
         // Save game and clean up session when game ends (won)
         if (isCorrect) {
-            saveGameToDatabase(gameSession, true);
+            List<Achievement> newAchievements = saveGameToDatabase(gameSession, true);
+
+            // Include newly unlocked achievements in response
+            if (!newAchievements.isEmpty()) {
+                List<Map<String, Object>> achievementData = new ArrayList<>();
+                for (Achievement achievement : newAchievements) {
+                    Map<String, Object> achData = new HashMap<>();
+                    achData.put("name", achievement.getName());
+                    achData.put("description", achievement.getDescription());
+                    achData.put("iconClass", achievement.getIconClass());
+                    achData.put("iconColor", achievement.getIconColor());
+                    achData.put("points", achievement.getPoints());
+                    achievementData.add(achData);
+                }
+                response.put("newAchievements", achievementData);
+            }
+
             gameSessions.remove(compositeKey);
         }
 
@@ -195,15 +211,17 @@ public class GameController {
         return Integer.parseInt(numberBuilder.toString());
     }
 
-    private void saveGameToDatabase(GameSession gameSession, boolean won) {
+    private List<Achievement> saveGameToDatabase(GameSession gameSession, boolean won) {
+        List<Achievement> newAchievements = new ArrayList<>();
+
         // Only save if user is logged in
         if (gameSession.getUserId() == null) {
-            return;
+            return newAchievements;
         }
 
         Optional<User> userOptional = userService.findById(gameSession.getUserId());
         if (userOptional.isEmpty()) {
-            return;
+            return newAchievements;
         }
 
         User user = userOptional.get();
@@ -229,7 +247,7 @@ public class GameController {
 
         // Check and unlock achievements
         try {
-            List<Achievement> newAchievements = achievementService.checkAndUnlockAchievements(user, game);
+            newAchievements = achievementService.checkAndUnlockAchievements(user, game);
             if (!newAchievements.isEmpty()) {
                 System.out.println("User " + user.getUsername() + " unlocked " + newAchievements.size() + " achievement(s)");
             }
@@ -237,6 +255,8 @@ public class GameController {
             // Don't fail game save if achievement check fails
             System.err.println("Achievement check failed: " + e.getMessage());
         }
+
+        return newAchievements;
     }
 
 }

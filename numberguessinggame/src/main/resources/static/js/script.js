@@ -88,11 +88,14 @@ let tabId = null; // Will be generated server-side for security
 // Achievement state
 let achievementCount = 0;
 let achievementSummary = null;
+let achievementQueue = [];
+let isShowingAchievement = false;
 
 // Sound effects
 const correctSound = new Audio('/audio/correct-sound.mp3');
 const incorrectSound = new Audio('/audio/incorrect-sound.mp3');
 const winSound = new Audio('/audio/win-sound.mp3');
+const achievementSound = new Audio('/audio/win-sound.mp3'); // Can be replaced with custom achievement sound
 
 document.addEventListener('DOMContentLoaded', function () {
     initializeAuth();
@@ -431,6 +434,13 @@ function submitGuess() {
 
             if (data.correct) {
                 if (soundEnabled) winSound.play();
+
+                // Check for newly unlocked achievements
+                if (data.newAchievements && data.newAchievements.length > 0) {
+                    // Show achievement notifications
+                    showAchievementNotifications(data.newAchievements);
+                }
+
                 endGame(true);
             } else {
                 if (soundEnabled) incorrectSound.play();
@@ -1237,6 +1247,162 @@ function setupAchievementModalListeners() {
             renderAchievementsList(currentAchievements);
         });
     });
+}
+
+// Achievement Notification System
+function showAchievementNotifications(achievements) {
+    if (!achievements || achievements.length === 0) return;
+
+    // Add achievements to queue
+    achievements.forEach(achievement => {
+        achievementQueue.push(achievement);
+    });
+
+    // Start processing queue if not already showing
+    if (!isShowingAchievement) {
+        processAchievementQueue();
+    }
+}
+
+function processAchievementQueue() {
+    if (achievementQueue.length === 0) {
+        isShowingAchievement = false;
+        return;
+    }
+
+    isShowingAchievement = true;
+    const achievement = achievementQueue.shift();
+
+    displayAchievementToast(achievement);
+}
+
+function displayAchievementToast(achievement) {
+    const container = document.getElementById('achievement-toast-container');
+    if (!container) return;
+
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = 'achievement-toast';
+
+    // Icon wrapper
+    const iconWrapper = document.createElement('div');
+    iconWrapper.className = 'achievement-toast-icon-wrapper';
+    iconWrapper.style.color = achievement.iconColor || '#8b7abf';
+
+    const icon = document.createElement('i');
+    icon.className = achievement.iconClass + ' achievement-toast-icon';
+    iconWrapper.appendChild(icon);
+
+    // Content
+    const content = document.createElement('div');
+    content.className = 'achievement-toast-content';
+
+    const header = document.createElement('div');
+    header.className = 'achievement-toast-header';
+
+    const badge = document.createElement('div');
+    badge.className = 'achievement-toast-badge';
+    badge.textContent = '🏆 UNLOCKED';
+
+    header.appendChild(badge);
+
+    const title = document.createElement('div');
+    title.className = 'achievement-toast-title';
+    title.textContent = achievement.name;
+
+    const description = document.createElement('div');
+    description.className = 'achievement-toast-description';
+    description.textContent = achievement.description;
+
+    const points = document.createElement('div');
+    points.className = 'achievement-toast-points';
+    points.innerHTML = '<i class="fas fa-star"></i> +' + achievement.points + ' points';
+
+    content.appendChild(header);
+    content.appendChild(title);
+    content.appendChild(description);
+    content.appendChild(points);
+
+    // Close button
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'achievement-toast-close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.addEventListener('click', () => {
+        removeToast(toast);
+    });
+
+    // Assemble toast
+    toast.appendChild(iconWrapper);
+    toast.appendChild(content);
+    toast.appendChild(closeBtn);
+
+    // Add to container
+    container.appendChild(toast);
+
+    // Play sound
+    if (soundEnabled) {
+        achievementSound.play().catch(() => {});
+    }
+
+    // Create confetti for achievement
+    createAchievementConfetti();
+
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        removeToast(toast);
+    }, 5000);
+}
+
+function removeToast(toast) {
+    toast.classList.add('removing');
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+        }
+        // Process next achievement in queue
+        setTimeout(() => {
+            processAchievementQueue();
+        }, 300);
+    }, 500);
+}
+
+function createAchievementConfetti() {
+    const container = document.getElementById('confetti-container');
+    if (!container) return;
+
+    const colors = CONFETTI_CONFIG.COLORS;
+    const confettiCount = 50; // Smaller burst for achievements
+
+    for (let i = 0; i < confettiCount; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti-number';
+        confetti.textContent = ['🎉', '⭐', '🏆', '✨', '🎊'][Math.floor(Math.random() * 5)];
+        confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.fontSize = Math.random() * 24 + 16 + 'px';
+
+        // Position at top right (near notification)
+        confetti.style.left = window.innerWidth - 200 + 'px';
+        confetti.style.top = '100px';
+
+        // Random burst direction
+        const angle = Math.random() * Math.PI * 2;
+        const distance = Math.random() * 150 + 100;
+        const endX = Math.cos(angle) * distance;
+        const endY = Math.sin(angle) * distance;
+        const rotation = Math.random() * 720 - 360;
+
+        confetti.style.setProperty('--end-x', endX + 'px');
+        confetti.style.setProperty('--end-y', endY + 'px');
+        confetti.style.setProperty('--rotation', rotation + 'deg');
+
+        container.appendChild(confetti);
+
+        setTimeout(() => {
+            if (confetti.parentNode) {
+                confetti.parentNode.removeChild(confetti);
+            }
+        }, 4000);
+    }
 }
 
 // Leaderboard Functions
