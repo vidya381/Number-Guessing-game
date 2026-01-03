@@ -105,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
     attachEventListeners();
     attachAuthListeners();
     setupAchievementModalListeners();
+    setupProfileListeners();
     initializeDarkMode();
     createFloatingNumbers();
     updateGameStatus('welcome');
@@ -1533,4 +1534,242 @@ function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text;
     return div.innerHTML;
+}
+
+// Profile Modal Functions
+function setupProfileListeners() {
+    const profileBtn = document.getElementById('profile-btn');
+    const profileModal = document.getElementById('profile-modal');
+    const closeProfileBtn = document.getElementById('close-profile');
+
+    if (profileBtn) {
+        profileBtn.addEventListener('click', loadAndShowProfile);
+    }
+
+    if (closeProfileBtn) {
+        closeProfileBtn.addEventListener('click', () => {
+            profileModal.style.display = 'none';
+        });
+    }
+
+    if (profileModal) {
+        profileModal.addEventListener('click', (e) => {
+            if (e.target === profileModal) {
+                profileModal.style.display = 'none';
+            }
+        });
+    }
+}
+
+async function loadAndShowProfile() {
+    if (!authToken || !currentUser) {
+        alert('Please log in to view your profile!');
+        return;
+    }
+
+    const profileModal = document.getElementById('profile-modal');
+    const loadingIndicator = document.getElementById('profile-loading');
+    const profileContent = document.getElementById('profile-content');
+
+    // Show modal with loading state
+    profileModal.style.display = 'flex';
+    if (loadingIndicator) loadingIndicator.style.display = 'block';
+    if (profileContent) profileContent.style.display = 'none';
+
+    try {
+        const response = await fetch('/api/user/profile', {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + authToken
+            }
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || data.error) {
+            throw new Error(data.error || 'Failed to load profile');
+        }
+
+        if (data.success && data.profile) {
+            populateProfileModal(data.profile);
+            if (loadingIndicator) loadingIndicator.style.display = 'none';
+            if (profileContent) profileContent.style.display = 'block';
+        } else {
+            throw new Error('Invalid profile data received');
+        }
+    } catch (error) {
+        console.error('Failed to load profile:', error);
+        alert('Failed to load profile: ' + error.message);
+        profileModal.style.display = 'none';
+    }
+}
+
+function populateProfileModal(profile) {
+    // Update header info
+    const usernameEl = document.getElementById('profile-username');
+    const emailEl = document.getElementById('profile-email');
+    const joinDateEl = document.getElementById('profile-join-date');
+
+    if (usernameEl) usernameEl.textContent = profile.username || 'N/A';
+    if (emailEl) emailEl.textContent = profile.email || 'N/A';
+    if (joinDateEl) joinDateEl.textContent = formatDate(profile.createdAt);
+
+    // Update stats
+    const totalGamesEl = document.getElementById('profile-total-games');
+    const totalWinsEl = document.getElementById('profile-total-wins');
+    const winRateEl = document.getElementById('profile-win-rate');
+    const bestScoreEl = document.getElementById('profile-best-score');
+
+    if (totalGamesEl) totalGamesEl.textContent = profile.totalGames || 0;
+    if (totalWinsEl) totalWinsEl.textContent = profile.totalWins || 0;
+    if (winRateEl) winRateEl.textContent = profile.winRate || '0%';
+    if (bestScoreEl) bestScoreEl.textContent = profile.bestScore || 'Not set';
+
+    // Update streaks
+    const currentWinStreakEl = document.getElementById('profile-current-win-streak');
+    const bestWinStreakEl = document.getElementById('profile-best-win-streak');
+    const consecutiveDaysEl = document.getElementById('profile-consecutive-days');
+    const bestDaysStreakEl = document.getElementById('profile-best-days-streak');
+
+    if (currentWinStreakEl) currentWinStreakEl.textContent = profile.currentWinStreak || 0;
+    if (bestWinStreakEl) bestWinStreakEl.textContent = profile.bestWinStreak || 0;
+    if (consecutiveDaysEl) consecutiveDaysEl.textContent = profile.consecutivePlayDays || 0;
+    if (bestDaysStreakEl) bestDaysStreakEl.textContent = profile.bestPlayDayStreak || 0;
+
+    // Update difficulty breakdown
+    updateDifficultyBreakdown(profile.difficultyStats);
+
+    // Update achievements summary
+    if (profile.achievementSummary) {
+        const achievementCountEl = document.getElementById('profile-achievement-count');
+        if (achievementCountEl) {
+            achievementCountEl.textContent = `${profile.achievementSummary.unlockedCount || 0} / ${profile.achievementSummary.totalCount || 0}`;
+        }
+    }
+
+    // Update recent games
+    updateRecentGamesList(profile.recentGames || []);
+}
+
+function updateDifficultyBreakdown(difficultyStats) {
+    if (!difficultyStats) return;
+
+    const difficulties = ['EASY', 'MEDIUM', 'HARD'];
+
+    difficulties.forEach(difficulty => {
+        const stats = difficultyStats[difficulty];
+        if (!stats) return;
+
+        const winsEl = document.getElementById(`profile-${difficulty.toLowerCase()}-wins`);
+        const totalEl = document.getElementById(`profile-${difficulty.toLowerCase()}-total`);
+        const rateEl = document.getElementById(`profile-${difficulty.toLowerCase()}-rate`);
+        const progressEl = document.getElementById(`profile-${difficulty.toLowerCase()}-progress`);
+
+        const wins = stats.wins || 0;
+        const total = stats.total || 0;
+        const rate = stats.winRate || '0%';
+
+        if (winsEl) winsEl.textContent = wins;
+        if (totalEl) totalEl.textContent = total;
+        if (rateEl) rateEl.textContent = rate;
+
+        // Update progress bar
+        if (progressEl) {
+            const percentage = total > 0 ? (wins / total) * 100 : 0;
+            progressEl.style.width = percentage + '%';
+        }
+    });
+}
+
+function updateRecentGamesList(games) {
+    const recentGamesList = document.getElementById('profile-recent-games-list');
+    if (!recentGamesList) return;
+
+    recentGamesList.innerHTML = '';
+
+    if (!games || games.length === 0) {
+        recentGamesList.innerHTML = '<p style="text-align: center; opacity: 0.7; padding: 20px;">No recent games yet.</p>';
+        return;
+    }
+
+    games.forEach(game => {
+        const gameItem = document.createElement('div');
+        gameItem.className = 'recent-game-item ' + (game.won ? 'won' : 'lost');
+
+        const difficultySpan = document.createElement('span');
+        difficultySpan.className = 'game-difficulty';
+        difficultySpan.textContent = formatDifficulty(game.difficulty);
+
+        const resultSpan = document.createElement('span');
+        resultSpan.className = 'game-result';
+        resultSpan.innerHTML = game.won
+            ? '<i class="fas fa-check-circle"></i> Won'
+            : '<i class="fas fa-times-circle"></i> Lost';
+
+        const attemptsSpan = document.createElement('span');
+        attemptsSpan.className = 'game-attempts';
+        attemptsSpan.textContent = `${game.attempts || 0} attempts`;
+
+        const timeSpan = document.createElement('span');
+        timeSpan.className = 'game-time';
+        timeSpan.textContent = formatGameTime(game.timeTaken);
+
+        const dateSpan = document.createElement('span');
+        dateSpan.className = 'game-date';
+        dateSpan.textContent = formatRelativeDate(game.createdAt);
+
+        gameItem.appendChild(difficultySpan);
+        gameItem.appendChild(resultSpan);
+        gameItem.appendChild(attemptsSpan);
+        gameItem.appendChild(timeSpan);
+        gameItem.appendChild(dateSpan);
+
+        recentGamesList.appendChild(gameItem);
+    });
+}
+
+function formatDifficulty(difficulty) {
+    const difficultyMap = {
+        0: 'Easy',
+        1: 'Medium',
+        2: 'Hard',
+        'EASY': 'Easy',
+        'MEDIUM': 'Medium',
+        'HARD': 'Hard'
+    };
+    return difficultyMap[difficulty] || difficulty;
+}
+
+function formatDate(dateString) {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+}
+
+function formatRelativeDate(dateString) {
+    if (!dateString) return 'N/A';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+
+    if (diffMins < 1) return 'Just now';
+    if (diffMins < 60) return `${diffMins}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function formatGameTime(seconds) {
+    if (!seconds) return 'N/A';
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
 }

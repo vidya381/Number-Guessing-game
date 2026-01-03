@@ -39,7 +39,10 @@
                             <span id="win-streak-count">0</span>
                         </span>
                     </div>
-                    <span id="username-display"></span>
+                    <button id="profile-btn" class="profile-btn" title="View Profile">
+                        <i class="fas fa-user"></i>
+                        <span id="username-display"></span>
+                    </button>
                     <button id="logout-btn" class="auth-btn">LOGOUT</button>
                 </div>
             </div>
@@ -206,6 +209,143 @@
 
             <div id="achievements-list" class="achievements-list">
                 <!-- Achievements will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div id="profile-modal" class="modal" style="display: none;">
+        <div class="modal-content profile-modal-content">
+            <span class="close-modal" id="close-profile">&times;</span>
+            <h2 class="profile-title">👤 YOUR PROFILE</h2>
+
+            <!-- User Info Header -->
+            <div id="profile-header" class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="profile-user-info">
+                    <h3 id="profile-username">Username</h3>
+                    <p id="profile-email">email@example.com</p>
+                    <p class="profile-join-date">Joined: <span id="profile-join-date">--</span></p>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="profile-stats-grid">
+                <div class="profile-stat-card">
+                    <i class="fas fa-gamepad"></i>
+                    <span class="stat-value" id="profile-total-games">0</span>
+                    <span class="stat-label">Total Games</span>
+                </div>
+                <div class="profile-stat-card">
+                    <i class="fas fa-trophy"></i>
+                    <span class="stat-value" id="profile-total-wins">0</span>
+                    <span class="stat-label">Total Wins</span>
+                </div>
+                <div class="profile-stat-card">
+                    <i class="fas fa-percentage"></i>
+                    <span class="stat-value" id="profile-win-rate">0%</span>
+                    <span class="stat-label">Win Rate</span>
+                </div>
+                <div class="profile-stat-card">
+                    <i class="fas fa-star"></i>
+                    <span class="stat-value" id="profile-best-score">--</span>
+                    <span class="stat-label">Best Score</span>
+                </div>
+            </div>
+
+            <!-- Streaks Section -->
+            <div class="profile-section">
+                <h3>🔥 STREAKS</h3>
+                <div class="profile-stats-grid">
+                    <div class="profile-stat-card">
+                        <i class="fas fa-fire"></i>
+                        <span class="stat-value" id="profile-current-streak">0</span>
+                        <span class="stat-label">Current Win Streak</span>
+                    </div>
+                    <div class="profile-stat-card">
+                        <i class="fas fa-award"></i>
+                        <span class="stat-value" id="profile-best-streak">0</span>
+                        <span class="stat-label">Best Win Streak</span>
+                    </div>
+                    <div class="profile-stat-card">
+                        <i class="fas fa-calendar-check"></i>
+                        <span class="stat-value" id="profile-play-days">0</span>
+                        <span class="stat-label">Consecutive Days</span>
+                    </div>
+                    <div class="profile-stat-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span class="stat-value" id="profile-best-play-days">0</span>
+                        <span class="stat-label">Best Day Streak</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Difficulty Breakdown -->
+            <div class="profile-section">
+                <h3>📊 DIFFICULTY BREAKDOWN</h3>
+                <div class="difficulty-breakdown">
+                    <div class="difficulty-bar">
+                        <div class="difficulty-info">
+                            <span class="difficulty-name">🟢 EASY</span>
+                            <span class="difficulty-stats">
+                                <span id="profile-easy-wins">0</span> / <span id="profile-easy-games">0</span>
+                                (<span id="profile-easy-rate">0%</span>)
+                            </span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill easy" id="profile-easy-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="difficulty-bar">
+                        <div class="difficulty-info">
+                            <span class="difficulty-name">🟡 MEDIUM</span>
+                            <span class="difficulty-stats">
+                                <span id="profile-medium-wins">0</span> / <span id="profile-medium-games">0</span>
+                                (<span id="profile-medium-rate">0%</span>)
+                            </span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill medium" id="profile-medium-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="difficulty-bar">
+                        <div class="difficulty-info">
+                            <span class="difficulty-name">🔴 HARD</span>
+                            <span class="difficulty-stats">
+                                <span id="profile-hard-wins">0</span> / <span id="profile-hard-games">0</span>
+                                (<span id="profile-hard-rate">0%</span>)
+                            </span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill hard" id="profile-hard-progress" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Achievements Summary -->
+            <div class="profile-section">
+                <h3>🏆 ACHIEVEMENTS</h3>
+                <div class="profile-achievements-summary">
+                    <div class="achievement-summary-card" id="view-achievements-btn">
+                        <i class="fas fa-trophy"></i>
+                        <div class="achievement-summary-text">
+                            <span class="achievement-count"><span id="profile-unlocked-achievements">0</span> / <span id="profile-total-achievements">19</span> Unlocked</span>
+                            <span class="achievement-percent"><span id="profile-achievement-percent">0%</span> Complete</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Games -->
+            <div class="profile-section">
+                <h3>📜 RECENT GAMES</h3>
+                <div class="recent-games-list" id="profile-recent-games">
+                    <!-- Recent games will be inserted here -->
+                </div>
             </div>
         </div>
     </div>
