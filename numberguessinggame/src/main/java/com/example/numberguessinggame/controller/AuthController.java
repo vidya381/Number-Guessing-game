@@ -86,6 +86,9 @@ public class AuthController {
             response.put("bestScore", user.getBestScore());
             response.put("totalGames", user.getTotalGames());
             response.put("totalWins", user.getTotalWins());
+            response.put("currentWinStreak", user.getCurrentWinStreak());
+            response.put("bestWinStreak", user.getBestWinStreak());
+            response.put("consecutivePlayDays", user.getConsecutivePlayDays());
 
             return ResponseEntity.ok(response);
 

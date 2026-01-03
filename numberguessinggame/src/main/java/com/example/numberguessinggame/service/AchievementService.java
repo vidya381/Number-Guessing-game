@@ -190,6 +190,12 @@ public class AchievementService {
                         shouldUnlock = timeInSeconds < 60; // Under 1 minute
                     }
                 }
+            } else if (achievement.getCategory() == AchievementCategory.STREAK) {
+                // Check streak achievements
+                if ("CONSISTENCY_KING".equals(achievement.getCode())) {
+                    // Check if user has 5+ consecutive wins
+                    shouldUnlock = user.getCurrentWinStreak() >= 5;
+                }
             }
 
             if (shouldUnlock) {

@@ -1,6 +1,7 @@
 package com.example.numberguessinggame.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -31,6 +32,22 @@ public class User {
 
     @Column(name = "total_wins")
     private Integer totalWins = 0;
+
+    // Streak tracking fields
+    @Column(name = "current_win_streak")
+    private Integer currentWinStreak = 0;
+
+    @Column(name = "best_win_streak")
+    private Integer bestWinStreak = 0;
+
+    @Column(name = "last_played_date")
+    private LocalDate lastPlayedDate;
+
+    @Column(name = "consecutive_play_days")
+    private Integer consecutivePlayDays = 0;
+
+    @Column(name = "best_play_day_streak")
+    private Integer bestPlayDayStreak = 0;
 
     @PrePersist
     protected void onCreate() {
@@ -110,5 +127,45 @@ public class User {
 
     public void setTotalWins(Integer totalWins) {
         this.totalWins = totalWins;
+    }
+
+    public Integer getCurrentWinStreak() {
+        return currentWinStreak;
+    }
+
+    public void setCurrentWinStreak(Integer currentWinStreak) {
+        this.currentWinStreak = currentWinStreak;
+    }
+
+    public Integer getBestWinStreak() {
+        return bestWinStreak;
+    }
+
+    public void setBestWinStreak(Integer bestWinStreak) {
+        this.bestWinStreak = bestWinStreak;
+    }
+
+    public LocalDate getLastPlayedDate() {
+        return lastPlayedDate;
+    }
+
+    public void setLastPlayedDate(LocalDate lastPlayedDate) {
+        this.lastPlayedDate = lastPlayedDate;
+    }
+
+    public Integer getConsecutivePlayDays() {
+        return consecutivePlayDays;
+    }
+
+    public void setConsecutivePlayDays(Integer consecutivePlayDays) {
+        this.consecutivePlayDays = consecutivePlayDays;
+    }
+
+    public Integer getBestPlayDayStreak() {
+        return bestPlayDayStreak;
+    }
+
+    public void setBestPlayDayStreak(Integer bestPlayDayStreak) {
+        this.bestPlayDayStreak = bestPlayDayStreak;
     }
 }

@@ -72,6 +72,7 @@ let recentScores = [];
 // Auth state
 let currentUser = null;
 let authToken = null;
+let currentStreak = 0;
 try {
     const stored = localStorage.getItem('recentScores');
     if (stored) {
@@ -122,6 +123,24 @@ window.addEventListener('beforeunload', function () {
 
 function updateBestScore() {
     document.getElementById('best-score').textContent = bestScore;
+}
+
+function updateStreakStats() {
+    const streakStatsElement = document.getElementById('streak-stats');
+    const currentStreakStat = document.getElementById('current-streak-stat');
+    const bestStreakStat = document.getElementById('best-streak-stat');
+
+    if (!streakStatsElement || !currentStreakStat || !bestStreakStat) return;
+
+    if (currentUser && authToken) {
+        // Show streak stats for logged-in users
+        streakStatsElement.style.display = 'block';
+        currentStreakStat.textContent = currentUser.currentWinStreak || 0;
+        bestStreakStat.textContent = currentUser.bestWinStreak || 0;
+    } else {
+        // Hide streak stats for guests
+        streakStatsElement.style.display = 'none';
+    }
 }
 
 function updateRecentScores() {
@@ -435,6 +454,18 @@ function submitGuess() {
             if (data.correct) {
                 if (soundEnabled) winSound.play();
 
+                // Update streak data if available
+                if (data.currentWinStreak !== undefined) {
+                    currentStreak = data.currentWinStreak;
+                    if (currentUser) {
+                        currentUser.currentWinStreak = data.currentWinStreak;
+                        currentUser.bestWinStreak = data.bestWinStreak;
+                        currentUser.consecutivePlayDays = data.consecutivePlayDays;
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    }
+                    updateAuthUI();
+                }
+
                 // Check for newly unlocked achievements
                 if (data.newAchievements && data.newAchievements.length > 0) {
                     // Show achievement notifications
@@ -569,6 +600,14 @@ function endGame(won) {
 
     updateGameStatus(won ? 'won' : 'lost');
 
+    // Reset streak to 0 on loss
+    if (!won && currentUser) {
+        currentStreak = 0;
+        currentUser.currentWinStreak = 0;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        updateAuthUI();
+    }
+
     // Clean up server session when game ends (lost or quit)
     // Note: Won games are cleaned up automatically by the server
     if (!won && tabId) {
@@ -667,6 +706,7 @@ function showHomePage() {
     document.getElementById('home-page').style.display = 'block';
     document.getElementById('game-page').style.display = 'none';
     document.getElementById('result-page').style.display = 'none';
+    updateStreakStats(); // Update streak stats display
     loadLeaderboard(); // Refresh leaderboard when returning to home
 }
 
@@ -797,8 +837,10 @@ function initializeAuth() {
     if (storedToken && storedUser) {
         authToken = storedToken;
         currentUser = JSON.parse(storedUser);
+        currentStreak = currentUser.currentWinStreak || 0;
         updateAuthUI();
         loadAchievementSummary();
+        updateStreakStats();
     }
 }
 
@@ -806,17 +848,34 @@ function updateAuthUI() {
     const loginBtn = document.getElementById('login-btn');
     const userProfile = document.getElementById('user-profile');
     const usernameDisplay = document.getElementById('username-display');
-    
+    const streakDisplay = document.getElementById('streak-display');
+    const winStreakCount = document.getElementById('win-streak-count');
+
     if (!loginBtn || !userProfile || !usernameDisplay) return;
-    
+
     if (currentUser) {
         loginBtn.style.display = 'none';
         userProfile.style.display = 'flex';
         usernameDisplay.textContent = currentUser.username;
+
+        // Update streak display
+        if (streakDisplay && winStreakCount) {
+            if (currentStreak > 0) {
+                streakDisplay.style.display = 'block';
+                winStreakCount.textContent = currentStreak;
+            } else {
+                streakDisplay.style.display = 'none';
+            }
+        }
     } else {
         loginBtn.style.display = 'block';
         userProfile.style.display = 'none';
         usernameDisplay.textContent = '';
+
+        // Hide streak display when logged out
+        if (streakDisplay) {
+            streakDisplay.style.display = 'none';
+        }
     }
 }
 
@@ -952,14 +1011,21 @@ async function handleLogin(e) {
                 username: data.username,
                 bestScore: data.bestScore,
                 totalGames: data.totalGames,
-                totalWins: data.totalWins
+                totalWins: data.totalWins,
+                currentWinStreak: data.currentWinStreak || 0,
+                bestWinStreak: data.bestWinStreak || 0,
+                consecutivePlayDays: data.consecutivePlayDays || 0
             };
+
+            // Update global streak variable
+            currentStreak = data.currentWinStreak || 0;
 
             localStorage.setItem('authToken', authToken);
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
             updateAuthUI();
             loadAchievementSummary();
+            updateStreakStats();
             document.getElementById('auth-modal').style.display = 'none';
             clearAuthForms();
 

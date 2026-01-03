@@ -1206,6 +1206,52 @@ body.dark-mode .achievement-badge {
     border-color: var(--card-background);
 }
 
+/* Streak Badge Styles */
+.streak-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.streak-badge:hover {
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.5);
+}
+
+.streak-badge i {
+    font-size: 16px;
+    animation: flicker 2s ease-in-out infinite;
+}
+
+@keyframes flicker {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+}
+
+body.dark-mode .streak-badge {
+    background: linear-gradient(135deg, #e74c3c 0%, #ff6b6b 100%);
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.4);
+}
+
+body.dark-mode .streak-badge:hover {
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.6);
+}
+
 /* Achievements Modal Styles */
 .achievements-modal-content {
     max-width: 700px;

@@ -7,6 +7,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Service
@@ -70,14 +72,60 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
+        LocalDate today = LocalDate.now();
+        LocalDate lastPlayed = user.getLastPlayedDate();
+
+        // Update play day streak
+        if (lastPlayed == null) {
+            // First time playing
+            user.setConsecutivePlayDays(1);
+            user.setBestPlayDayStreak(1);
+        } else if (!lastPlayed.equals(today)) {
+            // Check if it's a consecutive day
+            long daysBetween = ChronoUnit.DAYS.between(lastPlayed, today);
+
+            if (daysBetween == 1) {
+                // Consecutive day - increment streak
+                user.setConsecutivePlayDays(user.getConsecutivePlayDays() + 1);
+
+                // Update best play day streak if current is better
+                if (user.getConsecutivePlayDays() > user.getBestPlayDayStreak()) {
+                    user.setBestPlayDayStreak(user.getConsecutivePlayDays());
+                }
+            } else if (daysBetween > 1) {
+                // Streak broken - reset to 1
+                user.setConsecutivePlayDays(1);
+            }
+            // If daysBetween == 0 (same day), don't update consecutive days
+        }
+
+        // Update last played date (only if it's a new day)
+        if (lastPlayed == null || !lastPlayed.equals(today)) {
+            user.setLastPlayedDate(today);
+        }
+
+        // Update total games
         user.setTotalGames(user.getTotalGames() + 1);
 
+        // Update win-related stats
         if (won) {
             user.setTotalWins(user.getTotalWins() + 1);
 
+            // Update best score
             if (user.getBestScore() == null || attempts < user.getBestScore()) {
                 user.setBestScore(attempts);
             }
+
+            // Update win streak
+            user.setCurrentWinStreak(user.getCurrentWinStreak() + 1);
+
+            // Update best win streak if current is better
+            if (user.getCurrentWinStreak() > user.getBestWinStreak()) {
+                user.setBestWinStreak(user.getCurrentWinStreak());
+            }
+        } else {
+            // Lost - reset win streak
+            user.setCurrentWinStreak(0);
         }
 
         userRepository.save(user);

@@ -161,6 +161,17 @@ public class GameController {
                 response.put("newAchievements", achievementData);
             }
 
+            // Include updated streak data in response
+            if (gameSession.getUserId() != null) {
+                Optional<User> userOptional = userService.findById(gameSession.getUserId());
+                if (userOptional.isPresent()) {
+                    User user = userOptional.get();
+                    response.put("currentWinStreak", user.getCurrentWinStreak());
+                    response.put("bestWinStreak", user.getBestWinStreak());
+                    response.put("consecutivePlayDays", user.getConsecutivePlayDays());
+                }
+            }
+
             gameSessions.remove(compositeKey);
         }
 
