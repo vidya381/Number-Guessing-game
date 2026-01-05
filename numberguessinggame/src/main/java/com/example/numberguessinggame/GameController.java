@@ -166,9 +166,9 @@ public class GameController {
                 Optional<User> userOptional = userService.findById(gameSession.getUserId());
                 if (userOptional.isPresent()) {
                     User user = userOptional.get();
-                    response.put("currentWinStreak", user.getCurrentWinStreak());
-                    response.put("bestWinStreak", user.getBestWinStreak());
-                    response.put("consecutivePlayDays", user.getConsecutivePlayDays());
+                    response.put("currentWinStreak", user.getCurrentWinStreak() != null ? user.getCurrentWinStreak() : 0);
+                    response.put("bestWinStreak", user.getBestWinStreak() != null ? user.getBestWinStreak() : 0);
+                    response.put("consecutivePlayDays", user.getConsecutivePlayDays() != null ? user.getConsecutivePlayDays() : 0);
                 }
             }
 

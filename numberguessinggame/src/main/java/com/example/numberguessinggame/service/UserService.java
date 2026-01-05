@@ -75,6 +75,14 @@ public class UserService {
         LocalDate today = LocalDate.now();
         LocalDate lastPlayed = user.getLastPlayedDate();
 
+        // Initialize play day streak fields if null (for existing users)
+        if (user.getConsecutivePlayDays() == null) {
+            user.setConsecutivePlayDays(0);
+        }
+        if (user.getBestPlayDayStreak() == null) {
+            user.setBestPlayDayStreak(0);
+        }
+
         // Update play day streak
         if (lastPlayed == null) {
             // First time playing
@@ -114,6 +122,14 @@ public class UserService {
             // Update best score
             if (user.getBestScore() == null || attempts < user.getBestScore()) {
                 user.setBestScore(attempts);
+            }
+
+            // Initialize win streak fields if null (for existing users)
+            if (user.getCurrentWinStreak() == null) {
+                user.setCurrentWinStreak(0);
+            }
+            if (user.getBestWinStreak() == null) {
+                user.setBestWinStreak(0);
             }
 
             // Update win streak
