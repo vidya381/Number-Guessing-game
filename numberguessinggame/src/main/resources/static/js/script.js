@@ -96,7 +96,7 @@ let isShowingAchievement = false;
 const correctSound = new Audio('/audio/correct-sound.mp3');
 const incorrectSound = new Audio('/audio/incorrect-sound.mp3');
 const winSound = new Audio('/audio/win-sound.mp3');
-const achievementSound = new Audio('/audio/win-sound.mp3'); // Can be replaced with custom achievement sound
+const achievementSound = new Audio('/audio/achievement-sound.mp3');
 
 // Set initial volume for all sounds
 function updateSoundVolumes() {
