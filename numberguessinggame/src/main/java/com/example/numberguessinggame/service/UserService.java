@@ -26,11 +26,11 @@ public class UserService {
     @Transactional
     public User registerUser(String username, String email, String password) {
         if (userRepository.existsByUsername(username)) {
-            throw new IllegalArgumentException("Username already exists");
+            throw new IllegalArgumentException("That username is taken. How about trying a different one?");
         }
 
         if (userRepository.existsByEmail(email)) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new IllegalArgumentException("This email is already registered. Try logging in instead!");
         }
 
         User user = new User();
@@ -47,13 +47,13 @@ public class UserService {
         Optional<User> userOptional = userRepository.findByUsername(username);
 
         if (userOptional.isEmpty()) {
-            throw new IllegalArgumentException("Invalid username or password");
+            throw new IllegalArgumentException("Username or password doesn't match. Double-check and try again!");
         }
 
         User user = userOptional.get();
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new IllegalArgumentException("Invalid username or password");
+            throw new IllegalArgumentException("Username or password doesn't match. Double-check and try again!");
         }
 
         return jwtUtil.generateToken(user.getUsername(), user.getId());
@@ -70,7 +70,7 @@ public class UserService {
     @Transactional
     public void updateUserStats(Long userId, boolean won, int attempts) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new IllegalArgumentException("Couldn't find your account. Try logging in again!"));
 
         LocalDate today = LocalDate.now();
         LocalDate lastPlayed = user.getLastPlayedDate();

@@ -35,7 +35,7 @@ public class UserController {
 
         try {
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                response.put("error", "Invalid authorization header");
+                response.put("error", "Your session expired. Please log in again!");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
 
@@ -44,7 +44,7 @@ public class UserController {
 
             Optional<User> userOptional = userService.findById(userId);
             if (userOptional.isEmpty()) {
-                response.put("error", "User not found");
+                response.put("error", "Couldn't find your account. Try logging in again!");
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
             }
 
@@ -149,7 +149,7 @@ public class UserController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            response.put("error", "Failed to load profile: " + e.getMessage());
+            response.put("error", "Couldn't load your profile right now. Try refreshing the page!");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }

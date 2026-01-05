@@ -148,6 +148,17 @@ function closeModalWithAnimation(modal, callback) {
     }, 250);
 }
 
+// Show login modal when session expires
+function handleSessionExpired() {
+    showToast('Your session expired. Please log in again!', 'error');
+    setTimeout(() => {
+        const authModal = document.getElementById('auth-modal');
+        if (authModal) {
+            openModalWithAnimation(authModal);
+        }
+    }, 1500);
+}
+
 // ==========================================
 // KEYBOARD SHORTCUTS
 // ==========================================
@@ -487,7 +498,7 @@ function startGame(difficulty) {
         .then(data => {
             // Check for error response from server
             if (data.error) {
-                alert(data.error);
+                showToast(`Couldn't start the game. Check your connection and try again!`, 'error');
                 showHomePage();
                 return;
             }
@@ -498,12 +509,12 @@ function startGame(difficulty) {
                 updateInputFields(difficulty);
                 updateGuessHistory();
             } else {
-                alert('Failed to start the game. Please try again.');
+                showToast('Oops! Couldn\'t start the game. Try again in a moment!', 'error');
                 showHomePage();
             }
         })
         .catch(error => {
-            alert('Error: ' + error.message);
+            showToast('Couldn\'t start the game. Check your connection and try again!', 'error');
             showHomePage();
         });
 }
@@ -574,8 +585,8 @@ function submitGuess() {
 
     // Check if game session exists
     if (!tabId) {
-        alert('Game session not found. Please start a new game.');
-        showHomePage();
+        showToast('Your game session expired. Let\'s start a fresh game!', 'error');
+        setTimeout(() => showHomePage(), 2000);
         return;
     }
 
@@ -586,12 +597,12 @@ function submitGuess() {
     }
 
     if (guess.length !== inputs.length) {
-        alert('Please enter all digits before submitting your guess.');
+        showToast('Please fill in all digit boxes to make your guess!', 'info');
         return;
     }
 
     if (!/^\d+$/.test(guess) || new Set(guess).size !== guess.length) {
-        alert('Please enter a valid number with unique digits.');
+        showToast('Oops! Each digit must be different. Try again!', 'error');
         return;
     }
 
@@ -622,7 +633,7 @@ function submitGuess() {
         .then(data => {
             // Check for error response from server
             if (data.error) {
-                alert(data.error);
+                showToast(`Something went wrong: ${data.error}. Let's try that again!`, 'error');
                 // Reset attempts counter since this wasn't a valid guess
                 attempts--;
                 updateAttemptsProgress();
@@ -663,7 +674,7 @@ function submitGuess() {
             }
         })
         .catch(error => {
-            alert('Failed to submit guess. Please try again.');
+            showToast('Hmm, couldn\'t submit that guess. Check your connection and try again!', 'error');
             // Reset attempts counter on error
             attempts--;
             updateAttemptsProgress();
@@ -1274,7 +1285,7 @@ async function handleLogin(e) {
             showToast('Welcome back, ' + currentUser.username + '!', 'success');
         }
     } catch (error) {
-        errorDiv.textContent = 'An error occurred. Please try again.';
+        errorDiv.textContent = 'Couldn\'t log you in right now. Please try again!';
     }
 }
 
@@ -1319,7 +1330,7 @@ async function handleSignup(e) {
             showToast('Welcome to NumVana, ' + currentUser.username + '!', 'success');
         }
     } catch (error) {
-        errorDiv.textContent = 'An error occurred. Please try again.';
+        errorDiv.textContent = 'Couldn\'t create your account right now. Please try again!';
     }
 }
 
@@ -1804,7 +1815,7 @@ async function loadLeaderboard(forceRefresh = false) {
             loadingDiv.textContent = 'No players on the leaderboard yet. Be the first!';
         }
     } catch (error) {
-        loadingDiv.textContent = 'Failed to load leaderboard';
+        loadingDiv.textContent = 'Couldn\'t load the leaderboard. Try again in a moment!';
     }
 }
 
@@ -1876,7 +1887,13 @@ function setupProfileListeners() {
 
 async function loadAndShowProfile() {
     if (!authToken || !currentUser) {
-        alert('Please log in to view your profile!');
+        showToast('Please log in to see your profile and achievements!', 'info');
+        setTimeout(() => {
+            const authModal = document.getElementById('auth-modal');
+            if (authModal) {
+                openModalWithAnimation(authModal);
+            }
+        }, 1500);
         return;
     }
 
@@ -1914,7 +1931,7 @@ async function loadAndShowProfile() {
         }
     } catch (error) {
         console.error('Failed to load profile:', error);
-        alert('Failed to load profile: ' + error.message);
+        showToast('Couldn\'t load your profile right now. Try refreshing the page!', 'error');
         profileModal.style.display = 'none';
     }
 }

@@ -37,7 +37,7 @@ public class AchievementController {
         try {
             User user = getUserFromToken(authHeader);
             if (user == null) {
-                return ResponseEntity.status(401).body(createErrorResponse("Unauthorized"));
+                return ResponseEntity.status(401).body(createErrorResponse("Please log in to access this feature!"));
             }
 
             Map<String, Object> summary = achievementService.getUserAchievementSummary(user);
@@ -49,7 +49,7 @@ public class AchievementController {
 
         } catch (Exception e) {
             System.err.println("Error getting achievement summary: " + e.getMessage());
-            return ResponseEntity.status(500).body(createErrorResponse("Failed to fetch achievements"));
+            return ResponseEntity.status(500).body(createErrorResponse("Couldn't load achievements right now. Try refreshing!"));
         }
     }
 
@@ -64,7 +64,7 @@ public class AchievementController {
         try {
             User user = getUserFromToken(authHeader);
             if (user == null) {
-                return ResponseEntity.status(401).body(createErrorResponse("Unauthorized"));
+                return ResponseEntity.status(401).body(createErrorResponse("Please log in to access this feature!"));
             }
 
             List<Map<String, Object>> achievements = achievementService.getUserAchievements(user);
@@ -76,7 +76,7 @@ public class AchievementController {
 
         } catch (Exception e) {
             System.err.println("Error getting achievements: " + e.getMessage());
-            return ResponseEntity.status(500).body(createErrorResponse("Failed to fetch achievements"));
+            return ResponseEntity.status(500).body(createErrorResponse("Couldn't load achievements right now. Try refreshing!"));
         }
     }
 
@@ -91,7 +91,7 @@ public class AchievementController {
         try {
             User user = getUserFromToken(authHeader);
             if (user == null) {
-                return ResponseEntity.status(401).body(createErrorResponse("Unauthorized"));
+                return ResponseEntity.status(401).body(createErrorResponse("Please log in to access this feature!"));
             }
 
             List<Achievement> newlyUnlocked = achievementService.awardRetroactiveAchievements(user);
@@ -104,7 +104,7 @@ public class AchievementController {
 
         } catch (Exception e) {
             System.err.println("Error awarding retroactive achievements: " + e.getMessage());
-            return ResponseEntity.status(500).body(createErrorResponse("Failed to award achievements"));
+            return ResponseEntity.status(500).body(createErrorResponse("Couldn't award achievements right now. They'll appear next time!"));
         }
     }
 

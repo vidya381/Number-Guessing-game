@@ -56,7 +56,7 @@ public class GameController {
             HttpSession session) {
         if (difficulty < DIFFICULTY_EASY || difficulty > DIFFICULTY_HARD) {
             Map<String, Object> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Invalid difficulty level. Please try again...!");
+            errorResponse.put("error", "Please choose Easy, Medium, or Hard difficulty!");
             return ResponseEntity.badRequest().body(errorResponse);
         }
 
@@ -84,7 +84,7 @@ public class GameController {
         GameSession gameSession = gameSessions.get(compositeKey);
 
         if (gameSession == null) {
-            throw new IllegalStateException("No active game session found");
+            throw new IllegalStateException("Your game session expired. Let's start a new one!");
         }
 
         int targetNumber = gameSession.getTargetNumber();
@@ -93,16 +93,16 @@ public class GameController {
 
         // Validate input
         if (guess == null || guess.isEmpty()) {
-            throw new IllegalArgumentException("Guess cannot be empty");
+            throw new IllegalArgumentException("Please enter your guess!");
         }
         if (!guess.matches("\\d+")) {
-            throw new IllegalArgumentException("Guess must contain only digits");
+            throw new IllegalArgumentException("Only numbers allowed in your guess!");
         }
         if (guess.length() != expectedDigits) {
-            throw new IllegalArgumentException("Guess must have exactly " + expectedDigits + " digits");
+            throw new IllegalArgumentException("Your guess needs exactly " + expectedDigits + " digits!");
         }
         if (guess.chars().distinct().count() != guess.length()) {
-            throw new IllegalArgumentException("Guess must have unique digits");
+            throw new IllegalArgumentException("Each digit must be different. No repeats!");
         }
 
         int[] target = getDigits(targetNumber);

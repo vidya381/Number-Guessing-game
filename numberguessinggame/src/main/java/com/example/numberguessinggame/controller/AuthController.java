@@ -27,17 +27,17 @@ public class AuthController {
             String password = request.get("password");
 
             if (username == null || username.trim().isEmpty()) {
-                response.put("error", "Username is required");
+                response.put("error", "Please choose a username");
                 return ResponseEntity.badRequest().body(response);
             }
 
             if (email == null || email.trim().isEmpty()) {
-                response.put("error", "Email is required");
+                response.put("error", "Please enter your email address");
                 return ResponseEntity.badRequest().body(response);
             }
 
             if (password == null || password.length() < 6) {
-                response.put("error", "Password must be at least 6 characters");
+                response.put("error", "Password needs to be at least 6 characters long. Almost there!");
                 return ResponseEntity.badRequest().body(response);
             }
 
@@ -66,12 +66,12 @@ public class AuthController {
             String password = request.get("password");
 
             if (username == null || username.trim().isEmpty()) {
-                response.put("error", "Username is required");
+                response.put("error", "Please enter your username");
                 return ResponseEntity.badRequest().body(response);
             }
 
             if (password == null || password.isEmpty()) {
-                response.put("error", "Password is required");
+                response.put("error", "Please enter your password");
                 return ResponseEntity.badRequest().body(response);
             }
 
@@ -104,7 +104,7 @@ public class AuthController {
 
         try {
             if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-                response.put("error", "Invalid authorization header");
+                response.put("error", "Your session expired. Please log in again!");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
 
@@ -114,7 +114,7 @@ public class AuthController {
             ).map(User::getUsername).orElse(null);
 
             if (username == null) {
-                response.put("error", "Invalid token");
+                response.put("error", "Your session expired. Please log in again!");
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
             }
 
@@ -124,7 +124,7 @@ public class AuthController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            response.put("error", "Token verification failed");
+            response.put("error", "Your session expired. Please log in again!");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
     }
