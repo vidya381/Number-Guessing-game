@@ -2416,12 +2416,15 @@ body.dark-mode .achievement-summary-card {
     padding: 12px 16px;
     background: none;
     border: none;
+    border-left: 3px solid transparent;
     color: var(--text-color);
     font-size: 15px;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     text-align: left;
+    border-radius: 8px;
+    margin: 2px 0;
 }
 
 .dropdown-item i {
@@ -2429,14 +2432,23 @@ body.dark-mode .achievement-summary-card {
     width: 20px;
     text-align: center;
     color: var(--primary-color);
+    transition: all 0.3s ease;
 }
 
 .dropdown-item:hover {
-    background: rgba(var(--primary-color-rgb), 0.08);
+    background: linear-gradient(90deg, rgba(var(--primary-color-rgb), 0.12) 0%, rgba(var(--primary-color-rgb), 0.05) 100%);
+    border-left-color: var(--primary-color);
+    transform: translateX(2px);
+}
+
+.dropdown-item:hover i {
+    color: var(--secondary-color);
+    transform: scale(1.1);
 }
 
 .dropdown-item:active {
-    background: rgba(var(--primary-color-rgb), 0.15);
+    background: linear-gradient(90deg, rgba(var(--primary-color-rgb), 0.2) 0%, rgba(var(--primary-color-rgb), 0.1) 100%);
+    transform: translateX(1px);
 }
 
 /* Settings Modal Styles */
@@ -2565,8 +2577,35 @@ body.dark-mode .dropdown-divider {
     background: rgba(167, 139, 250, 0.2);
 }
 
+body.dark-mode .dropdown-item {
+    background: rgba(0, 0, 0, 0.3);
+    color: #cbd5e1;
+}
+
+body.dark-mode .dropdown-item i {
+    color: #a78bfa;
+}
+
 body.dark-mode .dropdown-item:hover {
-    background: rgba(167, 139, 250, 0.12);
+    background: linear-gradient(90deg, rgba(167, 139, 250, 0.35) 0%, rgba(78, 168, 222, 0.25) 100%);
+    border-left-color: #c4b5fd;
+    color: #f1f5f9;
+}
+
+body.dark-mode .dropdown-item:hover i {
+    color: #e0d7ff;
+}
+
+body.dark-mode .dropdown-avatar {
+    color: #c4b5fd;
+}
+
+body.dark-mode .dropdown-username {
+    color: #f8fafc;
+}
+
+body.dark-mode .dropdown-email {
+    color: #cbd5e1;
 }
 
 body.dark-mode .setting-item {
