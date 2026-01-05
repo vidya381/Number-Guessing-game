@@ -204,7 +204,8 @@ h2 {
     font-weight: 700;
 }
 
-button {
+/* Exclude header buttons from generic button styling */
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close) {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     color: var(--button-text-color);
     border: none;
@@ -220,13 +221,13 @@ button {
     box-shadow: 0 6px 20px var(--shadow-color);
 }
 
-button:hover {
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):hover {
     background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
     transform: translateY(var(--hover-lift)) scale(1.02);
     box-shadow: 0 10px 30px rgba(78, 168, 222, 0.35);
 }
 
-button:active {
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):active {
     transform: translateY(-2px) scale(0.98);
     box-shadow: 0 4px 15px var(--shadow-color);
 }
@@ -491,8 +492,8 @@ body.dark-mode #game-status-display {
         font-size: 14px;
     }
 
-
-    button {
+    /* Exclude header buttons from generic button styling */
+    button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close) {
         font-size: 14px;
         padding: 10px 20px;
     }
@@ -973,21 +974,27 @@ body.dark-mode .form-group input:focus {
 .auth-btn {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 8px;
-    padding: 10px 20px;
+    padding: 0 20px;
+    height: 45px;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     color: var(--button-text-color);
     border: none;
-    border-radius: 25px;
+    border-radius: 22.5px;
     cursor: pointer;
     font-size: 13px;
     font-weight: 700;
+    line-height: 1;
+    box-sizing: border-box;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px var(--shadow-color);
+    flex-shrink: 0;
 }
 
 .auth-btn i {
     font-size: 15px;
+    flex-shrink: 0;
 }
 
 .auth-btn:hover {
@@ -2601,6 +2608,19 @@ body.dark-mode .header-streak i {
         font-size: 12px;
     }
 
+    .header-icon-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .auth-btn {
+        height: 40px;
+        padding: 0 18px;
+        font-size: 12px;
+        border-radius: 20px;
+    }
+
     .header-streak {
         height: 40px;
         padding: 0 14px;
@@ -2631,6 +2651,13 @@ body.dark-mode .header-streak i {
         width: 40px;
         height: 40px;
         font-size: 18px;
+    }
+
+    .auth-btn {
+        height: 40px;
+        padding: 0 16px;
+        font-size: 12px;
+        border-radius: 20px;
     }
 
     .header-streak {
