@@ -106,6 +106,48 @@ function updateSoundVolumes() {
     achievementSound.volume = soundVolume;
 }
 
+// Animation utility functions
+function fadeOutElement(element, callback) {
+    if (!element) return;
+    element.classList.add('page-exit');
+    setTimeout(() => {
+        element.style.display = 'none';
+        element.classList.remove('page-exit');
+        if (callback) callback();
+    }, 300); // Match CSS animation duration
+}
+
+function fadeInElement(element, displayType = 'block') {
+    if (!element) return;
+    element.style.display = displayType;
+    // Force reflow to ensure animation triggers
+    void element.offsetWidth;
+    element.classList.add('page-enter');
+    setTimeout(() => {
+        element.classList.remove('page-enter');
+    }, 300);
+}
+
+function openModalWithAnimation(modal) {
+    if (!modal) return;
+    modal.style.display = 'flex';
+    void modal.offsetWidth; // Force reflow
+    modal.classList.add('modal-enter');
+    setTimeout(() => {
+        modal.classList.remove('modal-enter');
+    }, 250);
+}
+
+function closeModalWithAnimation(modal, callback) {
+    if (!modal) return;
+    modal.classList.add('modal-exit');
+    setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('modal-exit');
+        if (callback) callback();
+    }, 250);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     updateSoundVolumes(); // Set initial sound volumes
     initializeAuth();
@@ -355,12 +397,18 @@ function startGame(difficulty) {
 }
 
 function updateGamePage() {
-    document.getElementById('home-page').style.display = 'none';
-    document.getElementById('game-page').style.display = 'block';
-    document.getElementById('result-page').style.display = 'none';
-    document.getElementById('attempts').textContent = attempts;
-    document.getElementById('feedback').textContent = '';
-    updateAttemptsProgress();
+    const homePage = document.getElementById('home-page');
+    const gamePage = document.getElementById('game-page');
+    const resultPage = document.getElementById('result-page');
+
+    fadeOutElement(homePage, () => {
+        fadeInElement(gamePage);
+        document.getElementById('attempts').textContent = attempts;
+        document.getElementById('feedback').textContent = '';
+        updateAttemptsProgress();
+    });
+
+    resultPage.style.display = 'none';
 }
 
 function updateInputFields(difficulty) {
@@ -527,7 +575,39 @@ function submitGuess() {
 
 function addToGuessHistory(guess, correctPosition, correctButWrongPosition) {
     guessHistory.unshift({ guess, correctPosition, correctButWrongPosition });
-    updateGuessHistory();
+    updateGuessHistoryAnimated();
+}
+
+function updateGuessHistoryAnimated() {
+    const historyContainer = document.getElementById('guess-history');
+    historyContainer.innerHTML = '';
+
+    guessHistory.forEach((entry, index) => {
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item';
+
+        // Add animation class only to the newest item
+        if (index === 0) {
+            historyItem.classList.add('new-item');
+        }
+
+        const guessSpan = document.createElement('span');
+        guessSpan.className = 'guess';
+        guessSpan.textContent = entry.guess;
+
+        const correctSpan = document.createElement('span');
+        correctSpan.className = 'correct';
+        correctSpan.textContent = `Correct: ${entry.correctPosition}`;
+
+        const misplacedSpan = document.createElement('span');
+        misplacedSpan.className = 'misplaced';
+        misplacedSpan.textContent = `Misplaced: ${entry.correctButWrongPosition}`;
+
+        historyItem.appendChild(guessSpan);
+        historyItem.appendChild(correctSpan);
+        historyItem.appendChild(misplacedSpan);
+        historyContainer.appendChild(historyItem);
+    });
 }
 
 function updateGuessHistory() {
@@ -569,9 +649,14 @@ function displayFeedback(correctPosition, correctButWrongPosition) {
     feedbackElement.appendChild(p1);
     feedbackElement.appendChild(p2);
 
-    feedbackElement.classList.remove('fade-in');
-    void feedbackElement.offsetWidth;
-    feedbackElement.classList.add('fade-in');
+    // Remove both animation classes
+    feedbackElement.classList.remove('fade-in', 'update');
+    void feedbackElement.offsetWidth; // Force reflow
+    // Add update animation for subsequent guesses
+    feedbackElement.classList.add('update');
+    setTimeout(() => {
+        feedbackElement.classList.remove('update');
+    }, 300);
 }
 
 function startTimer() {
@@ -614,12 +699,10 @@ function updateTimer() {
 function endGame(won) {
     clearInterval(timerInterval);
     const time = document.getElementById('timer').textContent;
-    document.getElementById('game-page').style.display = 'none';
-    document.getElementById('result-page').style.display = 'block';
+    const gamePage = document.getElementById('game-page');
+    const resultPage = document.getElementById('result-page');
 
     updateGameStatus(won ? 'won' : 'lost');
-
-    // Mark that a game was just completed so leaderboard can refresh
     gameJustCompleted = true;
 
     // Reset streak to 0 on loss
@@ -630,8 +713,7 @@ function endGame(won) {
         updateAuthUI();
     }
 
-    // Clean up server session when game ends (lost or quit)
-    // Note: Won games are cleaned up automatically by the server
+    // Clean up server session when game ends
     if (!won && tabId) {
         fetch('/end-game', {
             method: 'POST',
@@ -640,19 +722,17 @@ function endGame(won) {
             },
             body: `tabId=${tabId}`,
             credentials: 'include'
-        }).catch(() => {
-            // Silently fail - session will eventually timeout
-        });
+        }).catch(() => {});
     }
 
+    // Prepare stats content
     const statsContainer = document.getElementById('game-stats');
     statsContainer.textContent = '';
 
-    // Helper function to create stat items safely
     const createStatItem = (iconClass, text) => {
         const div = document.createElement('div');
         div.className = 'stat-item';
-        div.innerHTML = `<i class="${iconClass}"></i>`; // Safe: hardcoded icon classes
+        div.innerHTML = `<i class="${iconClass}"></i>`;
         const span = document.createElement('span');
         span.textContent = text;
         div.appendChild(span);
@@ -669,12 +749,39 @@ function endGame(won) {
         createConfetti();
         updateBestScore(attempts);
         addToRecentScores(currentDifficulty, attempts, time);
+        // Animate stats with count-up on win
+        animateResultStats(time, attempts);
     }
-
-    // Achievement data will be refreshed when user opens profile
 
     document.getElementById('play-again').style.display = 'inline-block';
     document.getElementById('quit').style.display = 'inline-block';
+
+    // Transition to result page with animation
+    fadeOutElement(gamePage, () => {
+        fadeInElement(resultPage);
+    });
+}
+
+function animateResultStats(time, attempts) {
+    // Animate the attempts number with count-up
+    const attemptsElements = document.querySelectorAll('#game-stats .stat-item span');
+
+    // Find the attempts stat (second item)
+    if (attemptsElements[1]) {
+        const targetAttempts = attempts;
+        let currentCount = 0;
+        const duration = 800; // 0.8s
+        const increment = Math.ceil(targetAttempts / (duration / 16)); // 60fps
+
+        const countUp = setInterval(() => {
+            currentCount += increment;
+            if (currentCount >= targetAttempts) {
+                currentCount = targetAttempts;
+                clearInterval(countUp);
+            }
+            attemptsElements[1].textContent = `Attempts: ${currentCount}/${GAME_CONFIG.MAX_ATTEMPTS}`;
+        }, 16);
+    }
 }
 
 function calculateAverageGuessTime(totalTime, attempts) {
@@ -722,14 +829,31 @@ let gameJustCompleted = false;
 
 function showHomePage() {
     updateGameStatus('welcome');
-    document.getElementById('home-page').style.display = 'block';
-    document.getElementById('game-page').style.display = 'none';
-    document.getElementById('result-page').style.display = 'none';
-    updateStreakStats(); // Update streak stats display
 
-    // Force refresh leaderboard if game was just completed, otherwise use cache
-    loadLeaderboard(gameJustCompleted);
-    gameJustCompleted = false;
+    const homePage = document.getElementById('home-page');
+    const gamePage = document.getElementById('game-page');
+    const resultPage = document.getElementById('result-page');
+
+    // Fade out current page
+    const currentPage = gamePage.style.display !== 'none' ? gamePage :
+                        resultPage.style.display !== 'none' ? resultPage : null;
+
+    if (currentPage) {
+        fadeOutElement(currentPage, () => {
+            fadeInElement(homePage);
+            updateStreakStats();
+            loadLeaderboard(gameJustCompleted);
+            gameJustCompleted = false;
+        });
+    } else {
+        // First load - no transition needed
+        homePage.style.display = 'block';
+        gamePage.style.display = 'none';
+        resultPage.style.display = 'none';
+        updateStreakStats();
+        loadLeaderboard(gameJustCompleted);
+        gameJustCompleted = false;
+    }
 }
 
 function quitGame() {
@@ -908,19 +1032,17 @@ function attachAuthListeners() {
     if (!loginBtn || !authModal || !closeModal) return;
 
     loginBtn.addEventListener('click', () => {
-        authModal.style.display = 'flex';
+        openModalWithAnimation(authModal);
         showLoginForm();
     });
 
     closeModal.addEventListener('click', () => {
-        authModal.style.display = 'none';
-        clearAuthForms();
+        closeModalWithAnimation(authModal, clearAuthForms);
     });
 
     authModal.addEventListener('click', (e) => {
         if (e.target === authModal) {
-            authModal.style.display = 'none';
-            clearAuthForms();
+            closeModalWithAnimation(authModal, clearAuthForms);
         }
     });
 
@@ -1035,8 +1157,7 @@ async function handleLogin(e) {
 
             updateAuthUI();
             updateStreakStats();
-            document.getElementById('auth-modal').style.display = 'none';
-            clearAuthForms();
+            closeModalWithAnimation(document.getElementById('auth-modal'), clearAuthForms);
 
             showToast('Welcome back, ' + currentUser.username + '!', 'success');
         }
@@ -1078,9 +1199,9 @@ async function handleSignup(e) {
             
             localStorage.setItem('authToken', authToken);
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            
+
             updateAuthUI();
-            document.getElementById('auth-modal').style.display = 'none';
+            closeModalWithAnimation(document.getElementById('auth-modal'), clearAuthForms);
             clearAuthForms();
 
             showToast('Welcome to NumVana, ' + currentUser.username + '!', 'success');
@@ -1111,40 +1232,69 @@ function setupHeaderDropdown() {
     // Toggle dropdown on button click
     dropdownBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        if (dropdown.style.display === 'block') {
+            // Close with animation
+            dropdown.classList.add('dropdown-exit');
+            setTimeout(() => {
+                dropdown.style.display = 'none';
+                dropdown.classList.remove('dropdown-exit');
+            }, 200);
+        } else {
+            // Open with animation (existing dropdownFadeIn)
+            dropdown.style.display = 'block';
+            void dropdown.offsetWidth; // Force reflow
+        }
     });
 
     // Close dropdown when clicking outside
     document.addEventListener('click', (e) => {
         if (!dropdown.contains(e.target) && !dropdownBtn.contains(e.target)) {
-            dropdown.style.display = 'none';
+            if (dropdown.style.display === 'block') {
+                dropdown.classList.add('dropdown-exit');
+                setTimeout(() => {
+                    dropdown.style.display = 'none';
+                    dropdown.classList.remove('dropdown-exit');
+                }, 200);
+            }
         }
     });
 
     // View Profile
     if (viewProfileBtn) {
         viewProfileBtn.addEventListener('click', () => {
-            dropdown.style.display = 'none';
-            loadAndShowProfile();
+            dropdown.classList.add('dropdown-exit');
+            setTimeout(() => {
+                dropdown.style.display = 'none';
+                dropdown.classList.remove('dropdown-exit');
+                loadAndShowProfile();
+            }, 200);
         });
     }
 
     // Settings
     if (settingsBtn) {
         settingsBtn.addEventListener('click', () => {
-            dropdown.style.display = 'none';
-            const settingsModal = document.getElementById('settings-modal');
-            if (settingsModal) {
-                settingsModal.style.display = 'flex';
-            }
+            dropdown.classList.add('dropdown-exit');
+            setTimeout(() => {
+                dropdown.style.display = 'none';
+                dropdown.classList.remove('dropdown-exit');
+                const settingsModal = document.getElementById('settings-modal');
+                if (settingsModal) {
+                    openModalWithAnimation(settingsModal);
+                }
+            }, 200);
         });
     }
 
     // Logout
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
-            dropdown.style.display = 'none';
-            logout();
+            dropdown.classList.add('dropdown-exit');
+            setTimeout(() => {
+                dropdown.style.display = 'none';
+                dropdown.classList.remove('dropdown-exit');
+                logout();
+            }, 200);
         });
     }
 }
@@ -1161,21 +1311,21 @@ function setupSettingsModal() {
     // Open settings modal from guest controls
     if (settingsBtnGuest) {
         settingsBtnGuest.addEventListener('click', () => {
-            settingsModal.style.display = 'flex';
+            openModalWithAnimation(settingsModal);
         });
     }
 
     // Close settings modal
     if (closeSettingsBtn) {
         closeSettingsBtn.addEventListener('click', () => {
-            settingsModal.style.display = 'none';
+            closeModalWithAnimation(settingsModal);
         });
     }
 
     // Close when clicking outside modal
     settingsModal.addEventListener('click', (e) => {
         if (e.target === settingsModal) {
-            settingsModal.style.display = 'none';
+            closeModalWithAnimation(settingsModal);
         }
     });
 
@@ -1599,14 +1749,14 @@ function setupProfileListeners() {
 
     if (closeProfileBtn) {
         closeProfileBtn.addEventListener('click', () => {
-            profileModal.style.display = 'none';
+            closeModalWithAnimation(profileModal);
         });
     }
 
     if (profileModal) {
         profileModal.addEventListener('click', (e) => {
             if (e.target === profileModal) {
-                profileModal.style.display = 'none';
+                closeModalWithAnimation(profileModal);
             }
         });
     }
@@ -1623,7 +1773,7 @@ async function loadAndShowProfile() {
     const profileContent = document.getElementById('profile-content');
 
     // Show modal with loading state
-    profileModal.style.display = 'flex';
+    openModalWithAnimation(profileModal);
     if (loadingIndicator) loadingIndicator.style.display = 'block';
     if (profileContent) profileContent.style.display = 'none';
 
