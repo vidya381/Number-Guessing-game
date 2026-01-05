@@ -2525,6 +2525,69 @@ body.dark-mode .achievement-summary-card {
     color: var(--text-secondary);
 }
 
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.volume-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 150px;
+    height: 6px;
+    border-radius: 5px;
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    outline: none;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.volume-slider:hover {
+    opacity: 1;
+}
+
+.volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    cursor: pointer;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    transition: all 0.3s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 12px rgba(78, 168, 222, 0.4);
+}
+
+.volume-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    transition: all 0.3s ease;
+}
+
+.volume-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 4px 12px rgba(78, 168, 222, 0.4);
+}
+
+.volume-percentage {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-color);
+    min-width: 45px;
+    text-align: right;
+}
+
 .toggle-btn {
     width: 50px;
     height: 50px;
@@ -2611,6 +2674,22 @@ body.dark-mode .dropdown-email {
 body.dark-mode .setting-item {
     background: var(--input-background);
     border-color: rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode .volume-slider {
+    background: linear-gradient(90deg, #a78bfa 0%, #4ea8de 100%);
+}
+
+body.dark-mode .volume-slider::-webkit-slider-thumb {
+    background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%);
+}
+
+body.dark-mode .volume-slider::-moz-range-thumb {
+    background: linear-gradient(135deg, #a78bfa 0%, #c4b5fd 100%);
+}
+
+body.dark-mode .volume-percentage {
+    color: #a78bfa;
 }
 
 body.dark-mode .setting-item:hover {
@@ -2730,5 +2809,14 @@ body.dark-mode .header-streak i {
         width: 45px;
         height: 45px;
         font-size: 18px;
+    }
+
+    .volume-slider {
+        width: 120px;
+    }
+
+    .volume-percentage {
+        font-size: 13px;
+        min-width: 40px;
     }
 }

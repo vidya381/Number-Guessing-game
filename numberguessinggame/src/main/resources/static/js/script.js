@@ -65,7 +65,7 @@ let floatingNumbersInterval;
 let confettiTimeout;
 let bestScore = localStorage.getItem('bestScore') || 'Not set';
 let currentDifficulty = 1;
-let soundEnabled = true;
+let soundVolume = parseFloat(localStorage.getItem('soundVolume')) || 0.7; // 0.0 to 1.0
 let isSubmitting = false;
 let recentScores = [];
 
@@ -98,7 +98,16 @@ const incorrectSound = new Audio('/audio/incorrect-sound.mp3');
 const winSound = new Audio('/audio/win-sound.mp3');
 const achievementSound = new Audio('/audio/win-sound.mp3'); // Can be replaced with custom achievement sound
 
+// Set initial volume for all sounds
+function updateSoundVolumes() {
+    correctSound.volume = soundVolume;
+    incorrectSound.volume = soundVolume;
+    winSound.volume = soundVolume;
+    achievementSound.volume = soundVolume;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
+    updateSoundVolumes(); // Set initial sound volumes
     initializeAuth();
     updateBestScore();
     updateRecentScores();
@@ -243,11 +252,21 @@ function toggleDarkMode() {
     updateThemeToggleButton(!isDarkMode);
 }
 
-function toggleSound() {
-    soundEnabled = !soundEnabled;
-    const soundIcon = document.querySelector('#sound-toggle i');
-    soundIcon.classList.toggle('fa-volume-up');
-    soundIcon.classList.toggle('fa-volume-mute');
+function updateVolumeIcon(volume) {
+    const volumeIcon = document.getElementById('volume-icon');
+    if (!volumeIcon) return;
+
+    // Remove all volume icon classes
+    volumeIcon.classList.remove('fa-volume-up', 'fa-volume-down', 'fa-volume-off');
+
+    // Add appropriate icon based on volume level
+    if (volume === 0) {
+        volumeIcon.classList.add('fa-volume-off');
+    } else if (volume < 0.5) {
+        volumeIcon.classList.add('fa-volume-down');
+    } else {
+        volumeIcon.classList.add('fa-volume-up');
+    }
 }
 
 function setTheme(isDarkMode) {
@@ -452,7 +471,7 @@ function submitGuess() {
             }
 
             if (data.correct) {
-                if (soundEnabled) winSound.play();
+                if (soundVolume > 0) winSound.play();
 
                 // Update streak data if available
                 if (data.currentWinStreak !== undefined) {
@@ -474,7 +493,7 @@ function submitGuess() {
 
                 endGame(true);
             } else {
-                if (soundEnabled) incorrectSound.play();
+                if (soundVolume > 0) incorrectSound.play();
                 displayFeedback(data.correctPosition, data.correctButWrongPosition);
                 addToGuessHistory(guess, data.correctPosition, data.correctButWrongPosition);
                 shakeInputs();
@@ -1134,7 +1153,8 @@ function setupSettingsModal() {
     const settingsModal = document.getElementById('settings-modal');
     const closeSettingsBtn = document.getElementById('close-settings');
     const settingsBtnGuest = document.getElementById('settings-btn');
-    const soundToggleSetting = document.getElementById('sound-toggle-setting');
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumePercentage = document.getElementById('volume-percentage');
 
     if (!settingsModal) return;
 
@@ -1159,20 +1179,25 @@ function setupSettingsModal() {
         }
     });
 
-    // Sound toggle in settings
-    if (soundToggleSetting) {
-        // Initialize button state
-        updateSoundToggleButton(soundToggleSetting);
+    // Volume slider in settings
+    if (volumeSlider && volumePercentage) {
+        // Initialize slider with saved volume
+        volumeSlider.value = Math.round(soundVolume * 100);
+        volumePercentage.textContent = volumeSlider.value + '%';
+        updateVolumeIcon(soundVolume);
 
-        soundToggleSetting.addEventListener('click', () => {
-            soundEnabled = !soundEnabled;
-            localStorage.setItem('soundEnabled', soundEnabled);
-            updateSoundToggleButton(soundToggleSetting);
+        volumeSlider.addEventListener('input', (e) => {
+            const volume = parseInt(e.target.value);
+            soundVolume = volume / 100;
+            volumePercentage.textContent = volume + '%';
+            updateSoundVolumes();
+            updateVolumeIcon(soundVolume);
+            localStorage.setItem('soundVolume', soundVolume);
 
-            // Also update the old sound toggle button if it exists
-            const oldSoundToggle = document.getElementById('sound-toggle');
-            if (oldSoundToggle) {
-                updateSoundToggleButton(oldSoundToggle);
+            // Play a test sound when adjusting volume
+            if (soundVolume > 0) {
+                correctSound.currentTime = 0;
+                correctSound.play();
             }
         });
     }
@@ -1355,7 +1380,7 @@ function displayAchievementToast(achievement) {
     container.appendChild(toast);
 
     // Play sound
-    if (soundEnabled) {
+    if (soundVolume > 0) {
         achievementSound.play().catch(() => {});
     }
 

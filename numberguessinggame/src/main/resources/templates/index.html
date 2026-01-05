@@ -375,14 +375,15 @@
                 <div class="setting-item">
                     <div class="setting-info">
                         <div class="setting-label">
-                            <i class="fas fa-volume-up"></i>
-                            <span>Sound Effects</span>
+                            <i class="fas fa-volume-up" id="volume-icon"></i>
+                            <span>Sound Volume</span>
                         </div>
-                        <div class="setting-description">Play sounds during gameplay</div>
+                        <div class="setting-description">Adjust gameplay sound effects</div>
                     </div>
-                    <button id="sound-toggle-setting" class="toggle-btn" aria-label="Toggle sound">
-                        <i class="fas fa-volume-up"></i>
-                    </button>
+                    <div class="volume-control">
+                        <input type="range" id="volume-slider" min="0" max="100" value="70" class="volume-slider">
+                        <span id="volume-percentage" class="volume-percentage">70%</span>
+                    </div>
                 </div>
 
                 <!-- Future settings can be added here -->
