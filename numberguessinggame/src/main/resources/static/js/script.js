@@ -1426,11 +1426,6 @@ function showToast(message, type = 'info') {
     toast.appendChild(closeBtn);
     container.appendChild(toast);
 
-    // Play sound for success/error
-    if (type === 'success' && soundEnabled) {
-        winSound.play().catch(() => {});
-    }
-
     // Auto-remove after 4 seconds
     setTimeout(() => {
         removeSimpleToast(toast);
