@@ -284,6 +284,7 @@ document.addEventListener('DOMContentLoaded', function () {
     showHomePage();
     loadLeaderboard();
     setupKeyboardShortcuts(); // Initialize keyboard shortcuts
+    setupHowToPlay(); // Initialize How to Play toggle
 });
 
 // Cleanup intervals when page unloads to prevent memory leaks
@@ -338,6 +339,28 @@ function attachEventListeners() {
     document.getElementById('quit-game').addEventListener('click', quitGame);
     document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
     // Sound toggle moved to settings modal - handled by setupSettingsModal()
+}
+
+/**
+ * Setup How to Play collapsible section in Settings
+ */
+function setupHowToPlay() {
+    const howToPlayToggle = document.getElementById('how-to-play-toggle');
+    const howToPlayContent = document.getElementById('how-to-play-content');
+
+    if (howToPlayToggle && howToPlayContent) {
+        howToPlayToggle.addEventListener('click', function() {
+            const isVisible = howToPlayContent.style.display !== 'none';
+
+            if (isVisible) {
+                howToPlayContent.style.display = 'none';
+                howToPlayToggle.classList.remove('active');
+            } else {
+                howToPlayContent.style.display = 'block';
+                howToPlayToggle.classList.add('active');
+            }
+        });
+    }
 }
 
 function createFloatingNumbers() {
