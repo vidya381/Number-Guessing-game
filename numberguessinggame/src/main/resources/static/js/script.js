@@ -148,6 +148,117 @@ function closeModalWithAnimation(modal, callback) {
     }, 250);
 }
 
+// ==========================================
+// KEYBOARD SHORTCUTS
+// ==========================================
+// Global keyboard shortcut handler for:
+// - ESC: Close open modals/dropdowns
+// - Ctrl+Q / Cmd+Q: Quit current game
+// - Enter: Submit guess (handled in input handlers)
+// ==========================================
+
+// Get currently open modal (if any)
+function getOpenModal() {
+    const authModal = document.getElementById('auth-modal');
+    if (authModal && authModal.style.display === 'flex') return authModal;
+
+    const profileModal = document.getElementById('profile-modal');
+    if (profileModal && profileModal.style.display === 'flex') return profileModal;
+
+    const settingsModal = document.getElementById('settings-modal');
+    if (settingsModal && settingsModal.style.display === 'flex') return settingsModal;
+
+    const dropdown = document.getElementById('profile-dropdown');
+    if (dropdown && dropdown.style.display === 'block') return dropdown;
+
+    return null;
+}
+
+// Check if game is currently active
+function isGameActive() {
+    const gamePage = document.getElementById('game-page');
+    return gamePage && gamePage.style.display !== 'none';
+}
+
+// Handle ESC key to close modals
+function handleEscapeKey(event) {
+    // Check profile dropdown first (highest visual priority)
+    const dropdown = document.getElementById('profile-dropdown');
+    if (dropdown && dropdown.style.display === 'block') {
+        dropdown.classList.add('dropdown-exit');
+        setTimeout(() => {
+            dropdown.style.display = 'none';
+            dropdown.classList.remove('dropdown-exit');
+        }, 200);
+        event.preventDefault();
+        return;
+    }
+
+    // Check modals in order
+    const authModal = document.getElementById('auth-modal');
+    if (authModal && authModal.style.display === 'flex') {
+        closeModalWithAnimation(authModal, clearAuthForms);
+        event.preventDefault();
+        return;
+    }
+
+    const profileModal = document.getElementById('profile-modal');
+    if (profileModal && profileModal.style.display === 'flex') {
+        closeModalWithAnimation(profileModal);
+        event.preventDefault();
+        return;
+    }
+
+    const settingsModal = document.getElementById('settings-modal');
+    if (settingsModal && settingsModal.style.display === 'flex') {
+        closeModalWithAnimation(settingsModal);
+        event.preventDefault();
+        return;
+    }
+}
+
+// Handle Ctrl+Q / Cmd+Q to quit game
+function handleQuitShortcut(event) {
+    // Only trigger if game is active
+    if (!isGameActive()) return;
+
+    // Don't quit if currently submitting
+    if (isSubmitting) return;
+
+    // Prevent default browser behavior (critical for Cmd+Q on Mac)
+    event.preventDefault();
+
+    // Call existing quit function (shows confirmation dialog)
+    quitGame();
+}
+
+// Setup global keyboard shortcuts
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', function handleGlobalKeydown(event) {
+        const key = event.key;
+        const isCtrlOrCmd = event.ctrlKey || event.metaKey;
+
+        // Check if user is typing in an input field
+        const isTypingInInput = document.activeElement.tagName === 'INPUT' ||
+                               document.activeElement.tagName === 'TEXTAREA';
+
+        // ESC to close modals (always allowed, even in inputs)
+        if (key === 'Escape') {
+            handleEscapeKey(event);
+            return;
+        }
+
+        // Don't process other shortcuts if typing in input
+        if (isTypingInInput) return;
+
+        // Ctrl+Q (or Cmd+Q) to quit game
+        if (isCtrlOrCmd && key === 'q') {
+            handleQuitShortcut(event);
+            return;
+        }
+    });
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     updateSoundVolumes(); // Set initial sound volumes
     initializeAuth();
@@ -161,6 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updateGameStatus('welcome');
     showHomePage();
     loadLeaderboard();
+    setupKeyboardShortcuts(); // Initialize keyboard shortcuts
 });
 
 // Cleanup intervals when page unloads to prevent memory leaks
