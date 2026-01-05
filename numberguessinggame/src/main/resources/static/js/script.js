@@ -1019,7 +1019,7 @@ async function handleLogin(e) {
             document.getElementById('auth-modal').style.display = 'none';
             clearAuthForms();
 
-            alert('Login successful!');
+            showToast('Welcome back, ' + currentUser.username + '!', 'success');
         }
     } catch (error) {
         errorDiv.textContent = 'An error occurred. Please try again.';
@@ -1063,8 +1063,8 @@ async function handleSignup(e) {
             updateAuthUI();
             document.getElementById('auth-modal').style.display = 'none';
             clearAuthForms();
-            
-            alert('Signup successful! Welcome to NumVana!');
+
+            showToast('Welcome to NumVana, ' + currentUser.username + '!', 'success');
         }
     } catch (error) {
         errorDiv.textContent = 'An error occurred. Please try again.';
@@ -1077,7 +1077,7 @@ function logout() {
     localStorage.removeItem('authToken');
     localStorage.removeItem('currentUser');
     updateAuthUI();
-    alert('Logged out successfully!');
+    showToast('Logged out successfully!', 'success');
 }
 
 function setupHeaderDropdown() {
@@ -1379,6 +1379,71 @@ function removeToast(toast) {
             processAchievementQueue();
         }, 300);
     }, 500);
+}
+
+// General Toast Notification System
+function showToast(message, type = 'info') {
+    const container = document.getElementById('achievement-toast-container');
+    if (!container) return;
+
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = 'simple-toast simple-toast-' + type;
+
+    // Icon based on type
+    let iconClass = 'fas fa-info-circle';
+    let iconColor = '#3498db';
+
+    if (type === 'success') {
+        iconClass = 'fas fa-check-circle';
+        iconColor = '#27ae60';
+    } else if (type === 'error') {
+        iconClass = 'fas fa-exclamation-circle';
+        iconColor = '#e74c3c';
+    } else if (type === 'warning') {
+        iconClass = 'fas fa-exclamation-triangle';
+        iconColor = '#f39c12';
+    }
+
+    // Icon
+    const icon = document.createElement('i');
+    icon.className = iconClass + ' simple-toast-icon';
+    icon.style.color = iconColor;
+
+    // Message
+    const messageEl = document.createElement('div');
+    messageEl.className = 'simple-toast-message';
+    messageEl.textContent = message;
+
+    // Close button
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'simple-toast-close';
+    closeBtn.innerHTML = '&times;';
+    closeBtn.onclick = () => removeSimpleToast(toast);
+
+    toast.appendChild(icon);
+    toast.appendChild(messageEl);
+    toast.appendChild(closeBtn);
+    container.appendChild(toast);
+
+    // Play sound for success/error
+    if (type === 'success' && soundEnabled) {
+        winSound.play().catch(() => {});
+    }
+
+    // Auto-remove after 4 seconds
+    setTimeout(() => {
+        removeSimpleToast(toast);
+    }, 4000);
+}
+
+function removeSimpleToast(toast) {
+    toast.classList.add('removing');
+    setTimeout(() => {
+        if (toast.parentNode) {
+            toast.parentNode.removeChild(toast);
+        }
+    }, 300);
 }
 
 function createAchievementConfetti() {
