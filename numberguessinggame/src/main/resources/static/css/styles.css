@@ -1757,6 +1757,23 @@ body.dark-mode .achievement-toast-icon-wrapper {
     background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
 }
 
+body.dark-mode .achievement-toast-title {
+    color: #ffffff;
+    background: linear-gradient(135deg, #a78bfa 0%, #4ea8de 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body.dark-mode .achievement-toast-description {
+    color: rgba(255, 255, 255, 0.9);
+    opacity: 1;
+}
+
+body.dark-mode .achievement-toast-points {
+    color: #a78bfa;
+}
+
 /* Simple Toast Notification Styles */
 .simple-toast {
     display: flex;
