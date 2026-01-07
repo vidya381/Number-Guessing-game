@@ -44,6 +44,11 @@
                     <span id="win-streak-count">0</span>
                 </div>
 
+                <!-- Leaderboard Button -->
+                <button id="leaderboard-btn" class="header-icon-btn" aria-label="Leaderboard" title="Leaderboard">
+                    <i class="fas fa-trophy"></i>
+                </button>
+
                 <!-- Profile Dropdown -->
                 <div class="profile-dropdown-container">
                     <button id="profile-dropdown-btn" class="header-icon-btn" aria-label="Profile" title="Profile">
@@ -106,43 +111,23 @@
                 <ul id="recent-scores"></ul>
             </section>
 
-            <section class="section" id="leaderboard-section">
-                <h2>🏅 TOP PLAYERS</h2>
-                <div id="leaderboard-container">
-                    <div id="leaderboard-loading">Loading leaderboard...</div>
-                    <div id="leaderboard-content" style="display: none;"></div>
-                </div>
-            </section>
         </div>
-    
+
         <div id="game-page" style="display: none;">
             <section class="section">
-                <div id="game-info">
-                    <div id="timer-container">
-                        <svg class="timer-svg" width="100" height="100" viewBox="0 0 100 100">
-                            <circle class="timer-background" cx="50" cy="50" r="45"></circle>
-                            <circle class="timer-progress" cx="50" cy="50" r="45"></circle>
-                        </svg>
-                        <div class="timer-text">
+                <div class="game-header">
+                    <h2>🔐 ENTER YOUR GUESS</h2>
+                    <div class="game-stats-inline">
+                        <div class="stat-badge">
+                            <span class="stat-icon">⏱️</span>
                             <span id="timer">00:00</span>
                         </div>
-                    </div>
-
-                    <div id="attempts-container">
-                        <svg class="attempts-svg" width="100" height="100" viewBox="0 0 100 100">
-                            <circle class="attempts-background" cx="50" cy="50" r="45"></circle>
-                            <circle class="attempts-progress" cx="50" cy="50" r="45"></circle>
-                        </svg>
-                        <div class="attempts-text">
+                        <div class="stat-badge">
+                            <span class="stat-icon">🎯</span>
                             <span id="attempts">0</span>/10
                         </div>
                     </div>
-
                 </div>
-            </section>
-
-            <section class="section">
-                <h2>🔐 ENTER YOUR GUESS</h2>
                 <div id="input-container"></div>
                 <button id="submit-guess">⚡ SUBMIT GUESS</button>
                 <div id="feedback" class="fade-in"></div>
@@ -461,6 +446,22 @@
                         <span class="coming-soon-badge">Soon</span>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboard-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="leaderboard-modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-trophy"></i> Global Leaderboard
+            </h2>
+            <div id="modal-leaderboard-container">
+                <div id="modal-leaderboard-loading">Loading leaderboard...</div>
+                <div id="modal-leaderboard-content" style="display: none;"></div>
             </div>
         </div>
     </div>

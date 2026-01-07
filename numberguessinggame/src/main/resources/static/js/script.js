@@ -282,7 +282,6 @@ document.addEventListener('DOMContentLoaded', function () {
     createFloatingNumbers();
     updateGameStatus('welcome');
     showHomePage();
-    loadLeaderboard();
     setupKeyboardShortcuts(); // Initialize keyboard shortcuts
     setupHowToPlay(); // Initialize How to Play toggle
 });
@@ -548,7 +547,7 @@ function updateGamePage() {
     const resultPage = document.getElementById('result-page');
 
     fadeOutElement(homePage, () => {
-        fadeInElement(gamePage);
+        fadeInElement(gamePage, 'flex');
         document.getElementById('attempts').textContent = attempts;
         document.getElementById('feedback').textContent = '';
         updateAttemptsProgress();
@@ -563,6 +562,14 @@ function updateInputFields(difficulty) {
 
     inputContainer.innerHTML = '';
     const digitCount = difficulty === 0 ? GAME_CONFIG.EASY_DIGITS : (difficulty === 1 ? GAME_CONFIG.MEDIUM_DIGITS : GAME_CONFIG.HARD_DIGITS);
+
+    // Add class for dynamic sizing
+    inputContainer.className = '';
+    if (digitCount === 5) {
+        inputContainer.classList.add('digits-5');
+    } else if (digitCount === 6) {
+        inputContainer.classList.add('digits-6');
+    }
 
     for (let i = 0; i < digitCount; i++) {
         const input = document.createElement('input');
@@ -1217,6 +1224,7 @@ function attachAuthListeners() {
     // Setup dropdown and settings listeners
     setupHeaderDropdown();
     setupSettingsModal();
+    setupLeaderboardModal();
 }
 
 function showLoginForm() {
@@ -1497,6 +1505,37 @@ function setupSettingsModal() {
             }
         });
     }
+}
+
+function setupLeaderboardModal() {
+    const leaderboardModal = document.getElementById('leaderboard-modal');
+    const leaderboardBtn = document.getElementById('leaderboard-btn');
+    const closeLeaderboardBtn = document.getElementById('leaderboard-modal-close');
+
+    if (!leaderboardModal) return;
+
+    // Open leaderboard modal
+    if (leaderboardBtn) {
+        leaderboardBtn.addEventListener('click', () => {
+            openModalWithAnimation(leaderboardModal);
+            // Load leaderboard data when modal opens
+            loadLeaderboard(false, true);
+        });
+    }
+
+    // Close leaderboard modal
+    if (closeLeaderboardBtn) {
+        closeLeaderboardBtn.addEventListener('click', () => {
+            closeModalWithAnimation(leaderboardModal);
+        });
+    }
+
+    // Close when clicking outside modal
+    leaderboardModal.addEventListener('click', (e) => {
+        if (e.target === leaderboardModal) {
+            closeModalWithAnimation(leaderboardModal);
+        }
+    });
 }
 
 function updateSoundToggleButton(button) {
@@ -1806,9 +1845,14 @@ let leaderboardCache = null;
 let leaderboardCacheTime = 0;
 const LEADERBOARD_CACHE_DURATION = 30000; // 30 seconds
 
-async function loadLeaderboard(forceRefresh = false) {
-    const loadingDiv = document.getElementById('leaderboard-loading');
-    const contentDiv = document.getElementById('leaderboard-content');
+async function loadLeaderboard(forceRefresh = false, isModal = false) {
+    // Support both modal and inline leaderboard
+    const loadingDiv = isModal ?
+        document.getElementById('modal-leaderboard-loading') :
+        document.getElementById('leaderboard-loading');
+    const contentDiv = isModal ?
+        document.getElementById('modal-leaderboard-content') :
+        document.getElementById('leaderboard-content');
 
     if (!loadingDiv || !contentDiv) return;
 
