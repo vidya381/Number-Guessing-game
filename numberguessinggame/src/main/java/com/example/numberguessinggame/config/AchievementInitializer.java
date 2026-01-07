@@ -21,26 +21,39 @@ public class AchievementInitializer implements ApplicationRunner {
     }
 
     private void initializeAchievements() {
-        // Check if achievements already exist
-        if (achievementRepository.count() > 0) {
-            System.out.println("Achievements already initialized. Skipping...");
-            return;
-        }
+        System.out.println("Checking and updating achievements...");
 
-        System.out.println("Initializing achievements...");
+        long initialCount = achievementRepository.count();
 
-        // Create all achievement definitions
+        // Create all achievement definitions (will skip if code already exists)
         createMilestoneAchievements();
         createSkillAchievements();
         createDifficultyAchievements();
         createStreakAchievements();
+        createSpecialVictoryAchievements();
+        createTimeOfDayAchievements();
+        createComebackAchievements();
+        createEfficiencyAchievements();
 
-        System.out.println("Achievement initialization complete! Total: " + achievementRepository.count());
+        long finalCount = achievementRepository.count();
+        long newAchievements = finalCount - initialCount;
+
+        if (newAchievements > 0) {
+            System.out.println("Added " + newAchievements + " new achievements!");
+        }
+        System.out.println("Achievement check complete! Total: " + finalCount);
+    }
+
+    private void saveIfNotExists(Achievement achievement) {
+        // Check if achievement with this code already exists
+        if (!achievementRepository.findByCode(achievement.getCode()).isPresent()) {
+            achievementRepository.save(achievement);
+        }
     }
 
     private void createMilestoneAchievements() {
         // Wins milestones
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "FIRST_WIN",
             "First Victory",
             "Win your first game",
@@ -52,7 +65,7 @@ public class AchievementInitializer implements ApplicationRunner {
             10
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "FIVE_WINS",
             "Winner",
             "Win 5 games",
@@ -64,7 +77,7 @@ public class AchievementInitializer implements ApplicationRunner {
             25
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "TWENTY_WINS",
             "Champion",
             "Win 20 games",
@@ -76,7 +89,7 @@ public class AchievementInitializer implements ApplicationRunner {
             50
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "FIFTY_WINS",
             "Master",
             "Win 50 games",
@@ -88,7 +101,7 @@ public class AchievementInitializer implements ApplicationRunner {
             100
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "HUNDRED_WINS",
             "Grandmaster",
             "Win 100 games",
@@ -101,7 +114,7 @@ public class AchievementInitializer implements ApplicationRunner {
         ));
 
         // Games played milestones
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "GETTING_STARTED",
             "Getting Started",
             "Play 10 games",
@@ -113,7 +126,7 @@ public class AchievementInitializer implements ApplicationRunner {
             15
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "DEDICATED_PLAYER",
             "Dedicated Player",
             "Play 50 games",
@@ -125,7 +138,7 @@ public class AchievementInitializer implements ApplicationRunner {
             50
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "CENTURY_CLUB",
             "Century Club",
             "Play 100 games",
@@ -137,7 +150,7 @@ public class AchievementInitializer implements ApplicationRunner {
             100
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "LEGEND",
             "Legend",
             "Play 500 games",
@@ -151,7 +164,7 @@ public class AchievementInitializer implements ApplicationRunner {
     }
 
     private void createSkillAchievements() {
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "PERFECT_SCORE",
             "Perfect Score",
             "Win with 3 attempts or less",
@@ -163,7 +176,7 @@ public class AchievementInitializer implements ApplicationRunner {
             50
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "EFFICIENT_PLAYER",
             "Efficient Player",
             "Win 10 games with 5 or fewer attempts",
@@ -175,7 +188,7 @@ public class AchievementInitializer implements ApplicationRunner {
             75
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "SPEED_RUNNER",
             "Speed Runner",
             "Win a game in under 2 minutes",
@@ -187,7 +200,7 @@ public class AchievementInitializer implements ApplicationRunner {
             40
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "LIGHTNING_FAST",
             "Lightning Fast",
             "Win a game in under 1 minute",
@@ -199,7 +212,7 @@ public class AchievementInitializer implements ApplicationRunner {
             75
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "CONSISTENCY_KING",
             "Consistency King",
             "Win 5 consecutive games",
@@ -213,7 +226,7 @@ public class AchievementInitializer implements ApplicationRunner {
     }
 
     private void createDifficultyAchievements() {
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "HARD_MODE_WIN",
             "Hard Mode Conqueror",
             "Win on Hard difficulty",
@@ -225,7 +238,7 @@ public class AchievementInitializer implements ApplicationRunner {
             30
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "MIXED_MASTER",
             "Mixed Master",
             "Win at least once on each difficulty",
@@ -237,7 +250,7 @@ public class AchievementInitializer implements ApplicationRunner {
             50
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "HARD_MODE_EXPERT",
             "Hard Mode Expert",
             "Win 10 games on Hard",
@@ -249,7 +262,7 @@ public class AchievementInitializer implements ApplicationRunner {
             75
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "HARD_MODE_MASTER",
             "Hard Mode Master",
             "Win 50 games on Hard",
@@ -261,7 +274,7 @@ public class AchievementInitializer implements ApplicationRunner {
             150
         ));
 
-        achievementRepository.save(new Achievement(
+        saveIfNotExists(new Achievement(
             "DIFFICULTY_BALANCED",
             "Difficulty Balanced",
             "Win 10+ games on each difficulty",
@@ -277,5 +290,193 @@ public class AchievementInitializer implements ApplicationRunner {
     private void createStreakAchievements() {
         // Future streak achievements (not yet implemented in logic)
         // These are created but won't be unlocked until streak tracking is added
+    }
+
+    private void createSpecialVictoryAchievements() {
+        saveIfNotExists(new Achievement(
+            "CLOSE_CALL",
+            "Close Call",
+            "Win on your 10th (final) attempt",
+            AchievementType.SKILL,
+            AchievementCategory.ATTEMPTS,
+            10,
+            "fa-heartbeat",
+            "#E74C3C",
+            30
+        ));
+
+        saveIfNotExists(new Achievement(
+            "EARLY_BIRD_VICTORY",
+            "Early Bird",
+            "Win within your first 3 attempts",
+            AchievementType.SKILL,
+            AchievementCategory.ATTEMPTS,
+            3,
+            "fa-sun",
+            "#F39C12",
+            40
+        ));
+
+        saveIfNotExists(new Achievement(
+            "LUCKY_SEVEN",
+            "Lucky Seven",
+            "Win on exactly your 7th attempt",
+            AchievementType.SKILL,
+            AchievementCategory.ATTEMPTS,
+            7,
+            "fa-clover",
+            "#2ECC71",
+            25
+        ));
+
+        saveIfNotExists(new Achievement(
+            "INSTANT_WIN",
+            "Instant Victory",
+            "Win a game in under 30 seconds",
+            AchievementType.SKILL,
+            AchievementCategory.TIME,
+            30,
+            "fa-flash",
+            "#FFD700",
+            100
+        ));
+
+        saveIfNotExists(new Achievement(
+            "TIME_ATTACK_MASTER",
+            "Time Attack Master",
+            "Win 10 games in under 2 minutes each",
+            AchievementType.SKILL,
+            AchievementCategory.TIME,
+            120,
+            "fa-stopwatch",
+            "#9B59B6",
+            150
+        ));
+    }
+
+    private void createTimeOfDayAchievements() {
+        saveIfNotExists(new Achievement(
+            "MORNING_GLORY",
+            "Morning Glory",
+            "Win 5 games between 6AM and 9AM",
+            AchievementType.SKILL,
+            AchievementCategory.TIME,
+            5,
+            "fa-coffee",
+            "#F39C12",
+            50
+        ));
+
+        saveIfNotExists(new Achievement(
+            "MIDNIGHT_WARRIOR",
+            "Midnight Warrior",
+            "Win 5 games between 12AM and 3AM",
+            AchievementType.SKILL,
+            AchievementCategory.TIME,
+            5,
+            "fa-moon",
+            "#9B59B6",
+            50
+        ));
+
+        saveIfNotExists(new Achievement(
+            "LUNCH_BREAK_PRO",
+            "Lunch Break Pro",
+            "Win 5 games between 12PM and 2PM",
+            AchievementType.SKILL,
+            AchievementCategory.TIME,
+            5,
+            "fa-utensils",
+            "#2ECC71",
+            35
+        ));
+
+        saveIfNotExists(new Achievement(
+            "EVENING_EXPERT",
+            "Evening Expert",
+            "Win 5 games between 6PM and 9PM",
+            AchievementType.SKILL,
+            AchievementCategory.TIME,
+            5,
+            "fa-sunset",
+            "#E74C3C",
+            35
+        ));
+    }
+
+    private void createComebackAchievements() {
+        saveIfNotExists(new Achievement(
+            "COMEBACK_VICTORY",
+            "Comeback Victory",
+            "Win after losing 3 games in a row",
+            AchievementType.SKILL,
+            AchievementCategory.STREAK,
+            3,
+            "fa-redo",
+            "#2ECC71",
+            40
+        ));
+
+        saveIfNotExists(new Achievement(
+            "PHOENIX_RISING",
+            "Phoenix Rising",
+            "Win after losing 5 games in a row",
+            AchievementType.SKILL,
+            AchievementCategory.STREAK,
+            5,
+            "fa-phoenix-squadron",
+            "#E74C3C",
+            75
+        ));
+
+        saveIfNotExists(new Achievement(
+            "UNSTOPPABLE_STREAK",
+            "Unstoppable Streak",
+            "Win 10 consecutive games",
+            AchievementType.SKILL,
+            AchievementCategory.STREAK,
+            10,
+            "fa-fire-alt",
+            "#FFD700",
+            150
+        ));
+    }
+
+    private void createEfficiencyAchievements() {
+        saveIfNotExists(new Achievement(
+            "MIRACLE_GUESS",
+            "Miracle Guess",
+            "Win on your first attempt (extremely rare!)",
+            AchievementType.SKILL,
+            AchievementCategory.ATTEMPTS,
+            1,
+            "fa-magic",
+            "#FFD700",
+            500
+        ));
+
+        saveIfNotExists(new Achievement(
+            "TWO_GUESS_WONDER",
+            "Two Guess Wonder",
+            "Win in exactly 2 attempts",
+            AchievementType.SKILL,
+            AchievementCategory.ATTEMPTS,
+            2,
+            "fa-star",
+            "#9B59B6",
+            200
+        ));
+
+        saveIfNotExists(new Achievement(
+            "PERFECT_TRIFECTA",
+            "Perfect Trifecta",
+            "Win 3 consecutive perfect games (3 or fewer attempts)",
+            AchievementType.SKILL,
+            AchievementCategory.ATTEMPTS,
+            3,
+            "fa-crown",
+            "#FFD700",
+            200
+        ));
     }
 }
