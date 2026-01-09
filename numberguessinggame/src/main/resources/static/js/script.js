@@ -989,17 +989,27 @@ function showHomePage() {
         dailyChallengeSessionId = null;
     }
 
+    // Clean up time attack if active
+    if (timeAttackSessionId !== null) {
+        clearInterval(timeAttackTimerInterval);
+        timeAttackSessionId = null;
+    }
+
     const homePage = document.getElementById('home-page');
     const gamePage = document.getElementById('game-page');
     const resultPage = document.getElementById('result-page');
     const dailyChallengePage = document.getElementById('daily-challenge-page');
     const dailyResultPage = document.getElementById('daily-result-page');
+    const timeAttackPage = document.getElementById('time-attack-page');
+    const timeAttackResultPage = document.getElementById('time-attack-result-page');
 
     // Fade out current page
     const currentPage = gamePage.style.display !== 'none' ? gamePage :
         resultPage.style.display !== 'none' ? resultPage :
             dailyChallengePage.style.display !== 'none' ? dailyChallengePage :
-                dailyResultPage.style.display !== 'none' ? dailyResultPage : null;
+                dailyResultPage.style.display !== 'none' ? dailyResultPage :
+                    timeAttackPage.style.display !== 'none' ? timeAttackPage :
+                        timeAttackResultPage.style.display !== 'none' ? timeAttackResultPage : null;
 
     if (currentPage) {
         fadeOutElement(currentPage, () => {
@@ -1015,6 +1025,8 @@ function showHomePage() {
         resultPage.style.display = 'none';
         dailyChallengePage.style.display = 'none';
         dailyResultPage.style.display = 'none';
+        timeAttackPage.style.display = 'none';
+        timeAttackResultPage.style.display = 'none';
         updateStreakStats();
         loadLeaderboard(gameJustCompleted);
         gameJustCompleted = false;
@@ -2302,6 +2314,23 @@ let dailyChallengeTimerInterval = null;
 let dailyChallengeGuessHistory = [];
 let dailyChallengeDigitCount = 0;
 
+// ===================================
+// TIME ATTACK STATE
+// ===================================
+let timeAttackSessionId = null;
+let timeAttackDifficulty = null;
+let timeAttackTimeRemaining = 300; // 5 minutes in seconds
+let timeAttackTimerInterval = null;
+let timeAttackScore = 0;
+let timeAttackWins = 0;
+let timeAttackGamesPlayed = 0;
+let timeAttackCurrentGame = {
+    attempts: 0,
+    startTime: null
+};
+let timeAttackGameHistory = [];
+let timeAttackDigitCount = 0;
+
 /**
  * Load Daily Challenge Info
  */
@@ -2882,3 +2911,582 @@ document.getElementById('daily-leaderboard-modal-close')?.addEventListener('clic
 if (document.getElementById('home-page').style.display !== 'none') {
     loadDailyChallengeInfo();
 }
+
+// ===================================
+// TIME ATTACK FUNCTIONALITY
+// ===================================
+
+/**
+ * Start Time Attack Session
+ */
+async function startTimeAttackSession(difficulty) {
+    // Guest warning
+    if (!authToken) {
+        const proceed = confirm("You're playing as guest. Your score won't be saved to the leaderboard. Continue?");
+        if (!proceed) return;
+    }
+
+    try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (authToken) {
+            headers['Authorization'] = `Bearer ${authToken}`;
+        }
+
+        const response = await fetch(`/api/time-attack/start?difficulty=${difficulty}`, {
+            method: 'POST',
+            headers: headers
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to start Time Attack session');
+        }
+
+        const data = await response.json();
+
+        if (data.sessionId) {
+            timeAttackSessionId = data.sessionId;
+            timeAttackDifficulty = difficulty;
+            timeAttackDigitCount = data.digitCount;
+            timeAttackTimeRemaining = 300;
+            timeAttackScore = 0;
+            timeAttackWins = 0;
+            timeAttackGamesPlayed = 0;
+            timeAttackGameHistory = [];
+            timeAttackCurrentGame = { attempts: 0, startTime: Date.now() };
+
+            // Show time attack page
+            const homePage = document.getElementById('home-page');
+            const timeAttackPage = document.getElementById('time-attack-page');
+
+            fadeOutElement(homePage, () => {
+                fadeInElement(timeAttackPage, 'flex');
+            });
+
+            // Setup input fields for first game
+            createDigitInputs('ta-input-container', timeAttackDigitCount);
+
+            // Start countdown timer
+            startTimeAttackTimer();
+
+            // Update UI
+            document.getElementById('ta-score').textContent = '0';
+            document.getElementById('ta-wins').textContent = '0';
+            document.getElementById('ta-games-played').textContent = '0';
+            document.getElementById('ta-last-points').textContent = '--';
+            document.getElementById('ta-game-history').innerHTML = '';
+            document.getElementById('ta-feedback').textContent = '';
+
+            // Focus first input
+            document.querySelector('#ta-input-container .digit-input')?.focus();
+        }
+    } catch (error) {
+        console.error('Failed to start Time Attack:', error);
+        showToast('Failed to start Time Attack. Try again!', 'error');
+    }
+}
+
+/**
+ * Countdown Timer for Time Attack
+ */
+function startTimeAttackTimer() {
+    const timerElement = document.getElementById('ta-timer');
+    const timerBadge = document.getElementById('ta-timer-badge');
+
+    timeAttackTimerInterval = setInterval(() => {
+        timeAttackTimeRemaining--;
+
+        const minutes = Math.floor(timeAttackTimeRemaining / 60);
+        const seconds = timeAttackTimeRemaining % 60;
+        timerElement.textContent = `${minutes}:${String(seconds).padStart(2, '0')}`;
+
+        // Visual warning when < 30 seconds
+        if (timeAttackTimeRemaining <= 30 && timeAttackTimeRemaining > 10) {
+            timerBadge.classList.add('timer-warning');
+            timerBadge.classList.remove('timer-critical');
+        }
+
+        // Visual critical when < 10 seconds
+        if (timeAttackTimeRemaining <= 10) {
+            timerBadge.classList.add('timer-critical');
+            timerBadge.classList.remove('timer-warning');
+        }
+
+        // Time's up!
+        if (timeAttackTimeRemaining <= 0) {
+            clearInterval(timeAttackTimerInterval);
+            endTimeAttackSession();
+        }
+    }, 1000);
+}
+
+/**
+ * Start New Game Within Session (after winning previous game)
+ */
+async function startTimeAttackGame() {
+    try {
+        const response = await fetch(`/api/time-attack/start-game?sessionId=${timeAttackSessionId}`, {
+            method: 'POST'
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to start new game');
+        }
+
+        const data = await response.json();
+
+        if (data.expired) {
+            endTimeAttackSession();
+            return;
+        }
+
+        // Reset current game state
+        timeAttackCurrentGame = {
+            attempts: 0,
+            startTime: Date.now()
+        };
+
+        // Clear inputs and feedback
+        const inputs = document.querySelectorAll('#ta-input-container .digit-input');
+        inputs.forEach(input => input.value = '');
+        document.getElementById('ta-feedback').textContent = '';
+
+        // Focus first input
+        inputs[0]?.focus();
+
+    } catch (error) {
+        console.error('Failed to start new game:', error);
+        showToast('Failed to start new game', 'error');
+    }
+}
+
+/**
+ * Submit Guess in Time Attack
+ */
+async function submitTimeAttackGuess() {
+    const inputs = document.querySelectorAll('#ta-input-container .digit-input');
+    const guess = Array.from(inputs).map(input => input.value).join('');
+
+    // Validation
+    if (guess.length !== timeAttackDigitCount) {
+        showToast(`Please enter all ${timeAttackDigitCount} digits! 🔢`, 'error');
+        return;
+    }
+
+    // Check for unique digits
+    const uniqueDigits = new Set(guess);
+    if (uniqueDigits.size !== guess.length) {
+        showToast('Oops! Each digit must be different. Try again! 🔢', 'error');
+        return;
+    }
+
+    timeAttackCurrentGame.attempts++;
+
+    try {
+        const response = await fetch('/api/time-attack/guess', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                sessionId: timeAttackSessionId,
+                guess: guess
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to submit guess');
+        }
+
+        const data = await response.json();
+
+        if (data.expired) {
+            endTimeAttackSession();
+            return;
+        }
+
+        if (data.won) {
+            // Calculate game time
+            const gameTimeMs = Date.now() - timeAttackCurrentGame.startTime;
+            const gameTimeSeconds = Math.floor(gameTimeMs / 1000);
+
+            // Show win feedback
+            showTimeAttackWinFeedback(data.points, timeAttackCurrentGame.attempts, gameTimeSeconds);
+
+            // Update session stats
+            timeAttackScore = data.totalScore;
+            timeAttackWins = data.gamesWon;
+            timeAttackGamesPlayed++;
+
+            // Record game result
+            timeAttackGameHistory.push({
+                won: true,
+                attempts: timeAttackCurrentGame.attempts,
+                timeSeconds: gameTimeSeconds,
+                points: data.points
+            });
+
+            // Add to history display
+            addTimeAttackGameToHistory(timeAttackGamesPlayed, data.points, timeAttackCurrentGame.attempts, gameTimeSeconds);
+
+            // Update UI
+            document.getElementById('ta-score').textContent = timeAttackScore;
+            document.getElementById('ta-wins').textContent = timeAttackWins;
+            document.getElementById('ta-games-played').textContent = timeAttackGamesPlayed;
+            document.getElementById('ta-last-points').textContent = `+${data.points}`;
+
+            // Play sound
+            if (soundVolume > 0) winSound.play();
+
+            // Start next game after 2 seconds
+            setTimeout(() => {
+                startTimeAttackGame();
+            }, 2000);
+
+        } else {
+            // Show feedback (bulls/cows)
+            const feedbackElement = document.getElementById('ta-feedback');
+            feedbackElement.innerHTML = `
+                <p style="color: var(--warning-color); font-size: 1.2em; margin: 10px 0;">
+                    🐂 Correct: ${data.bulls} | 🐄 Misplaced: ${data.cows}
+                </p>
+            `;
+
+            // Play sound
+            if (soundVolume > 0) incorrectSound.play();
+        }
+
+    } catch (error) {
+        console.error('Failed to submit guess:', error);
+        showToast('Failed to submit guess. Try again!', 'error');
+    }
+}
+
+/**
+ * Show win feedback animation
+ */
+function showTimeAttackWinFeedback(points, attempts, timeSeconds) {
+    const feedbackElement = document.getElementById('ta-feedback');
+    feedbackElement.innerHTML = `
+        <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #52c98c 0%, #4ea8de 100%); border-radius: 15px; color: white; animation: tada 0.5s;">
+            <h3 style="margin: 0 0 10px 0;">🎉 CORRECT!</h3>
+            <p style="font-size: 2em; font-weight: bold; margin: 10px 0;">+${points} points</p>
+            <p style="font-size: 0.9em; opacity: 0.9;">${attempts} attempts • ${timeSeconds}s</p>
+        </div>
+    `;
+
+    createConfetti();
+}
+
+/**
+ * Add game to history display
+ */
+function addTimeAttackGameToHistory(gameNumber, points, attempts, timeSeconds) {
+    const historyDiv = document.getElementById('ta-game-history');
+    const gameCard = document.createElement('div');
+    gameCard.className = 'ta-game-card';
+    gameCard.innerHTML = `
+        <div class="game-number">Game ${gameNumber}</div>
+        <div class="game-stats">
+            <span>${attempts} attempts</span>
+            <span>${timeSeconds}s</span>
+            <span class="game-points">+${points}</span>
+        </div>
+    `;
+    historyDiv.insertBefore(gameCard, historyDiv.firstChild);
+}
+
+/**
+ * End Time Attack Session
+ */
+async function endTimeAttackSession() {
+    clearInterval(timeAttackTimerInterval);
+
+    try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (authToken) {
+            headers['Authorization'] = `Bearer ${authToken}`;
+        }
+
+        const response = await fetch(`/api/time-attack/end?sessionId=${timeAttackSessionId}`, {
+            method: 'POST',
+            headers: headers
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to end session');
+        }
+
+        const data = await response.json();
+
+        // Show results page
+        displayTimeAttackResults(data);
+
+        const timeAttackPage = document.getElementById('time-attack-page');
+        const resultPage = document.getElementById('time-attack-result-page');
+
+        fadeOutElement(timeAttackPage, () => {
+            fadeInElement(resultPage, 'flex');
+        });
+
+    } catch (error) {
+        console.error('Failed to end session:', error);
+        showToast('Failed to save session', 'error');
+
+        // Still show results even if save failed
+        const data = {
+            totalScore: timeAttackScore,
+            gamesWon: timeAttackWins,
+            gamesPlayed: timeAttackGamesPlayed,
+            gameDetails: timeAttackGameHistory
+        };
+        displayTimeAttackResults(data);
+
+        const timeAttackPage = document.getElementById('time-attack-page');
+        const resultPage = document.getElementById('time-attack-result-page');
+
+        fadeOutElement(timeAttackPage, () => {
+            fadeInElement(resultPage, 'flex');
+        });
+    }
+}
+
+/**
+ * Display Time Attack Results
+ */
+function displayTimeAttackResults(data) {
+    // Difficulty badge
+    const difficultyText = ['EASY', 'MEDIUM', 'HARD'][timeAttackDifficulty];
+    document.getElementById('ta-result-difficulty').textContent = difficultyText;
+
+    // Main scores
+    document.getElementById('ta-result-score').textContent = data.totalScore || 0;
+    document.getElementById('ta-result-wins').textContent = data.gamesWon || 0;
+    document.getElementById('ta-result-played').textContent = data.gamesPlayed || 0;
+
+    // Breakdown stats
+    document.getElementById('ta-result-avg').textContent =
+        data.averageAttempts ? data.averageAttempts.toFixed(1) : '--';
+    document.getElementById('ta-result-fastest').textContent =
+        data.fastestWinSeconds ? `${data.fastestWinSeconds}s` : '--';
+
+    // Show rank if authenticated and available
+    if (data.rank && authToken) {
+        document.getElementById('ta-result-rank').textContent = `#${data.rank}`;
+        document.getElementById('ta-rank-display').style.display = 'block';
+    } else {
+        document.getElementById('ta-rank-display').style.display = 'none';
+    }
+
+    // Display game-by-game breakdown
+    const gameList = document.getElementById('ta-game-list');
+    gameList.innerHTML = '';
+
+    if (data.gameDetails && data.gameDetails.length > 0) {
+        data.gameDetails.forEach((game, index) => {
+            const gameCard = document.createElement('div');
+            gameCard.className = 'ta-game-card';
+            gameCard.innerHTML = `
+                <div class="game-number">Game ${index + 1}</div>
+                <div class="game-stats">
+                    <span>${game.attempts} attempts</span>
+                    <span>${game.timeSeconds}s</span>
+                    <span class="game-points">+${game.points}</span>
+                </div>
+            `;
+            gameList.appendChild(gameCard);
+        });
+    } else {
+        gameList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No games won</p>';
+    }
+}
+
+/**
+ * Load Time Attack Leaderboard
+ */
+async function loadTimeAttackLeaderboard(difficulty = 0) {
+    const modal = document.getElementById('time-attack-leaderboard-modal');
+    const loadingDiv = document.getElementById('ta-leaderboard-loading');
+    const contentDiv = document.getElementById('ta-leaderboard-content');
+
+    // Show modal
+    modal.style.display = 'block';
+    loadingDiv.style.display = 'block';
+    contentDiv.style.display = 'none';
+
+    try {
+        const response = await fetch(`/api/time-attack/leaderboard/${difficulty}?limit=50`);
+
+        if (!response.ok) {
+            throw new Error('Failed to load leaderboard');
+        }
+
+        const leaderboard = await response.json();
+
+        // Hide loading, show content
+        loadingDiv.style.display = 'none';
+        contentDiv.style.display = 'block';
+
+        if (leaderboard.length === 0) {
+            contentDiv.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-secondary);">No players yet. Be the first!</p>';
+            return;
+        }
+
+        // Create leaderboard table
+        let html = `
+            <div class="leaderboard-table">
+                <div class="leaderboard-header">
+                    <div class="lb-rank">Rank</div>
+                    <div class="lb-username">Player</div>
+                    <div class="lb-score">Score</div>
+                    <div class="lb-wins">Wins</div>
+                    <div class="lb-avg">Avg</div>
+                </div>
+        `;
+
+        leaderboard.forEach((entry, index) => {
+            const rankClass = index < 3 ? `top-${index + 1}` : '';
+            html += `
+                <div class="leaderboard-row ${rankClass}">
+                    <div class="lb-rank">#${entry.rank}</div>
+                    <div class="lb-username">${entry.username}</div>
+                    <div class="lb-score">${entry.totalScore}</div>
+                    <div class="lb-wins">${entry.gamesWon}</div>
+                    <div class="lb-avg">${entry.averageAttempts ? entry.averageAttempts.toFixed(1) : '--'}</div>
+                </div>
+            `;
+        });
+
+        html += '</div>';
+        contentDiv.innerHTML = html;
+
+    } catch (error) {
+        console.error('Failed to load leaderboard:', error);
+        loadingDiv.style.display = 'none';
+        contentDiv.style.display = 'block';
+        contentDiv.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--danger-color);">Failed to load leaderboard</p>';
+    }
+}
+
+/**
+ * Helper function to create digit inputs
+ */
+function createDigitInputs(containerId, digitCount) {
+    const container = document.getElementById(containerId);
+    container.innerHTML = '';
+
+    for (let i = 0; i < digitCount; i++) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'digit-input';
+        input.maxLength = 1;
+        input.inputMode = 'numeric';
+        input.pattern = '[0-9]';
+        input.dataset.index = i;
+
+        input.addEventListener('input', (e) => handleDigitInput(e, i, containerId));
+        input.addEventListener('keydown', (e) => handleDigitKeydown(e, i, containerId));
+
+        container.appendChild(input);
+    }
+}
+
+/**
+ * Handle digit input
+ */
+function handleDigitInput(e, index, containerId) {
+    const input = e.target;
+    const value = input.value;
+
+    // Only allow digits
+    if (!/^\d$/.test(value)) {
+        input.value = '';
+        return;
+    }
+
+    // Move to next input
+    const nextInput = document.querySelector(`#${containerId} .digit-input[data-index="${index + 1}"]`);
+    if (nextInput) {
+        nextInput.focus();
+        nextInput.select();
+    }
+}
+
+/**
+ * Handle digit keydown
+ */
+function handleDigitKeydown(e, index, containerId) {
+    if (e.key === 'Backspace' && e.target.value === '') {
+        // Move to previous input on backspace
+        const prevInput = document.querySelector(`#${containerId} .digit-input[data-index="${index - 1}"]`);
+        if (prevInput) {
+            prevInput.focus();
+            prevInput.select();
+        }
+    } else if (e.key === 'Enter') {
+        // Submit guess on Enter
+        if (containerId === 'ta-input-container') {
+            submitTimeAttackGuess();
+        }
+    }
+}
+
+// ===================================
+// TIME ATTACK EVENT LISTENERS
+// ===================================
+
+// Difficulty selection buttons
+document.querySelectorAll('.ta-difficulty-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const difficulty = parseInt(btn.dataset.difficulty);
+        startTimeAttackSession(difficulty);
+    });
+});
+
+// Submit guess
+document.getElementById('submit-ta-guess')?.addEventListener('click', submitTimeAttackGuess);
+
+// Quit time attack
+document.getElementById('quit-time-attack')?.addEventListener('click', () => {
+    if (confirm('Are you sure you want to end this session? Your current score will be saved.')) {
+        endTimeAttackSession();
+    }
+});
+
+// Result page buttons
+document.getElementById('ta-play-again')?.addEventListener('click', () => {
+    startTimeAttackSession(timeAttackDifficulty);
+});
+
+document.getElementById('ta-view-leaderboard')?.addEventListener('click', () => {
+    loadTimeAttackLeaderboard(timeAttackDifficulty);
+});
+
+document.getElementById('ta-main-menu')?.addEventListener('click', () => {
+    const resultPage = document.getElementById('time-attack-result-page');
+    const homePage = document.getElementById('home-page');
+
+    fadeOutElement(resultPage, () => {
+        fadeInElement(homePage, 'flex');
+    });
+});
+
+// Leaderboard modal buttons
+document.getElementById('view-time-attack-leaderboard')?.addEventListener('click', () => {
+    loadTimeAttackLeaderboard(0); // Default to Easy
+});
+
+document.getElementById('ta-leaderboard-close')?.addEventListener('click', () => {
+    const modal = document.getElementById('time-attack-leaderboard-modal');
+    modal.style.display = 'none';
+});
+
+// Leaderboard difficulty tabs
+document.querySelectorAll('#time-attack-leaderboard-modal .lb-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+        // Update active tab
+        document.querySelectorAll('#time-attack-leaderboard-modal .lb-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // Load leaderboard for selected difficulty
+        const difficulty = parseInt(tab.dataset.difficulty);
+        loadTimeAttackLeaderboard(difficulty);
+    });
+});

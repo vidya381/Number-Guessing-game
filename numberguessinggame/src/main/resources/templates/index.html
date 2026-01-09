@@ -127,6 +127,37 @@
                 </div>
             </section>
 
+            <!-- Time Attack Banner -->
+            <section class="section time-attack-banner">
+                <div class="time-attack-header">
+                    <h2>⚡ TIME ATTACK MODE</h2>
+                    <div class="time-attack-badge">5 MIN</div>
+                </div>
+                <p class="time-attack-description">
+                    Win as many games as possible in 5 minutes! Higher difficulty = more points.
+                </p>
+                <div class="time-attack-difficulty-select">
+                    <button class="ta-difficulty-btn" data-difficulty="0">
+                        <span class="ta-emoji">🟢</span>
+                        <span class="ta-label">EASY</span>
+                        <span class="ta-points">100pts base</span>
+                    </button>
+                    <button class="ta-difficulty-btn" data-difficulty="1">
+                        <span class="ta-emoji">🟡</span>
+                        <span class="ta-label">MEDIUM</span>
+                        <span class="ta-points">200pts base</span>
+                    </button>
+                    <button class="ta-difficulty-btn" data-difficulty="2">
+                        <span class="ta-emoji">🔴</span>
+                        <span class="ta-label">HARD</span>
+                        <span class="ta-points">300pts base</span>
+                    </button>
+                </div>
+                <button id="view-time-attack-leaderboard" class="ta-leaderboard-btn">
+                    <i class="fas fa-trophy"></i> LEADERBOARD
+                </button>
+            </section>
+
             <section class="section">
                 <h2>⚡ SELECT DIFFICULTY</h2>
                 <div class="button-group">
@@ -219,6 +250,100 @@
             <div id="game-stats"></div>
             <button id="play-again" data-tooltip="Start a new game with same difficulty">🎮 PLAY AGAIN</button>
             <button id="quit" data-tooltip="Return to home page">🏠 MAIN MENU</button>
+        </div>
+
+        <!-- Time Attack Game Page -->
+        <div id="time-attack-page" style="display: none;">
+            <section class="section">
+                <div class="game-header">
+                    <h2>⚡ TIME ATTACK</h2>
+                    <div class="game-stats-inline">
+                        <div class="stat-badge timer-countdown" id="ta-timer-badge">
+                            <span class="stat-icon">⏰</span>
+                            <span id="ta-timer">5:00</span>
+                        </div>
+                        <div class="stat-badge">
+                            <span class="stat-icon">⭐</span>
+                            <span id="ta-score">0</span>
+                        </div>
+                        <div class="stat-badge">
+                            <span class="stat-icon">🏆</span>
+                            <span id="ta-wins">0</span> wins
+                        </div>
+                    </div>
+                </div>
+
+                <div id="ta-input-container"></div>
+                <button id="submit-ta-guess">⚡ SUBMIT GUESS</button>
+                <div id="ta-feedback" class="fade-in"></div>
+
+                <div class="ta-quick-stats">
+                    <p>Last Game: <span id="ta-last-points">--</span></p>
+                    <p>Games Played: <span id="ta-games-played">0</span></p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h2>📋 SESSION STATS</h2>
+                <div id="ta-game-history"></div>
+            </section>
+
+            <button id="quit-time-attack" class="quit-btn">❌ END SESSION</button>
+        </div>
+
+        <!-- Time Attack Result Page -->
+        <div id="time-attack-result-page" class="card" style="display: none;">
+            <div class="result-header">
+                <h1>⚡ TIME ATTACK RESULTS</h1>
+                <div class="result-difficulty-badge" id="ta-result-difficulty">--</div>
+            </div>
+
+            <div class="ta-result-main-score">
+                <div class="score-display">
+                    <span class="score-label">FINAL SCORE</span>
+                    <span class="score-value" id="ta-result-score">0</span>
+                </div>
+                <div class="games-display">
+                    <span id="ta-result-wins">0</span> wins / <span id="ta-result-played">0</span> games
+                </div>
+            </div>
+
+            <div class="ta-result-breakdown">
+                <div class="breakdown-item">
+                    <i class="fas fa-bolt"></i>
+                    <span class="breakdown-label">Avg Attempts</span>
+                    <span class="breakdown-value" id="ta-result-avg">--</span>
+                </div>
+                <div class="breakdown-item">
+                    <i class="fas fa-clock"></i>
+                    <span class="breakdown-label">Fastest Win</span>
+                    <span class="breakdown-value" id="ta-result-fastest">--</span>
+                </div>
+            </div>
+
+            <div class="ta-game-details">
+                <h3>📋 GAME BREAKDOWN</h3>
+                <div id="ta-game-list"></div>
+            </div>
+
+            <div id="ta-rank-display" style="display: none;">
+                <div class="rank-badge">
+                    <span class="rank-label">YOUR RANK</span>
+                    <span class="rank-value" id="ta-result-rank">--</span>
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <button id="ta-play-again" class="primary-btn">
+                    🔁 PLAY AGAIN
+                </button>
+                <button id="ta-view-leaderboard" class="secondary-btn">
+                    🏆 LEADERBOARD
+                </button>
+                <button id="ta-main-menu" class="secondary-btn">
+                    🏠 MAIN MENU
+                </button>
+            </div>
         </div>
     </div>
 
@@ -555,6 +680,30 @@
             <div id="modal-daily-leaderboard-container">
                 <div id="modal-daily-leaderboard-loading">Loading leaderboard...</div>
                 <div id="modal-daily-leaderboard-content" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time Attack Leaderboard Modal -->
+    <div id="time-attack-leaderboard-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="ta-leaderboard-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-trophy"></i> Time Attack Leaderboard
+            </h2>
+
+            <!-- Difficulty Tabs -->
+            <div class="leaderboard-tabs">
+                <button class="lb-tab active" data-difficulty="0">Easy</button>
+                <button class="lb-tab" data-difficulty="1">Medium</button>
+                <button class="lb-tab" data-difficulty="2">Hard</button>
+            </div>
+
+            <div id="ta-leaderboard-container">
+                <div id="ta-leaderboard-loading">Loading leaderboard...</div>
+                <div id="ta-leaderboard-content" style="display: none;"></div>
             </div>
         </div>
     </div>
