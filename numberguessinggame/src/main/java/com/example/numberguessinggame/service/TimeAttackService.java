@@ -25,46 +25,29 @@ public class TimeAttackService {
     /**
      * Calculate points for a single game win
      *
-     * Scoring formula:
-     * - Base points by difficulty: Easy=100, Medium=200, Hard=300
-     * - Speed bonus: (11 - attempts) * 10 (max 100 points for 1 attempt)
-     * - Time bonus: <30s=+50, 30-60s=+30, 60-90s=+10, >90s=0
+     * Simple scoring: Just base points by difficulty
+     * - Easy: 3 points
+     * - Medium: 6 points
+     * - Hard: 9 points
      *
      * @param difficulty Game difficulty (0=Easy, 1=Medium, 2=Hard)
-     * @param attempts Number of attempts taken to win
-     * @param timeSeconds Time taken to win in seconds
-     * @return Total points earned
+     * @param attempts Number of attempts taken to win (not used in scoring)
+     * @param timeSeconds Time taken to win in seconds (not used in scoring)
+     * @return Points earned
      */
     public int calculateGamePoints(int difficulty, int attempts, int timeSeconds) {
-        // Base points by difficulty
-        int basePoints = switch(difficulty) {
-            case 0 -> 100;  // Easy
-            case 1 -> 200;  // Medium
-            case 2 -> 300;  // Hard
-            default -> 100;
+        // Simple points by difficulty - no bonuses
+        int points = switch(difficulty) {
+            case 0 -> 3;    // Easy
+            case 1 -> 6;    // Medium
+            case 2 -> 9;    // Hard
+            default -> 3;
         };
 
-        // Speed bonus: fewer attempts = more bonus (max 100 for 1 attempt, min 10 for 10 attempts)
-        int speedBonus = Math.max(0, (11 - attempts) * 10);
+        logger.debug("Points calculation - Difficulty: {}, Attempts: {}, Time: {}s = {} points",
+                difficulty, attempts, timeSeconds, points);
 
-        // Time bonus: reward fast completion
-        int timeBonus;
-        if (timeSeconds < 30) {
-            timeBonus = 50;
-        } else if (timeSeconds < 60) {
-            timeBonus = 30;
-        } else if (timeSeconds < 90) {
-            timeBonus = 10;
-        } else {
-            timeBonus = 0;
-        }
-
-        int totalPoints = basePoints + speedBonus + timeBonus;
-
-        logger.debug("Points calculation - Difficulty: {}, Attempts: {}, Time: {}s = {} points (base: {}, speed: {}, time: {})",
-                difficulty, attempts, timeSeconds, totalPoints, basePoints, speedBonus, timeBonus);
-
-        return totalPoints;
+        return points;
     }
 
     /**
