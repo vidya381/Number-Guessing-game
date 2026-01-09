@@ -3327,6 +3327,9 @@ async function loadTimeAttackLeaderboard(difficulty = 0) {
     const loadingDiv = document.getElementById('ta-leaderboard-loading');
     const contentDiv = document.getElementById('ta-leaderboard-content');
 
+    // Check if modal is already open (before we start loading)
+    const isAlreadyOpen = modal.style.display === 'flex';
+
     // Show loading state
     loadingDiv.style.display = 'block';
     contentDiv.style.display = 'none';
@@ -3346,37 +3349,35 @@ async function loadTimeAttackLeaderboard(difficulty = 0) {
 
         if (leaderboard.length === 0) {
             contentDiv.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-secondary);">No players yet. Be the first!</p>';
-            openModalWithAnimation(modal);
-            return;
-        }
-
-        // Create leaderboard table
-        let html = `
-            <div class="leaderboard-table">
-                <div class="leaderboard-header">
-                    <div class="lb-rank">Rank</div>
-                    <div class="lb-username">Player</div>
-                    <div class="lb-score">Score</div>
-                    <div class="lb-wins">Wins</div>
-                    <div class="lb-avg">Avg</div>
-                </div>
-        `;
-
-        leaderboard.forEach((entry, index) => {
-            const rankClass = index < 3 ? `top-${index + 1}` : '';
-            html += `
-                <div class="leaderboard-row ${rankClass}">
-                    <div class="lb-rank">#${entry.rank}</div>
-                    <div class="lb-username">${entry.username}</div>
-                    <div class="lb-score">${entry.totalScore}</div>
-                    <div class="lb-wins">${entry.gamesWon}</div>
-                    <div class="lb-avg">${entry.averageAttempts ? entry.averageAttempts.toFixed(1) : '--'}</div>
-                </div>
+        } else {
+            // Create leaderboard table
+            let html = `
+                <div class="leaderboard-table">
+                    <div class="leaderboard-header">
+                        <div class="lb-rank">Rank</div>
+                        <div class="lb-username">Player</div>
+                        <div class="lb-score">Score</div>
+                        <div class="lb-wins">Wins</div>
+                        <div class="lb-avg">Avg</div>
+                    </div>
             `;
-        });
 
-        html += '</div>';
-        contentDiv.innerHTML = html;
+            leaderboard.forEach((entry, index) => {
+                const rankClass = index < 3 ? `top-${index + 1}` : '';
+                html += `
+                    <div class="leaderboard-row ${rankClass}">
+                        <div class="lb-rank">#${entry.rank}</div>
+                        <div class="lb-username">${entry.username}</div>
+                        <div class="lb-score">${entry.totalScore}</div>
+                        <div class="lb-wins">${entry.gamesWon}</div>
+                        <div class="lb-avg">${entry.averageAttempts ? entry.averageAttempts.toFixed(1) : '--'}</div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            contentDiv.innerHTML = html;
+        }
 
     } catch (error) {
         console.error('Failed to load leaderboard:', error);
@@ -3385,8 +3386,9 @@ async function loadTimeAttackLeaderboard(difficulty = 0) {
         contentDiv.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--danger-color);">Failed to load leaderboard</p>';
     }
 
-    // Open modal with animation after loading (only if not already open)
-    if (modal.style.display !== 'flex') {
+    // Only animate modal opening if it wasn't already open
+    // This prevents re-animation when switching tabs
+    if (!isAlreadyOpen) {
         openModalWithAnimation(modal);
     }
 }

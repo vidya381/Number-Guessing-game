@@ -4303,6 +4303,24 @@ body.dark-mode #daily-challenge-page .section:nth-child(1) {
     text-align: left;
 }
 
+/* Time Attack Leaderboard Container */
+#ta-leaderboard-container {
+    min-height: 200px;
+}
+
+#ta-leaderboard-loading {
+    text-align: center;
+    padding: 80px 20px;
+    color: var(--text-secondary);
+    font-size: 1.1em;
+}
+
+#ta-leaderboard-content > p {
+    text-align: center;
+    padding: 80px 20px;
+    margin: 0;
+}
+
 /* Dark Mode Adjustments */
 [data-theme="dark"] .time-attack-banner {
     background: linear-gradient(135deg, #5a67d8 0%, #6b48a2 100%);
