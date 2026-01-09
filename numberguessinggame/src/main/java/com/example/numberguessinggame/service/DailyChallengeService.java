@@ -5,6 +5,8 @@ import com.example.numberguessinggame.entity.DailyChallengeAttempt;
 import com.example.numberguessinggame.entity.User;
 import com.example.numberguessinggame.repository.DailyChallengeAttemptRepository;
 import com.example.numberguessinggame.repository.DailyChallengeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class DailyChallengeService {
+
+    private static final Logger logger = LoggerFactory.getLogger(DailyChallengeService.class);
 
     @Autowired
     private DailyChallengeRepository dailyChallengeRepository;
@@ -59,6 +63,10 @@ public class DailyChallengeService {
 
         // Generate target number with date-based seed
         int targetNumber = generateUniqueDigitNumber(date, difficulty);
+
+        // Log daily challenge creation (once per day)
+        logger.info("Daily Challenge Created - Date: {}, Difficulty: {} ({}), Target Number: {}",
+                date, difficulty, getDifficultyText(difficulty), targetNumber);
 
         DailyChallenge challenge = new DailyChallenge(date, targetNumber, difficulty);
         return dailyChallengeRepository.save(challenge);
