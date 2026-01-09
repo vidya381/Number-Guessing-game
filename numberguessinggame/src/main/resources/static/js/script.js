@@ -983,13 +983,23 @@ let gameJustCompleted = false;
 function showHomePage() {
     updateGameStatus('welcome');
 
+    // Clean up daily challenge if active
+    if (dailyChallengeSessionId !== null) {
+        clearInterval(dailyChallengeTimerInterval);
+        dailyChallengeSessionId = null;
+    }
+
     const homePage = document.getElementById('home-page');
     const gamePage = document.getElementById('game-page');
     const resultPage = document.getElementById('result-page');
+    const dailyChallengePage = document.getElementById('daily-challenge-page');
+    const dailyResultPage = document.getElementById('daily-result-page');
 
     // Fade out current page
     const currentPage = gamePage.style.display !== 'none' ? gamePage :
-                        resultPage.style.display !== 'none' ? resultPage : null;
+                        resultPage.style.display !== 'none' ? resultPage :
+                        dailyChallengePage.style.display !== 'none' ? dailyChallengePage :
+                        dailyResultPage.style.display !== 'none' ? dailyResultPage : null;
 
     if (currentPage) {
         fadeOutElement(currentPage, () => {
@@ -1003,6 +1013,8 @@ function showHomePage() {
         homePage.style.display = 'block';
         gamePage.style.display = 'none';
         resultPage.style.display = 'none';
+        dailyChallengePage.style.display = 'none';
+        dailyResultPage.style.display = 'none';
         updateStreakStats();
         loadLeaderboard(gameJustCompleted);
         gameJustCompleted = false;
