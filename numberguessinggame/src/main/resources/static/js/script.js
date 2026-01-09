@@ -641,7 +641,8 @@ function submitGuess() {
         return;
     }
 
-    const inputs = document.getElementsByClassName('digit-input');
+    const inputContainer = document.getElementById('input-container');
+    const inputs = inputContainer ? inputContainer.querySelectorAll('.digit-input') : [];
     let guess = '';
     for (let input of inputs) {
         guess += input.value;
