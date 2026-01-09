@@ -49,6 +49,9 @@ public class User {
     @Column(name = "best_play_day_streak")
     private Integer bestPlayDayStreak = 0;
 
+    @Column(name = "coins")
+    private Integer coins = 0;
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
@@ -167,5 +170,27 @@ public class User {
 
     public void setBestPlayDayStreak(Integer bestPlayDayStreak) {
         this.bestPlayDayStreak = bestPlayDayStreak;
+    }
+
+    public Integer getCoins() {
+        return coins;
+    }
+
+    public void setCoins(Integer coins) {
+        this.coins = coins;
+    }
+
+    public void addCoins(Integer amount) {
+        if (amount > 0) {
+            this.coins = (this.coins == null ? 0 : this.coins) + amount;
+        }
+    }
+
+    public boolean deductCoins(Integer amount) {
+        if (amount > 0 && this.coins != null && this.coins >= amount) {
+            this.coins -= amount;
+            return true;
+        }
+        return false;
     }
 }

@@ -144,12 +144,17 @@ public class GameController {
 
         // Save game and clean up session when game ends (won)
         if (isCorrect) {
-            List<Achievement> newAchievements = saveGameToDatabase(gameSession, true);
+            GameSaveResult saveResult = saveGameToDatabase(gameSession, true);
+
+            // Include coins earned in response
+            if (saveResult.coinsAwarded > 0) {
+                response.put("coinsAwarded", saveResult.coinsAwarded);
+            }
 
             // Include newly unlocked achievements in response
-            if (!newAchievements.isEmpty()) {
+            if (!saveResult.newAchievements.isEmpty()) {
                 List<Map<String, Object>> achievementData = new ArrayList<>();
-                for (Achievement achievement : newAchievements) {
+                for (Achievement achievement : saveResult.newAchievements) {
                     Map<String, Object> achData = new HashMap<>();
                     achData.put("name", achievement.getName());
                     achData.put("description", achievement.getDescription());
@@ -161,7 +166,7 @@ public class GameController {
                 response.put("newAchievements", achievementData);
             }
 
-            // Include updated streak data in response
+            // Include updated streak data and total coins in response
             if (gameSession.getUserId() != null) {
                 Optional<User> userOptional = userService.findById(gameSession.getUserId());
                 if (userOptional.isPresent()) {
@@ -169,6 +174,7 @@ public class GameController {
                     response.put("currentWinStreak", user.getCurrentWinStreak() != null ? user.getCurrentWinStreak() : 0);
                     response.put("bestWinStreak", user.getBestWinStreak() != null ? user.getBestWinStreak() : 0);
                     response.put("consecutivePlayDays", user.getConsecutivePlayDays() != null ? user.getConsecutivePlayDays() : 0);
+                    response.put("totalCoins", user.getCoins() != null ? user.getCoins() : 0);
                 }
             }
 
@@ -222,17 +228,29 @@ public class GameController {
         return Integer.parseInt(numberBuilder.toString());
     }
 
-    private List<Achievement> saveGameToDatabase(GameSession gameSession, boolean won) {
+    // Inner class to hold game save results
+    private static class GameSaveResult {
+        List<Achievement> newAchievements;
+        int coinsAwarded;
+
+        GameSaveResult(List<Achievement> achievements, int coins) {
+            this.newAchievements = achievements;
+            this.coinsAwarded = coins;
+        }
+    }
+
+    private GameSaveResult saveGameToDatabase(GameSession gameSession, boolean won) {
         List<Achievement> newAchievements = new ArrayList<>();
+        int coinsAwarded = 0;
 
         // Only save if user is logged in
         if (gameSession.getUserId() == null) {
-            return newAchievements;
+            return new GameSaveResult(newAchievements, coinsAwarded);
         }
 
         Optional<User> userOptional = userService.findById(gameSession.getUserId());
         if (userOptional.isEmpty()) {
-            return newAchievements;
+            return new GameSaveResult(newAchievements, coinsAwarded);
         }
 
         User user = userOptional.get();
@@ -256,6 +274,11 @@ public class GameController {
         // Update user stats
         userService.updateUserStats(user.getId(), won, gameSession.getAttemptsCount());
 
+        // Award coins if won
+        if (won) {
+            coinsAwarded = userService.awardCoins(user.getId(), gameSession.getDifficulty());
+        }
+
         // Check and unlock achievements
         try {
             newAchievements = achievementService.checkAndUnlockAchievements(user, game);
@@ -267,7 +290,7 @@ public class GameController {
             System.err.println("Achievement check failed: " + e.getMessage());
         }
 
-        return newAchievements;
+        return new GameSaveResult(newAchievements, coinsAwarded);
     }
 
 }

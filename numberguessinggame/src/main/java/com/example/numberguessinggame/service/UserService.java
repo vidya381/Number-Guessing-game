@@ -146,4 +146,38 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+    /**
+     * Award coins to user based on difficulty
+     * Easy: 3 coins, Medium: 6 coins, Hard: 9 coins
+     */
+    @Transactional
+    public int awardCoins(Long userId, int difficulty) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        int coinsToAward = switch(difficulty) {
+            case 0 -> 3;  // Easy
+            case 1 -> 6;  // Medium
+            case 2 -> 9;  // Hard
+            default -> 3;
+        };
+
+        user.addCoins(coinsToAward);
+        userRepository.save(user);
+
+        return coinsToAward;
+    }
+
+    /**
+     * Award multiple coins (for Time Attack session totals)
+     */
+    @Transactional
+    public void awardCoinsAmount(Long userId, int amount) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        user.addCoins(amount);
+        userRepository.save(user);
+    }
 }
