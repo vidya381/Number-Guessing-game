@@ -5,6 +5,7 @@ import com.example.numberguessinggame.entity.User;
 import com.example.numberguessinggame.repository.UserRepository;
 import com.example.numberguessinggame.service.JwtUtil;
 import com.example.numberguessinggame.service.TimeAttackService;
+import com.example.numberguessinggame.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -32,6 +33,9 @@ public class TimeAttackController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -353,15 +357,20 @@ public class TimeAttackController {
 
         // Save to database if authenticated
         Integer rank = null;
+        Integer coinsAwarded = null;
+        Integer totalCoins = null;
+
         if (session.getUserId() != null) {
             try {
                 Optional<User> userOpt = userRepository.findById(session.getUserId());
                 if (userOpt.isPresent()) {
+                    User user = userOpt.get();
+
                     // Convert game results to JSON
                     String gameDetailsJson = convertGameResultsToJson(session.getGameResults());
 
                     TimeAttackSession savedSession = timeAttackService.saveSession(
-                            userOpt.get(),
+                            user,
                             session.getDifficulty(),
                             session.getTotalScore(),
                             session.getGamesWon(),
@@ -373,6 +382,22 @@ public class TimeAttackController {
 
                     // Calculate rank
                     rank = timeAttackService.getUserRank(savedSession.getId(), session.getDifficulty());
+
+                    // Award coins based on total wins (Easy: 3 coins, Medium: 6 coins, Hard: 9 coins per win)
+                    if (session.getGamesWon() > 0) {
+                        int coinsPerWin = switch(session.getDifficulty()) {
+                            case 0 -> 3;  // Easy
+                            case 1 -> 6;  // Medium
+                            case 2 -> 9;  // Hard
+                            default -> 3;
+                        };
+                        coinsAwarded = coinsPerWin * session.getGamesWon();
+                        userService.awardCoinsAmount(user.getId(), coinsAwarded);
+
+                        // Get updated user with new coin total
+                        User updatedUser = userService.findById(user.getId()).orElse(user);
+                        totalCoins = updatedUser.getCoins() != null ? updatedUser.getCoins() : 0;
+                    }
                 }
             } catch (Exception e) {
                 logger.error("Failed to save Time Attack session: {}", e.getMessage(), e);
@@ -391,6 +416,12 @@ public class TimeAttackController {
         response.put("gameDetails", session.getGameResults());
         if (rank != null) {
             response.put("rank", rank);
+        }
+        if (coinsAwarded != null) {
+            response.put("coinsAwarded", coinsAwarded);
+        }
+        if (totalCoins != null) {
+            response.put("totalCoins", totalCoins);
         }
 
         logger.info("Time Attack session ended - SessionID: {}, Score: {}, Wins: {}/{}",

@@ -707,6 +707,13 @@ function submitGuess() {
                     updateAuthUI();
                 }
 
+                // Update coins and show animation
+                if (data.coinsAwarded && data.coinsAwarded > 0 && currentUser) {
+                    currentUser.coins = data.totalCoins || (currentUser.coins + data.coinsAwarded);
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    showCoinAnimation(data.coinsAwarded);
+                }
+
                 // Check for newly unlocked achievements
                 if (data.newAchievements && data.newAchievements.length > 0) {
                     // Show achievement notifications
@@ -1193,6 +1200,7 @@ function updateAuthUI() {
     const guestControls = document.getElementById('guest-controls');
     const userControls = document.getElementById('user-controls');
     const winStreakCount = document.getElementById('win-streak-count');
+    const coinCount = document.getElementById('coin-count');
     const dropdownUsername = document.getElementById('dropdown-username');
     const dropdownEmail = document.getElementById('dropdown-email');
 
@@ -1211,10 +1219,70 @@ function updateAuthUI() {
         if (winStreakCount) {
             winStreakCount.textContent = currentStreak || 0;
         }
+
+        // Update coin display
+        if (coinCount) {
+            coinCount.textContent = currentUser.coins || 0;
+        }
     } else {
         // Show guest controls, hide user controls
         guestControls.style.display = 'flex';
         userControls.style.display = 'none';
+    }
+}
+
+/**
+ * Show coin animation - floating "+X 🪙" that pops up and fades
+ * @param {number} amount - Amount of coins earned
+ */
+function showCoinAnimation(amount) {
+    if (!currentUser || amount <= 0) return;
+
+    const coinDisplay = document.getElementById('coin-display');
+    if (!coinDisplay) return;
+
+    // Create floating coin element
+    const floatingCoin = document.createElement('div');
+    floatingCoin.className = 'floating-coin-animation';
+    floatingCoin.textContent = `+${amount} 🪙`;
+
+    // Position it near the coin display
+    const rect = coinDisplay.getBoundingClientRect();
+    floatingCoin.style.position = 'fixed';
+    floatingCoin.style.left = `${rect.left + rect.width / 2}px`;
+    floatingCoin.style.top = `${rect.top}px`;
+    floatingCoin.style.transform = 'translate(-50%, 0)';
+    floatingCoin.style.zIndex = '10000';
+    floatingCoin.style.fontSize = '24px';
+    floatingCoin.style.fontWeight = '700';
+    floatingCoin.style.color = '#ffca28';
+    floatingCoin.style.textShadow = '0 2px 10px rgba(255, 202, 40, 0.8), 0 0 20px rgba(255, 202, 40, 0.6)';
+    floatingCoin.style.pointerEvents = 'none';
+    floatingCoin.style.whiteSpace = 'nowrap';
+
+    // Add to body
+    document.body.appendChild(floatingCoin);
+
+    // Trigger animation
+    setTimeout(() => {
+        floatingCoin.style.transition = 'all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        floatingCoin.style.transform = 'translate(-50%, -100px) scale(1.2)';
+        floatingCoin.style.opacity = '0';
+    }, 10);
+
+    // Remove after animation
+    setTimeout(() => {
+        if (floatingCoin.parentNode) {
+            floatingCoin.parentNode.removeChild(floatingCoin);
+        }
+    }, 1600);
+
+    // Update coin count in header
+    if (currentUser && currentUser.coins !== undefined) {
+        const coinCount = document.getElementById('coin-count');
+        if (coinCount) {
+            coinCount.textContent = currentUser.coins;
+        }
     }
 }
 
@@ -1345,7 +1413,8 @@ async function handleLogin(e) {
                 totalWins: data.totalWins,
                 currentWinStreak: data.currentWinStreak || 0,
                 bestWinStreak: data.bestWinStreak || 0,
-                consecutivePlayDays: data.consecutivePlayDays || 0
+                consecutivePlayDays: data.consecutivePlayDays || 0,
+                coins: data.coins || 0
             };
 
             // Update global streak variable
@@ -1393,7 +1462,8 @@ async function handleSignup(e) {
             authToken = data.token;
             currentUser = {
                 id: data.userId,
-                username: data.username
+                username: data.username,
+                coins: data.coins || 0
             };
 
             localStorage.setItem('authToken', authToken);
@@ -2716,6 +2786,13 @@ async function endDailyChallenge(won) {
         const data = await response.json();
 
         if (response.ok) {
+            // Update coins and show animation if won
+            if (won && data.coinsAwarded && data.coinsAwarded > 0 && currentUser) {
+                currentUser.coins = data.totalCoins || (currentUser.coins + data.coinsAwarded);
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showCoinAnimation(data.coinsAwarded);
+            }
+
             showDailyChallengeResult(won, dailyChallengeAttempts, timeDisplay, data.rank, data.totalPlayers);
 
             // Reload daily challenge info for home page
@@ -3236,6 +3313,13 @@ async function endTimeAttackSession() {
         }
 
         const data = await response.json();
+
+        // Update coins and show animation if earned
+        if (data.coinsAwarded && data.coinsAwarded > 0 && currentUser) {
+            currentUser.coins = data.totalCoins || (currentUser.coins + data.coinsAwarded);
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showCoinAnimation(data.coinsAwarded);
+        }
 
         // Show results page
         displayTimeAttackResults(data);

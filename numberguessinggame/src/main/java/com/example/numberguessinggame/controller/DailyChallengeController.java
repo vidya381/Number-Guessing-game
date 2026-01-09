@@ -287,6 +287,14 @@ public class DailyChallengeController {
                 Integer rank = dailyChallengeService.getUserRankToday(user);
                 response.put("rank", rank);
                 response.put("totalPlayers", dailyChallengeService.getTodayWinnersCount());
+
+                // Award coins for completing the daily challenge
+                int coinsAwarded = userService.awardCoins(user.getId(), session.getDifficulty());
+                response.put("coinsAwarded", coinsAwarded);
+
+                // Get updated user with new coin total
+                User updatedUser = userService.findById(user.getId()).orElse(user);
+                response.put("totalCoins", updatedUser.getCoins() != null ? updatedUser.getCoins() : 0);
             }
 
             return ResponseEntity.ok(response);

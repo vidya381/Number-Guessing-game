@@ -2629,6 +2629,40 @@ body.dark-mode .achievement-summary-card {
     }
 }
 
+/* Header coin display - similar to streak display */
+.header-coins {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: linear-gradient(135deg, #ffca28 0%, #ffa726 100%);
+    color: #2c3e50;
+    padding: 0 16px;
+    margin: 0;
+    height: 45px;
+    min-width: 70px;
+    border-radius: 22.5px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+    vertical-align: middle;
+    box-sizing: border-box;
+    box-shadow: 0 4px 15px rgba(255, 202, 40, 0.4);
+    transition: all 0.3s ease;
+    cursor: default;
+    flex-shrink: 0;
+}
+
+.header-coins i {
+    font-size: 16px;
+    color: #ff8f00;
+}
+
+.header-coins:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 202, 40, 0.5);
+}
+
 /* Guest and User controls layout */
 #guest-controls,
 #user-controls {
@@ -3122,6 +3156,20 @@ body.dark-mode .header-streak i {
     color: #d68910;
 }
 
+body.dark-mode .header-coins {
+    background: linear-gradient(135deg, #ffb300 0%, #ff8f00 100%);
+    color: #1a1a1a;
+    box-shadow: 0 4px 12px rgba(255, 179, 0, 0.4);
+}
+
+body.dark-mode .header-coins:hover {
+    box-shadow: 0 6px 16px rgba(255, 179, 0, 0.5);
+}
+
+body.dark-mode .header-coins i {
+    color: #e65100;
+}
+
 /* Responsive Design for New Header */
 @media (max-width: 768px) {
     .profile-dropdown {
@@ -3164,6 +3212,20 @@ body.dark-mode .header-streak i {
         font-size: 14px;
     }
 
+    .header-coins {
+        height: 40px;
+        padding: 0 14px;
+        font-size: 14px;
+        min-width: 65px;
+        border-radius: 20px;
+        line-height: 1;
+        box-sizing: border-box;
+    }
+
+    .header-coins i {
+        font-size: 14px;
+    }
+
     .settings-modal-content {
         max-width: 90%;
         padding: 25px 20px;
@@ -3201,6 +3263,21 @@ body.dark-mode .header-streak i {
     }
 
     .header-streak i {
+        font-size: 13px;
+    }
+
+    .header-coins {
+        height: 40px;
+        padding: 0 12px;
+        font-size: 13px;
+        gap: 4px;
+        min-width: 60px;
+        border-radius: 20px;
+        line-height: 1;
+        box-sizing: border-box;
+    }
+
+    .header-coins i {
         font-size: 13px;
     }
 

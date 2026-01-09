@@ -48,6 +48,7 @@ public class AuthController {
             response.put("token", token);
             response.put("userId", user.getId());
             response.put("username", user.getUsername());
+            response.put("coins", user.getCoins() != null ? user.getCoins() : 0);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
 
@@ -89,6 +90,7 @@ public class AuthController {
             response.put("currentWinStreak", user.getCurrentWinStreak());
             response.put("bestWinStreak", user.getBestWinStreak());
             response.put("consecutivePlayDays", user.getConsecutivePlayDays());
+            response.put("coins", user.getCoins() != null ? user.getCoins() : 0);
 
             return ResponseEntity.ok(response);
 
