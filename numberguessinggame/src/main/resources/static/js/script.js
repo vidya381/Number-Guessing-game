@@ -251,7 +251,7 @@ function setupKeyboardShortcuts() {
 
         // Check if user is typing in an input field
         const isTypingInInput = document.activeElement.tagName === 'INPUT' ||
-                               document.activeElement.tagName === 'TEXTAREA';
+            document.activeElement.tagName === 'TEXTAREA';
 
         // ESC to close modals (always allowed, even in inputs)
         if (key === 'Escape') {
@@ -348,7 +348,7 @@ function setupHowToPlay() {
     const howToPlayContent = document.getElementById('how-to-play-content');
 
     if (howToPlayToggle && howToPlayContent) {
-        howToPlayToggle.addEventListener('click', function() {
+        howToPlayToggle.addEventListener('click', function () {
             const isVisible = howToPlayContent.style.display !== 'none';
 
             if (isVisible) {
@@ -750,11 +750,11 @@ function updateGuessHistoryAnimated() {
 
         const correctSpan = document.createElement('span');
         correctSpan.className = 'correct';
-        correctSpan.textContent = `Correct: ${entry.correctPosition}`;
+        correctSpan.textContent = `🐂 Correct: ${entry.correctPosition}`;
 
         const misplacedSpan = document.createElement('span');
         misplacedSpan.className = 'misplaced';
-        misplacedSpan.textContent = `Misplaced: ${entry.correctButWrongPosition}`;
+        misplacedSpan.textContent = `🐄 Misplaced: ${entry.correctButWrongPosition}`;
 
         historyItem.appendChild(guessSpan);
         historyItem.appendChild(correctSpan);
@@ -776,11 +776,11 @@ function updateGuessHistory() {
 
         const correctSpan = document.createElement('span');
         correctSpan.className = 'correct';
-        correctSpan.textContent = `Correct: ${entry.correctPosition}`;
+        correctSpan.textContent = `🐂 Correct: ${entry.correctPosition}`;
 
         const misplacedSpan = document.createElement('span');
         misplacedSpan.className = 'misplaced';
-        misplacedSpan.textContent = `Misplaced: ${entry.correctButWrongPosition}`;
+        misplacedSpan.textContent = `🐄 Misplaced: ${entry.correctButWrongPosition}`;
 
         historyItem.appendChild(guessSpan);
         historyItem.appendChild(correctSpan);
@@ -875,7 +875,7 @@ function endGame(won) {
             },
             body: `tabId=${tabId}`,
             credentials: 'include'
-        }).catch(() => {});
+        }).catch(() => { });
     }
 
     // Prepare stats content
@@ -997,9 +997,9 @@ function showHomePage() {
 
     // Fade out current page
     const currentPage = gamePage.style.display !== 'none' ? gamePage :
-                        resultPage.style.display !== 'none' ? resultPage :
-                        dailyChallengePage.style.display !== 'none' ? dailyChallengePage :
-                        dailyResultPage.style.display !== 'none' ? dailyResultPage : null;
+        resultPage.style.display !== 'none' ? resultPage :
+            dailyChallengePage.style.display !== 'none' ? dailyChallengePage :
+                dailyResultPage.style.display !== 'none' ? dailyResultPage : null;
 
     if (currentPage) {
         fadeOutElement(currentPage, () => {
@@ -1242,7 +1242,7 @@ function attachAuthListeners() {
 function showLoginForm() {
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
-    
+
     if (loginForm && signupForm) {
         loginForm.style.display = 'block';
         signupForm.style.display = 'none';
@@ -1253,7 +1253,7 @@ function showLoginForm() {
 function showSignupForm() {
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
-    
+
     if (loginForm && signupForm) {
         loginForm.style.display = 'none';
         signupForm.style.display = 'block';
@@ -1269,7 +1269,7 @@ function clearAuthForms() {
     const signupPassword = document.getElementById('signup-password');
     const loginError = document.getElementById('login-error');
     const signupError = document.getElementById('signup-error');
-    
+
     if (loginUsername) loginUsername.value = '';
     if (loginPassword) loginPassword.value = '';
     if (signupUsername) signupUsername.value = '';
@@ -1281,11 +1281,11 @@ function clearAuthForms() {
 
 async function handleLogin(e) {
     e.preventDefault();
-    
+
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
     const errorDiv = document.getElementById('login-error');
-    
+
     try {
         const response = await fetch('/api/auth/login', {
             method: 'POST',
@@ -1294,14 +1294,14 @@ async function handleLogin(e) {
             },
             body: JSON.stringify({ username, password })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.error) {
             errorDiv.textContent = data.error;
             return;
         }
-        
+
         if (data.success) {
             authToken = data.token;
             currentUser = {
@@ -1334,12 +1334,12 @@ async function handleLogin(e) {
 
 async function handleSignup(e) {
     e.preventDefault();
-    
+
     const username = document.getElementById('signup-username').value;
     const email = document.getElementById('signup-email').value;
     const password = document.getElementById('signup-password').value;
     const errorDiv = document.getElementById('signup-error');
-    
+
     try {
         const response = await fetch('/api/auth/signup', {
             method: 'POST',
@@ -1348,21 +1348,21 @@ async function handleSignup(e) {
             },
             body: JSON.stringify({ username, email, password })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.error) {
             errorDiv.textContent = data.error;
             return;
         }
-        
+
         if (data.success) {
             authToken = data.token;
             currentUser = {
                 id: data.userId,
                 username: data.username
             };
-            
+
             localStorage.setItem('authToken', authToken);
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
@@ -1728,7 +1728,7 @@ function displayAchievementToast(achievement) {
 
     // Play sound
     if (soundVolume > 0) {
-        achievementSound.play().catch(() => {});
+        achievementSound.play().catch(() => { });
     }
 
     // Create confetti for achievement
@@ -1925,7 +1925,7 @@ function createLeaderboardHTML(players) {
 }
 
 function getRankIcon(rank) {
-    switch(rank) {
+    switch (rank) {
         case 1: return '🥇';
         case 2: return '🥈';
         case 3: return '🥉';
@@ -2600,8 +2600,8 @@ function addDailyGuessToHistory(guess, bulls, cows) {
         <span class="guess-number">#${dailyChallengeAttempts}</span>
         <span class="guess-value">${guess}</span>
         <span class="result">
-            <span class="bulls">${bulls} 🐂</span>
-            <span class="cows">${cows} 🐄</span>
+            <span class="bulls">🐂 Correct: ${bulls}</span>
+            <span class="cows">🐄 Misplaced: ${cows}</span>
         </span>
     `;
 
