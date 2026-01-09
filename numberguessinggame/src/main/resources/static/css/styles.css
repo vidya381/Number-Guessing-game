@@ -3926,30 +3926,6 @@ body.dark-mode #daily-challenge-page .section:nth-child(1) {
     justify-content: center;
     gap: 8px;
     min-width: 100px;
-    position: relative;
-    overflow: hidden;
-}
-
-.ta-difficulty-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    transition: all 0.3s ease;
-}
-
-.ta-difficulty-btn[data-difficulty="0"]::before {
-    background: #4ade80; /* Green */
-}
-
-.ta-difficulty-btn[data-difficulty="1"]::before {
-    background: #fbbf24; /* Yellow */
-}
-
-.ta-difficulty-btn[data-difficulty="2"]::before {
-    background: #f87171; /* Red */
 }
 
 .ta-difficulty-btn:hover {
@@ -3957,10 +3933,6 @@ body.dark-mode #daily-challenge-page .section:nth-child(1) {
     transform: translateY(-2px);
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     border-color: rgba(255, 255, 255, 0.6);
-}
-
-.ta-difficulty-btn:hover::before {
-    height: 4px;
 }
 
 .ta-difficulty-name {
