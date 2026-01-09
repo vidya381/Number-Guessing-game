@@ -226,6 +226,27 @@ function handleEscapeKey(event) {
         event.preventDefault();
         return;
     }
+
+    const leaderboardModal = document.getElementById('leaderboard-modal');
+    if (leaderboardModal && leaderboardModal.style.display === 'flex') {
+        closeModalWithAnimation(leaderboardModal);
+        event.preventDefault();
+        return;
+    }
+
+    const dailyLeaderboardModal = document.getElementById('daily-leaderboard-modal');
+    if (dailyLeaderboardModal && dailyLeaderboardModal.style.display === 'flex') {
+        closeModalWithAnimation(dailyLeaderboardModal);
+        event.preventDefault();
+        return;
+    }
+
+    const timeAttackLeaderboardModal = document.getElementById('time-attack-leaderboard-modal');
+    if (timeAttackLeaderboardModal && timeAttackLeaderboardModal.style.display === 'flex') {
+        closeModalWithAnimation(timeAttackLeaderboardModal);
+        event.preventDefault();
+        return;
+    }
 }
 
 // Handle Ctrl+Q / Cmd+Q to quit game
@@ -3306,8 +3327,7 @@ async function loadTimeAttackLeaderboard(difficulty = 0) {
     const loadingDiv = document.getElementById('ta-leaderboard-loading');
     const contentDiv = document.getElementById('ta-leaderboard-content');
 
-    // Show modal
-    modal.style.display = 'block';
+    // Show loading state
     loadingDiv.style.display = 'block';
     contentDiv.style.display = 'none';
 
@@ -3326,6 +3346,7 @@ async function loadTimeAttackLeaderboard(difficulty = 0) {
 
         if (leaderboard.length === 0) {
             contentDiv.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-secondary);">No players yet. Be the first!</p>';
+            openModalWithAnimation(modal);
             return;
         }
 
@@ -3362,6 +3383,11 @@ async function loadTimeAttackLeaderboard(difficulty = 0) {
         loadingDiv.style.display = 'none';
         contentDiv.style.display = 'block';
         contentDiv.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--danger-color);">Failed to load leaderboard</p>';
+    }
+
+    // Open modal with animation after loading (only if not already open)
+    if (modal.style.display !== 'flex') {
+        openModalWithAnimation(modal);
     }
 }
 
@@ -3475,7 +3501,7 @@ document.getElementById('view-time-attack-leaderboard')?.addEventListener('click
 
 document.getElementById('ta-leaderboard-close')?.addEventListener('click', () => {
     const modal = document.getElementById('time-attack-leaderboard-modal');
-    modal.style.display = 'none';
+    closeModalWithAnimation(modal);
 });
 
 // Leaderboard difficulty tabs
@@ -3489,4 +3515,12 @@ document.querySelectorAll('#time-attack-leaderboard-modal .lb-tab').forEach(tab 
         const difficulty = parseInt(tab.dataset.difficulty);
         loadTimeAttackLeaderboard(difficulty);
     });
+});
+
+// Close modal when clicking outside
+document.getElementById('time-attack-leaderboard-modal')?.addEventListener('click', (e) => {
+    const modal = document.getElementById('time-attack-leaderboard-modal');
+    if (e.target === modal) {
+        closeModalWithAnimation(modal);
+    }
 });
