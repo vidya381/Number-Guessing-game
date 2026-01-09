@@ -3679,6 +3679,45 @@ body.dark-mode .header-streak i {
     background: rgba(240, 179, 71, 0.15);
 }
 
+/* Modal Close Button */
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(139, 122, 191, 0.1);
+    color: var(--text-color);
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.modal-close-btn:hover {
+    background: var(--danger-color);
+    color: white;
+    transform: scale(1.1) rotate(90deg);
+}
+
+.modal-close-btn:active {
+    transform: scale(0.95);
+}
+
+[data-theme="dark"] .modal-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .modal-close-btn:hover {
+    background: var(--danger-color);
+    color: white;
+}
+
 /* Responsive Design for Daily Challenge */
 @media screen and (max-width: 600px) {
     .daily-challenge-info {
