@@ -104,21 +104,21 @@ body {
     gap: 20px;
 }
 
-#game-page {
+#game-page, #daily-challenge-page {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
 /* Game input section with inline stats */
-#game-page .section:nth-child(1) {
+#game-page .section:nth-child(1), #daily-challenge-page .section:nth-child(1) {
     background: linear-gradient(135deg, rgba(167, 139, 250, 0.05) 0%, rgba(78, 168, 222, 0.05) 100%);
     border: 2px solid rgba(167, 139, 250, 0.2);
     box-shadow: 0 8px 32px rgba(139, 122, 191, 0.12);
     position: relative;
 }
 
-#game-page .section:nth-child(1) > * {
+#game-page .section:nth-child(1) > *, #daily-challenge-page .section:nth-child(1) > * {
     position: relative;
     z-index: 1;
 }
@@ -3618,29 +3618,6 @@ body.dark-mode .header-streak i {
     margin-top: 10px;
 }
 
-/* Daily Challenge Game Page */
-.daily-challenge-game {
-    background: linear-gradient(135deg, 
-        rgba(240, 179, 71, 0.05) 0%, 
-        rgba(93, 211, 179, 0.05) 100%) !important;
-    border: 2px solid rgba(240, 179, 71, 0.2) !important;
-}
-
-.daily-challenge-subtitle {
-    text-align: center;
-    color: var(--text-secondary);
-    margin: 0 0 20px 0;
-    padding: 10px;
-    background: rgba(240, 179, 71, 0.1);
-    border-radius: 10px;
-    font-size: 0.9em;
-}
-
-.daily-challenge-subtitle i {
-    color: var(--warning-color);
-    margin-right: 5px;
-}
-
 /* Daily Challenge Result Page */
 #daily-result-page .leaderboard-btn {
     margin-top: 15px;
@@ -3693,10 +3670,6 @@ body.dark-mode .header-streak i {
     color: var(--text-color);
 }
 
-[data-theme="dark"] .daily-challenge-subtitle {
-    background: rgba(240, 179, 71, 0.15);
-}
-
 [data-theme="dark"] .daily-challenge-status {
     background: rgba(82, 201, 140, 0.15);
     border: 2px solid rgba(82, 201, 140, 0.4);
@@ -3731,5 +3704,104 @@ body.dark-mode .header-streak i {
 /* Performance optimizations */
 #daily-challenge-page, #daily-result-page {
     will-change: opacity, transform;
+}
+
+
+/* ===================================
+   DAILY CHALLENGE GAME STYLING (Match Regular Game)
+   =================================== */
+
+/* Game input section styling for daily challenge */
+#daily-challenge-page .section:nth-child(1) {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.05) 0%, rgba(78, 168, 222, 0.05) 100%);
+    border: 2px solid rgba(167, 139, 250, 0.2);
+    box-shadow: 0 8px 32px rgba(139, 122, 191, 0.12);
+    position: relative;
+}
+
+#daily-challenge-page .section:nth-child(1) > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Guess history styling for daily challenge */
+#daily-challenge-page .section:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.03) 0%, rgba(230, 126, 34, 0.03) 100%);
+    border: 1px solid rgba(167, 139, 250, 0.15);
+    min-height: 250px;
+    max-height: 350px;
+}
+
+#daily-challenge-page .section:nth-child(2) h2 {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: var(--primary-color);
+}
+
+#daily-challenge-page .section:nth-child(2) #daily-guess-history {
+    flex: 1;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(167, 139, 250, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+body.dark-mode #daily-challenge-page .section:nth-child(2) #daily-guess-history {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+/* Dark mode enhancements for daily challenge */
+body.dark-mode #daily-challenge-page .section:nth-child(1) {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.08) 0%, rgba(78, 168, 222, 0.08) 100%);
+    border: 1px solid rgba(167, 139, 250, 0.25);
+}
+
+/* Scrollbar for daily challenge guess history */
+#daily-challenge-page .section:nth-child(2) #daily-guess-history::-webkit-scrollbar {
+    width: 8px;
+}
+
+#daily-challenge-page .section:nth-child(2) #daily-guess-history::-webkit-scrollbar-track {
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.06) 0%, rgba(230, 126, 34, 0.06) 100%);
+    border: 1px solid rgba(167, 139, 250, 0.25);
+}
+
+/* Submit button styling for daily challenge */
+#daily-challenge-page #submit-daily-guess {
+    margin-top: 20px;
+    font-size: 1.1em;
+    padding: 15px 30px;
+    box-shadow: 0 4px 15px rgba(139, 122, 191, 0.3);
+    transition: all 0.3s ease;
+}
+
+#daily-challenge-page #submit-daily-guess:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(139, 122, 191, 0.4);
+}
+
+#daily-challenge-page #submit-daily-guess:active {
+    transform: translateY(0);
+}
+
+/* Input container styling for daily challenge */
+#daily-challenge-page #daily-input-container {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    padding: 15px;
+}
+
+/* Quit button styling for daily challenge */
+#daily-challenge-page button#quit-daily-challenge {
+    margin-top: 10px;
+}
+
+/* Feedback styling for daily challenge */
+#daily-challenge-page #daily-feedback {
+    border-radius: 12px;
+    padding: 15px 20px;
 }
 
