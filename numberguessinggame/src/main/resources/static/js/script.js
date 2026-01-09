@@ -2370,6 +2370,9 @@ async function playDailyChallenge() {
         return;
     }
 
+    console.log('=== Starting Daily Challenge ===');
+    console.log('Auth Token:', authToken ? 'Present' : 'Missing');
+
     try {
         const response = await fetch('/api/daily-challenge/start', {
             method: 'POST',
@@ -2379,16 +2382,22 @@ async function playDailyChallenge() {
             }
         });
 
+        console.log('Start response status:', response.status);
         const data = await response.json();
+        console.log('Start response data:', data);
 
         if (response.ok) {
             dailyChallengeSessionId = data.sessionId;
             dailyChallengeDigitCount = data.digitCount;
+            console.log('Session created:', dailyChallengeSessionId);
+            console.log('Digit count:', dailyChallengeDigitCount);
             startDailyChallengeGame();
         } else {
+            console.error('Failed to start:', data.error);
             showToast(data.error || 'Couldn\'t start the daily challenge. Try again! 🎮', 'error');
         }
     } catch (error) {
+        console.error('Start error:', error);
         showToast('Couldn\'t start the daily challenge. Check your connection! 🔄', 'error');
     }
 }
@@ -2506,6 +2515,13 @@ async function submitDailyGuess() {
         return;
     }
 
+    // Debug logging
+    console.log('=== Daily Challenge Guess Debug ===');
+    console.log('Session ID:', dailyChallengeSessionId);
+    console.log('Auth Token:', authToken ? 'Present' : 'Missing');
+    console.log('Guess:', guess);
+    console.log('Digit Count:', dailyChallengeDigitCount);
+
     try {
         const response = await fetch('/api/daily-challenge/guess', {
             method: 'POST',
@@ -2519,7 +2535,9 @@ async function submitDailyGuess() {
             })
         });
 
+        console.log('Response status:', response.status);
         const data = await response.json();
+        console.log('Response data:', data);
 
         if (response.ok) {
             dailyChallengeAttempts = data.attempts;
@@ -2533,9 +2551,9 @@ async function submitDailyGuess() {
 
             // Play sound
             if (data.won) {
-                playSound(winSound);
+                if (soundVolume > 0) winSound.play();
             } else {
-                playSound(incorrectSound);
+                if (soundVolume > 0) incorrectSound.play();
             }
 
             // Clear inputs
@@ -2547,9 +2565,11 @@ async function submitDailyGuess() {
                 setTimeout(() => endDailyChallenge(data.won), 1500);
             }
         } else {
+            console.error('Server error:', data.error);
             showToast(data.error || 'Hmm, couldn\'t submit that guess. Try again! 🔄', 'error');
         }
     } catch (error) {
+        console.error('Fetch error:', error);
         showToast('Hmm, couldn\'t submit that guess. Check your connection and try again! 🔄', 'error');
     }
 }
