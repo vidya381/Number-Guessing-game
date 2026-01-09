@@ -348,7 +348,7 @@ h2 {
 }
 
 /* Exclude header buttons from generic button styling */
-button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close) {
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn) {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     color: var(--button-text-color);
     border: none;
@@ -364,13 +364,13 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
     box-shadow: 0 6px 20px var(--shadow-color);
 }
 
-button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):hover {
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):hover {
     background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
     transform: translateY(var(--hover-lift)) scale(1.02);
     box-shadow: 0 10px 30px rgba(78, 168, 222, 0.35);
 }
 
-button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):active {
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):active {
     transform: translateY(-2px) scale(0.98);
     box-shadow: 0 4px 15px var(--shadow-color);
 }
@@ -767,7 +767,7 @@ body.dark-mode .history-item {
     }
 
     /* Exclude header buttons from generic button styling */
-    button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close) {
+    button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn) {
         font-size: 14px;
         padding: 10px 20px;
     }
