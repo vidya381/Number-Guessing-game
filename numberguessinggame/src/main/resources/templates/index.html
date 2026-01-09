@@ -91,6 +91,42 @@
         </div>
 
         <div id="home-page">
+            <!-- Daily Challenge Section -->
+            <section class="section daily-challenge-banner">
+                <div class="daily-challenge-header">
+                    <h2>🌟 DAILY CHALLENGE</h2>
+                    <div class="daily-challenge-badge">TODAY</div>
+                </div>
+                <p class="daily-challenge-description">
+                    Same number for all players! Compete on the global leaderboard.
+                </p>
+                <div id="daily-challenge-info" class="daily-challenge-info">
+                    <div class="challenge-stat">
+                        <i class="fas fa-calendar-day"></i>
+                        <span id="challenge-date">Loading...</span>
+                    </div>
+                    <div class="challenge-stat">
+                        <i class="fas fa-signal"></i>
+                        <span id="challenge-difficulty">Loading...</span>
+                    </div>
+                    <div class="challenge-stat">
+                        <i class="fas fa-users"></i>
+                        <span id="challenge-players">0 players</span>
+                    </div>
+                </div>
+                <div class="daily-challenge-buttons">
+                    <button id="play-daily-challenge" class="daily-challenge-btn">
+                        <i class="fas fa-play"></i> PLAY NOW
+                    </button>
+                    <button id="view-daily-leaderboard" class="daily-leaderboard-btn">
+                        <i class="fas fa-trophy"></i> LEADERBOARD
+                    </button>
+                </div>
+                <div id="daily-challenge-status" style="display: none;" class="daily-challenge-status">
+                    <!-- Will show user's result if already attempted -->
+                </div>
+            </section>
+
             <section class="section">
                 <h2>⚡ SELECT DIFFICULTY</h2>
                 <div class="button-group">
@@ -139,6 +175,48 @@
             </section>
 
             <button id="quit-game">❌ QUIT GAME</button>
+        </div>
+
+        <!-- Daily Challenge Game Page -->
+        <div id="daily-challenge-page" style="display: none;">
+            <section class="section daily-challenge-game">
+                <div class="game-header">
+                    <h2>🌟 DAILY CHALLENGE</h2>
+                    <div class="game-stats-inline">
+                        <div class="stat-badge">
+                            <span class="stat-icon">⏱️</span>
+                            <span id="daily-timer">00:00</span>
+                        </div>
+                        <div class="stat-badge">
+                            <span class="stat-icon">🎯</span>
+                            <span id="daily-attempts">0</span>/10
+                        </div>
+                    </div>
+                </div>
+                <p class="daily-challenge-subtitle">
+                    <i class="fas fa-info-circle"></i>
+                    Everyone gets the same number today!
+                </p>
+                <div id="daily-input-container"></div>
+                <button id="submit-daily-guess">⚡ SUBMIT GUESS</button>
+                <div id="daily-feedback" class="fade-in"></div>
+            </section>
+
+            <section class="section">
+                <h2>📋 GUESS HISTORY</h2>
+                <div id="daily-guess-history"></div>
+            </section>
+
+            <button id="quit-daily-challenge">❌ QUIT CHALLENGE</button>
+        </div>
+
+        <!-- Daily Challenge Result Page -->
+        <div id="daily-result-page" class="card" style="display: none;">
+            <div id="daily-game-stats"></div>
+            <button id="view-daily-results-leaderboard" class="leaderboard-btn">
+                <i class="fas fa-trophy"></i> VIEW LEADERBOARD
+            </button>
+            <button id="quit-daily-result" data-tooltip="Return to home page">🏠 MAIN MENU</button>
         </div>
 
         <div id="result-page" class="card" style="display: none;">
@@ -462,6 +540,25 @@
             <div id="modal-leaderboard-container">
                 <div id="modal-leaderboard-loading">Loading leaderboard...</div>
                 <div id="modal-leaderboard-content" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Daily Challenge Leaderboard Modal -->
+    <div id="daily-leaderboard-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button class="modal-close-btn" id="daily-leaderboard-modal-close">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-trophy"></i> Daily Challenge Leaderboard
+            </h2>
+            <div class="daily-challenge-date" id="daily-leaderboard-date" style="text-align: center; margin-bottom: 15px; color: var(--text-secondary); font-size: 0.9em;">
+                <!-- Will show today's date -->
+            </div>
+            <div id="modal-daily-leaderboard-container">
+                <div id="modal-daily-leaderboard-loading">Loading leaderboard...</div>
+                <div id="modal-daily-leaderboard-content" style="display: none;"></div>
             </div>
         </div>
     </div>

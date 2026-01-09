@@ -2275,3 +2275,578 @@ function setupProfileAchievementTabs() {
         });
     });
 }
+
+
+// ===================================
+// DAILY CHALLENGE FUNCTIONALITY
+// ===================================
+
+// Daily Challenge State
+let dailyChallengeInfo = null;
+let dailyChallengeSessionId = null;
+let dailyChallengeAttempts = 0;
+let dailyChallengeStartTime = null;
+let dailyChallengeTimerInterval = null;
+let dailyChallengeGuessHistory = [];
+let dailyChallengeDigitCount = 0;
+
+/**
+ * Load Daily Challenge Info
+ */
+async function loadDailyChallengeInfo() {
+    try {
+        const headers = {};
+        if (authToken) {
+            headers['Authorization'] = `Bearer ${authToken}`;
+        }
+
+        const response = await fetch('/api/daily-challenge/info', {
+            method: 'GET',
+            headers: headers
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            dailyChallengeInfo = data;
+
+            // Update UI
+            document.getElementById('challenge-date').textContent = formatDate(data.challengeDate);
+            document.getElementById('challenge-difficulty').textContent = data.difficultyText;
+            document.getElementById('challenge-players').textContent = `${data.totalPlayers} player${data.totalPlayers !== 1 ? 's' : ''}`;
+
+            const playBtn = document.getElementById('play-daily-challenge');
+            const statusDiv = document.getElementById('daily-challenge-status');
+
+            if (data.alreadyAttempted && data.userAttempt) {
+                // User already completed today's challenge
+                playBtn.disabled = true;
+                playBtn.innerHTML = '<i class="fas fa-check"></i> COMPLETED TODAY';
+
+                statusDiv.style.display = 'block';
+                statusDiv.innerHTML = `
+                    <h3>✓ Challenge Complete!</h3>
+                    <p><strong>Attempts:</strong> ${data.userAttempt.attempts}</p>
+                    <p><strong>Time:</strong> ${data.userAttempt.timeDisplay}</p>
+                    ${data.userAttempt.won && data.userAttempt.rank ?
+                        `<div class="rank-display">🏆 Rank #${data.userAttempt.rank}</div>` :
+                        '<p>Better luck tomorrow!</p>'}
+                `;
+            } else {
+                // Can still play
+                playBtn.disabled = false;
+                playBtn.innerHTML = '<i class="fas fa-play"></i> PLAY NOW';
+                statusDiv.style.display = 'none';
+            }
+        } else {
+            console.error('Failed to load daily challenge info:', data.error);
+        }
+    } catch (error) {
+        console.error('Error loading daily challenge info:', error);
+    }
+}
+
+/**
+ * Format date for display
+ */
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
+    return date.toLocaleDateString('en-US', options);
+}
+
+/**
+ * Play Daily Challenge Button Click
+ */
+async function playDailyChallenge() {
+    if (!authToken) {
+        showToast('Please log in to play the daily challenge! 🔑', 'info');
+        openModalWithAnimation(document.getElementById('auth-modal'));
+        return;
+    }
+
+    if (!dailyChallengeInfo || dailyChallengeInfo.alreadyAttempted) {
+        showToast('You\'ve already completed today\'s challenge! 📅', 'info');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/daily-challenge/start', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            dailyChallengeSessionId = data.sessionId;
+            dailyChallengeDigitCount = data.digitCount;
+            startDailyChallengeGame();
+        } else {
+            showToast(data.error || 'Couldn\'t start the daily challenge. Try again! 🎮', 'error');
+        }
+    } catch (error) {
+        showToast('Couldn\'t start the daily challenge. Check your connection! 🔄', 'error');
+    }
+}
+
+/**
+ * Start Daily Challenge Game
+ */
+function startDailyChallengeGame() {
+    // Reset state
+    dailyChallengeAttempts = 0;
+    dailyChallengeGuessHistory = [];
+    dailyChallengeStartTime = Date.now();
+
+    // Hide home, show daily challenge page
+    const homePage = document.getElementById('home-page');
+    const dailyChallengePage = document.getElementById('daily-challenge-page');
+
+    fadeOutElement(homePage, () => {
+        fadeInElement(dailyChallengePage, 'flex');
+    });
+
+    // Create input boxes
+    const inputContainer = document.getElementById('daily-input-container');
+    inputContainer.innerHTML = '';
+
+    for (let i = 0; i < dailyChallengeDigitCount; i++) {
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'digit-input';
+        input.maxLength = 1;
+        input.inputMode = 'numeric';
+        input.pattern = '[0-9]';
+        input.dataset.index = i;
+
+        input.addEventListener('input', (e) => handleDailyDigitInput(e, i));
+        input.addEventListener('keydown', (e) => handleDailyDigitKeydown(e, i));
+
+        inputContainer.appendChild(input);
+    }
+
+    // Focus first input
+    inputContainer.querySelector('.digit-input').focus();
+
+    // Start timer
+    document.getElementById('daily-attempts').textContent = '0';
+    startDailyChallengeTimer();
+
+    // Clear feedback and history
+    document.getElementById('daily-feedback').innerHTML = '';
+    document.getElementById('daily-guess-history').innerHTML = '';
+}
+
+/**
+ * Start Daily Challenge Timer
+ */
+function startDailyChallengeTimer() {
+    dailyChallengeTimerInterval = setInterval(() => {
+        const elapsed = Math.floor((Date.now() - dailyChallengeStartTime) / 1000);
+        const minutes = Math.floor(elapsed / 60);
+        const seconds = elapsed % 60;
+        document.getElementById('daily-timer').textContent =
+            `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }, 1000);
+}
+
+/**
+ * Handle Daily Digit Input
+ */
+function handleDailyDigitInput(e, index) {
+    const inputs = document.querySelectorAll('#daily-input-container .digit-input');
+    const value = e.target.value;
+
+    if (value && /^\d$/.test(value)) {
+        // Valid digit, move to next
+        if (index < inputs.length - 1) {
+            inputs[index + 1].focus();
+        }
+    }
+}
+
+/**
+ * Handle Daily Digit Keydown
+ */
+function handleDailyDigitKeydown(e, index) {
+    const inputs = document.querySelectorAll('#daily-input-container .digit-input');
+
+    if (e.key === 'Backspace' && !e.target.value && index > 0) {
+        inputs[index - 1].focus();
+    } else if (e.key === 'ArrowLeft' && index > 0) {
+        inputs[index - 1].focus();
+    } else if (e.key === 'ArrowRight' && index < inputs.length - 1) {
+        inputs[index + 1].focus();
+    } else if (e.key === 'Enter') {
+        submitDailyGuess();
+    }
+}
+
+/**
+ * Submit Daily Challenge Guess
+ */
+async function submitDailyGuess() {
+    const inputs = document.querySelectorAll('#daily-input-container .digit-input');
+    const guess = Array.from(inputs).map(input => input.value).join('');
+
+    // Validation
+    if (guess.length !== dailyChallengeDigitCount) {
+        showToast('Please fill in all digit boxes to make your guess! 🎯', 'info');
+        return;
+    }
+
+    // Check for unique digits
+    const uniqueDigits = new Set(guess);
+    if (uniqueDigits.size !== guess.length) {
+        showToast('Oops! Each digit must be different. Try again! 🔢', 'error');
+        return;
+    }
+
+    try {
+        const response = await fetch('/api/daily-challenge/guess', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                sessionId: dailyChallengeSessionId,
+                guess: guess
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            dailyChallengeAttempts = data.attempts;
+            document.getElementById('daily-attempts').textContent = dailyChallengeAttempts;
+
+            // Add to history
+            addDailyGuessToHistory(guess, data.bulls, data.cows);
+
+            // Show feedback
+            showDailyFeedback(data.bulls, data.cows);
+
+            // Play sound
+            if (data.won) {
+                playSound(winSound);
+            } else {
+                playSound(incorrectSound);
+            }
+
+            // Clear inputs
+            inputs.forEach(input => input.value = '');
+            inputs[0].focus();
+
+            // Check if won or lost
+            if (data.won || dailyChallengeAttempts >= GAME_CONFIG.MAX_ATTEMPTS) {
+                setTimeout(() => endDailyChallenge(data.won), 1500);
+            }
+        } else {
+            showToast(data.error || 'Hmm, couldn\'t submit that guess. Try again! 🔄', 'error');
+        }
+    } catch (error) {
+        showToast('Hmm, couldn\'t submit that guess. Check your connection and try again! 🔄', 'error');
+    }
+}
+
+/**
+ * Add Daily Guess to History
+ */
+function addDailyGuessToHistory(guess, bulls, cows) {
+    dailyChallengeGuessHistory.push({ guess, bulls, cows });
+
+    const historyDiv = document.getElementById('daily-guess-history');
+    const historyItem = document.createElement('div');
+    historyItem.className = 'history-item';
+
+    historyItem.innerHTML = `
+        <span class="guess-number">#${dailyChallengeAttempts}</span>
+        <span class="guess-value">${guess}</span>
+        <span class="result">
+            <span class="bulls">${bulls} 🐂</span>
+            <span class="cows">${cows} 🐄</span>
+        </span>
+    `;
+
+    historyDiv.insertBefore(historyItem, historyDiv.firstChild);
+}
+
+/**
+ * Show Daily Feedback
+ */
+function showDailyFeedback(bulls, cows) {
+    const feedbackDiv = document.getElementById('daily-feedback');
+    let message = '';
+    let emoji = '';
+
+    if (bulls === dailyChallengeDigitCount) {
+        message = '🎉 PERFECT! You cracked the code!';
+        emoji = '🎉';
+    } else if (bulls > 0 && cows > 0) {
+        message = `${bulls} Bull${bulls !== 1 ? 's' : ''} & ${cows} Cow${cows !== 1 ? 's' : ''} - You're getting close!`;
+        emoji = '🎯';
+    } else if (bulls > 0) {
+        message = `${bulls} Bull${bulls !== 1 ? 's' : ''} - Some digits are perfectly placed!`;
+        emoji = '🐂';
+    } else if (cows > 0) {
+        message = `${cows} Cow${cows !== 1 ? 's' : ''} - Right digits, wrong positions!`;
+        emoji = '🐄';
+    } else {
+        message = 'No matches - Try different digits!';
+        emoji = '❌';
+    }
+
+    feedbackDiv.innerHTML = `<div class="feedback-message">${emoji} ${message}</div>`;
+}
+
+/**
+ * End Daily Challenge
+ */
+async function endDailyChallenge(won) {
+    // Stop timer
+    clearInterval(dailyChallengeTimerInterval);
+
+    const timeTakenSeconds = Math.floor((Date.now() - dailyChallengeStartTime) / 1000);
+    const minutes = Math.floor(timeTakenSeconds / 60);
+    const seconds = timeTakenSeconds % 60;
+    const timeDisplay = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+    try {
+        const response = await fetch('/api/daily-challenge/end', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${authToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                sessionId: dailyChallengeSessionId,
+                won: won,
+                timeTakenSeconds: timeTakenSeconds,
+                timeDisplay: timeDisplay
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            showDailyChallengeResult(won, dailyChallengeAttempts, timeDisplay, data.rank, data.totalPlayers);
+
+            // Reload daily challenge info for home page
+            await loadDailyChallengeInfo();
+        } else {
+            showToast(data.error || 'Couldn\'t save your result. Try refreshing! 💾', 'error');
+        }
+    } catch (error) {
+        showToast('Couldn\'t save your result. Try refreshing! 💾', 'error');
+    }
+}
+
+/**
+ * Show Daily Challenge Result
+ */
+function showDailyChallengeResult(won, attempts, timeDisplay, rank, totalPlayers) {
+    const dailyChallengePage = document.getElementById('daily-challenge-page');
+    const dailyResultPage = document.getElementById('daily-result-page');
+
+    fadeOutElement(dailyChallengePage, () => {
+        // Build result content
+        let resultHTML = '';
+
+        if (won) {
+            resultHTML = `
+                <div class="result-header win">
+                    <div class="result-icon">🏆</div>
+                    <h2>CHALLENGE COMPLETE!</h2>
+                </div>
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <span class="stat-label">Attempts</span>
+                        <span class="stat-value">${attempts}</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="stat-label">Time</span>
+                        <span class="stat-value">${timeDisplay}</span>
+                    </div>
+                    ${rank ? `
+                        <div class="result-stat highlight">
+                            <span class="stat-label">Your Rank</span>
+                            <span class="stat-value">#${rank}</span>
+                        </div>
+                    ` : ''}
+                    ${totalPlayers ? `
+                        <div class="result-stat">
+                            <span class="stat-label">Total Players</span>
+                            <span class="stat-value">${totalPlayers}</span>
+                        </div>
+                    ` : ''}
+                </div>
+                <p class="result-message">🌟 Come back tomorrow for a new challenge!</p>
+            `;
+
+            triggerConfetti();
+        } else {
+            resultHTML = `
+                <div class="result-header lose">
+                    <div class="result-icon">💪</div>
+                    <h2>CHALLENGE FAILED</h2>
+                </div>
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <span class="stat-label">Attempts</span>
+                        <span class="stat-value">${attempts}</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="stat-label">Time</span>
+                        <span class="stat-value">${timeDisplay}</span>
+                    </div>
+                </div>
+                <p class="result-message">Don't give up! Try again tomorrow! 🎯</p>
+            `;
+        }
+
+        document.getElementById('daily-game-stats').innerHTML = resultHTML;
+        fadeInElement(dailyResultPage, 'flex');
+    });
+}
+
+/**
+ * Load Daily Challenge Leaderboard
+ */
+async function loadDailyLeaderboard() {
+    const modal = document.getElementById('daily-leaderboard-modal');
+    const loadingDiv = document.getElementById('modal-daily-leaderboard-loading');
+    const contentDiv = document.getElementById('modal-daily-leaderboard-content');
+    const dateDiv = document.getElementById('daily-leaderboard-date');
+
+    loadingDiv.style.display = 'block';
+    contentDiv.style.display = 'none';
+
+    try {
+        const response = await fetch('/api/daily-challenge/leaderboard?limit=100');
+        const data = await response.json();
+
+        if (response.ok && Array.isArray(data)) {
+            // Update date
+            if (dailyChallengeInfo) {
+                dateDiv.textContent = `📅 ${formatDate(dailyChallengeInfo.challengeDate)}`;
+            }
+
+            if (data.length === 0) {
+                contentDiv.innerHTML = '<div class="no-data">No one has completed today\'s challenge yet. Be the first! 🏆</div>';
+            } else {
+                let tableHTML = `
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                                <th>Attempts</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                data.forEach(entry => {
+                    const isCurrentUser = currentUser && entry.username === currentUser.username;
+                    const rowClass = isCurrentUser ? 'leaderboard-row current-user' : 'leaderboard-row';
+
+                    tableHTML += `
+                        <tr class="${rowClass}">
+                            <td>${getRankDisplay(entry.rank)}</td>
+                            <td>${entry.username}${isCurrentUser ? ' (You)' : ''}</td>
+                            <td>${entry.attempts}</td>
+                            <td>${entry.timeDisplay}</td>
+                        </tr>
+                    `;
+                });
+
+                tableHTML += `
+                        </tbody>
+                    </table>
+                `;
+
+                contentDiv.innerHTML = tableHTML;
+            }
+
+            loadingDiv.style.display = 'none';
+            contentDiv.style.display = 'block';
+        } else {
+            contentDiv.innerHTML = '<div class="error-message">Couldn\'t load the leaderboard. Try again in a moment! 🏆</div>';
+            loadingDiv.style.display = 'none';
+            contentDiv.style.display = 'block';
+        }
+    } catch (error) {
+        contentDiv.innerHTML = '<div class="error-message">Couldn\'t load the leaderboard. Try again in a moment! 🏆</div>';
+        loadingDiv.style.display = 'none';
+        contentDiv.style.display = 'block';
+    }
+
+    openModalWithAnimation(modal);
+}
+
+/**
+ * Get Rank Display with Medal Emojis
+ */
+function getRankDisplay(rank) {
+    if (rank === 1) return '🥇';
+    if (rank === 2) return '🥈';
+    if (rank === 3) return '🥉';
+    return `#${rank}`;
+}
+
+/**
+ * Quit Daily Challenge
+ */
+function quitDailyChallenge() {
+    if (confirm('Are you sure you want to quit? You can only attempt the daily challenge once per day!')) {
+        clearInterval(dailyChallengeTimerInterval);
+
+        const dailyChallengePage = document.getElementById('daily-challenge-page');
+        const homePage = document.getElementById('home-page');
+
+        fadeOutElement(dailyChallengePage, () => {
+            fadeInElement(homePage, 'flex');
+        });
+
+        // Note: We don't save the attempt as they're quitting
+        dailyChallengeSessionId = null;
+    }
+}
+
+// ===================================
+// DAILY CHALLENGE EVENT LISTENERS
+// ===================================
+
+document.getElementById('play-daily-challenge')?.addEventListener('click', playDailyChallenge);
+
+document.getElementById('view-daily-leaderboard')?.addEventListener('click', loadDailyLeaderboard);
+
+document.getElementById('view-daily-results-leaderboard')?.addEventListener('click', loadDailyLeaderboard);
+
+document.getElementById('submit-daily-guess')?.addEventListener('click', submitDailyGuess);
+
+document.getElementById('quit-daily-challenge')?.addEventListener('click', quitDailyChallenge);
+
+document.getElementById('quit-daily-result')?.addEventListener('click', () => {
+    const dailyResultPage = document.getElementById('daily-result-page');
+    const homePage = document.getElementById('home-page');
+
+    fadeOutElement(dailyResultPage, () => {
+        fadeInElement(homePage, 'flex');
+    });
+});
+
+document.getElementById('daily-leaderboard-modal-close')?.addEventListener('click', () => {
+    closeModalWithAnimation(document.getElementById('daily-leaderboard-modal'));
+});
+
+// Load daily challenge info when page loads (if user navigates to home)
+if (document.getElementById('home-page').style.display !== 'none') {
+    loadDailyChallengeInfo();
+}
