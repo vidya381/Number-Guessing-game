@@ -104,21 +104,21 @@ body {
     gap: 20px;
 }
 
-#game-page, #daily-challenge-page {
+#game-page, #daily-challenge-page, #time-attack-page {
     display: flex;
     flex-direction: column;
     gap: 15px;
 }
 
 /* Game input section with inline stats */
-#game-page .section:nth-child(1), #daily-challenge-page .section:nth-child(1) {
+#game-page .section:nth-child(1), #daily-challenge-page .section:nth-child(1), #time-attack-page .section:nth-child(1) {
     background: linear-gradient(135deg, rgba(167, 139, 250, 0.05) 0%, rgba(78, 168, 222, 0.05) 100%);
     border: 2px solid rgba(167, 139, 250, 0.2);
     box-shadow: 0 8px 32px rgba(139, 122, 191, 0.12);
     position: relative;
 }
 
-#game-page .section:nth-child(1) > *, #daily-challenge-page .section:nth-child(1) > * {
+#game-page .section:nth-child(1) > *, #daily-challenge-page .section:nth-child(1) > *, #time-attack-page .section:nth-child(1) > * {
     position: relative;
     z-index: 1;
 }
@@ -172,7 +172,7 @@ body.dark-mode .stat-badge {
 }
 
 /* Guess history - full width */
-#game-page .section:nth-child(2) {
+#game-page .section:nth-child(2), #time-attack-page .section:nth-child(2) {
     display: flex;
     flex-direction: column;
     background: linear-gradient(135deg, rgba(243, 156, 18, 0.03) 0%, rgba(230, 126, 34, 0.03) 100%);
@@ -181,36 +181,41 @@ body.dark-mode .stat-badge {
     max-height: 350px;
 }
 
-#game-page .section:nth-child(2) h2 {
+#game-page .section:nth-child(2) h2, #time-attack-page .section:nth-child(2) h2 {
     margin-bottom: 15px;
     font-size: 1.1em;
     color: var(--primary-color);
 }
 
-#game-page .section:nth-child(2) #guess-history {
+#game-page .section:nth-child(2) #guess-history,
+#time-attack-page .section:nth-child(2) #ta-guess-history {
     flex: 1;
     overflow-y: auto;
     background: rgba(255, 255, 255, 0.4);
     border: 1px solid rgba(167, 139, 250, 0.1);
 }
 
-body.dark-mode #game-page .section:nth-child(2) #guess-history {
+body.dark-mode #game-page .section:nth-child(2) #guess-history,
+body.dark-mode #time-attack-page .section:nth-child(2) #ta-guess-history {
     background: rgba(0, 0, 0, 0.2);
 }
 
 /* Dark mode enhancements */
-body.dark-mode #game-page .section:nth-child(1) {
+body.dark-mode #game-page .section:nth-child(1),
+body.dark-mode #time-attack-page .section:nth-child(1) {
     background: linear-gradient(135deg, rgba(167, 139, 250, 0.08) 0%, rgba(78, 168, 222, 0.08) 100%);
     border: 2px solid rgba(167, 139, 250, 0.3);
 }
 
-body.dark-mode #game-page .section:nth-child(2) {
+body.dark-mode #game-page .section:nth-child(2),
+body.dark-mode #time-attack-page .section:nth-child(2) {
     background: linear-gradient(135deg, rgba(243, 156, 18, 0.06) 0%, rgba(230, 126, 34, 0.06) 100%);
     border: 1px solid rgba(167, 139, 250, 0.25);
 }
 
 /* Enhanced submit button in game page */
-#game-page #submit-guess {
+#game-page #submit-guess,
+#time-attack-page #submit-ta-guess {
     margin-top: 20px;
     font-size: 1.1em;
     padding: 15px 30px;
@@ -218,17 +223,20 @@ body.dark-mode #game-page .section:nth-child(2) {
     transition: all 0.3s ease;
 }
 
-#game-page #submit-guess:hover {
+#game-page #submit-guess:hover,
+#time-attack-page #submit-ta-guess:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 25px rgba(139, 122, 191, 0.4);
 }
 
-#game-page #submit-guess:active {
+#game-page #submit-guess:active,
+#time-attack-page #submit-ta-guess:active {
     transform: translateY(0);
 }
 
 /* Quit button at bottom */
-#game-page button#quit-game {
+#game-page button#quit-game,
+#time-attack-page button#quit-time-attack {
     margin-top: 10px;
 }
 
@@ -275,7 +283,8 @@ body.dark-mode #game-page .section:nth-child(2) {
     border: 1px solid rgba(139, 122, 191, 0.08);
 }
 
-#game-page .section {
+#game-page .section,
+#time-attack-page .section {
     padding: 15px;
     margin-bottom: 12px;
 }
@@ -406,13 +415,15 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
     min-height: 75px;
 }
 
-#game-page #input-container {
+#game-page #input-container,
+#time-attack-page #ta-input-container {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 15px;
     padding: 15px;
 }
 
-body.dark-mode #game-page #input-container {
+body.dark-mode #game-page #input-container,
+body.dark-mode #time-attack-page #ta-input-container {
     background: rgba(0, 0, 0, 0.15);
 }
 
@@ -733,7 +744,8 @@ body.dark-mode .history-item {
         padding: 20px;
     }
 
-    #game-page {
+    #game-page,
+    #time-attack-page {
         gap: 12px;
     }
 
@@ -747,7 +759,8 @@ body.dark-mode .history-item {
         justify-content: space-around;
     }
 
-    #game-page .section:nth-child(2) {
+    #game-page .section:nth-child(2),
+    #time-attack-page .section:nth-child(2) {
         min-height: 200px;
         max-height: 300px;
     }

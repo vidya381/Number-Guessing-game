@@ -3132,10 +3132,11 @@ async function startTimeAttackGame() {
             startTime: Date.now()
         };
 
-        // Clear inputs and feedback
+        // Clear inputs, feedback, and guess history
         const inputs = document.querySelectorAll('#ta-input-container .digit-input');
         inputs.forEach(input => input.value = '');
         document.getElementById('ta-feedback').textContent = '';
+        document.getElementById('ta-guess-history').innerHTML = '';
 
         // Focus first input
         inputs[0]?.focus();
