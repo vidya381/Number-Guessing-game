@@ -157,14 +157,15 @@ public class TimeAttackController {
 
         // Generate first game's target number
         int digitCount = 3 + difficulty;
-        session.setCurrentTargetNumber(generateUniqueDigitNumber(digitCount));
+        int targetNumber = generateUniqueDigitNumber(digitCount);
+        session.setCurrentTargetNumber(targetNumber);
         session.setCurrentGameStartTime(System.currentTimeMillis());
 
         // Store in active sessions
         activeSessions.put(sessionId, session);
 
-        logger.info("Time Attack session started - SessionID: {}, UserID: {}, Difficulty: {}",
-                sessionId, userId, difficulty);
+        logger.info("Time Attack session started - SessionID: {}, UserID: {}, Difficulty: {}, Target: {}",
+                sessionId, userId, difficulty, targetNumber);
 
         return ResponseEntity.ok(Map.of(
                 "sessionId", sessionId,
@@ -197,9 +198,13 @@ public class TimeAttackController {
 
         // Generate new target number
         int digitCount = 3 + session.getDifficulty();
-        session.setCurrentTargetNumber(generateUniqueDigitNumber(digitCount));
+        int targetNumber = generateUniqueDigitNumber(digitCount);
+        session.setCurrentTargetNumber(targetNumber);
         session.setCurrentGameStartTime(System.currentTimeMillis());
         session.setCurrentGameAttempts(0);
+
+        logger.info("Time Attack new game started - SessionID: {}, Difficulty: {}, Target: {}",
+                sessionId, session.getDifficulty(), targetNumber);
 
         return ResponseEntity.ok(Map.of(
                 "digitCount", digitCount,
@@ -271,6 +276,9 @@ public class TimeAttackController {
         }
 
         boolean won = (bulls == digitCount);
+
+        logger.info("Time Attack guess processed - SessionID: {}, Guess: {}, Target: {}, Bulls: {}, Cows: {}, Won: {}",
+                sessionId, guess, target, bulls, cows, won);
 
         if (won) {
             // Calculate game time
