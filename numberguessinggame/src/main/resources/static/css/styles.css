@@ -4078,66 +4078,6 @@ body.dark-mode #daily-challenge-page .section:nth-child(1) {
 }
 
 /* Time Attack Game Page */
-.ta-quick-stats {
-    margin-top: 20px;
-    padding: 15px;
-    background: rgba(167, 139, 250, 0.1);
-    border-radius: 12px;
-    display: flex;
-    justify-content: space-around;
-    gap: 10px;
-}
-
-.ta-quick-stats p {
-    margin: 0;
-    font-weight: 600;
-}
-
-.ta-quick-stats span {
-    color: var(--primary-color);
-    font-weight: bold;
-}
-
-/* Time Attack Game History */
-.ta-game-card {
-    background: var(--card-background);
-    padding: 15px;
-    border-radius: 12px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 2px 8px var(--shadow-color);
-    transition: all 0.3s ease;
-}
-
-.ta-game-card:hover {
-    transform: translateX(5px);
-    box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-.game-number {
-    font-weight: bold;
-    color: var(--primary-color);
-    font-size: 0.9em;
-}
-
-.game-stats {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-}
-
-.game-stats span {
-    font-size: 0.9em;
-    color: var(--text-secondary);
-}
-
-.game-points {
-    color: #52c98c !important;
-    font-weight: bold !important;
-    font-size: 1.1em !important;
-}
 
 /* Time Attack Result Page */
 .result-header {

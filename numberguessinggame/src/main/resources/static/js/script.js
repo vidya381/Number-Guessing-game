@@ -3070,9 +3070,7 @@ async function startTimeAttackSession(difficulty) {
             // Update UI
             document.getElementById('ta-score').textContent = '0';
             document.getElementById('ta-wins').textContent = '0';
-            document.getElementById('ta-games-played').textContent = '0';
-            document.getElementById('ta-last-points').textContent = '--';
-            document.getElementById('ta-game-history').innerHTML = '';
+            document.getElementById('ta-guess-history').innerHTML = '';
             document.getElementById('ta-feedback').textContent = '';
 
             // Focus first input
@@ -3222,14 +3220,9 @@ async function submitTimeAttackGuess() {
                 points: data.points
             });
 
-            // Add to history display
-            addTimeAttackGameToHistory(timeAttackGamesPlayed, data.points, timeAttackCurrentGame.attempts, gameTimeSeconds);
-
             // Update UI
             document.getElementById('ta-score').textContent = timeAttackScore;
             document.getElementById('ta-wins').textContent = timeAttackWins;
-            document.getElementById('ta-games-played').textContent = timeAttackGamesPlayed;
-            document.getElementById('ta-last-points').textContent = `+${data.points}`;
 
             // Play sound
             if (soundVolume > 0) winSound.play();
@@ -3240,6 +3233,9 @@ async function submitTimeAttackGuess() {
             }, 2000);
 
         } else {
+            // Add to guess history
+            addToTimeAttackGuessHistory(guess, data.bulls, data.cows);
+
             // Show feedback (bulls/cows)
             const feedbackElement = document.getElementById('ta-feedback');
             feedbackElement.innerHTML = `
@@ -3275,21 +3271,31 @@ function showTimeAttackWinFeedback(points, attempts, timeSeconds) {
 }
 
 /**
- * Add game to history display
+ * Add guess to Time Attack history display (like regular game)
  */
-function addTimeAttackGameToHistory(gameNumber, points, attempts, timeSeconds) {
-    const historyDiv = document.getElementById('ta-game-history');
-    const gameCard = document.createElement('div');
-    gameCard.className = 'ta-game-card';
-    gameCard.innerHTML = `
-        <div class="game-number">Game ${gameNumber}</div>
-        <div class="game-stats">
-            <span>${attempts} attempts</span>
-            <span>${timeSeconds}s</span>
-            <span class="game-points">+${points}</span>
-        </div>
-    `;
-    historyDiv.insertBefore(gameCard, historyDiv.firstChild);
+function addToTimeAttackGuessHistory(guess, bulls, cows) {
+    const historyContainer = document.getElementById('ta-guess-history');
+
+    const historyItem = document.createElement('div');
+    historyItem.className = 'history-item new-item';
+
+    const guessSpan = document.createElement('span');
+    guessSpan.className = 'guess';
+    guessSpan.textContent = guess;
+
+    const correctSpan = document.createElement('span');
+    correctSpan.className = 'correct';
+    correctSpan.textContent = `🐂 Correct: ${bulls}`;
+
+    const misplacedSpan = document.createElement('span');
+    misplacedSpan.className = 'misplaced';
+    misplacedSpan.textContent = `🐄 Misplaced: ${cows}`;
+
+    historyItem.appendChild(guessSpan);
+    historyItem.appendChild(correctSpan);
+    historyItem.appendChild(misplacedSpan);
+
+    historyContainer.insertBefore(historyItem, historyContainer.firstChild);
 }
 
 /**
