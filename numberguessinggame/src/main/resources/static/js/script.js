@@ -3060,6 +3060,7 @@ document.getElementById('quit-daily-result')?.addEventListener('click', () => {
     const homePage = document.getElementById('home-page');
 
     fadeOutElement(dailyResultPage, () => {
+        updateGameStatus('home');
         fadeInElement(homePage, 'flex');
     });
 });
@@ -3686,6 +3687,7 @@ document.getElementById('ta-main-menu')?.addEventListener('click', () => {
     const homePage = document.getElementById('home-page');
 
     fadeOutElement(resultPage, () => {
+        updateGameStatus('home');
         fadeInElement(homePage, 'flex');
     });
 });
