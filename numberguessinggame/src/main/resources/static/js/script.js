@@ -3235,6 +3235,10 @@ async function submitTimeAttackGuess() {
                 </p>
             `;
 
+            // Clear inputs for next guess
+            inputs.forEach(input => input.value = '');
+            inputs[0]?.focus();
+
             // Play sound
             if (soundVolume > 0) incorrectSound.play();
         }
