@@ -1023,6 +1023,23 @@ body.dark-mode .floating-number:hover {
     }
 }
 
+@keyframes coinPulse {
+    0% {
+        transform: scale(1);
+    }
+    30% {
+        transform: scale(1.3);
+        color: #FFD700;
+        filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.9));
+    }
+    60% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
 /* Add slide-in animation to sections */
 .section {
     animation: slideInUp 0.6s ease backwards;

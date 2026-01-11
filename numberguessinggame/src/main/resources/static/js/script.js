@@ -1237,53 +1237,98 @@ function updateAuthUI() {
  * @param {number} amount - Amount of coins earned
  */
 function showCoinAnimation(amount) {
-    if (!currentUser || amount <= 0) return;
+    console.log('🪙 showCoinAnimation called:', { amount, hasCurrentUser: !!currentUser, currentUserCoins: currentUser?.coins });
+
+    if (!currentUser || amount <= 0) {
+        console.log('❌ Animation skipped - no user or invalid amount');
+        return;
+    }
 
     const coinDisplay = document.getElementById('coin-display');
-    if (!coinDisplay) return;
+    if (!coinDisplay) {
+        console.log('❌ coin-display element not found');
+        return;
+    }
 
-    // Create floating coin element
-    const floatingCoin = document.createElement('div');
-    floatingCoin.className = 'floating-coin-animation';
-    floatingCoin.textContent = `+${amount} 🪙`;
+    console.log('✅ Starting coin animation with', amount, 'coins');
 
-    // Position it near the coin display
     const rect = coinDisplay.getBoundingClientRect();
-    floatingCoin.style.position = 'fixed';
-    floatingCoin.style.left = `${rect.left + rect.width / 2}px`;
-    floatingCoin.style.top = `${rect.top}px`;
-    floatingCoin.style.transform = 'translate(-50%, 0)';
-    floatingCoin.style.zIndex = '10000';
-    floatingCoin.style.fontSize = '24px';
-    floatingCoin.style.fontWeight = '700';
-    floatingCoin.style.color = '#ffca28';
-    floatingCoin.style.textShadow = '0 2px 10px rgba(255, 202, 40, 0.8), 0 0 20px rgba(255, 202, 40, 0.6)';
-    floatingCoin.style.pointerEvents = 'none';
-    floatingCoin.style.whiteSpace = 'nowrap';
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
 
-    // Add to body
-    document.body.appendChild(floatingCoin);
+    // Create multiple floating coin particles for a shower effect
+    const particleCount = Math.min(5, Math.ceil(amount / 5)); // 1-5 particles based on amount
 
-    // Trigger animation
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.textContent = '🪙';
+        particle.style.position = 'fixed';
+        particle.style.left = `${centerX}px`;
+        particle.style.top = `${centerY + 30}px`;
+        particle.style.transform = 'translate(-50%, -50%)';
+        particle.style.fontSize = '20px';
+        particle.style.zIndex = '10000';
+        particle.style.pointerEvents = 'none';
+        particle.style.filter = 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.8))';
+
+        document.body.appendChild(particle);
+
+        // Random angle for particle spread
+        const angle = (Math.random() * 60 - 30) * (Math.PI / 180); // -30 to +30 degrees
+        const distance = 40 + Math.random() * 30;
+        const offsetX = Math.sin(angle) * distance;
+        const offsetY = -80 - Math.random() * 40;
+
+        setTimeout(() => {
+            particle.style.transition = `all ${0.8 + Math.random() * 0.3}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
+            particle.style.transform = `translate(calc(-50% + ${offsetX}px), calc(-50% + ${offsetY}px)) rotate(${360 * (Math.random() > 0.5 ? 1 : -1)}deg) scale(0.5)`;
+            particle.style.opacity = '0';
+        }, i * 50);
+
+        setTimeout(() => {
+            if (particle.parentNode) particle.parentNode.removeChild(particle);
+        }, 1200 + i * 50);
+    }
+
+    // Main text display - smaller and sleeker
+    const textDisplay = document.createElement('div');
+    textDisplay.textContent = `+${amount}`;
+    textDisplay.style.position = 'fixed';
+    textDisplay.style.left = `${centerX}px`;
+    textDisplay.style.top = `${centerY + 30}px`;
+    textDisplay.style.transform = 'translate(-50%, -50%)';
+    textDisplay.style.fontSize = '18px';
+    textDisplay.style.fontWeight = '800';
+    textDisplay.style.color = '#FFD700';
+    textDisplay.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.9), 0 2px 4px rgba(0,0,0,0.3)';
+    textDisplay.style.zIndex = '10001';
+    textDisplay.style.pointerEvents = 'none';
+    textDisplay.style.background = 'linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2))';
+    textDisplay.style.padding = '4px 10px';
+    textDisplay.style.borderRadius = '20px';
+    textDisplay.style.border = '2px solid rgba(255, 215, 0, 0.5)';
+    textDisplay.style.backdropFilter = 'blur(4px)';
+
+    document.body.appendChild(textDisplay);
+
     setTimeout(() => {
-        floatingCoin.style.transition = 'all 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        floatingCoin.style.transform = 'translate(-50%, -100px) scale(1.2)';
-        floatingCoin.style.opacity = '0';
+        textDisplay.style.transition = 'all 1s cubic-bezier(0.34, 1.56, 0.64, 1)';
+        textDisplay.style.transform = 'translate(-50%, -120px) scale(1.3)';
+        textDisplay.style.opacity = '0';
     }, 10);
 
-    // Remove after animation
     setTimeout(() => {
-        if (floatingCoin.parentNode) {
-            floatingCoin.parentNode.removeChild(floatingCoin);
-        }
-    }, 1600);
+        if (textDisplay.parentNode) textDisplay.parentNode.removeChild(textDisplay);
+    }, 1100);
 
-    // Update coin count in header
-    if (currentUser && currentUser.coins !== undefined) {
-        const coinCount = document.getElementById('coin-count');
-        if (coinCount) {
-            coinCount.textContent = currentUser.coins;
-        }
+    // Pulse the coin counter in header
+    const coinCount = document.getElementById('coin-count');
+    if (coinCount && currentUser && currentUser.coins !== undefined) {
+        coinCount.textContent = currentUser.coins;
+        coinCount.style.animation = 'none';
+        setTimeout(() => {
+            coinCount.style.animation = 'coinPulse 0.6s ease-out';
+        }, 10);
     }
 }
 
@@ -3214,6 +3259,16 @@ async function submitTimeAttackGuess() {
             // Update UI
             document.getElementById('ta-score').textContent = timeAttackScore;
             document.getElementById('ta-wins').textContent = timeAttackWins;
+
+            // Show coin animation (coins per win based on difficulty)
+            if (currentUser) {
+                const coinsPerWin = timeAttackDifficulty === 0 ? 3 : timeAttackDifficulty === 1 ? 6 : 9;
+                // Update local coin count
+                currentUser.coins = (currentUser.coins || 0) + coinsPerWin;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                // Show animation
+                showCoinAnimation(coinsPerWin);
+            }
 
             // Play sound
             if (soundVolume > 0) winSound.play();
