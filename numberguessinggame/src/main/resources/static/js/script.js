@@ -1713,12 +1713,7 @@ function createAchievementCard(achievement) {
     type.className = 'achievement-type';
     type.innerHTML = '<i class="fas fa-tag"></i> ' + formatType(achievement.type);
 
-    const points = document.createElement('div');
-    points.className = 'achievement-points';
-    points.innerHTML = '<i class="fas fa-star"></i> ' + achievement.points + ' pts';
-
     meta.appendChild(type);
-    meta.appendChild(points);
 
     info.appendChild(header);
     info.appendChild(description);
@@ -1805,14 +1800,9 @@ function displayAchievementToast(achievement) {
     description.className = 'achievement-toast-description';
     description.textContent = achievement.description;
 
-    const points = document.createElement('div');
-    points.className = 'achievement-toast-points';
-    points.innerHTML = '<i class="fas fa-star"></i> +' + achievement.points + ' points';
-
     content.appendChild(header);
     content.appendChild(title);
     content.appendChild(description);
-    content.appendChild(points);
 
     // Close button
     const closeBtn = document.createElement('button');

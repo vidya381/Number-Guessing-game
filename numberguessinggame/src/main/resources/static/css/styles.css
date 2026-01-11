@@ -1754,8 +1754,7 @@ body.dark-mode .streak-badge:hover {
     opacity: 0.6;
 }
 
-.achievement-type,
-.achievement-points {
+.achievement-type {
     display: flex;
     align-items: center;
     gap: 4px;
@@ -1927,19 +1926,6 @@ body.dark-mode .achievement-item.unlocked .achievement-icon-wrapper {
     margin-bottom: 8px;
 }
 
-.achievement-toast-points {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 12px;
-    color: var(--primary-color);
-    font-weight: 700;
-}
-
-.achievement-toast-points i {
-    color: #FFD700;
-}
-
 .achievement-toast-close {
     position: absolute;
     top: 8px;
@@ -2003,10 +1989,6 @@ body.dark-mode .achievement-toast-title {
 body.dark-mode .achievement-toast-description {
     color: rgba(255, 255, 255, 0.9);
     opacity: 1;
-}
-
-body.dark-mode .achievement-toast-points {
-    color: #a78bfa;
 }
 
 /* Simple Toast Notification Styles */
