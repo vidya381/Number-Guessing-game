@@ -1960,16 +1960,15 @@ body.dark-mode .achievement-item.unlocked .achievement-icon-wrapper {
     position: absolute;
     top: 8px;
     right: 8px;
-    width: 24px;
-    height: 24px;
+    width: 28px;
+    height: 28px;
     background: rgba(0, 0, 0, 0.1);
     border: none;
     border-radius: 50%;
-    font-size: 14px;
+    font-size: 16px;
     color: var(--text-color);
-    opacity: 0.6;
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: all 0.3s ease;
     z-index: 2;
     display: flex;
     align-items: center;
@@ -1978,19 +1977,22 @@ body.dark-mode .achievement-item.unlocked .achievement-icon-wrapper {
 }
 
 .achievement-toast-close:hover {
-    opacity: 1;
-    background: rgba(0, 0, 0, 0.2);
-    transform: scale(1.1);
+    background: var(--danger-color);
+    color: white;
+    transform: scale(1.1) rotate(90deg);
+}
+
+.achievement-toast-close:active {
+    transform: scale(0.95) rotate(90deg);
 }
 
 body.dark-mode .achievement-toast-close {
     background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.8);
 }
 
 body.dark-mode .achievement-toast-close:hover {
-    background: rgba(255, 255, 255, 0.2);
-    color: #ffffff;
+    background: var(--danger-color);
+    color: white;
 }
 
 /* Dark mode toast styles */
