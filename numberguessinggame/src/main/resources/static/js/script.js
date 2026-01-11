@@ -3090,11 +3090,21 @@ async function startTimeAttackSession(difficulty) {
 
             // Show time attack page
             const homePage = document.getElementById('home-page');
+            const resultPage = document.getElementById('time-attack-result-page');
             const timeAttackPage = document.getElementById('time-attack-page');
 
-            fadeOutElement(homePage, () => {
+            // Hide whichever page is currently visible
+            if (homePage.style.display !== 'none') {
+                fadeOutElement(homePage, () => {
+                    fadeInElement(timeAttackPage, 'flex');
+                });
+            } else if (resultPage.style.display !== 'none') {
+                fadeOutElement(resultPage, () => {
+                    fadeInElement(timeAttackPage, 'flex');
+                });
+            } else {
                 fadeInElement(timeAttackPage, 'flex');
-            });
+            }
 
             // Setup input fields for first game
             createDigitInputs('ta-input-container', timeAttackDigitCount);
