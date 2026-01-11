@@ -292,51 +292,48 @@
                 <div class="result-difficulty-badge" id="ta-result-difficulty">--</div>
             </div>
 
+            <!-- Main Score Section -->
             <div class="ta-result-main-score">
-                <div class="score-display">
-                    <span class="score-label">FINAL SCORE</span>
-                    <span class="score-value" id="ta-result-score">0</span>
-                </div>
+                <div class="score-value" id="ta-result-score">0</div>
+                <div class="score-label">FINAL SCORE</div>
                 <div class="games-display">
                     <span id="ta-result-wins">0</span> wins / <span id="ta-result-played">0</span> games
                 </div>
             </div>
 
-            <div class="ta-result-breakdown">
-                <div class="breakdown-item">
+            <!-- Quick Stats Row -->
+            <div class="ta-quick-stats">
+                <div class="quick-stat-item">
                     <i class="fas fa-bolt"></i>
-                    <span class="breakdown-label">Avg Attempts</span>
-                    <span class="breakdown-value" id="ta-result-avg">--</span>
+                    <span class="stat-value" id="ta-result-avg">--</span>
+                    <span class="stat-label">Avg Attempts</span>
                 </div>
-                <div class="breakdown-item">
+                <div class="quick-stat-item">
                     <i class="fas fa-clock"></i>
-                    <span class="breakdown-label">Fastest Win</span>
-                    <span class="breakdown-value" id="ta-result-fastest">--</span>
+                    <span class="stat-value" id="ta-result-fastest">--</span>
+                    <span class="stat-label">Fastest Win</span>
                 </div>
             </div>
 
-            <div class="ta-game-details">
-                <h3>📋 GAME BREAKDOWN</h3>
-                <div id="ta-game-list"></div>
-            </div>
-
-            <div id="ta-rank-display" style="display: none;">
+            <!-- Rank Badge -->
+            <div id="ta-rank-display" class="rank-badge-container" style="display: none;">
                 <div class="rank-badge">
                     <span class="rank-label">YOUR RANK</span>
                     <span class="rank-value" id="ta-result-rank">--</span>
                 </div>
             </div>
 
-            <div class="result-actions">
-                <button id="ta-play-again" class="primary-btn">
-                    🔁 PLAY AGAIN
-                </button>
-                <button id="ta-view-leaderboard" class="secondary-btn">
-                    🏆 LEADERBOARD
-                </button>
-                <button id="ta-main-menu" class="secondary-btn">
-                    🏠 MAIN MENU
-                </button>
+            <!-- Game Details -->
+            <div class="ta-game-details">
+                <h3>📋 GAME BREAKDOWN</h3>
+                <div id="ta-game-list" class="ta-game-list-container"></div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="result-actions-row">
+                <button id="ta-play-again" class="action-btn primary-action">🔁 PLAY AGAIN</button>
+                <button id="ta-view-leaderboard" class="action-btn secondary-action">🏆 LEADERBOARD</button>
+                <button id="ta-main-menu" class="action-btn secondary-action">🏠 MAIN MENU</button>
             </div>
         </div>
     </div>
