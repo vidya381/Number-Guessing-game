@@ -4108,220 +4108,32 @@ body.dark-mode #daily-challenge-page .section:nth-child(1) {
     margin-top: 10px;
 }
 
-/* ============================================
-   TIME ATTACK RESULTS PAGE - MODERN NO-COLUMN LAYOUT
-   ============================================ */
+/* Time Attack result page uses existing .stat-item styling */
 
-.ta-result-main-score {
-    text-align: center;
-    margin: 25px 0;
-    padding: 30px 20px;
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(78, 168, 222, 0.1) 100%);
-    border-radius: 20px;
-    border: 2px solid rgba(167, 139, 250, 0.15);
-}
-
-.score-value {
-    font-size: 4.5em;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    line-height: 1;
-    margin-bottom: 8px;
-}
-
-.score-label {
-    font-size: 0.85em;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--text-secondary);
-    margin-bottom: 12px;
-}
-
-.games-display {
-    font-size: 1.15em;
-    color: var(--text-color);
-    opacity: 0.9;
-}
-
-/* Quick Stats Row - Horizontal Layout */
-.ta-quick-stats {
+#time-attack-result-page {
     display: flex;
-    gap: 15px;
-    margin: 20px 0;
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
 }
 
-.quick-stat-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 15px 25px;
-    background: var(--card-background);
-    border-radius: 12px;
-    box-shadow: 0 2px 8px var(--shadow-color);
-    transition: transform 0.2s ease;
-    min-width: 180px;
-}
-
-.quick-stat-item:hover {
-    transform: translateY(-2px);
-}
-
-.quick-stat-item i {
-    font-size: 1.8em;
-    color: var(--primary-color);
-}
-
-.quick-stat-item .stat-value {
-    font-size: 1.6em;
-    font-weight: 700;
-    color: var(--text-color);
-    margin: 0 8px 0 0;
-}
-
-.quick-stat-item .stat-label {
-    font-size: 0.85em;
-    color: var(--text-secondary);
-    white-space: nowrap;
-}
-
-/* Rank Badge */
-.rank-badge-container {
-    margin: 20px 0;
-}
-
-.rank-badge {
-    text-align: center;
-    padding: 18px 30px;
-    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-    border-radius: 12px;
-    display: inline-block;
+#time-attack-stats {
     width: 100%;
-    max-width: 250px;
-    margin: 0 auto;
+    margin-bottom: 20px;
 }
 
-.rank-label {
-    display: block;
-    font-size: 0.8em;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: #8b6914;
-    margin-bottom: 5px;
-}
-
-.rank-value {
-    font-size: 2.2em;
-    font-weight: 800;
-    color: #8b6914;
-}
-
-/* Game Details Section */
-.ta-game-details {
-    margin: 25px 0;
-}
-
-.ta-game-details h3 {
-    text-align: center;
-    color: var(--text-color);
-    margin-bottom: 15px;
-    font-size: 1.1em;
-}
-
-.ta-game-list-container {
+/* Time Attack Button Group */
+.ta-button-group {
     display: flex;
     gap: 10px;
-    flex-wrap: wrap;
-    justify-content: center;
+    margin-top: 0;
+    width: 100%;
 }
 
-/* Game Cards - Horizontal Pills */
-.ta-game-card {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 18px;
-    background: var(--card-background);
-    border-radius: 25px;
-    box-shadow: 0 2px 6px var(--shadow-color);
-    transition: all 0.2s ease;
-    border: 1px solid rgba(167, 139, 250, 0.1);
-}
-
-.ta-game-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px var(--shadow-color);
-    border-color: rgba(167, 139, 250, 0.3);
-}
-
-.ta-game-card .game-number {
-    font-weight: 700;
-    color: var(--primary-color);
-    font-size: 0.9em;
-    min-width: 55px;
-}
-
-.ta-game-card .game-stats {
-    display: flex;
-    gap: 12px;
-    font-size: 0.9em;
-}
-
-.ta-game-card .game-stats span {
-    color: var(--text-secondary);
-}
-
-.ta-game-card .game-points {
-    font-weight: 700;
-    color: var(--success-color) !important;
-}
-
-/* Action Buttons Row - Horizontal */
-.result-actions-row {
-    display: flex;
-    gap: 12px;
-    margin-top: 25px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.action-btn {
-    padding: 14px 28px;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 0.95em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: none;
+.ta-button-group button {
     flex: 1;
-    min-width: 140px;
-    max-width: 200px;
-}
-
-.primary-action {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    color: white;
-}
-
-.primary-action:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.4);
-}
-
-.secondary-action {
-    background: var(--card-background);
-    color: var(--text-color);
-    border: 2px solid rgba(167, 139, 250, 0.2);
-}
-
-.secondary-action:hover {
-    background: rgba(167, 139, 250, 0.1);
-    border-color: rgba(167, 139, 250, 0.4);
-    transform: translateY(-2px);
+    width: auto !important;
+    margin-bottom: 0 !important;
+    padding: 12px 20px !important;
+    font-size: 14px !important;
 }
 
 .primary-btn, .secondary-btn {
@@ -4473,7 +4285,6 @@ body.dark-mode #daily-challenge-page .section:nth-child(1) {
     border-color: rgba(255, 255, 255, 0.3);
 }
 
-[data-theme="dark"] .ta-game-card,
 [data-theme="dark"] .breakdown-item {
     background: rgba(61, 51, 88, 0.6);
 }
@@ -4503,52 +4314,6 @@ body.dark-mode #daily-challenge-page .section:nth-child(1) {
         font-size: 0.65em;
     }
 
-    /* Results page responsive */
-    .score-value {
-        font-size: 3em;
-    }
-
-    .ta-quick-stats {
-        gap: 10px;
-    }
-
-    .quick-stat-item {
-        min-width: 150px;
-        padding: 12px 18px;
-    }
-
-    .quick-stat-item i {
-        font-size: 1.5em;
-    }
-
-    .quick-stat-item .stat-value {
-        font-size: 1.3em;
-    }
-
-    .result-actions-row {
-        gap: 8px;
-    }
-
-    .action-btn {
-        min-width: 120px;
-        padding: 12px 20px;
-        font-size: 0.9em;
-    }
-
-    .ta-game-card {
-        padding: 10px 15px;
-        gap: 10px;
-    }
-
-    .ta-game-card .game-number {
-        min-width: 50px;
-        font-size: 0.85em;
-    }
-
-    .ta-game-card .game-stats {
-        gap: 8px;
-        font-size: 0.85em;
-    }
 
     .leaderboard-header, .leaderboard-row {
         grid-template-columns: 50px 1fr 70px 50px;

@@ -287,53 +287,11 @@
 
         <!-- Time Attack Result Page -->
         <div id="time-attack-result-page" class="card" style="display: none;">
-            <div class="result-header">
-                <h1>⚡ TIME ATTACK RESULTS</h1>
-                <div class="result-difficulty-badge" id="ta-result-difficulty">--</div>
-            </div>
-
-            <!-- Main Score Section -->
-            <div class="ta-result-main-score">
-                <div class="score-value" id="ta-result-score">0</div>
-                <div class="score-label">FINAL SCORE</div>
-                <div class="games-display">
-                    <span id="ta-result-wins">0</span> wins / <span id="ta-result-played">0</span> games
-                </div>
-            </div>
-
-            <!-- Quick Stats Row -->
-            <div class="ta-quick-stats">
-                <div class="quick-stat-item">
-                    <i class="fas fa-bolt"></i>
-                    <span class="stat-value" id="ta-result-avg">--</span>
-                    <span class="stat-label">Avg Attempts</span>
-                </div>
-                <div class="quick-stat-item">
-                    <i class="fas fa-clock"></i>
-                    <span class="stat-value" id="ta-result-fastest">--</span>
-                    <span class="stat-label">Fastest Win</span>
-                </div>
-            </div>
-
-            <!-- Rank Badge -->
-            <div id="ta-rank-display" class="rank-badge-container" style="display: none;">
-                <div class="rank-badge">
-                    <span class="rank-label">YOUR RANK</span>
-                    <span class="rank-value" id="ta-result-rank">--</span>
-                </div>
-            </div>
-
-            <!-- Game Details -->
-            <div class="ta-game-details">
-                <h3>📋 GAME BREAKDOWN</h3>
-                <div id="ta-game-list" class="ta-game-list-container"></div>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="result-actions-row">
-                <button id="ta-play-again" class="action-btn primary-action">🔁 PLAY AGAIN</button>
-                <button id="ta-view-leaderboard" class="action-btn secondary-action">🏆 LEADERBOARD</button>
-                <button id="ta-main-menu" class="action-btn secondary-action">🏠 MAIN MENU</button>
+            <div id="time-attack-stats"></div>
+            <div class="ta-button-group">
+                <button id="ta-play-again">🔁 PLAY AGAIN</button>
+                <button id="ta-view-leaderboard">🏆 LEADERBOARD</button>
+                <button id="ta-main-menu">🏠 MAIN MENU</button>
             </div>
         </div>
     </div>

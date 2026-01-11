@@ -3414,49 +3414,59 @@ async function endTimeAttackSession() {
  * Display Time Attack Results
  */
 function displayTimeAttackResults(data) {
-    // Difficulty badge
-    const difficultyText = ['EASY', 'MEDIUM', 'HARD'][timeAttackDifficulty];
-    document.getElementById('ta-result-difficulty').textContent = difficultyText;
+    const statsContainer = document.getElementById('time-attack-stats');
+    statsContainer.textContent = '';
 
-    // Main scores
-    document.getElementById('ta-result-score').textContent = data.totalScore || 0;
-    document.getElementById('ta-result-wins').textContent = data.gamesWon || 0;
-    document.getElementById('ta-result-played').textContent = data.gamesPlayed || 0;
+    const createStatItem = (iconClass, text) => {
+        const div = document.createElement('div');
+        div.className = 'stat-item';
+        div.innerHTML = `<i class="${iconClass}"></i>`;
+        const span = document.createElement('span');
+        span.textContent = text;
+        div.appendChild(span);
+        return div;
+    };
 
-    // Breakdown stats
-    document.getElementById('ta-result-avg').textContent =
-        data.averageAttempts ? data.averageAttempts.toFixed(1) : '--';
-    document.getElementById('ta-result-fastest').textContent =
-        data.fastestWinSeconds ? `${data.fastestWinSeconds}s` : '--';
+    // Add title
+    const title = document.createElement('h2');
+    title.textContent = '⚡ TIME ATTACK COMPLETE';
+    title.style.textAlign = 'center';
+    title.style.marginBottom = '20px';
+    statsContainer.appendChild(title);
 
-    // Show rank if authenticated and available
+    // Add all stats vertically
+    const difficultyText = ['Easy', 'Medium', 'Hard'][timeAttackDifficulty];
+
+    statsContainer.appendChild(createStatItem('fas fa-star', `Final Score: ${data.totalScore || 0}`));
+    statsContainer.appendChild(createStatItem('fas fa-gamepad', `Games Won: ${data.gamesWon || 0} / ${data.gamesPlayed || 0}`));
+    statsContainer.appendChild(createStatItem('fas fa-bolt', `Difficulty: ${difficultyText}`));
+    statsContainer.appendChild(createStatItem('fas fa-chart-line', `Average Attempts: ${data.averageAttempts ? data.averageAttempts.toFixed(1) : '--'}`));
+    statsContainer.appendChild(createStatItem('fas fa-clock', `Fastest Win: ${data.fastestWinSeconds ? data.fastestWinSeconds + 's' : '--'}`));
+
+    // Show rank if available
     if (data.rank && authToken) {
-        document.getElementById('ta-result-rank').textContent = `#${data.rank}`;
-        document.getElementById('ta-rank-display').style.display = 'block';
-    } else {
-        document.getElementById('ta-rank-display').style.display = 'none';
+        statsContainer.appendChild(createStatItem('fas fa-trophy', `Leaderboard Rank: #${data.rank}`));
     }
 
-    // Display game-by-game breakdown
-    const gameList = document.getElementById('ta-game-list');
-    gameList.innerHTML = '';
-
+    // Add game history if there are games
     if (data.gameDetails && data.gameDetails.length > 0) {
+        const historyTitle = document.createElement('h3');
+        historyTitle.textContent = '📋 Your Games';
+        historyTitle.style.marginTop = '20px';
+        historyTitle.style.marginBottom = '10px';
+        statsContainer.appendChild(historyTitle);
+
+        const historyContainer = document.createElement('div');
+        historyContainer.style.maxHeight = '200px';
+        historyContainer.style.overflowY = 'auto';
+        historyContainer.style.marginBottom = '20px';
+
         data.gameDetails.forEach((game, index) => {
-            const gameCard = document.createElement('div');
-            gameCard.className = 'ta-game-card';
-            gameCard.innerHTML = `
-                <div class="game-number">Game ${index + 1}</div>
-                <div class="game-stats">
-                    <span>${game.attempts} attempts</span>
-                    <span>${game.timeSeconds}s</span>
-                    <span class="game-points">+${game.points}</span>
-                </div>
-            `;
-            gameList.appendChild(gameCard);
+            const gameItem = createStatItem('fas fa-play', `Game ${index + 1}: ${game.attempts} attempts, ${game.timeSeconds}s, +${game.points} pts`);
+            historyContainer.appendChild(gameItem);
         });
-    } else {
-        gameList.innerHTML = '<p style="text-align: center; color: var(--text-secondary);">No games won</p>';
+
+        statsContainer.appendChild(historyContainer);
     }
 }
 
