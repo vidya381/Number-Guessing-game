@@ -301,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setupProfileListeners();
     initializeDarkMode();
     createFloatingNumbers();
-    updateGameStatus('welcome');
+    updateGameStatus('home');
     showHomePage();
     setupKeyboardShortcuts(); // Initialize keyboard shortcuts
     setupHowToPlay(); // Initialize How to Play toggle
@@ -516,7 +516,7 @@ function startGame(difficulty) {
 
     updateGamePage();
     startTimer();
-    updateGameStatus('playing');
+    updateGameStatus('regular-game');
 
     // Include userId if user is logged in
     const userId = currentUser ? currentUser.id : '';
@@ -1010,7 +1010,7 @@ function addToRecentScores(difficulty, attempts, time) {
 let gameJustCompleted = false;
 
 function showHomePage() {
-    updateGameStatus('welcome');
+    updateGameStatus('home');
 
     // Clean up daily challenge if active
     if (dailyChallengeSessionId !== null) {
@@ -1135,13 +1135,25 @@ function updateGameStatus(status) {
     const statusText = document.getElementById('game-status-text');
 
     switch (status) {
-        case 'welcome':
+        case 'home':
             statusIcon.innerHTML = '<i class="fas fa-dice"></i>';
             statusText.textContent = 'Welcome to NumVana!';
             break;
-        case 'playing':
+        case 'regular-game':
             statusIcon.innerHTML = '<i class="fas fa-brain"></i>';
-            statusText.textContent = 'Game in Progress - Good Luck!';
+            statusText.textContent = 'Regular Game';
+            break;
+        case 'daily-challenge':
+            statusIcon.innerHTML = '<i class="fas fa-calendar-day"></i>';
+            statusText.textContent = 'Daily Challenge';
+            break;
+        case 'time-attack':
+            statusIcon.innerHTML = '<i class="fas fa-bolt"></i>';
+            statusText.textContent = 'Time Attack Mode';
+            break;
+        case 'result':
+            statusIcon.innerHTML = '<i class="fas fa-flag-checkered"></i>';
+            statusText.textContent = 'Game Complete';
             break;
         case 'won':
             statusIcon.innerHTML = '<i class="fas fa-trophy"></i>';
@@ -1150,6 +1162,15 @@ function updateGameStatus(status) {
         case 'lost':
             statusIcon.innerHTML = '<i class="fas fa-undo"></i>';
             statusText.textContent = 'Game Over - Try Again!';
+            break;
+        // Legacy support
+        case 'welcome':
+            statusIcon.innerHTML = '<i class="fas fa-dice"></i>';
+            statusText.textContent = 'Welcome to NumVana!';
+            break;
+        case 'playing':
+            statusIcon.innerHTML = '<i class="fas fa-brain"></i>';
+            statusText.textContent = 'Game in Progress';
             break;
     }
 }
@@ -2579,6 +2600,9 @@ function startDailyChallengeGame() {
     dailyChallengeGuessHistory = [];
     dailyChallengeStartTime = Date.now();
 
+    // Update game status
+    updateGameStatus('daily-challenge');
+
     // Hide home, show daily challenge page
     const homePage = document.getElementById('home-page');
     const dailyChallengePage = document.getElementById('daily-challenge-page');
@@ -2845,6 +2869,9 @@ async function endDailyChallenge(won) {
  * Show Daily Challenge Result
  */
 function showDailyChallengeResult(won, attempts, timeDisplay, rank, totalPlayers) {
+    // Update game status
+    updateGameStatus('result');
+
     const dailyChallengePage = document.getElementById('daily-challenge-page');
     const dailyResultPage = document.getElementById('daily-result-page');
 
@@ -3087,6 +3114,9 @@ async function startTimeAttackSession(difficulty) {
             timeAttackGamesPlayed = 0;
             timeAttackGameHistory = [];
             timeAttackCurrentGame = { attempts: 0, startTime: Date.now() };
+
+            // Update game status
+            updateGameStatus('time-attack');
 
             // Show time attack page
             const homePage = document.getElementById('home-page');
@@ -3424,6 +3454,9 @@ async function endTimeAttackSession() {
  * Display Time Attack Results
  */
 function displayTimeAttackResults(data) {
+    // Update game status
+    updateGameStatus('result');
+
     const statsContainer = document.getElementById('time-attack-stats');
     statsContainer.textContent = '';
 
