@@ -1,0 +1,72 @@
+/**
+ * CSS Custom Properties (CSS Variables)
+ * Defines color palette, spacing, and theming for both light and dark modes
+ */
+
+/* ===================================== */
+/* LIGHT MODE (DEFAULT)                  */
+/* ===================================== */
+
+:root {
+    /* Softened Playful Bubble Design - Light Mode */
+    --primary-color: #8b7abf;
+    --primary-dark: #6b5a9f;
+    --secondary-color: #4ea8de;
+    --secondary-dark: #3a8bc4;
+    --accent-color: #5dd3b3;
+    --success-color: #52c98c;
+    --danger-color: #ef6f6f;
+    --warning-color: #f0b347;
+    --background-color: #ebe9f5;
+    --background-gradient-start: #f3f1fa;
+    --background-gradient-end: #e8e5f4;
+    --card-background: #f8f7fc;
+    --card-hover-background: #fdfcff;
+    --text-color: #3d3358;
+    --text-secondary: #7a6d99;
+    --text-muted: #9b8db8;
+    --button-text-color: #ffffff;
+    --shadow-color: rgba(139, 122, 191, 0.15);
+    --bubble-shadow: 0 8px 24px rgba(139, 122, 191, 0.2);
+    --input-background: #f5f3fb;
+    --input-border: #ddd8ed;
+    --border-color: #ddd8ed;
+    --hover-lift: -4px;
+    --background-color-rgb: 235, 233, 245;
+    --primary-color-rgb: 139, 122, 191;
+    --secondary-color-rgb: 78, 168, 222;
+}
+
+/* ===================================== */
+/* DARK MODE                             */
+/* ===================================== */
+
+body.dark-mode {
+    /* Refined Colorful Dark Mode */
+    --primary-color: #a78bfa;
+    --primary-dark: #8b6fd9;
+    --secondary-color: #60c5f2;
+    --secondary-dark: #4aabdb;
+    --accent-color: #6ee7c0;
+    --success-color: #6dd99f;
+    --danger-color: #ff8585;
+    --warning-color: #ffb84d;
+    --background-color: #1a1b2e;
+    --background-gradient-start: #1e1f33;
+    --background-gradient-end: #16172a;
+    --card-background: #252641;
+    --card-hover-background: #2d2f48;
+    --text-color: #e4e7f0;
+    --text-secondary: #a0a8c8;
+    --text-muted: #7a8399;
+    --button-text-color: #ffffff;
+    --shadow-color: rgba(167, 139, 250, 0.25);
+    --bubble-shadow: 0 8px 32px rgba(167, 139, 250, 0.3);
+    --input-background: #2d2f48;
+    --input-border: #3d405e;
+    --border-color: #3d405e;
+    --hover-lift: -4px;
+    --background-color-rgb: 26, 27, 46;
+    --primary-color-rgb: 167, 139, 250;
+    --secondary-color-rgb: 96, 197, 242;
+}

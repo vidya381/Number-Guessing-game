@@ -1,0 +1,109 @@
+/**
+ * Regular Game Mode
+ * Styles for the regular game mode including timer, feedback, and results
+ */
+
+/* ===================================== */
+/* TIMER (SVG Circular Progress)         */
+/* ===================================== */
+
+#timer-container {
+    width: 100px;
+    height: 100px;
+    position: relative;
+    margin: 20px auto;
+}
+
+.timer-svg {
+    transform: rotate(-90deg);
+}
+
+.timer-background {
+    fill: none;
+    stroke: #e0e0e0;
+    stroke-width: 8;
+}
+
+.timer-progress {
+    fill: none;
+    stroke: var(--primary-color);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.3s ease;
+}
+
+.timer-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* ===================================== */
+/* FEEDBACK MESSAGES                     */
+/* ===================================== */
+
+#feedback {
+    margin-top: 20px;
+    padding: 15px 25px;
+    border-radius: 25px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 16px;
+    animation: bounceIn 0.5s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+#feedback.success {
+    background: linear-gradient(135deg, rgba(82, 201, 140, 0.15) 0%, rgba(82, 201, 140, 0.08) 100%);
+    color: #3d8e63;
+    border: 2px solid rgba(82, 201, 140, 0.4);
+}
+
+#feedback.error {
+    background: linear-gradient(135deg, rgba(239, 111, 111, 0.15) 0%, rgba(239, 111, 111, 0.08) 100%);
+    color: #c94f4f;
+    border: 2px solid rgba(239, 111, 111, 0.4);
+}
+
+#feedback.info {
+    background: linear-gradient(135deg, rgba(78, 168, 222, 0.15) 0%, rgba(78, 168, 222, 0.08) 100%);
+    color: #3a7aa8;
+    border: 2px solid rgba(78, 168, 222, 0.4);
+}
+
+/* ===================================== */
+/* SECTIONS SLIDE-IN                     */
+/* ===================================== */
+
+.section {
+    animation: slideInUp 0.6s ease backwards;
+}
+
+/* ===================================== */
+/* RESPONSIVE GAME MODE                  */
+/* ===================================== */
+
+@media screen and (max-width: 768px) {
+    #timer-container {
+        width: 80px;
+        height: 80px;
+    }
+
+    #timer-progress {
+        font-size: 18px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    #timer-container {
+        width: 70px;
+        height: 70px;
+    }
+
+    #timer-progress {
+        font-size: 16px;
+    }
+}

@@ -1,0 +1,478 @@
+/**
+ * Dark Mode
+ * Dark theme overrides for all components
+ * IMPORTANT: This file should be loaded LAST to ensure highest specificity
+ * NOTE: CSS Variables are defined in variables.css, not here
+ */
+
+/* ===================================== */
+/* BUTTONS                               */
+/* ===================================== */
+
+body.dark-mode button:not(.hint-button):not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.achievement-toast-close) {
+    box-shadow: 0 6px 24px rgba(167, 139, 250, 0.35);
+}
+
+body.dark-mode button:not(.hint-button):not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.achievement-toast-close):hover {
+    box-shadow: 0 10px 35px rgba(96, 197, 242, 0.45);
+}
+
+/* ===================================== */
+/* HEADER                                */
+/* ===================================== */
+
+/* Remove glass effect from dark mode header */
+body.dark-mode #game-header {
+    background: linear-gradient(135deg, #252641 0%, #1e1f33 100%);
+    backdrop-filter: none;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+/* Header buttons in dark mode use CSS variables (orange-blue gradient set by JavaScript) */
+/* Ensure icons/emojis inside header buttons are white for good contrast */
+body.dark-mode .header-icon-btn i,
+body.dark-mode .auth-btn i,
+body.dark-mode #sound-toggle i {
+    color: #ffffff;
+}
+
+body.dark-mode .header-streak {
+    background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+    color: #1a1a1a;
+    box-shadow: 0 4px 12px rgba(241, 196, 15, 0.4);
+}
+
+body.dark-mode .header-streak:hover {
+    box-shadow: 0 6px 16px rgba(241, 196, 15, 0.5);
+}
+
+body.dark-mode .header-streak i {
+    color: #d68910;
+}
+
+body.dark-mode .header-coins {
+    background: linear-gradient(135deg, #ffb300 0%, #ff8f00 100%);
+    color: #1a1a1a;
+    box-shadow: 0 4px 12px rgba(255, 179, 0, 0.4);
+}
+
+body.dark-mode .header-coins:hover {
+    box-shadow: 0 6px 16px rgba(255, 179, 0, 0.5);
+}
+
+body.dark-mode .header-coins i {
+    color: #e65100;
+}
+
+/* ===================================== */
+/* CONTAINERS                            */
+/* ===================================== */
+
+/* Make dark mode containers solid (no glass effect) */
+body.dark-mode #game-container {
+    background: linear-gradient(135deg, #252641 0%, #2a2847 100%);
+    border: 1px solid rgba(167, 139, 250, 0.25);
+}
+
+body.dark-mode #game-status-display {
+    background: linear-gradient(135deg, #2d2f48 0%, #252641 100%);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode .section {
+    background: linear-gradient(135deg, #252641 0%, #2a2847 100%);
+    border: 1px solid rgba(167, 139, 250, 0.15);
+}
+
+/* ===================================== */
+/* COMPONENTS                            */
+/* ===================================== */
+
+/* Stat badges */
+body.dark-mode .stat-badge {
+    background: rgba(167, 139, 250, 0.15);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+/* Coin icon */
+body.dark-mode .coin-icon {
+    color: #e65100;
+}
+
+/* Hint button */
+body.dark-mode .hint-button {
+    background: linear-gradient(135deg, rgba(255, 143, 0, 0.2) 0%, rgba(255, 111, 0, 0.25) 100%);
+    border: 1px solid rgba(255, 143, 0, 0.4);
+}
+
+/* Tooltips */
+body.dark-mode [data-tooltip]:before {
+    background-color: #f8f7fc;
+    color: #3d3358;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Digit inputs */
+body.dark-mode .digit-input:focus {
+    background-color: var(--card-background);
+    box-shadow: 0 5px 25px rgba(167, 139, 250, 0.4);
+}
+
+/* Guess history */
+body.dark-mode .history-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(167, 139, 250, 0.15);
+}
+
+/* Floating numbers */
+body.dark-mode .floating-number:hover {
+    color: var(--secondary-color);
+}
+
+/* ===================================== */
+/* NOTIFICATIONS                         */
+/* ===================================== */
+
+/* Achievement toasts */
+body.dark-mode .achievement-toast {
+    background: linear-gradient(135deg, #2d2f48 0%, #252641 100%);
+    border-color: var(--secondary-color);
+    box-shadow: 0 10px 40px rgba(167, 139, 250, 0.4);
+}
+
+body.dark-mode .achievement-toast::before {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(78, 168, 222, 0.08) 100%);
+}
+
+body.dark-mode .achievement-toast-icon-wrapper {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+}
+
+body.dark-mode .achievement-toast-title {
+    color: #ffffff;
+    background: linear-gradient(135deg, #a78bfa 0%, #4ea8de 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+body.dark-mode .achievement-toast-description {
+    color: rgba(255, 255, 255, 0.9);
+    opacity: 1;
+}
+
+body.dark-mode .achievement-toast-close {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .achievement-toast-close:hover {
+    background: var(--danger-color);
+    color: white;
+}
+
+/* Simple toasts */
+body.dark-mode .simple-toast {
+    background: #2d2f48;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .simple-toast-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ===================================== */
+/* MODALS                                */
+/* ===================================== */
+
+body.dark-mode .modal-content {
+    background-color: var(--card-background);
+}
+
+body.dark-mode .close-modal {
+    color: var(--text-color);
+}
+
+body.dark-mode .modal-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .modal-close-btn:hover {
+    background: var(--danger-color);
+    color: white;
+}
+
+/* Auth modal */
+body.dark-mode .form-group input {
+    background-color: var(--input-background);
+    border-color: #495057;
+    color: var(--text-color);
+}
+
+body.dark-mode .form-group input:focus {
+    background-color: var(--card-background);
+    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.35);
+}
+
+/* Leaderboard */
+body.dark-mode .leaderboard-table {
+    background-color: var(--card-background);
+}
+
+body.dark-mode .leaderboard-table tbody tr:hover {
+    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.25);
+}
+
+body.dark-mode .leaderboard-table tr.rank-1 td {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 193, 7, 0.1) 100%);
+}
+
+body.dark-mode .leaderboard-table tr.rank-2 td {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(158, 158, 158, 0.1) 100%);
+}
+
+body.dark-mode .leaderboard-table tr.rank-3 td {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(184, 115, 51, 0.1) 100%);
+}
+
+body.dark-mode .username-cell {
+    color: var(--primary-color);
+}
+
+body.dark-mode .score-cell {
+    color: var(--accent-color);
+}
+
+/* Achievements modal */
+body.dark-mode .stat-box {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(78, 168, 222, 0.08) 100%);
+    border-color: rgba(167, 139, 250, 0.3);
+}
+
+body.dark-mode .stat-box:hover {
+    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.25);
+}
+
+body.dark-mode .achievement-tab {
+    border-color: rgba(167, 139, 250, 0.4);
+}
+
+body.dark-mode .achievement-tab:hover {
+    background: rgba(167, 139, 250, 0.15);
+}
+
+body.dark-mode .achievement-item {
+    background-color: #2d2f48;
+    border-color: rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode .achievement-item:hover {
+    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.25);
+    border-color: var(--secondary-color);
+}
+
+body.dark-mode .achievement-icon-wrapper {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.2) 0%, rgba(78, 168, 222, 0.1) 100%);
+    border-color: rgba(167, 139, 250, 0.4);
+}
+
+body.dark-mode .achievement-item.unlocked .achievement-icon-wrapper {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+}
+
+/* Profile modal */
+body.dark-mode .profile-header {
+    background: linear-gradient(135deg, rgba(139, 122, 191, 0.2) 0%, rgba(99, 211, 184, 0.2) 100%);
+}
+
+body.dark-mode .profile-stat-card:hover {
+    box-shadow: 0 8px 20px rgba(139, 122, 191, 0.5);
+}
+
+body.dark-mode .achievement-summary-card {
+    background: linear-gradient(135deg, rgba(139, 122, 191, 0.2) 0%, rgba(99, 211, 184, 0.2) 100%);
+}
+
+/* ===================================== */
+/* GAME MODES                            */
+/* ===================================== */
+
+/* Time Attack */
+body.dark-mode .time-attack-leaderboard-table tbody tr {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .time-attack-leaderboard-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .time-attack-stat {
+    background: rgba(231, 76, 60, 0.15);
+    border-color: rgba(231, 76, 60, 0.3);
+}
+
+body.dark-mode .time-attack-result-stat {
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.15) 0%, rgba(192, 57, 43, 0.08) 100%);
+    border-color: rgba(231, 76, 60, 0.3);
+}
+
+/* Daily Challenge */
+body.dark-mode .daily-challenge-banner {
+    background: linear-gradient(135deg,
+        rgba(240, 179, 71, 0.15) 0%,
+        rgba(93, 211, 179, 0.15) 100%) !important;
+    border: 2px solid rgba(240, 179, 71, 0.4) !important;
+}
+
+body.dark-mode .challenge-stat {
+    background: rgba(61, 51, 88, 0.6);
+    color: var(--text-color);
+}
+
+body.dark-mode .daily-challenge-status {
+    background: rgba(82, 201, 140, 0.15);
+    border: 2px solid rgba(82, 201, 140, 0.4);
+}
+
+body.dark-mode .daily-challenge-date {
+    background: rgba(240, 179, 71, 0.15);
+}
+
+/* ===================================== */
+/* FORMS & INPUTS                        */
+/* ===================================== */
+
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select {
+    background-color: var(--input-background);
+    border-color: var(--input-border);
+    color: var(--text-color);
+}
+
+body.dark-mode input:focus,
+body.dark-mode textarea:focus,
+body.dark-mode select:focus {
+    background-color: var(--card-background);
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 15px rgba(167, 139, 250, 0.3);
+}
+
+/* ===================================== */
+/* SETTINGS MODAL                        */
+/* ===================================== */
+
+body.dark-mode .setting-item {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(78, 168, 222, 0.05) 100%);
+    border-color: rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode .setting-item:hover {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(78, 168, 222, 0.08) 100%);
+    box-shadow: 0 4px 15px rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode .toggle-btn {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    box-shadow: 0 4px 15px rgba(167, 139, 250, 0.3);
+}
+
+body.dark-mode .toggle-btn:hover {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    box-shadow: 0 6px 20px rgba(96, 197, 242, 0.4);
+}
+
+body.dark-mode .volume-slider {
+    background: rgba(167, 139, 250, 0.15);
+}
+
+body.dark-mode .volume-slider::-webkit-slider-thumb {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    box-shadow: 0 2px 8px rgba(167, 139, 250, 0.4);
+}
+
+body.dark-mode .volume-slider::-moz-range-thumb {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    box-shadow: 0 2px 8px rgba(167, 139, 250, 0.4);
+}
+
+/* ===================================== */
+/* SCROLLBARS                            */
+/* ===================================== */
+
+body.dark-mode ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+body.dark-mode ::-webkit-scrollbar-track {
+    background: var(--background-color);
+    border-radius: 5px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-radius: 5px;
+}
+
+body.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+}
+
+/* Firefox scrollbar */
+body.dark-mode * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) var(--background-color);
+}
+
+/* Hide settings modal scrollbar specifically in dark mode */
+body.dark-mode .settings-modal-content {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+body.dark-mode .settings-modal-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* Hide profile modal scrollbar specifically in dark mode */
+body.dark-mode .profile-modal-content {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+body.dark-mode .profile-modal-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* ===================================== */
+/* MISCELLANEOUS                         */
+/* ===================================== */
+
+/* Links */
+body.dark-mode a {
+    color: var(--secondary-color);
+}
+
+body.dark-mode a:hover {
+    color: var(--primary-color);
+}
+
+/* Code blocks */
+body.dark-mode code,
+body.dark-mode pre {
+    background: rgba(167, 139, 250, 0.1);
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    color: var(--secondary-color);
+}
+
+/* Selection */
+body.dark-mode ::selection {
+    background: rgba(167, 139, 250, 0.3);
+    color: var(--text-color);
+}
+
+body.dark-mode ::-moz-selection {
+    background: rgba(167, 139, 250, 0.3);
+    color: var(--text-color);
+}

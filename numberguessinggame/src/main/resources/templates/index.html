@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NumVana - Number Guessing Game</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <!-- Modular CSS Files - Load in dependency order -->
+    <link rel="stylesheet" href="/css/new/variables.css">
+    <link rel="stylesheet" href="/css/new/base.css">
+    <link rel="stylesheet" href="/css/new/animations.css">
+    <link rel="stylesheet" href="/css/new/components.css">
+    <link rel="stylesheet" href="/css/new/header.css">
+    <link rel="stylesheet" href="/css/new/game-regular.css">
+    <link rel="stylesheet" href="/css/new/game-timeattack.css">
+    <link rel="stylesheet" href="/css/new/game-daily.css">
+    <link rel="stylesheet" href="/css/new/modals.css">
+    <link rel="stylesheet" href="/css/new/notifications.css">
+    <link rel="stylesheet" href="/css/new/responsive.css">
+    <link rel="stylesheet" href="/css/new/dark-mode.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -294,7 +307,9 @@
     <!-- Auth Modal -->
     <div id="auth-modal" class="modal" style="display: none;">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
+            <button class="modal-close-btn" id="close-auth">
+                <i class="fas fa-times"></i>
+            </button>
 
             <!-- Login Form -->
             <div id="login-form" class="auth-form">
@@ -341,7 +356,9 @@
     <!-- User Profile Modal -->
     <div id="profile-modal" class="modal" style="display: none;">
         <div class="modal-content profile-modal-content">
-            <span class="close-modal" id="close-profile">&times;</span>
+            <button class="modal-close-btn" id="close-profile">
+                <i class="fas fa-times"></i>
+            </button>
             <h2 class="profile-title">👤 YOUR PROFILE</h2>
 
             <!-- User Info Header -->
@@ -496,7 +513,9 @@
     <!-- Settings Modal -->
     <div id="settings-modal" class="modal" style="display: none;">
         <div class="modal-content settings-modal-content">
-            <span class="close-modal" id="close-settings">&times;</span>
+            <button class="modal-close-btn" id="close-settings">
+                <i class="fas fa-times"></i>
+            </button>
             <h2 class="settings-title">⚙️ SETTINGS</h2>
 
             <div class="settings-section">
@@ -655,7 +674,80 @@
     <!-- Achievement Notification Toast Container -->
     <div id="achievement-toast-container"></div>
 
-    <script src="/js/script.js"></script>
+    <!-- Modular JavaScript Files - Load in dependency order -->
+    <script src="/js/new/config.js"></script>
+    <script src="/js/new/state.js"></script>
+    <script src="/js/new/utils.js"></script>
+    <script src="/js/new/achievements.js"></script>
+    <script src="/js/new/auth.js"></script>
+    <script src="/js/new/ui.js"></script>
+    <script src="/js/new/game-regular.js"></script>
+    <script src="/js/new/game-timeattack.js"></script>
+    <script src="/js/new/game-daily.js"></script>
+
+    <!-- Initialize all modules when DOM is ready -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🎮 NumVana - Initializing game modules...');
+
+            // Initialize modules in order
+            if (typeof Utils !== 'undefined') {
+                Utils.init();
+                console.log('✓ Utils initialized');
+            }
+
+            if (typeof Auth !== 'undefined') {
+                Auth.init();
+                console.log('✓ Auth initialized');
+            }
+
+            if (typeof UI !== 'undefined') {
+                UI.init();
+                console.log('✓ UI initialized');
+            }
+
+            if (typeof RegularGame !== 'undefined') {
+                RegularGame.init();
+                console.log('✓ Regular Game initialized');
+            }
+
+            if (typeof TimeAttackGame !== 'undefined') {
+                TimeAttackGame.init();
+                console.log('✓ Time Attack initialized');
+            }
+
+            if (typeof DailyGame !== 'undefined') {
+                DailyGame.init();
+                console.log('✓ Daily Challenge initialized');
+            }
+
+            if (typeof Achievements !== 'undefined') {
+                Achievements.init();
+                console.log('✓ Achievements initialized');
+            }
+
+            // Set initial game status to home
+            if (typeof Utils !== 'undefined') {
+                Utils.updateGameStatus('home');
+            }
+
+            console.log('🎮 NumVana - All modules initialized successfully!');
+
+            // Cleanup on page unload
+            window.addEventListener('beforeunload', () => {
+                if (GameState && GameState.timerInterval) {
+                    clearInterval(GameState.timerInterval);
+                }
+                if (GameState && GameState.dailyChallenge && GameState.dailyChallenge.timerInterval) {
+                    clearInterval(GameState.dailyChallenge.timerInterval);
+                }
+                if (GameState && GameState.timeAttack && GameState.timeAttack.timerInterval) {
+                    clearInterval(GameState.timeAttack.timerInterval);
+                }
+            });
+        });
+    </script>
+
     <div id="confetti-container"></div>
 </body>
 </html>
