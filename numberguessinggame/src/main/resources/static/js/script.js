@@ -1124,32 +1124,78 @@ function endGame(won) {
         }).catch(() => { });
     }
 
-    // Prepare stats content
+    // Prepare stats content - Modern Card Design
     const statsContainer = document.getElementById('game-stats');
     statsContainer.textContent = '';
 
-    const createStatItem = (iconClass, text) => {
-        const div = document.createElement('div');
-        div.className = 'stat-item';
-        div.innerHTML = `<i class="${iconClass}"></i>`;
-        const span = document.createElement('span');
-        span.textContent = text;
-        div.appendChild(span);
-        return div;
+    const difficultyNames = ['Easy', 'Medium', 'Hard'];
+    const difficultyName = difficultyNames[currentDifficulty] || 'Unknown';
+
+    // Hero Section - Win/Loss Status
+    const heroSection = document.createElement('div');
+    heroSection.style.cssText = 'text-align: center; margin-bottom: 25px;';
+
+    if (won) {
+        heroSection.innerHTML = `
+            <div style="background: linear-gradient(135deg, #52c98c 0%, #4ea8de 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(82, 201, 140, 0.3);">
+                <div style="font-size: 2.5em; margin-bottom: 10px;">🎉</div>
+                <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">YOU WIN!</div>
+                <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">${attempts} ${attempts === 1 ? 'Attempt' : 'Attempts'}</div>
+                <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">${difficultyName} Mode</div>
+            </div>
+        `;
+    } else {
+        heroSection.innerHTML = `
+            <div style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(231, 76, 60, 0.3);">
+                <div style="font-size: 2.5em; margin-bottom: 10px;">😔</div>
+                <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">GAME OVER</div>
+                <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">Out of attempts</div>
+                <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">${difficultyName} Mode</div>
+            </div>
+        `;
+    }
+    statsContainer.appendChild(heroSection);
+
+    // Stats Grid - 2x2 Cards
+    const statsGrid = document.createElement('div');
+    statsGrid.style.cssText = 'display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;';
+
+    const createStatCard = (icon, value, label) => {
+        const card = document.createElement('div');
+        card.style.cssText = `
+            background: rgba(167, 139, 250, 0.1);
+            padding: 18px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(167, 139, 250, 0.2);
+        `;
+        card.innerHTML = `
+            <i class="${icon}" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>
+            <div style="font-size: 1.8em; font-weight: 700; color: var(--text-color); line-height: 1.2;">${value}</div>
+            <div style="font-size: 0.75em; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">${label}</div>
+        `;
+        return card;
     };
 
-    statsContainer.appendChild(createStatItem('fas fa-stopwatch', `Time Taken: ${time}`));
-    statsContainer.appendChild(createStatItem('fas fa-chart-line', `Attempts: ${attempts}/${GAME_CONFIG.MAX_ATTEMPTS}`));
-    statsContainer.appendChild(createStatItem('fas fa-tachometer-alt', `Avg. Time per Guess: ${calculateAverageGuessTime(time, attempts)}`));
-    statsContainer.appendChild(createStatItem('fas fa-trophy', `Best Score: ${bestScore}`));
-    statsContainer.appendChild(createStatItem('fas fa-chart-bar', `Comparison to Best: ${compareToaBestScore(attempts)}`));
+    // Add stat cards
+    statsGrid.appendChild(createStatCard('fas fa-stopwatch', time, 'Time'));
+    statsGrid.appendChild(createStatCard('fas fa-bullseye', `${attempts}/10`, 'Attempts'));
+
+    // Best score card
+    const bestScoreValue = bestScore === 'Not set' ? '--' : bestScore;
+    statsGrid.appendChild(createStatCard('fas fa-trophy', bestScoreValue, 'Best Score'));
+
+    // Comparison card
+    const comparison = compareToaBestScore(attempts);
+    const comparisonValue = comparison.includes('first') ? '🆕' : comparison.split(' ')[0];
+    statsGrid.appendChild(createStatCard('fas fa-chart-line', comparisonValue, 'vs Best'));
+
+    statsContainer.appendChild(statsGrid);
 
     if (won) {
         createConfetti();
         updateBestScore(attempts);
         addToRecentScores(currentDifficulty, attempts, time);
-        // Animate stats with count-up on win
-        animateResultStats(time, attempts);
     }
 
     document.getElementById('play-again').style.display = 'inline-block';
