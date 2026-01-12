@@ -713,32 +713,35 @@ function submitGuess() {
             if (data.correct) {
                 if (soundVolume > 0) winSound.play();
 
-                // Update streak data if available
-                if (data.currentWinStreak !== undefined) {
-                    currentStreak = data.currentWinStreak;
-                    if (currentUser) {
-                        currentUser.currentWinStreak = data.currentWinStreak;
-                        currentUser.bestWinStreak = data.bestWinStreak;
-                        currentUser.consecutivePlayDays = data.consecutivePlayDays;
-                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    }
-                    updateAuthUI();
-                }
-
-                // Update coins and show animation
-                if (data.coinsAwarded && data.coinsAwarded > 0 && currentUser) {
-                    currentUser.coins = data.totalCoins || (currentUser.coins + data.coinsAwarded);
-                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                    showCoinAnimation(data.coinsAwarded);
-                }
-
-                // Check for newly unlocked achievements
-                if (data.newAchievements && data.newAchievements.length > 0) {
-                    // Show achievement notifications
-                    showAchievementNotifications(data.newAchievements);
-                }
-
+                // Show results page IMMEDIATELY - don't wait for anything
                 endGame(true);
+
+                // Update all data in background after results are shown
+                setTimeout(() => {
+                    // Update streak data if available
+                    if (data.currentWinStreak !== undefined) {
+                        currentStreak = data.currentWinStreak;
+                        if (currentUser) {
+                            currentUser.currentWinStreak = data.currentWinStreak;
+                            currentUser.bestWinStreak = data.bestWinStreak;
+                            currentUser.consecutivePlayDays = data.consecutivePlayDays;
+                            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        }
+                        updateAuthUI();
+                    }
+
+                    // Update coins
+                    if (data.coinsAwarded && data.coinsAwarded > 0 && currentUser) {
+                        currentUser.coins = data.totalCoins || (currentUser.coins + data.coinsAwarded);
+                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                        showCoinAnimation(data.coinsAwarded);
+                    }
+
+                    // Show achievements
+                    if (data.newAchievements && data.newAchievements.length > 0) {
+                        showAchievementNotifications(data.newAchievements);
+                    }
+                }, 50);
             } else {
                 if (soundVolume > 0) incorrectSound.play();
                 // displayFeedback removed - redundant with guess history
@@ -3031,25 +3034,25 @@ async function submitDailyGuess() {
             dailyChallengeAttempts = data.attempts;
             document.getElementById('daily-attempts').textContent = dailyChallengeAttempts;
 
-            // Add to history
-            addDailyGuessToHistory(guess, data.bulls, data.cows);
-
-            // No feedback display - guess history shows the info
-
             // Play sound
             if (data.won) {
                 if (soundVolume > 0) winSound.play();
+                // End immediately on win - don't add winning guess to history
+                endDailyChallenge(true);
             } else {
                 if (soundVolume > 0) incorrectSound.play();
-            }
 
-            // Clear inputs
-            inputs.forEach(input => input.value = '');
-            inputs[0].focus();
+                // Add to history only if not won
+                addDailyGuessToHistory(guess, data.bulls, data.cows);
 
-            // Check if won or lost
-            if (data.won || dailyChallengeAttempts >= GAME_CONFIG.MAX_ATTEMPTS) {
-                setTimeout(() => endDailyChallenge(data.won), 1500);
+                // Clear inputs
+                inputs.forEach(input => input.value = '');
+                inputs[0].focus();
+
+                // Check if lost (out of attempts)
+                if (dailyChallengeAttempts >= GAME_CONFIG.MAX_ATTEMPTS) {
+                    endDailyChallenge(false);
+                }
             }
         } else {
             console.error('Server error:', data.error);
