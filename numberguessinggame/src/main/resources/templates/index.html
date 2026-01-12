@@ -221,7 +221,6 @@
                 </div>
                 <div id="daily-input-container"></div>
                 <button id="submit-daily-guess">⚡ SUBMIT GUESS</button>
-                <div id="daily-feedback" class="fade-in"></div>
             </section>
 
             <section class="section">
@@ -235,10 +234,10 @@
         <!-- Daily Challenge Result Page -->
         <div id="daily-result-page" class="card" style="display: none;">
             <div id="daily-game-stats"></div>
-            <button id="view-daily-results-leaderboard" class="leaderboard-btn">
-                <i class="fas fa-trophy"></i> VIEW LEADERBOARD
-            </button>
-            <button id="quit-daily-result" data-tooltip="Return to home page">🏠 MAIN MENU</button>
+            <div class="ta-button-group">
+                <button id="view-daily-results-leaderboard">🏆 LEADERBOARD</button>
+                <button id="quit-daily-result">🏠 MAIN MENU</button>
+            </div>
         </div>
 
         <div id="result-page" class="card" style="display: none;">

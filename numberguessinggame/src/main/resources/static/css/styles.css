@@ -4309,6 +4309,8 @@ body.dark-mode #daily-challenge-page .section:nth-child(1) {
     flex-direction: column;
 }
 
+#game-stats,
+#daily-game-stats,
 #time-attack-stats {
     width: 100%;
     margin-bottom: 20px;

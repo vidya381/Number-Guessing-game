@@ -2929,8 +2929,7 @@ function startDailyChallengeGame() {
     document.getElementById('daily-attempts').textContent = '0';
     startDailyChallengeTimer();
 
-    // Clear feedback and history
-    document.getElementById('daily-feedback').innerHTML = '';
+    // Clear history
     document.getElementById('daily-guess-history').innerHTML = '';
 }
 
@@ -3035,8 +3034,7 @@ async function submitDailyGuess() {
             // Add to history
             addDailyGuessToHistory(guess, data.bulls, data.cows);
 
-            // Show feedback
-            showDailyFeedback(data.bulls, data.cows);
+            // No feedback display - guess history shows the info
 
             // Play sound
             if (data.won) {
@@ -3086,34 +3084,6 @@ function addDailyGuessToHistory(guess, bulls, cows) {
 }
 
 /**
- * Show Daily Feedback
- */
-function showDailyFeedback(bulls, cows) {
-    const feedbackDiv = document.getElementById('daily-feedback');
-    let message = '';
-    let emoji = '';
-
-    if (bulls === dailyChallengeDigitCount) {
-        message = '🎉 PERFECT! You cracked the code!';
-        emoji = '🎉';
-    } else if (bulls > 0 && cows > 0) {
-        message = `${bulls} Bull${bulls !== 1 ? 's' : ''} & ${cows} Cow${cows !== 1 ? 's' : ''} - You're getting close!`;
-        emoji = '🎯';
-    } else if (bulls > 0) {
-        message = `${bulls} Bull${bulls !== 1 ? 's' : ''} - Some digits are perfectly placed!`;
-        emoji = '🐂';
-    } else if (cows > 0) {
-        message = `${cows} Cow${cows !== 1 ? 's' : ''} - Right digits, wrong positions!`;
-        emoji = '🐄';
-    } else {
-        message = 'No matches - Try different digits!';
-        emoji = '❌';
-    }
-
-    feedbackDiv.innerHTML = `<div class="feedback-message">${emoji} ${message}</div>`;
-}
-
-/**
  * End Daily Challenge
  */
 async function endDailyChallenge(won) {
@@ -3152,8 +3122,8 @@ async function endDailyChallenge(won) {
 
             showDailyChallengeResult(won, dailyChallengeAttempts, timeDisplay, data.rank, data.totalPlayers);
 
-            // Reload daily challenge info for home page
-            await loadDailyChallengeInfo();
+            // Reload daily challenge info for home page (don't await - run in background)
+            loadDailyChallengeInfo();
         } else {
             showToast(data.error || 'Couldn\'t save your result. Try refreshing! 💾', 'error');
         }
@@ -3173,63 +3143,74 @@ function showDailyChallengeResult(won, attempts, timeDisplay, rank, totalPlayers
     const dailyResultPage = document.getElementById('daily-result-page');
 
     fadeOutElement(dailyChallengePage, () => {
-        // Build result content
-        let resultHTML = '';
+        const statsContainer = document.getElementById('daily-game-stats');
+        statsContainer.textContent = '';
+
+        // Hero Section - Win/Loss Status (same style as Regular/Time Attack)
+        const heroSection = document.createElement('div');
+        heroSection.style.cssText = 'text-align: center; margin-bottom: 25px;';
 
         if (won) {
-            resultHTML = `
-                <div class="result-header win">
-                    <div class="result-icon">🏆</div>
-                    <h2>CHALLENGE COMPLETE!</h2>
+            heroSection.innerHTML = `
+                <div style="background: linear-gradient(135deg, #52c98c 0%, #4ea8de 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(82, 201, 140, 0.3);">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">🏆</div>
+                    <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">COMPLETE!</div>
+                    <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">${attempts} ${attempts === 1 ? 'Attempt' : 'Attempts'}</div>
+                    <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">Daily Challenge</div>
                 </div>
-                <div class="result-stats">
-                    <div class="result-stat">
-                        <span class="stat-label">Attempts</span>
-                        <span class="stat-value">${attempts}</span>
-                    </div>
-                    <div class="result-stat">
-                        <span class="stat-label">Time</span>
-                        <span class="stat-value">${timeDisplay}</span>
-                    </div>
-                    ${rank ? `
-                        <div class="result-stat highlight">
-                            <span class="stat-label">Your Rank</span>
-                            <span class="stat-value">#${rank}</span>
-                        </div>
-                    ` : ''}
-                    ${totalPlayers ? `
-                        <div class="result-stat">
-                            <span class="stat-label">Total Players</span>
-                            <span class="stat-value">${totalPlayers}</span>
-                        </div>
-                    ` : ''}
-                </div>
-                <p class="result-message">🌟 Come back tomorrow for a new challenge!</p>
             `;
-
-            triggerConfetti();
+            createConfetti();
         } else {
-            resultHTML = `
-                <div class="result-header lose">
-                    <div class="result-icon">💪</div>
-                    <h2>CHALLENGE FAILED</h2>
+            heroSection.innerHTML = `
+                <div style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(231, 76, 60, 0.3);">
+                    <div style="font-size: 2.5em; margin-bottom: 10px;">😔</div>
+                    <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">NOT TODAY</div>
+                    <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">Out of attempts</div>
+                    <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">Daily Challenge</div>
                 </div>
-                <div class="result-stats">
-                    <div class="result-stat">
-                        <span class="stat-label">Attempts</span>
-                        <span class="stat-value">${attempts}</span>
-                    </div>
-                    <div class="result-stat">
-                        <span class="stat-label">Time</span>
-                        <span class="stat-value">${timeDisplay}</span>
-                    </div>
-                </div>
-                <p class="result-message">Don't give up! Try again tomorrow! 🎯</p>
             `;
         }
+        statsContainer.appendChild(heroSection);
 
-        document.getElementById('daily-game-stats').innerHTML = resultHTML;
-        fadeInElement(dailyResultPage, 'flex');
+        // Stats Grid - 2x2 Cards (same style as Regular/Time Attack)
+        const statsGrid = document.createElement('div');
+        statsGrid.style.cssText = 'display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;';
+
+        const createStatCard = (icon, value, label) => {
+            const card = document.createElement('div');
+            card.style.cssText = `
+                background: rgba(167, 139, 250, 0.1);
+                padding: 18px;
+                border-radius: 12px;
+                text-align: center;
+                border: 1px solid rgba(167, 139, 250, 0.2);
+            `;
+            card.innerHTML = `
+                <i class="${icon}" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>
+                <div style="font-size: 1.8em; font-weight: 700; color: var(--text-color); line-height: 1.2;">${value}</div>
+                <div style="font-size: 0.75em; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">${label}</div>
+            `;
+            return card;
+        };
+
+        // Add stat cards
+        statsGrid.appendChild(createStatCard('fas fa-stopwatch', timeDisplay, 'Time'));
+        statsGrid.appendChild(createStatCard('fas fa-bullseye', `${attempts}/10`, 'Attempts'));
+
+        // Rank card (with medal emoji)
+        if (rank) {
+            const rankEmoji = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : '📊';
+            statsGrid.appendChild(createStatCard('fas fa-ranking-star', `${rankEmoji} #${rank}`, 'Rank'));
+        }
+
+        // Total players card
+        if (totalPlayers) {
+            statsGrid.appendChild(createStatCard('fas fa-users', totalPlayers, 'Players'));
+        }
+
+        statsContainer.appendChild(statsGrid);
+
+        fadeInElement(dailyResultPage);
     });
 }
 
