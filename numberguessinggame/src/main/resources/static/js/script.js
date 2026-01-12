@@ -3698,7 +3698,7 @@ async function endTimeAttackSession() {
 }
 
 /**
- * Display Time Attack Results
+ * Display Time Attack Results - Modern Card-Based Design
  */
 function displayTimeAttackResults(data) {
     // Update game status
@@ -3707,56 +3707,112 @@ function displayTimeAttackResults(data) {
     const statsContainer = document.getElementById('time-attack-stats');
     statsContainer.textContent = '';
 
-    const createStatItem = (iconClass, text) => {
-        const div = document.createElement('div');
-        div.className = 'stat-item';
-        div.innerHTML = `<i class="${iconClass}"></i>`;
-        const span = document.createElement('span');
-        span.textContent = text;
-        div.appendChild(span);
-        return div;
+    // Helper to format time
+    const formatTime = (seconds) => {
+        if (!seconds) return '--';
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
     };
 
-    // Add title
-    const title = document.createElement('h2');
-    title.textContent = '⚡ BEAT THE CLOCK COMPLETE';
-    title.style.textAlign = 'center';
-    title.style.marginBottom = '20px';
-    statsContainer.appendChild(title);
+    // Hero Section - Big Coins Earned
+    const heroSection = document.createElement('div');
+    heroSection.style.cssText = 'text-align: center; margin-bottom: 30px;';
+    heroSection.innerHTML = `
+        <h2 style="color: var(--primary-color); margin: 0 0 15px 0; font-size: 1.2em;">⚡ CHALLENGE COMPLETE</h2>
+        <div style="background: linear-gradient(135deg, #ffca28 0%, #ffa726 100%); padding: 25px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 8px 24px rgba(255, 202, 40, 0.3);">
+            <div style="font-size: 3.5em; font-weight: 800; color: #2c3e50; line-height: 1;">
+                ${data.totalScore || 0} <i class="fas fa-coins" style="font-size: 0.8em; color: #ff8f00;"></i>
+            </div>
+            <div style="font-size: 0.9em; color: #5d4e37; margin-top: 8px; font-weight: 600;">COINS EARNED</div>
+        </div>
+    `;
+    statsContainer.appendChild(heroSection);
 
-    // Add all stats vertically
-    const difficultyText = ['Easy', 'Medium', 'Hard'][timeAttackDifficulty];
+    // Stats Grid - 2x2 Cards
+    const statsGrid = document.createElement('div');
+    statsGrid.style.cssText = 'display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 25px;';
 
-    statsContainer.appendChild(createStatItem('fas fa-coins', `Coins Earned: ${data.totalScore || 0}`));
-    statsContainer.appendChild(createStatItem('fas fa-gamepad', `Games Won: ${data.gamesWon || 0} / ${data.gamesPlayed || 0}`));
-    statsContainer.appendChild(createStatItem('fas fa-bolt', `Difficulty: ${difficultyText}`));
-    statsContainer.appendChild(createStatItem('fas fa-chart-line', `Average Attempts: ${data.averageAttempts ? data.averageAttempts.toFixed(1) : '--'}`));
-    statsContainer.appendChild(createStatItem('fas fa-clock', `Fastest Win: ${data.fastestWinSeconds ? data.fastestWinSeconds + 's' : '--'}`));
+    const createStatCard = (icon, value, label, highlight = false) => {
+        const card = document.createElement('div');
+        const bgColor = highlight ? 'linear-gradient(135deg, #52c98c 0%, #4ea8de 100%)' : 'rgba(167, 139, 250, 0.1)';
+        const textColor = highlight ? '#fff' : 'var(--text-color)';
+        card.style.cssText = `background: ${bgColor}; padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);`;
+        card.innerHTML = `
+            <i class="${icon}" style="font-size: 2em; color: ${highlight ? '#fff' : 'var(--primary-color)'}; margin-bottom: 8px;"></i>
+            <div style="font-size: 1.8em; font-weight: 700; color: ${textColor}; line-height: 1.2;">${value}</div>
+            <div style="font-size: 0.75em; color: ${highlight ? 'rgba(255,255,255,0.9)' : 'var(--text-secondary)'}; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">${label}</div>
+        `;
+        return card;
+    };
 
-    // Show rank if available
+    // Add stat cards
+    const gamesWon = data.gamesWon || 0;
+    const avgAttempts = data.averageAttempts ? data.averageAttempts.toFixed(1) : '--';
+    const fastestTime = formatTime(data.fastestWinSeconds);
+
+    statsGrid.appendChild(createStatCard('fas fa-trophy', gamesWon, 'Wins', gamesWon > 0));
+    statsGrid.appendChild(createStatCard('fas fa-tachometer-alt', avgAttempts, 'Avg Tries'));
+    statsGrid.appendChild(createStatCard('fas fa-bolt', fastestTime, 'Best Time'));
+
+    // Leaderboard rank card (if available)
     if (data.rank && authToken) {
-        statsContainer.appendChild(createStatItem('fas fa-trophy', `Leaderboard Rank: #${data.rank}`));
+        const rankEmoji = data.rank === 1 ? '🥇' : data.rank === 2 ? '🥈' : data.rank === 3 ? '🥉' : '📊';
+        const isTopThree = data.rank <= 3;
+        const rankCard = createStatCard('fas fa-ranking-star', `${rankEmoji} #${data.rank}`, 'Rank', isTopThree);
+        statsGrid.appendChild(rankCard);
+    } else {
+        // Games played card
+        const gamesPlayed = data.gamesPlayed || 0;
+        statsGrid.appendChild(createStatCard('fas fa-gamepad', gamesPlayed, 'Played'));
     }
 
-    // Add game history if there are games
-    if (data.gameDetails && data.gameDetails.length > 0) {
-        const historyTitle = document.createElement('h3');
-        historyTitle.textContent = '📋 Your Games';
-        historyTitle.style.marginTop = '20px';
-        historyTitle.style.marginBottom = '10px';
-        statsContainer.appendChild(historyTitle);
+    statsContainer.appendChild(statsGrid);
 
-        const historyContainer = document.createElement('div');
-        historyContainer.style.maxHeight = '200px';
-        historyContainer.style.overflowY = 'auto';
-        historyContainer.style.marginBottom = '20px';
+    // Game History - Compact Cards
+    if (data.gameDetails && data.gameDetails.length > 0) {
+        const historySection = document.createElement('div');
+        historySection.style.cssText = 'margin-top: 25px;';
+
+        const historyTitle = document.createElement('h3');
+        historyTitle.textContent = '📋 Game Breakdown';
+        historyTitle.style.cssText = 'font-size: 1em; margin: 0 0 12px 0; color: var(--text-color);';
+        historySection.appendChild(historyTitle);
+
+        const gamesContainer = document.createElement('div');
+        gamesContainer.style.cssText = 'display: flex; flex-direction: column; gap: 8px; max-height: 180px; overflow-y: auto;';
 
         data.gameDetails.forEach((game, index) => {
-            const gameItem = createStatItem('fas fa-play', `Game ${index + 1}: ${game.attempts} attempts, ${game.timeSeconds}s, +${game.points} 🪙`);
-            historyContainer.appendChild(gameItem);
+            const gameCard = document.createElement('div');
+            const difficultyColors = ['#52c98c', '#f39c12', '#e74c3c'];
+            const difficultyNames = ['EASY', 'MED', 'HARD'];
+            const diffColor = difficultyColors[timeAttackDifficulty] || '#52c98c';
+
+            gameCard.style.cssText = `
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 12px 16px;
+                background: rgba(167, 139, 250, 0.08);
+                border-radius: 10px;
+                border-left: 4px solid ${diffColor};
+            `;
+
+            gameCard.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div style="background: ${diffColor}; color: white; padding: 4px 8px; border-radius: 6px; font-size: 0.7em; font-weight: 700;">${difficultyNames[timeAttackDifficulty]}</div>
+                    <div style="font-size: 0.9em; color: var(--text-secondary);">
+                        <i class="fas fa-bullseye"></i> ${game.attempts} tries  •  <i class="fas fa-clock"></i> ${formatTime(game.timeSeconds)}
+                    </div>
+                </div>
+                <div style="font-weight: 700; color: #ffa726; font-size: 1em;">+${game.points} <i class="fas fa-coins" style="font-size: 0.9em;"></i></div>
+            `;
+
+            gamesContainer.appendChild(gameCard);
         });
 
-        statsContainer.appendChild(historyContainer);
+        historySection.appendChild(gamesContainer);
+        statsContainer.appendChild(historySection);
     }
 }
 
