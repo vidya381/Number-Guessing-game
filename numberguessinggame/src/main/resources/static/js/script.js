@@ -1052,27 +1052,29 @@ function updateTimer() {
     const timeString = `${minutes}:${seconds}`;
     document.getElementById('timer').textContent = timeString;
 
-    // Update circular progress bar
-    const totalSeconds = elapsedTime.getTime() / 1000;
-    const maxSeconds = TIMER_CONFIG.MAX_SECONDS;
-    const progress = (totalSeconds / maxSeconds) * TIMER_CONFIG.SVG_CIRCUMFERENCE;
+    // Update circular progress bar (if element exists)
     const timerProgress = document.querySelector('.timer-progress');
-    timerProgress.style.strokeDasharray = TIMER_CONFIG.SVG_CIRCUMFERENCE;
-    timerProgress.style.strokeDashoffset = TIMER_CONFIG.SVG_CIRCUMFERENCE - progress;
+    if (timerProgress) {
+        const totalSeconds = elapsedTime.getTime() / 1000;
+        const maxSeconds = TIMER_CONFIG.MAX_SECONDS;
+        const progress = (totalSeconds / maxSeconds) * TIMER_CONFIG.SVG_CIRCUMFERENCE;
+        timerProgress.style.strokeDasharray = TIMER_CONFIG.SVG_CIRCUMFERENCE;
+        timerProgress.style.strokeDashoffset = TIMER_CONFIG.SVG_CIRCUMFERENCE - progress;
 
-    // Change color based on time remaining
-    let color;
-    if (totalSeconds < maxSeconds * TIMER_CONFIG.COLOR_THRESHOLD_HALF) {
-        color = '#4CAF50'; // Green for first half
-    } else if (totalSeconds < maxSeconds * TIMER_CONFIG.COLOR_THRESHOLD_THREE_QUARTERS) {
-        color = '#FFC107'; // Yellow for next quarter
-    } else {
-        color = '#F44336'; // Red for last quarter
-    }
-    timerProgress.style.stroke = color;
+        // Change color based on time remaining
+        let color;
+        if (totalSeconds < maxSeconds * TIMER_CONFIG.COLOR_THRESHOLD_HALF) {
+            color = '#4CAF50'; // Green for first half
+        } else if (totalSeconds < maxSeconds * TIMER_CONFIG.COLOR_THRESHOLD_THREE_QUARTERS) {
+            color = '#FFC107'; // Yellow for next quarter
+        } else {
+            color = '#F44336'; // Red for last quarter
+        }
+        timerProgress.style.stroke = color;
 
-    if (totalSeconds >= maxSeconds) {
-        endGame(false); // End the game with a loss
+        if (totalSeconds >= maxSeconds) {
+            endGame(false); // End the game with a loss
+        }
     }
 }
 
