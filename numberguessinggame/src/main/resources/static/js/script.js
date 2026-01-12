@@ -1055,7 +1055,12 @@ function updateTimer() {
     const minutes = elapsedTime.getMinutes().toString().padStart(2, '0');
     const seconds = elapsedTime.getSeconds().toString().padStart(2, '0');
     const timeString = `${minutes}:${seconds}`;
-    document.getElementById('timer').textContent = timeString;
+
+    // Update timer display (only exists in Time Attack mode)
+    const timerElement = document.getElementById('timer');
+    if (timerElement) {
+        timerElement.textContent = timeString;
+    }
 
     // Update circular progress bar (if element exists)
     const timerProgress = document.querySelector('.timer-progress');
@@ -1085,7 +1090,14 @@ function updateTimer() {
 
 function endGame(won) {
     clearInterval(timerInterval);
-    const time = document.getElementById('timer').textContent;
+
+    // Calculate time from startTime (works for both regular and Time Attack)
+    const currentTime = new Date();
+    const elapsedTime = new Date(currentTime - startTime);
+    const minutes = elapsedTime.getMinutes().toString().padStart(2, '0');
+    const seconds = elapsedTime.getSeconds().toString().padStart(2, '0');
+    const time = `${minutes}:${seconds}`;
+
     const gamePage = document.getElementById('game-page');
     const resultPage = document.getElementById('result-page');
 
@@ -1278,9 +1290,21 @@ function quitGame() {
 function resetGameState() {
     attempts = 0;
     guessHistory = [];
-    document.getElementById('timer').textContent = '00:00';
+
+    // Reset timer (only exists in Time Attack mode)
+    const timerElement = document.getElementById('timer');
+    if (timerElement) {
+        timerElement.textContent = '00:00';
+    }
+
     document.getElementById('attempts').textContent = '0';
-    document.getElementById('feedback').textContent = '';
+
+    // Reset feedback (if element exists)
+    const feedbackElement = document.getElementById('feedback');
+    if (feedbackElement) {
+        feedbackElement.textContent = '';
+    }
+
     updateAttemptsProgress();
 }
 
