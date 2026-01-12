@@ -128,42 +128,45 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 10px;
 }
 
 .game-header h2 {
     margin: 0;
     flex: 1;
     min-width: 200px;
+    font-size: 1.3em;
 }
 
 .game-stats-inline {
     display: flex;
-    gap: 15px;
+    gap: 8px;
+    align-items: center;
 }
 
 .stat-badge {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 8px 16px;
+    gap: 6px;
+    padding: 6px 12px;
     background: rgba(167, 139, 250, 0.1);
     border: 1px solid rgba(167, 139, 250, 0.2);
-    border-radius: 20px;
+    border-radius: 16px;
     font-weight: 600;
-    font-size: 1em;
+    font-size: 0.85em;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .stat-badge:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(139, 122, 191, 0.2);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(139, 122, 191, 0.2);
 }
 
 .stat-icon {
-    font-size: 1.2em;
+    font-size: 1.1em;
 }
 
 body.dark-mode .stat-badge {
@@ -174,31 +177,32 @@ body.dark-mode .stat-badge {
 /* Hint Button Styles */
 .hint-button {
     background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-    border: 2px solid #d68910;
-    border-radius: 12px;
+    border: 1.5px solid #d68910;
+    border-radius: 16px;
     color: white;
-    font-size: 14px;
+    font-size: 0.85em;
     font-weight: 700;
-    padding: 8px 16px;
+    padding: 6px 12px;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
+    box-shadow: 0 1px 4px rgba(243, 156, 18, 0.3);
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
     position: relative;
     overflow: hidden;
+    white-space: nowrap;
 }
 
 .hint-button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(243, 156, 18, 0.4);
     border-color: #f39c12;
 }
 
 .hint-button:active:not(:disabled) {
     transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(243, 156, 18, 0.3);
+    box-shadow: 0 1px 4px rgba(243, 156, 18, 0.3);
 }
 
 .hint-button:disabled {
@@ -211,8 +215,8 @@ body.dark-mode .stat-badge {
 .hint-button:disabled::after {
     content: '🔒';
     position: absolute;
-    right: 8px;
-    font-size: 12px;
+    right: 6px;
+    font-size: 10px;
 }
 
 /* Hints Display */
@@ -281,9 +285,24 @@ body.dark-mode .hint-item {
 
 /* Mobile responsiveness for hint system */
 @media (max-width: 768px) {
+    .game-header h2 {
+        font-size: 1.1em;
+    }
+
+    .stat-badge {
+        font-size: 0.75em;
+        padding: 5px 10px;
+        gap: 4px;
+    }
+
+    .stat-icon {
+        font-size: 1em;
+    }
+
     .hint-button {
-        font-size: 12px;
-        padding: 6px 12px;
+        font-size: 0.75em;
+        padding: 5px 10px;
+        gap: 4px;
     }
 
     .hints-display {
@@ -291,7 +310,7 @@ body.dark-mode .hint-item {
     }
 
     .hint-item {
-        font-size: 14px;
+        font-size: 0.85em;
         padding: 8px 12px;
     }
 }
