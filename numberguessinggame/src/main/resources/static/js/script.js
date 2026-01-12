@@ -73,6 +73,11 @@ let recentScores = [];
 let currentUser = null;
 let authToken = null;
 let currentStreak = 0;
+
+// Hint system state
+let hintsUsed = 0;
+let revealedHints = new Map(); // position -> digit
+let nextHintCost = 3;
 try {
     const stored = localStorage.getItem('recentScores');
     if (stored) {
@@ -358,6 +363,7 @@ function attachEventListeners() {
     document.getElementById('quit').addEventListener('click', showHomePage);
     document.getElementById('quit-game').addEventListener('click', quitGame);
     document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
+    document.getElementById('hint-btn').addEventListener('click', requestHint);
     // Sound toggle moved to settings modal - handled by setupSettingsModal()
 }
 
@@ -507,6 +513,7 @@ function startGame(difficulty) {
     currentDifficulty = difficulty;
     attempts = 0;
     guessHistory = [];
+    resetHintState();
 
     // Clear any existing timer to prevent race conditions
     if (timerInterval) {
@@ -753,6 +760,174 @@ function submitGuess() {
         input.value = '';
     }
     if (inputs[0]) inputs[0].focus();
+}
+
+/**
+ * Request a hint from the backend
+ */
+async function requestHint() {
+    // Check if user is logged in
+    if (!currentUser || !authToken) {
+        displayToast('Please log in to use hints! 🔑', 'info');
+        return;
+    }
+
+    // Check if tabId exists (game session active)
+    if (!tabId) {
+        displayToast('Start a game first to use hints!', 'error');
+        return;
+    }
+
+    // Disable button during request
+    const hintBtn = document.getElementById('hint-btn');
+    const originalText = hintBtn.innerHTML;
+    hintBtn.disabled = true;
+    hintBtn.innerHTML = '⏳ Loading...';
+
+    try {
+        const response = await fetch('/get-hint', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `tabId=${tabId}&userId=${currentUser.id}`,
+            credentials: 'include'
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            // Update local state
+            revealedHints.set(data.position, data.digit);
+            hintsUsed = data.hintsUsed;
+            nextHintCost = data.nextHintCost;
+
+            // Update user coins
+            currentUser.coins = data.remainingCoins;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            // Update UI
+            displayHint(data.position, data.digit);
+            updateHintButton();
+            updateCoinDisplay();
+
+            // Show success animation
+            showCoinAnimation(-data.costPaid); // Negative for deduction
+            displayToast(`Hint revealed! Position ${data.position + 1} is ${data.digit} 💡`, 'success');
+
+        } else {
+            // Handle errors
+            displayToast(data.error || 'Failed to get hint. Try again!', 'error');
+
+            // Special handling for insufficient coins
+            if (data.required && data.current) {
+                const needed = data.required - data.current;
+                displayToast(`You need ${needed} more coins! Win games to earn coins. 🪙`, 'warning');
+            }
+        }
+
+    } catch (error) {
+        console.error('Hint request failed:', error);
+        displayToast('Connection error. Check your network and try again!', 'error');
+    } finally {
+        // Re-enable button
+        hintBtn.disabled = false;
+        hintBtn.innerHTML = originalText;
+    }
+}
+
+/**
+ * Display a revealed hint in the UI
+ */
+function displayHint(position, digit) {
+    const hintsContainer = document.getElementById('hints-container');
+    const hintsList = document.getElementById('hints-list');
+
+    if (!hintsContainer || !hintsList) return;
+
+    // Show container if first hint
+    if (hintsContainer.style.display === 'none') {
+        hintsContainer.style.display = 'block';
+    }
+
+    // Create hint item
+    const hintItem = document.createElement('div');
+    hintItem.className = 'hint-item';
+    hintItem.textContent = `Position ${position + 1} = ${digit}`;
+
+    // Add with animation
+    hintsList.appendChild(hintItem);
+
+    // Play sound effect (reuse correct sound)
+    if (soundVolume > 0 && correctSound) {
+        correctSound.currentTime = 0;
+        correctSound.play().catch(err => console.log('Sound play failed:', err));
+    }
+}
+
+/**
+ * Update hint button state and cost display
+ */
+function updateHintButton() {
+    const hintBtn = document.getElementById('hint-btn');
+    const hintCostSpan = document.getElementById('hint-cost');
+
+    if (!hintBtn || !hintCostSpan) return;
+
+    // Update cost display
+    hintCostSpan.textContent = nextHintCost;
+
+    // Disable if not logged in
+    if (!currentUser || !authToken) {
+        hintBtn.disabled = true;
+        hintBtn.setAttribute('data-tooltip', 'Login required for hints');
+        return;
+    }
+
+    // Disable if insufficient coins
+    if (currentUser.coins < nextHintCost) {
+        hintBtn.disabled = true;
+        hintBtn.setAttribute('data-tooltip', `Need ${nextHintCost} coins (you have ${currentUser.coins})`);
+        return;
+    }
+
+    // Enable button
+    hintBtn.disabled = false;
+    hintBtn.setAttribute('data-tooltip', 'Reveal one digit position');
+}
+
+/**
+ * Update coin display in header
+ */
+function updateCoinDisplay() {
+    const coinCount = document.getElementById('coin-count');
+    if (coinCount && currentUser) {
+        coinCount.textContent = currentUser.coins || 0;
+    }
+}
+
+/**
+ * Reset hint state when starting new game
+ */
+function resetHintState() {
+    hintsUsed = 0;
+    revealedHints.clear();
+    nextHintCost = 3;
+
+    // Hide hints container
+    const hintsContainer = document.getElementById('hints-container');
+    if (hintsContainer) {
+        hintsContainer.style.display = 'none';
+    }
+
+    // Clear hints list
+    const hintsList = document.getElementById('hints-list');
+    if (hintsList) {
+        hintsList.innerHTML = '';
+    }
+
+    // Update button
+    updateHintButton();
 }
 
 function addToGuessHistory(guess, correctPosition, correctButWrongPosition) {
@@ -1251,17 +1426,20 @@ function updateAuthUI() {
         guestControls.style.display = 'flex';
         userControls.style.display = 'none';
     }
+
+    // Update hint button state
+    updateHintButton();
 }
 
 /**
- * Show coin animation - floating "+X 🪙" that pops up and fades
- * @param {number} amount - Amount of coins earned
+ * Show coin animation - floating "+X 🪙" that pops up and fades (or "-X" for deductions)
+ * @param {number} amount - Amount of coins earned (positive) or deducted (negative)
  */
 function showCoinAnimation(amount) {
     console.log('🪙 showCoinAnimation called:', { amount, hasCurrentUser: !!currentUser, currentUserCoins: currentUser?.coins });
 
-    if (!currentUser || amount <= 0) {
-        console.log('❌ Animation skipped - no user or invalid amount');
+    if (!currentUser || amount === 0) {
+        console.log('❌ Animation skipped - no user or zero amount');
         return;
     }
 
@@ -1271,6 +1449,9 @@ function showCoinAnimation(amount) {
         return;
     }
 
+    const isDeduction = amount < 0;
+    const absAmount = Math.abs(amount);
+
     console.log('✅ Starting coin animation with', amount, 'coins');
 
     const rect = coinDisplay.getBoundingClientRect();
@@ -1278,7 +1459,7 @@ function showCoinAnimation(amount) {
     const centerY = rect.top + rect.height / 2;
 
     // Create multiple floating coin particles for a shower effect
-    const particleCount = Math.min(5, Math.ceil(amount / 5)); // 1-5 particles based on amount
+    const particleCount = Math.min(5, Math.ceil(absAmount / 5)); // 1-5 particles based on amount
 
     for (let i = 0; i < particleCount; i++) {
         const particle = document.createElement('div');
@@ -1290,7 +1471,9 @@ function showCoinAnimation(amount) {
         particle.style.fontSize = '20px';
         particle.style.zIndex = '10000';
         particle.style.pointerEvents = 'none';
-        particle.style.filter = 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.8))';
+        particle.style.filter = isDeduction
+            ? 'drop-shadow(0 0 8px rgba(231, 76, 60, 0.8))'
+            : 'drop-shadow(0 0 8px rgba(255, 215, 0, 0.8))';
 
         document.body.appendChild(particle);
 
@@ -1298,7 +1481,9 @@ function showCoinAnimation(amount) {
         const angle = (Math.random() * 60 - 30) * (Math.PI / 180); // -30 to +30 degrees
         const distance = 40 + Math.random() * 30;
         const offsetX = Math.sin(angle) * distance;
-        const offsetY = -80 - Math.random() * 40;
+        const offsetY = isDeduction
+            ? (80 + Math.random() * 40) // Downward for deduction
+            : (-80 - Math.random() * 40); // Upward for addition
 
         setTimeout(() => {
             particle.style.transition = `all ${0.8 + Math.random() * 0.3}s cubic-bezier(0.25, 0.46, 0.45, 0.94)`;
@@ -1313,28 +1498,36 @@ function showCoinAnimation(amount) {
 
     // Main text display - smaller and sleeker
     const textDisplay = document.createElement('div');
-    textDisplay.textContent = `+${amount}`;
+    textDisplay.textContent = isDeduction ? `-${absAmount}` : `+${absAmount}`;
     textDisplay.style.position = 'fixed';
     textDisplay.style.left = `${centerX}px`;
     textDisplay.style.top = `${centerY + 30}px`;
     textDisplay.style.transform = 'translate(-50%, -50%)';
     textDisplay.style.fontSize = '18px';
     textDisplay.style.fontWeight = '800';
-    textDisplay.style.color = '#FFD700';
-    textDisplay.style.textShadow = '0 0 10px rgba(255, 215, 0, 0.9), 0 2px 4px rgba(0,0,0,0.3)';
+    textDisplay.style.color = isDeduction ? '#e74c3c' : '#FFD700';
+    textDisplay.style.textShadow = isDeduction
+        ? '0 0 10px rgba(231, 76, 60, 0.9), 0 2px 4px rgba(0,0,0,0.3)'
+        : '0 0 10px rgba(255, 215, 0, 0.9), 0 2px 4px rgba(0,0,0,0.3)';
     textDisplay.style.zIndex = '10001';
     textDisplay.style.pointerEvents = 'none';
-    textDisplay.style.background = 'linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2))';
+    textDisplay.style.background = isDeduction
+        ? 'linear-gradient(135deg, rgba(231, 76, 60, 0.2), rgba(192, 57, 43, 0.2))'
+        : 'linear-gradient(135deg, rgba(255, 215, 0, 0.2), rgba(255, 165, 0, 0.2))';
     textDisplay.style.padding = '4px 10px';
     textDisplay.style.borderRadius = '20px';
-    textDisplay.style.border = '2px solid rgba(255, 215, 0, 0.5)';
+    textDisplay.style.border = isDeduction
+        ? '2px solid rgba(231, 76, 60, 0.5)'
+        : '2px solid rgba(255, 215, 0, 0.5)';
     textDisplay.style.backdropFilter = 'blur(4px)';
 
     document.body.appendChild(textDisplay);
 
     setTimeout(() => {
         textDisplay.style.transition = 'all 1s cubic-bezier(0.34, 1.56, 0.64, 1)';
-        textDisplay.style.transform = 'translate(-50%, -120px) scale(1.3)';
+        textDisplay.style.transform = isDeduction
+            ? 'translate(-50%, 120px) scale(1.3)' // Downward
+            : 'translate(-50%, -120px) scale(1.3)'; // Upward
         textDisplay.style.opacity = '0';
     }, 10);
 

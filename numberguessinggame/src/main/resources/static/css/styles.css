@@ -171,6 +171,131 @@ body.dark-mode .stat-badge {
     border: 1px solid rgba(167, 139, 250, 0.3);
 }
 
+/* Hint Button Styles */
+.hint-button {
+    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+    border: 2px solid #d68910;
+    border-radius: 12px;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(243, 156, 18, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hint-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(243, 156, 18, 0.5);
+    border-color: #f39c12;
+}
+
+.hint-button:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(243, 156, 18, 0.3);
+}
+
+.hint-button:disabled {
+    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+    border-color: #7f8c8d;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.hint-button:disabled::after {
+    content: '🔒';
+    position: absolute;
+    right: 8px;
+    font-size: 12px;
+}
+
+/* Hints Display */
+.hints-display {
+    margin: 20px 0;
+    padding: 16px;
+    background: rgba(243, 156, 18, 0.1);
+    border: 2px solid rgba(243, 156, 18, 0.3);
+    border-radius: 12px;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.hints-display h3 {
+    margin: 0 0 12px 0;
+    font-size: 18px;
+    color: #f39c12;
+}
+
+.hints-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.hint-item {
+    background: linear-gradient(135deg, #fff3cd 0%, #ffe69c 100%);
+    border: 2px solid #f39c12;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #856404;
+    animation: hintReveal 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes hintReveal {
+    0% {
+        transform: scale(0) rotate(-180deg);
+        opacity: 0;
+    }
+    60% {
+        transform: scale(1.15) rotate(10deg);
+    }
+    100% {
+        transform: scale(1) rotate(0);
+        opacity: 1;
+    }
+}
+
+/* Dark mode adjustments for hint system */
+body.dark-mode .hint-button {
+    background: linear-gradient(135deg, #d68910 0%, #c27803 100%);
+    border-color: #b8860b;
+}
+
+body.dark-mode .hints-display {
+    background: rgba(243, 156, 18, 0.15);
+    border-color: rgba(243, 156, 18, 0.4);
+}
+
+body.dark-mode .hint-item {
+    background: linear-gradient(135deg, #3e3e2f 0%, #4a4a38 100%);
+    border-color: #d68910;
+    color: #ffd700;
+}
+
+/* Mobile responsiveness for hint system */
+@media (max-width: 768px) {
+    .hint-button {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .hints-display {
+        padding: 12px;
+    }
+
+    .hint-item {
+        font-size: 14px;
+        padding: 8px 12px;
+    }
+}
+
 /* Guess history - full width */
 #game-page .section:nth-child(2), #time-attack-page .section:nth-child(2) {
     display: flex;

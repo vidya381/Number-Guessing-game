@@ -30,6 +30,9 @@ public class Game {
     @Column(name = "time_taken")
     private String timeTaken;
 
+    @Column(name = "hints_used")
+    private Integer hintsUsed;
+
     @Column(name = "played_at", nullable = false, updatable = false)
     private LocalDateTime playedAt;
 
@@ -42,13 +45,14 @@ public class Game {
     public Game() {
     }
 
-    public Game(User user, Integer difficulty, Integer targetNumber, Integer attempts, Boolean won, String timeTaken) {
+    public Game(User user, Integer difficulty, Integer targetNumber, Integer attempts, Boolean won, String timeTaken, Integer hintsUsed) {
         this.user = user;
         this.difficulty = difficulty;
         this.targetNumber = targetNumber;
         this.attempts = attempts;
         this.won = won;
         this.timeTaken = timeTaken;
+        this.hintsUsed = hintsUsed;
     }
 
     // Getters and Setters
@@ -114,5 +118,13 @@ public class Game {
 
     public void setPlayedAt(LocalDateTime playedAt) {
         this.playedAt = playedAt;
+    }
+
+    public Integer getHintsUsed() {
+        return hintsUsed;
+    }
+
+    public void setHintsUsed(Integer hintsUsed) {
+        this.hintsUsed = hintsUsed;
     }
 }

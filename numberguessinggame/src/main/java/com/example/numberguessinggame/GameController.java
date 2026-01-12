@@ -184,6 +184,99 @@ public class GameController {
         return response;
     }
 
+    @PostMapping("/get-hint")
+    public ResponseEntity<Map<String, Object>> getHint(
+            @RequestParam String tabId,
+            @RequestParam(required = false) Long userId,
+            HttpSession session) {
+
+        Map<String, Object> response = new HashMap<>();
+
+        // Validate user authentication - hints require login
+        if (userId == null) {
+            response.put("error", "Please log in to use hints!");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Retrieve game session
+        String sessionId = session.getId();
+        String compositeKey = sessionId + ":" + tabId;
+        GameSession gameSession = gameSessions.get(compositeKey);
+
+        if (gameSession == null) {
+            response.put("error", "Game session not found. Please start a new game!");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Check if user matches session
+        if (!userId.equals(gameSession.getUserId())) {
+            response.put("error", "Invalid session!");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Get target number digits
+        int[] targetDigits = getDigits(gameSession.getTargetNumber());
+
+        // Check if all positions already revealed
+        if (gameSession.getRevealedHints().size() >= targetDigits.length) {
+            response.put("error", "All positions already revealed!");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Calculate hint cost
+        int hintCost = gameSession.getNextHintCost();
+
+        // Get user and verify coins
+        Optional<User> userOptional = userService.findById(userId);
+        if (userOptional.isEmpty()) {
+            response.put("error", "User not found!");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        User user = userOptional.get();
+
+        // Check sufficient coins
+        if (user.getCoins() < hintCost) {
+            response.put("error", "Not enough coins! Need " + hintCost + " coins.");
+            response.put("required", hintCost);
+            response.put("current", user.getCoins());
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // Deduct coins
+        if (!user.deductCoins(hintCost)) {
+            response.put("error", "Failed to deduct coins!");
+            return ResponseEntity.badRequest().body(response);
+        }
+        userService.save(user);
+
+        // Select random unrevealed position
+        List<Integer> unrevealedPositions = new ArrayList<>();
+        for (int i = 0; i < targetDigits.length; i++) {
+            if (!gameSession.getRevealedHints().containsKey(i)) {
+                unrevealedPositions.add(i);
+            }
+        }
+
+        int randomIndex = new java.util.Random().nextInt(unrevealedPositions.size());
+        int position = unrevealedPositions.get(randomIndex);
+        int digit = targetDigits[position];
+
+        // Record hint
+        gameSession.recordHint(position, digit);
+
+        // Build success response
+        response.put("success", true);
+        response.put("position", position);
+        response.put("digit", digit);
+        response.put("costPaid", hintCost);
+        response.put("remainingCoins", user.getCoins());
+        response.put("nextHintCost", gameSession.getNextHintCost());
+        response.put("hintsUsed", gameSession.getHintsUsed());
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping("/end-game")
     public ResponseEntity<String> endGame(@RequestParam String tabId, HttpSession session) {
         String sessionId = session.getId();
@@ -267,7 +360,8 @@ public class GameController {
                 gameSession.getTargetNumber(),
                 gameSession.getAttemptsCount(),
                 won,
-                timeTaken
+                timeTaken,
+                gameSession.getHintsUsed()
         );
         gameRepository.save(game);
 

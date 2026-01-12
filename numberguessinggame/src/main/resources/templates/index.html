@@ -193,11 +193,20 @@
                             <span class="stat-icon">🎯</span>
                             <span id="attempts">0</span>/10
                         </div>
+                        <button id="hint-btn" class="hint-button" data-tooltip="Reveal one digit position">
+                            💡 <span id="hint-cost">3</span> 🪙
+                        </button>
                     </div>
                 </div>
                 <div id="input-container"></div>
                 <button id="submit-guess">⚡ SUBMIT GUESS</button>
                 <div id="feedback" class="fade-in"></div>
+
+                <!-- Hints Display Container -->
+                <div id="hints-container" class="hints-display" style="display: none;">
+                    <h3>💡 Active Hints</h3>
+                    <div id="hints-list" class="hints-list"></div>
+                </div>
             </section>
 
             <section class="section">
