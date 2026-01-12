@@ -2150,14 +2150,14 @@ body.dark-mode .achievement-item.unlocked .achievement-icon-wrapper {
 
 .achievement-toast-close {
     position: absolute;
-    top: 8px;
-    right: 8px;
-    width: 28px;
-    height: 28px;
-    background: rgba(0, 0, 0, 0.1);
+    top: 15px;
+    right: 15px;
+    width: 36px;
+    height: 36px;
+    background: rgba(139, 122, 191, 0.1);
     border: none;
     border-radius: 50%;
-    font-size: 16px;
+    font-size: 18px;
     color: var(--text-color);
     cursor: pointer;
     transition: all 0.3s ease;
@@ -2175,7 +2175,7 @@ body.dark-mode .achievement-item.unlocked .achievement-icon-wrapper {
 }
 
 .achievement-toast-close:active {
-    transform: scale(0.95) rotate(90deg);
+    transform: scale(0.95);
 }
 
 body.dark-mode .achievement-toast-close {
