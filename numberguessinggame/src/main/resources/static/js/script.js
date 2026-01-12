@@ -3069,16 +3069,23 @@ function addDailyGuessToHistory(guess, bulls, cows) {
 
     const historyDiv = document.getElementById('daily-guess-history');
     const historyItem = document.createElement('div');
-    historyItem.className = 'history-item';
+    historyItem.className = 'history-item new-item';
 
-    historyItem.innerHTML = `
-        <span class="guess-number">#${dailyChallengeAttempts}</span>
-        <span class="guess-value">${guess}</span>
-        <span class="result">
-            <span class="bulls">🐂 Correct: ${bulls}</span>
-            <span class="cows">🐄 Misplaced: ${cows}</span>
-        </span>
-    `;
+    const guessSpan = document.createElement('span');
+    guessSpan.className = 'guess';
+    guessSpan.textContent = guess;
+
+    const correctSpan = document.createElement('span');
+    correctSpan.className = 'correct';
+    correctSpan.textContent = `🐂 Correct: ${bulls}`;
+
+    const misplacedSpan = document.createElement('span');
+    misplacedSpan.className = 'misplaced';
+    misplacedSpan.textContent = `🐄 Misplaced: ${cows}`;
+
+    historyItem.appendChild(guessSpan);
+    historyItem.appendChild(correctSpan);
+    historyItem.appendChild(misplacedSpan);
 
     historyDiv.insertBefore(historyItem, historyDiv.firstChild);
 }
