@@ -587,7 +587,6 @@ function updateGamePage() {
     fadeOutElement(homePage, () => {
         fadeInElement(gamePage, 'flex');
         document.getElementById('attempts').textContent = attempts;
-        document.getElementById('feedback').textContent = '';
         updateAttemptsProgress();
     });
 
