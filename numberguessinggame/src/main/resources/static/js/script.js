@@ -1326,10 +1326,9 @@ function showHomePage() {
 }
 
 function quitGame() {
-    if (confirm("Are you sure you want to quit? Your progress will be lost.")) {
-        clearInterval(timerInterval);
-        resetGameState();
-        showHomePage();
+    if (confirm("Are you sure you want to quit and see results?")) {
+        // End the game as a loss to show results page
+        endGame(false);
     }
 }
 
@@ -4024,10 +4023,6 @@ document.getElementById('quit-time-attack')?.addEventListener('click', () => {
 // Result page buttons
 document.getElementById('ta-play-again')?.addEventListener('click', () => {
     startTimeAttackSession(timeAttackDifficulty);
-});
-
-document.getElementById('ta-view-leaderboard')?.addEventListener('click', () => {
-    loadTimeAttackLeaderboard(timeAttackDifficulty);
 });
 
 document.getElementById('ta-main-menu')?.addEventListener('click', () => {
