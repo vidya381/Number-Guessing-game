@@ -3575,13 +3575,7 @@ async function submitTimeAttackGuess() {
             // Add to guess history
             addToTimeAttackGuessHistory(guess, data.bulls, data.cows);
 
-            // Show feedback (bulls/cows)
-            const feedbackElement = document.getElementById('ta-feedback');
-            feedbackElement.innerHTML = `
-                <p style="color: var(--warning-color); font-size: 1.2em; margin: 10px 0;">
-                    🐂 Correct: ${data.bulls} | 🐄 Misplaced: ${data.cows}
-                </p>
-            `;
+            // No feedback display - guess history shows the info (removed for faster gameplay)
 
             // Clear inputs for next guess
             inputs.forEach(input => input.value = '');
@@ -3600,12 +3594,12 @@ async function submitTimeAttackGuess() {
 /**
  * Show win feedback animation
  */
-function showTimeAttackWinFeedback(points, attempts, timeSeconds) {
+function showTimeAttackWinFeedback(coins, attempts, timeSeconds) {
     const feedbackElement = document.getElementById('ta-feedback');
     feedbackElement.innerHTML = `
         <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #52c98c 0%, #4ea8de 100%); border-radius: 15px; color: white; animation: tada 0.5s;">
             <h3 style="margin: 0 0 10px 0;">🎉 CORRECT!</h3>
-            <p style="font-size: 2em; font-weight: bold; margin: 10px 0;">+${points} points</p>
+            <p style="font-size: 2em; font-weight: bold; margin: 10px 0;">+${coins} <i class="fas fa-coins" style="color: #ffd700;"></i></p>
             <p style="font-size: 0.9em; opacity: 0.9;">${attempts} attempts • ${timeSeconds}s</p>
         </div>
     `;
@@ -3725,7 +3719,7 @@ function displayTimeAttackResults(data) {
 
     // Add title
     const title = document.createElement('h2');
-    title.textContent = '⚡ TIME ATTACK COMPLETE';
+    title.textContent = '⚡ BEAT THE CLOCK COMPLETE';
     title.style.textAlign = 'center';
     title.style.marginBottom = '20px';
     statsContainer.appendChild(title);
@@ -3733,7 +3727,7 @@ function displayTimeAttackResults(data) {
     // Add all stats vertically
     const difficultyText = ['Easy', 'Medium', 'Hard'][timeAttackDifficulty];
 
-    statsContainer.appendChild(createStatItem('fas fa-star', `Final Score: ${data.totalScore || 0}`));
+    statsContainer.appendChild(createStatItem('fas fa-coins', `Coins Earned: ${data.totalScore || 0}`));
     statsContainer.appendChild(createStatItem('fas fa-gamepad', `Games Won: ${data.gamesWon || 0} / ${data.gamesPlayed || 0}`));
     statsContainer.appendChild(createStatItem('fas fa-bolt', `Difficulty: ${difficultyText}`));
     statsContainer.appendChild(createStatItem('fas fa-chart-line', `Average Attempts: ${data.averageAttempts ? data.averageAttempts.toFixed(1) : '--'}`));
@@ -3758,7 +3752,7 @@ function displayTimeAttackResults(data) {
         historyContainer.style.marginBottom = '20px';
 
         data.gameDetails.forEach((game, index) => {
-            const gameItem = createStatItem('fas fa-play', `Game ${index + 1}: ${game.attempts} attempts, ${game.timeSeconds}s, +${game.points} pts`);
+            const gameItem = createStatItem('fas fa-play', `Game ${index + 1}: ${game.attempts} attempts, ${game.timeSeconds}s, +${game.points} 🪙`);
             historyContainer.appendChild(gameItem);
         });
 
