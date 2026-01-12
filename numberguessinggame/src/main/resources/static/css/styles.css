@@ -169,9 +169,18 @@ body {
     font-size: 1.1em;
 }
 
+/* Coin icon styling - match header coins */
+.coin-icon {
+    color: #ff8f00;
+}
+
 body.dark-mode .stat-badge {
     background: rgba(167, 139, 250, 0.15);
     border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+body.dark-mode .coin-icon {
+    color: #e65100;  /* Match header coins in dark mode */
 }
 
 /* Hint Button Styles - EXACT same size as stat-badge */
@@ -304,7 +313,7 @@ body.dark-mode .hint-button[data-locked="true"] {
 }
 
 body.dark-mode .hint-button .fa-coins {
-    color: #ffa726;
+    color: #e65100;  /* Match header coins in dark mode */
 }
 
 body.dark-mode .hint-button .hint-text {
