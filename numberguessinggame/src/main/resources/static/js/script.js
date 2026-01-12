@@ -2897,8 +2897,13 @@ function startDailyChallengeTimer() {
         const elapsed = Math.floor((Date.now() - dailyChallengeStartTime) / 1000);
         const minutes = Math.floor(elapsed / 60);
         const seconds = elapsed % 60;
-        document.getElementById('daily-timer').textContent =
-            `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+        // Update timer display (element may not exist if timer was removed)
+        const dailyTimerElement = document.getElementById('daily-timer');
+        if (dailyTimerElement) {
+            dailyTimerElement.textContent =
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
     }, 1000);
 }
 
