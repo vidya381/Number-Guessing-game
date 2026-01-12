@@ -793,10 +793,11 @@ async function requestHint() {
         return;
     }
 
-    // Disable button during request
+    // Disable button during request (keep same size to prevent layout shift)
     const hintBtn = document.getElementById('hint-btn');
+    const originalHTML = hintBtn.innerHTML;
     hintBtn.disabled = true;
-    hintBtn.innerHTML = '⏳ Loading...';
+    hintBtn.style.opacity = '0.5';
 
     try {
         const response = await fetch('/get-hint', {
@@ -823,6 +824,7 @@ async function requestHint() {
             // Update UI (this will re-enable button and update cost display)
             displayHint(data.position, data.digit);
             updateHintButton(); // This updates the button HTML with new cost
+            hintBtn.style.opacity = '1'; // Reset opacity after updateHintButton
             updateCoinDisplay();
 
             // Show success animation
@@ -832,6 +834,7 @@ async function requestHint() {
         } else {
             // Handle errors - restore button state
             updateHintButton();
+            hintBtn.style.opacity = '1'; // Reset opacity
             showToast(data.error || 'Failed to get hint. Try again!', 'error');
 
             // Special handling for insufficient coins
@@ -845,7 +848,9 @@ async function requestHint() {
         console.error('Hint request failed:', error);
         showToast('Connection error. Check your network and try again!', 'error');
         // Restore button state on network error
+        const hintBtn = document.getElementById('hint-btn');
         updateHintButton();
+        if (hintBtn) hintBtn.style.opacity = '1'; // Reset opacity
     }
 }
 
@@ -891,8 +896,8 @@ function updateHintButton() {
 
     console.log('🔄 Updating hint button. Cost:', nextHintCost, 'User coins:', currentUser?.coins);
 
-    // Recreate button HTML with current cost
-    hintBtn.innerHTML = `💡 <span id="hint-cost">${nextHintCost}</span> 🪙`;
+    // Recreate button HTML with simplified clean design
+    hintBtn.innerHTML = `<span class="hint-text">Hint</span> <span class="hint-cost" id="hint-cost">${nextHintCost}</span> <i class="fas fa-coins"></i>`;
 
     // Disable if not logged in
     if (!currentUser || !authToken) {

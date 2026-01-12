@@ -174,49 +174,65 @@ body.dark-mode .stat-badge {
     border: 1px solid rgba(167, 139, 250, 0.3);
 }
 
-/* Hint Button Styles */
+/* Hint Button Styles - EXACT same size as stat-badge */
 .hint-button {
-    background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
-    border: 1.5px solid #d68910;
-    border-radius: 16px;
-    color: white;
-    font-size: 0.85em;
-    font-weight: 700;
-    padding: 6px 12px;
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 1px 4px rgba(243, 156, 18, 0.3);
+    /* Reset ALL button defaults */
+    all: unset;
+
+    /* EXACTLY match stat-badge size (6px 12px, 0.85em, gap 6px) */
     display: flex;
     align-items: center;
-    gap: 5px;
-    position: relative;
-    overflow: hidden;
+    gap: 6px;                   /* SAME as stat-badge */
+    padding: 6px 12px;          /* SAME as stat-badge */
+    border-radius: 16px;        /* SAME as stat-badge */
+    font-weight: 600;           /* SAME as stat-badge */
+    font-size: 0.85em;          /* SAME as stat-badge */
     white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+
+    /* Warm gold/orange gradient for action button */
+    background: linear-gradient(135deg, rgba(255, 143, 0, 0.15) 0%, rgba(255, 111, 0, 0.2) 100%);
+    border: 1px solid rgba(255, 143, 0, 0.3);
+    color: var(--text-color);
 }
 
 .hint-button:hover:not(:disabled) {
     transform: translateY(-1px);
-    box-shadow: 0 3px 10px rgba(243, 156, 18, 0.4);
-    border-color: #f39c12;
+    background: linear-gradient(135deg, rgba(255, 143, 0, 0.2) 0%, rgba(255, 111, 0, 0.25) 100%);
+    border-color: rgba(255, 143, 0, 0.4);
 }
 
 .hint-button:active:not(:disabled) {
     transform: translateY(0);
-    box-shadow: 0 1px 4px rgba(243, 156, 18, 0.3);
 }
 
 .hint-button:disabled {
-    background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
-    border-color: #7f8c8d;
+    opacity: 0.5;
     cursor: not-allowed;
-    opacity: 0.6;
+    background: rgba(167, 139, 250, 0.1);
+    border: 1px solid rgba(167, 139, 250, 0.2);
 }
 
 .hint-button:disabled::after {
-    content: '🔒';
-    position: absolute;
-    right: 6px;
-    font-size: 10px;
+    content: ' 🔒';
+}
+
+/* Icons and text in hint button - match stat-icon */
+.hint-button .fa-coins {
+    color: #ff8f00;
+    font-size: 1.1em;            /* SAME as stat-icon */
+}
+
+.hint-button .hint-text {
+    color: #ff8f00;
+    font-weight: 600;
+}
+
+.hint-button .hint-cost {
+    color: var(--text-color);
+    font-weight: 600;
 }
 
 /* Hints Display */
@@ -268,8 +284,26 @@ body.dark-mode .stat-badge {
 
 /* Dark mode adjustments for hint system */
 body.dark-mode .hint-button {
-    background: linear-gradient(135deg, #d68910 0%, #c27803 100%);
-    border-color: #b8860b;
+    background: linear-gradient(135deg, rgba(255, 143, 0, 0.2) 0%, rgba(255, 111, 0, 0.25) 100%);
+    border: 1px solid rgba(255, 143, 0, 0.4);
+}
+
+body.dark-mode .hint-button:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(255, 143, 0, 0.25) 0%, rgba(255, 111, 0, 0.3) 100%);
+    border-color: rgba(255, 143, 0, 0.5);
+}
+
+body.dark-mode .hint-button:disabled {
+    background: rgba(167, 139, 250, 0.15);
+    border: 1px solid rgba(167, 139, 250, 0.3);
+}
+
+body.dark-mode .hint-button .fa-coins {
+    color: #ffa726;
+}
+
+body.dark-mode .hint-button .hint-text {
+    color: #ffa726;
 }
 
 body.dark-mode .hints-display {
@@ -300,9 +334,9 @@ body.dark-mode .hint-item {
     }
 
     .hint-button {
-        font-size: 0.75em;
-        padding: 5px 10px;
-        gap: 4px;
+        font-size: 0.75em;          /* SAME as mobile stat-badge */
+        padding: 5px 10px;          /* SAME as mobile stat-badge */
+        gap: 4px;                   /* SAME as mobile stat-badge */
     }
 
     .hints-display {
@@ -500,8 +534,8 @@ h2 {
     font-weight: 700;
 }
 
-/* Exclude header buttons from generic button styling */
-button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn) {
+/* Exclude header buttons and hint button from generic button styling */
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button) {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     color: var(--button-text-color);
     border: none;
@@ -517,13 +551,13 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
     box-shadow: 0 6px 20px var(--shadow-color);
 }
 
-button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):hover {
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):hover {
     background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
     transform: translateY(var(--hover-lift)) scale(1.02);
     box-shadow: 0 10px 30px rgba(78, 168, 222, 0.35);
 }
 
-button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):active {
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):active {
     transform: translateY(-2px) scale(0.98);
     box-shadow: 0 4px 15px var(--shadow-color);
 }
@@ -790,12 +824,12 @@ body.dark-mode h4 {
     background-clip: text;
 }
 
-body.dark-mode button {
+body.dark-mode button:not(.hint-button) {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     box-shadow: 0 6px 24px rgba(167, 139, 250, 0.35);
 }
 
-body.dark-mode button:hover {
+body.dark-mode button:not(.hint-button):hover {
     background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
     box-shadow: 0 10px 35px rgba(96, 197, 242, 0.45);
 }
