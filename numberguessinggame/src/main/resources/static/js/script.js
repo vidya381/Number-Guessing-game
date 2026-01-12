@@ -741,7 +741,7 @@ function submitGuess() {
                 endGame(true);
             } else {
                 if (soundVolume > 0) incorrectSound.play();
-                displayFeedback(data.correctPosition, data.correctButWrongPosition);
+                // displayFeedback removed - redundant with guess history
                 addToGuessHistory(guess, data.correctPosition, data.correctButWrongPosition);
                 shakeInputs();
                 if (attempts >= GAME_CONFIG.MAX_ATTEMPTS) {
@@ -902,6 +902,7 @@ function updateHintButton() {
     // Disable if not logged in
     if (!currentUser || !authToken) {
         hintBtn.disabled = true;
+        hintBtn.setAttribute('data-locked', 'true');
         hintBtn.setAttribute('data-tooltip', 'Login required for hints');
         console.log('🔒 Hint button disabled - user not logged in');
         return;
@@ -910,6 +911,7 @@ function updateHintButton() {
     // Disable if insufficient coins
     if (currentUser.coins < nextHintCost) {
         hintBtn.disabled = true;
+        hintBtn.setAttribute('data-locked', 'true');
         hintBtn.setAttribute('data-tooltip', `Need ${nextHintCost} coins (you have ${currentUser.coins})`);
         console.log('🔒 Hint button disabled - insufficient coins');
         return;
@@ -917,6 +919,7 @@ function updateHintButton() {
 
     // Enable button
     hintBtn.disabled = false;
+    hintBtn.removeAttribute('data-locked');
     hintBtn.setAttribute('data-tooltip', 'Reveal one digit position');
     console.log('✅ Hint button enabled');
 }

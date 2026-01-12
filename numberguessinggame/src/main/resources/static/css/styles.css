@@ -211,12 +211,17 @@ body.dark-mode .stat-badge {
 .hint-button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    background: rgba(167, 139, 250, 0.1);
-    border: 1px solid rgba(167, 139, 250, 0.2);
 }
 
-.hint-button:disabled::after {
+/* Only show lock icon when actually locked (not during loading) */
+.hint-button[data-locked="true"]::after {
     content: ' 🔒';
+}
+
+/* When locked, change to purple background */
+.hint-button[data-locked="true"] {
+    background: rgba(167, 139, 250, 0.1);
+    border: 1px solid rgba(167, 139, 250, 0.2);
 }
 
 /* Icons and text in hint button - match stat-icon */
@@ -293,7 +298,7 @@ body.dark-mode .hint-button:hover:not(:disabled) {
     border-color: rgba(255, 143, 0, 0.5);
 }
 
-body.dark-mode .hint-button:disabled {
+body.dark-mode .hint-button[data-locked="true"] {
     background: rgba(167, 139, 250, 0.15);
     border: 1px solid rgba(167, 139, 250, 0.3);
 }
