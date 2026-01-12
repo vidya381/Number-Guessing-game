@@ -310,6 +310,7 @@ document.addEventListener('DOMContentLoaded', function () {
     showHomePage();
     setupKeyboardShortcuts(); // Initialize keyboard shortcuts
     setupHowToPlay(); // Initialize How to Play toggle
+    updateHintButton(); // Initialize hint button state
 });
 
 // Cleanup intervals when page unloads to prevent memory leaks
@@ -363,7 +364,16 @@ function attachEventListeners() {
     document.getElementById('quit').addEventListener('click', showHomePage);
     document.getElementById('quit-game').addEventListener('click', quitGame);
     document.getElementById('theme-toggle').addEventListener('click', toggleDarkMode);
-    document.getElementById('hint-btn').addEventListener('click', requestHint);
+
+    // Hint button
+    const hintBtn = document.getElementById('hint-btn');
+    if (hintBtn) {
+        hintBtn.addEventListener('click', requestHint);
+        console.log('✅ Hint button event listener attached');
+    } else {
+        console.error('❌ Hint button not found in DOM');
+    }
+
     // Sound toggle moved to settings modal - handled by setupSettingsModal()
 }
 
@@ -766,6 +776,11 @@ function submitGuess() {
  * Request a hint from the backend
  */
 async function requestHint() {
+    console.log('💡 requestHint called');
+    console.log('Current user:', currentUser);
+    console.log('Auth token:', authToken);
+    console.log('TabId:', tabId);
+
     // Check if user is logged in
     if (!currentUser || !authToken) {
         displayToast('Please log in to use hints! 🔑', 'info');
@@ -872,7 +887,12 @@ function updateHintButton() {
     const hintBtn = document.getElementById('hint-btn');
     const hintCostSpan = document.getElementById('hint-cost');
 
-    if (!hintBtn || !hintCostSpan) return;
+    if (!hintBtn || !hintCostSpan) {
+        console.log('⚠️ Hint button or cost span not found');
+        return;
+    }
+
+    console.log('🔄 Updating hint button. Cost:', nextHintCost, 'User coins:', currentUser?.coins);
 
     // Update cost display
     hintCostSpan.textContent = nextHintCost;
@@ -881,6 +901,7 @@ function updateHintButton() {
     if (!currentUser || !authToken) {
         hintBtn.disabled = true;
         hintBtn.setAttribute('data-tooltip', 'Login required for hints');
+        console.log('🔒 Hint button disabled - user not logged in');
         return;
     }
 
@@ -888,12 +909,14 @@ function updateHintButton() {
     if (currentUser.coins < nextHintCost) {
         hintBtn.disabled = true;
         hintBtn.setAttribute('data-tooltip', `Need ${nextHintCost} coins (you have ${currentUser.coins})`);
+        console.log('🔒 Hint button disabled - insufficient coins');
         return;
     }
 
     // Enable button
     hintBtn.disabled = false;
     hintBtn.setAttribute('data-tooltip', 'Reveal one digit position');
+    console.log('✅ Hint button enabled');
 }
 
 /**
