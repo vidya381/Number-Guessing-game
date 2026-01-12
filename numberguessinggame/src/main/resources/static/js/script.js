@@ -795,7 +795,6 @@ async function requestHint() {
 
     // Disable button during request
     const hintBtn = document.getElementById('hint-btn');
-    const originalText = hintBtn.innerHTML;
     hintBtn.disabled = true;
     hintBtn.innerHTML = '⏳ Loading...';
 
@@ -821,9 +820,9 @@ async function requestHint() {
             currentUser.coins = data.remainingCoins;
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
-            // Update UI
+            // Update UI (this will re-enable button and update cost display)
             displayHint(data.position, data.digit);
-            updateHintButton();
+            updateHintButton(); // This updates the button HTML with new cost
             updateCoinDisplay();
 
             // Show success animation
@@ -831,7 +830,8 @@ async function requestHint() {
             showToast(`Hint revealed! Position ${data.position + 1} is ${data.digit} 💡`, 'success');
 
         } else {
-            // Handle errors
+            // Handle errors - restore button state
+            updateHintButton();
             showToast(data.error || 'Failed to get hint. Try again!', 'error');
 
             // Special handling for insufficient coins
@@ -844,10 +844,8 @@ async function requestHint() {
     } catch (error) {
         console.error('Hint request failed:', error);
         showToast('Connection error. Check your network and try again!', 'error');
-    } finally {
-        // Re-enable button
-        hintBtn.disabled = false;
-        hintBtn.innerHTML = originalText;
+        // Restore button state on network error
+        updateHintButton();
     }
 }
 
@@ -885,17 +883,16 @@ function displayHint(position, digit) {
  */
 function updateHintButton() {
     const hintBtn = document.getElementById('hint-btn');
-    const hintCostSpan = document.getElementById('hint-cost');
 
-    if (!hintBtn || !hintCostSpan) {
-        console.log('⚠️ Hint button or cost span not found');
+    if (!hintBtn) {
+        console.log('⚠️ Hint button not found');
         return;
     }
 
     console.log('🔄 Updating hint button. Cost:', nextHintCost, 'User coins:', currentUser?.coins);
 
-    // Update cost display
-    hintCostSpan.textContent = nextHintCost;
+    // Recreate button HTML with current cost
+    hintBtn.innerHTML = `💡 <span id="hint-cost">${nextHintCost}</span> 🪙`;
 
     // Disable if not logged in
     if (!currentUser || !authToken) {
