@@ -20,6 +20,7 @@ import com.example.numberguessinggame.entity.Achievement;
 import com.example.numberguessinggame.entity.Game;
 import com.example.numberguessinggame.entity.User;
 import com.example.numberguessinggame.repository.GameRepository;
+import com.example.numberguessinggame.repository.UserRepository;
 import com.example.numberguessinggame.service.AchievementService;
 import com.example.numberguessinggame.service.UserService;
 
@@ -40,6 +41,9 @@ public class GameController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private GameRepository gameRepository;
@@ -248,7 +252,7 @@ public class GameController {
             response.put("error", "Failed to deduct coins!");
             return ResponseEntity.badRequest().body(response);
         }
-        userService.save(user);
+        userRepository.save(user);
 
         // Select random unrevealed position
         List<Integer> unrevealedPositions = new ArrayList<>();

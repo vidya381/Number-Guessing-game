@@ -783,13 +783,13 @@ async function requestHint() {
 
     // Check if user is logged in
     if (!currentUser || !authToken) {
-        displayToast('Please log in to use hints! 🔑', 'info');
+        showToast('Please log in to use hints! 🔑', 'info');
         return;
     }
 
     // Check if tabId exists (game session active)
     if (!tabId) {
-        displayToast('Start a game first to use hints!', 'error');
+        showToast('Start a game first to use hints!', 'error');
         return;
     }
 
@@ -828,22 +828,22 @@ async function requestHint() {
 
             // Show success animation
             showCoinAnimation(-data.costPaid); // Negative for deduction
-            displayToast(`Hint revealed! Position ${data.position + 1} is ${data.digit} 💡`, 'success');
+            showToast(`Hint revealed! Position ${data.position + 1} is ${data.digit} 💡`, 'success');
 
         } else {
             // Handle errors
-            displayToast(data.error || 'Failed to get hint. Try again!', 'error');
+            showToast(data.error || 'Failed to get hint. Try again!', 'error');
 
             // Special handling for insufficient coins
             if (data.required && data.current) {
                 const needed = data.required - data.current;
-                displayToast(`You need ${needed} more coins! Win games to earn coins. 🪙`, 'warning');
+                showToast(`You need ${needed} more coins! Win games to earn coins. 🪙`, 'warning');
             }
         }
 
     } catch (error) {
         console.error('Hint request failed:', error);
-        displayToast('Connection error. Check your network and try again!', 'error');
+        showToast('Connection error. Check your network and try again!', 'error');
     } finally {
         // Re-enable button
         hintBtn.disabled = false;
