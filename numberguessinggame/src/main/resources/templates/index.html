@@ -420,43 +420,22 @@
 
             <!-- Difficulty Breakdown -->
             <div class="profile-section">
-                <h3>📊 DIFFICULTY BREAKDOWN</h3>
+                <h3>🎯 DIFFICULTY BREAKDOWN</h3>
                 <div class="difficulty-breakdown">
-                    <div class="difficulty-bar">
-                        <div class="difficulty-info">
-                            <span class="difficulty-name">🟢 EASY</span>
-                            <span class="difficulty-stats">
-                                <span id="profile-easy-wins">0</span> / <span id="profile-easy-games">0</span>
-                                (<span id="profile-easy-rate">0%</span>)
-                            </span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill easy" id="profile-easy-progress" style="width: 0%"></div>
-                        </div>
+                    <div class="stat-box difficulty-box easy">
+                        <span class="stat-label">EASY</span>
+                        <span class="stat-number" id="profile-easy-rate">0%</span>
+                        <span class="stat-detail"><span id="profile-easy-wins">0</span> / <span id="profile-easy-games">0</span> wins</span>
                     </div>
-                    <div class="difficulty-bar">
-                        <div class="difficulty-info">
-                            <span class="difficulty-name">🟡 MEDIUM</span>
-                            <span class="difficulty-stats">
-                                <span id="profile-medium-wins">0</span> / <span id="profile-medium-games">0</span>
-                                (<span id="profile-medium-rate">0%</span>)
-                            </span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill medium" id="profile-medium-progress" style="width: 0%"></div>
-                        </div>
+                    <div class="stat-box difficulty-box medium">
+                        <span class="stat-label">MEDIUM</span>
+                        <span class="stat-number" id="profile-medium-rate">0%</span>
+                        <span class="stat-detail"><span id="profile-medium-wins">0</span> / <span id="profile-medium-games">0</span> wins</span>
                     </div>
-                    <div class="difficulty-bar">
-                        <div class="difficulty-info">
-                            <span class="difficulty-name">🔴 HARD</span>
-                            <span class="difficulty-stats">
-                                <span id="profile-hard-wins">0</span> / <span id="profile-hard-games">0</span>
-                                (<span id="profile-hard-rate">0%</span>)
-                            </span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill hard" id="profile-hard-progress" style="width: 0%"></div>
-                        </div>
+                    <div class="stat-box difficulty-box hard">
+                        <span class="stat-label">HARD</span>
+                        <span class="stat-number" id="profile-hard-rate">0%</span>
+                        <span class="stat-detail"><span id="profile-hard-wins">0</span> / <span id="profile-hard-games">0</span> wins</span>
                     </div>
                 </div>
             </div>
@@ -496,7 +475,7 @@
 
             <!-- Recent Games -->
             <div class="profile-section">
-                <h3>📜 RECENT GAMES</h3>
+                <h3>🎮 RECENT GAMES</h3>
                 <div class="recent-games-list" id="profile-recent-games">
                     <!-- Recent games will be inserted here -->
                 </div>

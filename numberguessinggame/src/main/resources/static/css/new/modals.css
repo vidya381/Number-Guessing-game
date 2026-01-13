@@ -662,7 +662,7 @@
 
 /* Profile Sections */
 .profile-section {
-    margin-bottom: 30px;
+    margin-bottom: 20px; /* Reduced from 30px */
 }
 
 .profile-section h3 {
@@ -671,65 +671,37 @@
     color: var(--primary-color);
     margin-bottom: 15px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 0.3px; /* Reduced from 1px for tighter spacing */
 }
 
-/* Difficulty Breakdown */
+/* Difficulty Breakdown - Box Style (matches Achievements) */
 .difficulty-breakdown {
     display: flex;
-    flex-direction: column;
-    gap: 15px;
+    justify-content: space-around;
+    gap: 12px;
 }
 
-.difficulty-bar {
-    background: var(--card-background);
-    border: 2px solid var(--border-color);
-    border-radius: 10px;
+.difficulty-box {
+    position: relative;
     padding: 15px;
 }
 
-.difficulty-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.difficulty-box .stat-label {
+    font-size: 13px; /* Match achievements stat-label */
+    font-weight: 600;
     margin-bottom: 8px;
 }
 
-.difficulty-name {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--text-color);
+.difficulty-box .stat-number {
+    font-size: 32px; /* Match achievements stat-number */
 }
 
-.difficulty-stats {
-    font-size: 13px;
+.stat-detail {
+    display: block;
+    font-size: 13px; /* Match other text in profile */
     color: var(--text-muted);
-}
-
-.progress-bar {
-    width: 100%;
-    height: 12px;
-    background: rgba(139, 122, 191, 0.1);
-    border-radius: 6px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    transition: width 0.5s ease;
-    border-radius: 6px;
-}
-
-.progress-fill.easy {
-    background: linear-gradient(90deg, #4CAF50, #81C784);
-}
-
-.progress-fill.medium {
-    background: linear-gradient(90deg, #FFC107, #FFD54F);
-}
-
-.progress-fill.hard {
-    background: linear-gradient(90deg, #F44336, #E57373);
+    margin-top: 6px;
+    opacity: 0.8;
 }
 
 /* Achievements Summary */
@@ -783,46 +755,90 @@
 }
 
 /* Recent Games List */
+
+/* ===================================== */
+/* RECENT GAMES - CARD STYLE             */
+/* ===================================== */
+
 .recent-games-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    max-height: 400px;
+    gap: 8px;
+    height: 250px; /* Fixed height instead of max-height */
+    min-height: 250px; /* Ensure minimum height */
+    max-height: 250px; /* Maximum height */
     overflow-y: auto;
+    overflow-x: hidden;
+    padding: 5px;
+    scrollbar-width: thin;
+}
+
+.recent-games-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.recent-games-list::-webkit-scrollbar-track {
+    background: rgba(139, 122, 191, 0.1);
+    border-radius: 3px;
+}
+
+.recent-games-list::-webkit-scrollbar-thumb {
+    background: rgba(139, 122, 191, 0.4);
+    border-radius: 3px;
+}
+
+.recent-games-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 122, 191, 0.6);
 }
 
 .recent-game-item {
     background: var(--card-background);
-    border: 2px solid var(--border-color);
+    border: 2px solid rgba(139, 122, 191, 0.15);
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px 12px; /* Reduced padding */
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    gap: 12px; /* Reduced gap */
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0; /* Prevent items from shrinking */
+    min-height: 55px; /* Ensure minimum height for each item */
+}
+
+.recent-game-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
     transition: all 0.3s ease;
 }
 
+.recent-game-item.won::before {
+    background: linear-gradient(180deg, #4CAF50, #81C784);
+}
+
+.recent-game-item.lost::before {
+    background: linear-gradient(180deg, #F44336, #E57373);
+}
+
 .recent-game-item:hover {
-    transform: translateX(5px);
-    box-shadow: 0 2px 8px rgba(139, 122, 191, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(139, 122, 191, 0.15);
+    border-color: var(--primary-color);
 }
 
-.recent-game-item.won {
-    border-left: 4px solid #4CAF50;
-}
-
-.recent-game-item.lost {
-    border-left: 4px solid #F44336;
-}
-
-.recent-game-info {
+/* Result Icon - Compact */
+.game-result-icon {
+    font-size: 24px; /* Reduced from 36px */
+    flex-shrink: 0;
     display: flex;
     align-items: center;
-    gap: 15px;
-}
-
-.game-result-icon {
-    font-size: 24px;
+    justify-content: center;
+    width: 35px; /* Reduced from 50px */
+    height: 35px;
 }
 
 .game-result-icon.won {
@@ -831,29 +847,80 @@
 
 .game-result-icon.lost {
     color: #F44336;
+    opacity: 0.7;
 }
 
+/* Game details */
 .game-details {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 5px; /* Reduced from 8px */
 }
 
-.game-difficulty {
-    font-weight: 600;
-    font-size: 14px;
-    color: var(--text-color);
+.game-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 }
 
-.game-stats {
+/* Difficulty badges */
+.difficulty-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.difficulty-badge.difficulty-easy {
+    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+    color: white;
+}
+
+.difficulty-badge.difficulty-medium {
+    background: linear-gradient(135deg, #FF9800, #FFB74D);
+    color: white;
+}
+
+.difficulty-badge.difficulty-hard {
+    background: linear-gradient(135deg, #F44336, #E57373);
+    color: white;
+}
+
+/* Game stats inline */
+.game-stats-inline {
+    display: flex;
+    gap: 12px;
     font-size: 12px;
     color: var(--text-muted);
+}
+
+.game-stats-inline span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.game-stats-inline i {
+    font-size: 11px;
+    opacity: 0.7;
 }
 
 .game-date {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
-    text-align: right;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.game-date i {
+    font-size: 10px;
+    opacity: 0.6;
 }
 
 /* ===================================== */

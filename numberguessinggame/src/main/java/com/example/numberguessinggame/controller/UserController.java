@@ -96,6 +96,8 @@ public class UserController {
 
             // Recent games (last 10)
             List<Game> recentGames = gameRepository.findTop10ByUserOrderByPlayedAtDesc(user);
+            System.out.println("=== Recent Games Query ===");
+            System.out.println("Found " + recentGames.size() + " recent games for user: " + user.getUsername());
             List<Map<String, Object>> recentGamesData = recentGames.stream()
                 .map(game -> {
                     Map<String, Object> gameData = new HashMap<>();
@@ -121,6 +123,7 @@ public class UserController {
                     return gameData;
                 })
                 .collect(Collectors.toList());
+            System.out.println("Mapped " + recentGamesData.size() + " games to response");
             profile.put("recentGames", recentGamesData);
 
             // Difficulty breakdown

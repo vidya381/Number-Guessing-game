@@ -391,6 +391,11 @@ window.UI = {
     },
 
     populateProfileModal: function(profile) {
+        console.log('=== populateProfileModal called ===');
+        console.log('Profile data:', profile);
+        console.log('Recent games:', profile.recentGames);
+        console.log('Recent games length:', profile.recentGames ? profile.recentGames.length : 0);
+
         // Update header info
         const usernameEl = document.getElementById('profile-username');
         const emailEl = document.getElementById('profile-email');
@@ -447,72 +452,83 @@ window.UI = {
             if (!stats) return;
 
             const winsEl = document.getElementById(`profile-${difficulty.toLowerCase()}-wins`);
-            const totalEl = document.getElementById(`profile-${difficulty.toLowerCase()}-total`);
+            const gamesEl = document.getElementById(`profile-${difficulty.toLowerCase()}-games`);
             const rateEl = document.getElementById(`profile-${difficulty.toLowerCase()}-rate`);
-            const progressEl = document.getElementById(`profile-${difficulty.toLowerCase()}-progress`);
 
             const wins = stats.wins || 0;
             const total = stats.total || 0;
             const rate = stats.winRate || '0%';
 
             if (winsEl) winsEl.textContent = wins;
-            if (totalEl) totalEl.textContent = total;
+            if (gamesEl) gamesEl.textContent = total;
             if (rateEl) rateEl.textContent = rate;
-
-            // Update progress bar
-            if (progressEl) {
-                const percentage = total > 0 ? (wins / total) * 100 : 0;
-                progressEl.style.width = percentage + '%';
-            }
         });
     },
 
     updateRecentGamesList: function(games) {
-        const recentGamesList = document.getElementById('profile-recent-games-list');
-        if (!recentGamesList) return;
+        console.log('=== updateRecentGamesList called ===');
+        console.log('Games received:', games);
+        console.log('Games length:', games ? games.length : 0);
+
+        const recentGamesList = document.getElementById('profile-recent-games');
+        if (!recentGamesList) {
+            console.log('ERROR: profile-recent-games element not found!');
+            return;
+        }
 
         recentGamesList.innerHTML = '';
 
         if (!games || games.length === 0) {
+            console.log('No games to display');
             recentGamesList.innerHTML = '<p style="text-align: center; opacity: 0.7; padding: 20px;">No recent games yet.</p>';
             return;
         }
+
+        console.log('Displaying', games.length, 'games');
 
         games.forEach(game => {
             const gameItem = document.createElement('div');
             gameItem.className = 'recent-game-item ' + (game.won ? 'won' : 'lost');
 
-            const difficultySpan = document.createElement('span');
-            difficultySpan.className = 'game-difficulty';
-            difficultySpan.textContent = this.formatDifficulty(game.difficulty);
+            // Result icon (left side)
+            const resultIcon = document.createElement('div');
+            resultIcon.className = 'game-result-icon ' + (game.won ? 'won' : 'lost');
+            resultIcon.innerHTML = game.won
+                ? '<i class="fas fa-trophy"></i>'
+                : '<i class="fas fa-times-circle"></i>';
 
-            const resultSpan = document.createElement('span');
-            resultSpan.className = 'game-result';
-            resultSpan.innerHTML = game.won
-                ? '<i class="fas fa-check-circle"></i> Won'
-                : '<i class="fas fa-times-circle"></i> Lost';
+            // Game details (middle section)
+            const gameDetails = document.createElement('div');
+            gameDetails.className = 'game-details';
 
-            const attemptsSpan = document.createElement('span');
-            attemptsSpan.className = 'game-attempts';
-            attemptsSpan.textContent = `${game.attempts || 0} attempts`;
+            // Top row: Difficulty badge + stats
+            const topRow = document.createElement('div');
+            topRow.className = 'game-top-row';
 
-            const timeSpan = document.createElement('span');
-            timeSpan.className = 'game-time';
-            if (Utils) {
-                timeSpan.textContent = Utils.formatGameTime(game.timeTaken);
-            }
+            const difficultyBadge = document.createElement('span');
+            difficultyBadge.className = 'difficulty-badge difficulty-' + (game.difficulty === 0 ? 'easy' : game.difficulty === 1 ? 'medium' : 'hard');
+            difficultyBadge.textContent = this.formatDifficulty(game.difficulty);
 
-            const dateSpan = document.createElement('span');
+            const statsRow = document.createElement('span');
+            statsRow.className = 'game-stats-inline';
+            statsRow.innerHTML = `
+                <span><i class="fas fa-bullseye"></i> ${game.attempts || 0}</span>
+                <span><i class="fas fa-clock"></i> ${Utils ? Utils.formatGameTime(game.timeTaken) : 'N/A'}</span>
+            `;
+
+            topRow.appendChild(difficultyBadge);
+            topRow.appendChild(statsRow);
+
+            // Bottom row: Date
+            const dateSpan = document.createElement('div');
             dateSpan.className = 'game-date';
-            if (Utils) {
-                dateSpan.textContent = Utils.formatRelativeDate(game.createdAt);
-            }
+            dateSpan.innerHTML = `<i class="fas fa-calendar"></i> ${Utils ? Utils.formatRelativeDate(game.createdAt) : 'N/A'}`;
 
-            gameItem.appendChild(difficultySpan);
-            gameItem.appendChild(resultSpan);
-            gameItem.appendChild(attemptsSpan);
-            gameItem.appendChild(timeSpan);
-            gameItem.appendChild(dateSpan);
+            gameDetails.appendChild(topRow);
+            gameDetails.appendChild(dateSpan);
+
+            gameItem.appendChild(resultIcon);
+            gameItem.appendChild(gameDetails);
 
             recentGamesList.appendChild(gameItem);
         });
