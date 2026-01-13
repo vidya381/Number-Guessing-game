@@ -153,6 +153,8 @@
     border: 2px solid rgba(82, 201, 140, 0.3);
     border-radius: 12px;
     text-align: center;
+    animation: slideDown 0.3s ease-out;
+    overflow: hidden;
 }
 
 .daily-challenge-status h3 {

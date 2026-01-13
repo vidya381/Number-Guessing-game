@@ -46,12 +46,22 @@ window.DailyGame = {
                 if (data.alreadyAttempted && data.userAttempt) {
                     // User already completed today's challenge
                     if (playBtn) {
-                        playBtn.disabled = true;
+                        playBtn.disabled = false; // Make it clickable for toggle
                         playBtn.innerHTML = '<i class="fas fa-check"></i> COMPLETED TODAY';
+                        playBtn.style.cursor = 'pointer';
+
+                        // Add toggle functionality
+                        playBtn.onclick = (e) => {
+                            e.preventDefault();
+                            if (statusDiv) {
+                                const isHidden = statusDiv.style.display === 'none';
+                                statusDiv.style.display = isHidden ? 'block' : 'none';
+                            }
+                        };
                     }
 
                     if (statusDiv) {
-                        statusDiv.style.display = 'block';
+                        statusDiv.style.display = 'none'; // Start collapsed
                         statusDiv.innerHTML = `
                             <h3>✓ Challenge Complete!</h3>
                             <p><strong>Attempts:</strong> ${data.userAttempt.attempts}</p>
@@ -66,6 +76,8 @@ window.DailyGame = {
                     if (playBtn) {
                         playBtn.disabled = false;
                         playBtn.innerHTML = '<i class="fas fa-play"></i> PLAY NOW';
+                        playBtn.style.cursor = 'pointer';
+                        playBtn.onclick = null; // Remove toggle handler
                     }
                     if (statusDiv) {
                         statusDiv.style.display = 'none';
@@ -95,11 +107,9 @@ window.DailyGame = {
             return;
         }
 
+        // If already completed, the button now toggles stats, so this function won't be called
         if (!GameState.dailyChallenge.info || GameState.dailyChallenge.info.alreadyAttempted) {
-            if (Achievements) {
-                Achievements.showToast('You\'ve already completed today\'s challenge! 📅', 'info');
-            }
-            return;
+            return; // Silently return - button handles toggle
         }
 
         console.log('=== Starting Daily Challenge ===');
