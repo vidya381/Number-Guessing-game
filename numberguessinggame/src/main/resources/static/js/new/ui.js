@@ -656,7 +656,5 @@ window.UI = {
         this.setupSettingsModal();
         this.setupLeaderboardModal();
         this.setupProfileListeners();
-        this.updateBestScore();
-        this.updateRecentScores();
     }
 };
