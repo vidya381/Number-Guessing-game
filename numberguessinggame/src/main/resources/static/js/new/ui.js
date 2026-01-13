@@ -411,11 +411,11 @@ window.UI = {
         if (winRateEl) winRateEl.textContent = profile.winRate || '0%';
         if (bestScoreEl) bestScoreEl.textContent = profile.bestScore || 'Not set';
 
-        // Update streaks
-        const currentWinStreakEl = document.getElementById('profile-current-win-streak');
-        const bestWinStreakEl = document.getElementById('profile-best-win-streak');
-        const consecutiveDaysEl = document.getElementById('profile-consecutive-days');
-        const bestDaysStreakEl = document.getElementById('profile-best-days-streak');
+        // Update streaks (corrected IDs to match HTML)
+        const currentWinStreakEl = document.getElementById('profile-current-streak');
+        const bestWinStreakEl = document.getElementById('profile-best-streak');
+        const consecutiveDaysEl = document.getElementById('profile-play-days');
+        const bestDaysStreakEl = document.getElementById('profile-best-play-days');
 
         if (currentWinStreakEl) currentWinStreakEl.textContent = profile.currentWinStreak || 0;
         if (bestWinStreakEl) bestWinStreakEl.textContent = profile.bestWinStreak || 0;

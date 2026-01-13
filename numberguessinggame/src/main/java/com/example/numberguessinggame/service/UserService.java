@@ -72,6 +72,11 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Couldn't find your account. Try logging in again!"));
 
+        System.out.println("=== updateUserStats called ===");
+        System.out.println("User: " + user.getUsername() + " (ID: " + userId + ")");
+        System.out.println("Won: " + won + ", Attempts: " + attempts);
+        System.out.println("Current streak before: " + user.getCurrentWinStreak());
+
         LocalDate today = LocalDate.now();
         LocalDate lastPlayed = user.getLastPlayedDate();
 
@@ -143,6 +148,11 @@ public class UserService {
             // Lost - reset win streak
             user.setCurrentWinStreak(0);
         }
+
+        System.out.println("Current streak after: " + user.getCurrentWinStreak());
+        System.out.println("Best streak after: " + user.getBestWinStreak());
+        System.out.println("Consecutive play days: " + user.getConsecutivePlayDays());
+        System.out.println("=== Saving user to database ===");
 
         userRepository.save(user);
     }
