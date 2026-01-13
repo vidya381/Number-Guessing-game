@@ -582,6 +582,35 @@
 }
 
 /* ===================================== */
+/* RESULT PAGES RESPONSIVE               */
+/* ===================================== */
+
+@media screen and (max-width: 600px) {
+    #result-page,
+    #time-attack-result-page,
+    #daily-result-page {
+        padding: 20px 15px;
+    }
+
+    .ta-button-group {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .ta-button-group button {
+        width: 100%;
+    }
+}
+
+@media screen and (max-height: 700px) {
+    #result-page,
+    #time-attack-result-page,
+    #daily-result-page {
+        padding: 15px;
+    }
+}
+
+/* ===================================== */
 /* PRINT MEDIA                           */
 /* ===================================== */
 

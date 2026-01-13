@@ -148,6 +148,25 @@ body.dark-mode .section:hover {
     z-index: 2;
 }
 
+/* Result pages - ensure they fit in container */
+#result-page,
+#time-attack-result-page,
+#daily-result-page {
+    max-width: 100%;
+    margin-bottom: 0;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Stats containers */
+#game-stats,
+#daily-game-stats,
+#time-attack-stats {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
 .card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 28px rgba(139, 122, 191, 0.18);
@@ -233,6 +252,22 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
 .button-group button {
     flex: 1;
     min-width: 120px;
+}
+
+/* Time Attack button group (used in result pages) */
+.ta-button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 0;
+    width: 100%;
+}
+
+.ta-button-group button {
+    flex: 1;
+    width: auto !important;
+    margin-bottom: 0 !important;
+    padding: 12px 20px !important;
+    font-size: 14px !important;
 }
 
 /* ===================================== */

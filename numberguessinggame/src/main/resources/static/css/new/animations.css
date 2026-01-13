@@ -446,7 +446,7 @@
     will-change: transform, opacity;
 }
 
-#home-page, #game-page, #result-page {
+#home-page, #game-page, #result-page, #time-attack-page, #time-attack-result-page, #daily-challenge-page, #daily-result-page {
     will-change: opacity, transform;
 }
 
