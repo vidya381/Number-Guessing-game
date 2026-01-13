@@ -249,7 +249,7 @@
 #time-attack-page {
     flex: 1; /* Take remaining space in game-container */
     min-height: 0; /* Allow flexbox to shrink below content size */
-    overflow: hidden; /* No scrolling on game page itself */
+    overflow: visible; /* Allow scrolling when zoomed */
 }
 
 /* Game input section - fixed size */
@@ -265,8 +265,7 @@
     background: linear-gradient(135deg, rgba(243, 156, 18, 0.03) 0%, rgba(230, 126, 34, 0.03) 100%);
     border: 1px solid rgba(167, 139, 250, 0.15);
     flex: 1; /* Take all remaining space */
-    min-height: 250px; /* Ensure at least 3 guesses visible */
-    max-height: 100%; /* Don't exceed parent height */
+    min-height: 150px; /* Reduced to ensure quit button fits */
     overflow: hidden;
 }
 
@@ -332,7 +331,8 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
 
 /* Quit button */
 #time-attack-page button#quit-time-attack {
-    margin-top: 10px;
+    margin-top: 8px;
+    margin-bottom: 0;
     flex-shrink: 0; /* Don't let it shrink */
     flex-grow: 0; /* Don't let it grow */
 }

@@ -409,7 +409,7 @@
     #game-page .section:nth-child(2),
     #time-attack-page .section:nth-child(2),
     #daily-challenge-page .section:nth-child(2) {
-        min-height: 220px; /* Show at least 2.5-3 guesses on shorter screens */
+        min-height: 140px; /* Reduced to fit quit button on shorter screens */
     }
 
     #game-status-display {
@@ -455,7 +455,7 @@
     #game-page .section:nth-child(2),
     #time-attack-page .section:nth-child(2),
     #daily-challenge-page .section:nth-child(2) {
-        min-height: 180px; /* Show at least 2-3 guesses on very short screens */
+        min-height: 120px; /* Reduced to fit quit button on very short screens */
     }
 
     #game-page .section:nth-child(2) h2,
@@ -523,7 +523,7 @@
     #game-page .section:nth-child(2),
     #time-attack-page .section:nth-child(2),
     #daily-challenge-page .section:nth-child(2) {
-        min-height: 150px; /* Show at least 2 guesses on extremely short screens */
+        min-height: 100px; /* Reduced to fit quit button on extremely short screens */
     }
 
     #game-page .section:nth-child(2) h2,

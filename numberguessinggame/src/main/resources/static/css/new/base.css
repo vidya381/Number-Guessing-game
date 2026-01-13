@@ -65,9 +65,16 @@ body {
     border-radius: 30px;
     box-shadow: var(--bubble-shadow);
     border: 1px solid rgba(139, 122, 191, 0.12);
-    overflow: hidden; /* Prevent container from scrolling */
+    overflow-y: auto; /* Allow scrolling as fallback for extreme zoom */
+    overflow-x: hidden;
     display: flex;
     flex-direction: column;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+#game-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
 }
 
 /* Game status display - fixed size */
