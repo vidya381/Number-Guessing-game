@@ -1,0 +1,297 @@
+/**
+ * Base Styles
+ * Foundation styles including body, typography, containers, sections, and cards
+ */
+
+/* ===================================== */
+/* BODY & LAYOUT                         */
+/* ===================================== */
+
+body {
+    font-family: 'Quicksand', 'Rounded Mplus 1c', 'Arial Rounded MT Bold', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    padding-top: 90px;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
+    color: var(--text-color);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* ===================================== */
+/* PAGE CONTAINERS                       */
+/* ===================================== */
+
+#home-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1; /* Take remaining space in game-container */
+    min-height: 0; /* Allow flexbox to work properly */
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+#home-page::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* Prevent sections from being compressed */
+#home-page .section {
+    flex-shrink: 0;
+}
+
+#game-page, #daily-challenge-page, #time-attack-page {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Game container - outer wrapper with border and shadow */
+#game-container {
+    width: 100%;
+    max-width: 650px;
+    max-height: calc(100vh - 120px); /* Fit viewport minus header */
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 0 auto;
+    background: linear-gradient(135deg, var(--card-background) 0%, rgba(253, 252, 255, 0.95) 100%);
+    border-radius: 30px;
+    box-shadow: var(--bubble-shadow);
+    border: 1px solid rgba(139, 122, 191, 0.12);
+    overflow-y: auto; /* Allow scrolling as fallback for extreme zoom */
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+#game-container::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* Game status display - fixed size */
+#game-status-display {
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+/* Game input section with inline stats */
+#game-page .section:nth-child(1), #daily-challenge-page .section:nth-child(1), #time-attack-page .section:nth-child(1) {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.05) 0%, rgba(78, 168, 222, 0.05) 100%);
+    border: 2px solid rgba(167, 139, 250, 0.2);
+    box-shadow: 0 8px 32px rgba(139, 122, 191, 0.12);
+    position: relative;
+}
+
+#game-page .section:nth-child(1) > *, #daily-challenge-page .section:nth-child(1) > *, #time-attack-page .section:nth-child(1) > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ===================================== */
+/* SECTIONS & CARDS                      */
+/* ===================================== */
+
+.section {
+    background-color: var(--card-background);
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(139, 122, 191, 0.08);
+    padding: 20px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(139, 122, 191, 0.08);
+}
+
+#game-page .section,
+#time-attack-page .section {
+    padding: 15px;
+    margin-bottom: 12px;
+}
+
+.section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(139, 122, 191, 0.15);
+    background-color: var(--card-hover-background);
+}
+
+body.dark-mode .section {
+    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.15);
+}
+
+body.dark-mode .section:hover {
+    box-shadow: 0 8px 30px rgba(167, 139, 250, 0.25);
+    background-color: #2d2f48;
+}
+
+.section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.card {
+    background-color: var(--card-background);
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(139, 122, 191, 0.1);
+    padding: 25px;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(139, 122, 191, 0.12);
+    z-index: 2;
+}
+
+/* Result pages - ensure they fit in container */
+#result-page,
+#time-attack-result-page,
+#daily-result-page {
+    max-width: 100%;
+    margin-bottom: 0;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Stats containers */
+#game-stats,
+#daily-game-stats,
+#time-attack-stats {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 28px rgba(139, 122, 191, 0.18);
+    background-color: var(--card-hover-background);
+}
+
+body.dark-mode .card {
+    border: 1px solid rgba(167, 139, 250, 0.2);
+    box-shadow: 0 5px 20px rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode .card:hover {
+    box-shadow: 0 10px 35px rgba(167, 139, 250, 0.3);
+    background-color: #2d2f48;
+}
+
+/* ===================================== */
+/* TYPOGRAPHY                            */
+/* ===================================== */
+
+h1, h3, h4 {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    font-weight: 700;
+}
+
+h2 {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+/* ===================================== */
+/* GENERIC BUTTONS                       */
+/* ===================================== */
+
+/* Exclude header buttons, hint button, and modal buttons from generic styling */
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close) {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--button-text-color);
+    border: none;
+    padding: 15px 30px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin-bottom: 15px;
+    width: 100%;
+    box-shadow: 0 6px 20px var(--shadow-color);
+}
+
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close):hover {
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    transform: translateY(var(--hover-lift)) scale(1.02);
+    box-shadow: 0 10px 30px rgba(78, 168, 222, 0.35);
+}
+
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close):active {
+    transform: translateY(-2px) scale(0.98);
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+/* ===================================== */
+/* BUTTON GROUPS                         */
+/* ===================================== */
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.button-group button {
+    flex: 1;
+    min-width: 120px;
+}
+
+/* Time Attack button group (used in result pages) */
+.ta-button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 0;
+    width: 100%;
+}
+
+.ta-button-group button {
+    flex: 1;
+    width: auto !important;
+    margin-bottom: 0 !important;
+    padding: 12px 20px !important;
+    font-size: 14px !important;
+}
+
+/* ===================================== */
+/* INPUT CONTAINERS                      */
+/* ===================================== */
+
+#input-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin: 20px 0;
+    padding: 15px;
+    min-height: 75px;
+}
+
+#game-page #input-container,
+#time-attack-page #ta-input-container {
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    padding: 15px;
+}
+
+body.dark-mode #game-page #input-container,
+body.dark-mode #time-attack-page #ta-input-container {
+    background: rgba(255, 255, 255, 0.05);
+}

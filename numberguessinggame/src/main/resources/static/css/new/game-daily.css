@@ -1,0 +1,381 @@
+/**
+ * Daily Challenge Game Mode
+ * Styles for Daily Challenge mode including banner, status, buttons, and leaderboard
+ */
+
+/* ===================================== */
+/* DAILY CHALLENGE BANNER                */
+/* ===================================== */
+
+.daily-challenge-banner {
+    background: linear-gradient(135deg,
+        rgba(240, 179, 71, 0.1) 0%,
+        rgba(93, 211, 179, 0.1) 100%) !important;
+    border: 2px solid rgba(240, 179, 71, 0.3) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+.daily-challenge-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(240, 179, 71, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+}
+
+.daily-challenge-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.daily-challenge-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.daily-challenge-badge {
+    background: linear-gradient(135deg, var(--warning-color) 0%, var(--accent-color) 100%);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.8em;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(240, 179, 71, 0.3);
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.daily-challenge-description {
+    color: var(--text-secondary);
+    margin: 10px 0 20px 0;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+/* ===================================== */
+/* DAILY CHALLENGE INFO                  */
+/* ===================================== */
+
+.daily-challenge-info {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.challenge-stat {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9em;
+    color: var(--text-color);
+    transition: all 0.3s ease;
+}
+
+.challenge-stat i {
+    color: var(--warning-color);
+    font-size: 1.1em;
+}
+
+/* ===================================== */
+/* DAILY CHALLENGE BUTTONS               */
+/* ===================================== */
+
+.daily-challenge-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.daily-challenge-btn,
+.daily-leaderboard-btn {
+    flex: 1;
+    min-width: 140px;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 15px var(--shadow-color);
+}
+
+.daily-challenge-btn {
+    background: linear-gradient(135deg, var(--warning-color) 0%, var(--accent-color) 100%);
+    color: white;
+}
+
+.daily-challenge-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(240, 179, 71, 0.4);
+}
+
+.daily-challenge-btn:disabled {
+    background: linear-gradient(135deg, #ccc 0%, #999 100%);
+    cursor: not-allowed;
+    transform: none;
+}
+
+.daily-leaderboard-btn {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+}
+
+.daily-leaderboard-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(139, 122, 191, 0.4);
+}
+
+/* ===================================== */
+/* DAILY CHALLENGE STATUS (AFTER COMPLETION) */
+/* ===================================== */
+
+.daily-challenge-status {
+    margin-top: 20px;
+    padding: 16px;
+    background: rgba(82, 201, 140, 0.1);
+    border: 2px solid rgba(82, 201, 140, 0.3);
+    border-radius: 12px;
+    text-align: center;
+}
+
+.daily-challenge-status h3 {
+    margin: 0 0 10px 0;
+    color: var(--success-color);
+    font-size: 1.1em;
+}
+
+.daily-challenge-status p {
+    margin: 5px 0;
+    color: var(--text-secondary);
+}
+
+.daily-challenge-status .rank-display {
+    font-size: 1.3em;
+    font-weight: 700;
+    color: var(--warning-color);
+    margin-top: 10px;
+}
+
+/* ===================================== */
+/* DAILY CHALLENGE GAME PAGE LAYOUT      */
+/* ===================================== */
+
+#daily-challenge-page {
+    flex: 1; /* Take remaining space in game-container */
+    min-height: 0; /* Allow flexbox to shrink below content size */
+    overflow: visible; /* Allow scrolling when zoomed */
+}
+
+/* Game input section - fixed size */
+#daily-challenge-page .section:nth-child(1) {
+    flex-shrink: 0; /* Don't shrink input section */
+    flex-grow: 0; /* Don't grow */
+}
+
+/* Guess history section - fills remaining space and scrolls internally */
+#daily-challenge-page .section:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.03) 0%, rgba(230, 126, 34, 0.03) 100%);
+    border: 1px solid rgba(167, 139, 250, 0.15);
+    flex: 1; /* Take all remaining space */
+    min-height: 150px; /* Reduced to ensure quit button fits */
+    overflow: hidden;
+}
+
+#daily-challenge-page .section:nth-child(2) h2 {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+#daily-challenge-page .section:nth-child(2) #daily-guess-history {
+    flex: 1;
+    min-height: 0; /* IMPORTANT: Allow flex to constrain height */
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(167, 139, 250, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* Custom scrollbar for guess history */
+#daily-challenge-page .section:nth-child(2) #daily-guess-history::-webkit-scrollbar {
+    width: 8px;
+}
+
+#daily-challenge-page .section:nth-child(2) #daily-guess-history::-webkit-scrollbar-track {
+    background: rgba(167, 139, 250, 0.1);
+    border-radius: 4px;
+}
+
+#daily-challenge-page .section:nth-child(2) #daily-guess-history::-webkit-scrollbar-thumb {
+    background: rgba(var(--primary-color-rgb), 0.4);
+    border-radius: 4px;
+}
+
+#daily-challenge-page .section:nth-child(2) #daily-guess-history::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--primary-color-rgb), 0.6);
+}
+
+body.dark-mode #daily-challenge-page .section:nth-child(2) #daily-guess-history {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode #daily-challenge-page .section:nth-child(2) #daily-guess-history::-webkit-scrollbar-thumb {
+    background: rgba(96, 197, 242, 0.3);
+}
+
+body.dark-mode #daily-challenge-page .section:nth-child(2) #daily-guess-history::-webkit-scrollbar-thumb:hover {
+    background: rgba(96, 197, 242, 0.5);
+}
+
+/* Dark mode enhancements */
+body.dark-mode #daily-challenge-page .section:nth-child(1) {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.08) 0%, rgba(78, 168, 222, 0.08) 100%);
+    border: 2px solid rgba(167, 139, 250, 0.3);
+}
+
+body.dark-mode #daily-challenge-page .section:nth-child(2) {
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.06) 0%, rgba(230, 126, 34, 0.06) 100%);
+    border: 1px solid rgba(167, 139, 250, 0.25);
+}
+
+/* Quit button */
+#daily-challenge-page button#quit-daily-challenge {
+    margin-top: 8px;
+    margin-bottom: 0;
+    flex-shrink: 0; /* Don't let it shrink */
+    flex-grow: 0; /* Don't let it grow */
+}
+
+/* ===================================== */
+/* DAILY CHALLENGE RESULT PAGE           */
+/* ===================================== */
+
+#daily-result-page .leaderboard-btn {
+    margin-top: 15px;
+    background: linear-gradient(135deg, var(--warning-color) 0%, var(--accent-color) 100%);
+}
+
+#daily-result-page .leaderboard-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(240, 179, 71, 0.4);
+}
+
+/* ===================================== */
+/* DAILY LEADERBOARD MODAL               */
+/* ===================================== */
+
+#daily-leaderboard-modal .modal-content {
+    max-width: 600px;
+}
+
+.daily-challenge-date {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px;
+    background: rgba(240, 179, 71, 0.1);
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+#modal-daily-leaderboard-content {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* Highlight user's row in daily leaderboard */
+#modal-daily-leaderboard-content .leaderboard-row.current-user {
+    background: rgba(240, 179, 71, 0.15);
+    border: 2px solid var(--warning-color);
+    font-weight: 700;
+}
+
+/* ===================================== */
+/* DARK MODE                             */
+/* ===================================== */
+
+body.dark-mode .daily-challenge-banner {
+    background: linear-gradient(135deg,
+        rgba(240, 179, 71, 0.15) 0%,
+        rgba(93, 211, 179, 0.15) 100%) !important;
+    border: 2px solid rgba(240, 179, 71, 0.4) !important;
+}
+
+body.dark-mode .challenge-stat {
+    background: rgba(61, 51, 88, 0.6);
+    color: var(--text-color);
+}
+
+body.dark-mode .daily-challenge-status {
+    background: rgba(82, 201, 140, 0.15);
+    border: 2px solid rgba(82, 201, 140, 0.4);
+}
+
+body.dark-mode .daily-challenge-date {
+    background: rgba(240, 179, 71, 0.15);
+}
+
+/* ===================================== */
+/* RESPONSIVE                            */
+/* ===================================== */
+
+@media screen and (max-width: 600px) {
+    .daily-challenge-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .challenge-stat {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .daily-challenge-buttons {
+        flex-direction: column;
+    }
+
+    .daily-challenge-btn,
+    .daily-leaderboard-btn {
+        width: 100%;
+    }
+
+    .daily-challenge-header h2 {
+        font-size: 1.3em;
+    }
+
+    .daily-challenge-badge {
+        font-size: 0.75em;
+        padding: 5px 12px;
+    }
+}
+
+/* ===================================== */
+/* PERFORMANCE OPTIMIZATIONS             */
+/* ===================================== */
+
+#daily-challenge-page, #daily-result-page {
+    will-change: opacity, transform;
+}
