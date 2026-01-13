@@ -143,21 +143,27 @@ public class DailyChallengeService {
 
     /**
      * Save user's daily challenge attempt
+     * Only saves if user WON - allows unlimited retries until success
      * @param user The user
      * @param attempts Number of attempts taken
      * @param won Whether the user won
      * @param timeTakenSeconds Time taken in seconds
      * @param timeDisplay Formatted time display (MM:SS)
-     * @return Saved attempt
+     * @return Saved attempt (null if user lost)
      */
     @Transactional
     public DailyChallengeAttempt saveAttempt(User user, Integer attempts, Boolean won,
                                               Integer timeTakenSeconds, String timeDisplay) {
         DailyChallenge todayChallenge = getTodayChallenge();
 
-        // Check if user already attempted
+        // Check if user already completed (won) today's challenge
         if (attemptRepository.existsByUserAndChallenge(user, todayChallenge)) {
             throw new IllegalStateException("You've already completed today's challenge! Come back tomorrow for a new one! 📅");
+        }
+
+        // Only save if user won - allows unlimited retries if they lose
+        if (!won) {
+            return null; // Don't save failed attempts, allow retry
         }
 
         DailyChallengeAttempt attempt = new DailyChallengeAttempt(
