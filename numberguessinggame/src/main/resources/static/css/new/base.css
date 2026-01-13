@@ -165,6 +165,8 @@ body.dark-mode .section:hover {
 #time-attack-stats {
     width: 100%;
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .card:hover {
