@@ -348,6 +348,9 @@ window.TimeAttackGame = {
         historyItem.appendChild(misplacedSpan);
 
         historyContainer.insertBefore(historyItem, historyContainer.firstChild);
+
+        // Always scroll to top to show the newest guess
+        historyContainer.scrollTop = 0;
     },
 
     // ==========================================

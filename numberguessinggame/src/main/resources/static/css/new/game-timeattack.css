@@ -243,7 +243,102 @@
 }
 
 /* ===================================== */
-/* TIME ATTACK GAME PAGE                 */
+/* TIME ATTACK GAME PAGE LAYOUT          */
+/* ===================================== */
+
+#time-attack-page {
+    flex: 1; /* Take remaining space in game-container */
+    min-height: 0; /* Allow flexbox to shrink below content size */
+    overflow: hidden; /* No scrolling on game page itself */
+}
+
+/* Game input section - fixed size */
+#time-attack-page .section:nth-child(1) {
+    flex-shrink: 0; /* Don't shrink input section */
+    flex-grow: 0; /* Don't grow */
+}
+
+/* Guess history section - fills remaining space and scrolls internally */
+#time-attack-page .section:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.03) 0%, rgba(230, 126, 34, 0.03) 100%);
+    border: 1px solid rgba(167, 139, 250, 0.15);
+    flex: 1; /* Take all remaining space */
+    min-height: 250px; /* Ensure at least 3 guesses visible */
+    max-height: 100%; /* Don't exceed parent height */
+    overflow: hidden;
+}
+
+#time-attack-page .section:nth-child(2) h2 {
+    margin-bottom: 15px;
+    font-size: 1.1em;
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+#time-attack-page .section:nth-child(2) #ta-guess-history {
+    flex: 1;
+    min-height: 0; /* IMPORTANT: Allow flex to constrain height */
+    overflow-y: auto;
+    overflow-x: hidden;
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(167, 139, 250, 0.1);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+/* Custom scrollbar for guess history */
+#time-attack-page .section:nth-child(2) #ta-guess-history::-webkit-scrollbar {
+    width: 8px;
+}
+
+#time-attack-page .section:nth-child(2) #ta-guess-history::-webkit-scrollbar-track {
+    background: rgba(167, 139, 250, 0.1);
+    border-radius: 4px;
+}
+
+#time-attack-page .section:nth-child(2) #ta-guess-history::-webkit-scrollbar-thumb {
+    background: rgba(var(--primary-color-rgb), 0.4);
+    border-radius: 4px;
+}
+
+#time-attack-page .section:nth-child(2) #ta-guess-history::-webkit-scrollbar-thumb:hover {
+    background: rgba(var(--primary-color-rgb), 0.6);
+}
+
+body.dark-mode #time-attack-page .section:nth-child(2) #ta-guess-history {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode #time-attack-page .section:nth-child(2) #ta-guess-history::-webkit-scrollbar-thumb {
+    background: rgba(96, 197, 242, 0.3);
+}
+
+body.dark-mode #time-attack-page .section:nth-child(2) #ta-guess-history::-webkit-scrollbar-thumb:hover {
+    background: rgba(96, 197, 242, 0.5);
+}
+
+/* Dark mode enhancements */
+body.dark-mode #time-attack-page .section:nth-child(1) {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.08) 0%, rgba(78, 168, 222, 0.08) 100%);
+    border: 2px solid rgba(167, 139, 250, 0.3);
+}
+
+body.dark-mode #time-attack-page .section:nth-child(2) {
+    background: linear-gradient(135deg, rgba(243, 156, 18, 0.06) 0%, rgba(230, 126, 34, 0.06) 100%);
+    border: 1px solid rgba(167, 139, 250, 0.25);
+}
+
+/* Quit button */
+#time-attack-page button#quit-time-attack {
+    margin-top: 10px;
+    flex-shrink: 0; /* Don't let it shrink */
+    flex-grow: 0; /* Don't let it grow */
+}
+
+/* ===================================== */
+/* TIME ATTACK STATS                     */
 /* ===================================== */
 
 #time-attack-stats {

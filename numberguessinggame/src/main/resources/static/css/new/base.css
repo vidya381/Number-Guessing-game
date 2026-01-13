@@ -31,6 +31,20 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
+    flex: 1; /* Take remaining space in game-container */
+    min-height: 0; /* Allow flexbox to work properly */
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+#home-page::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+/* Prevent sections from being compressed */
+#home-page .section {
+    flex-shrink: 0;
 }
 
 #game-page, #daily-challenge-page, #time-attack-page {
@@ -43,6 +57,7 @@ body {
 #game-container {
     width: 100%;
     max-width: 650px;
+    max-height: calc(100vh - 120px); /* Fit viewport minus header */
     padding: 20px;
     box-sizing: border-box;
     margin: 0 auto;
@@ -50,6 +65,15 @@ body {
     border-radius: 30px;
     box-shadow: var(--bubble-shadow);
     border: 1px solid rgba(139, 122, 191, 0.12);
+    overflow: hidden; /* Prevent container from scrolling */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Game status display - fixed size */
+#game-status-display {
+    flex-shrink: 0;
+    flex-grow: 0;
 }
 
 /* Game input section with inline stats */

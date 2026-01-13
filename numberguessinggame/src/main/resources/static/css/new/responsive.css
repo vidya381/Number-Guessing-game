@@ -24,6 +24,15 @@
         justify-content: space-around;
     }
 
+    /* Game container adjustments */
+    #game-container {
+        max-height: calc(100vh - 100px);
+    }
+
+    #game-page {
+        max-height: calc(100vh - 140px);
+    }
+
     /* Game pages */
     #game-page .section:nth-child(2),
     #time-attack-page .section:nth-child(2) {
@@ -370,6 +379,205 @@
     /* Sections */
     .section {
         padding: 15px;
+    }
+}
+
+/* ===================================== */
+/* VIEWPORT HEIGHT ADJUSTMENTS           */
+/* ===================================== */
+
+/* Short screens - compact mode */
+@media screen and (max-height: 800px) {
+    #game-container {
+        max-height: calc(100vh - 100px);
+        padding: 15px;
+    }
+
+    #game-page,
+    #time-attack-page,
+    #daily-challenge-page {
+        gap: 10px;
+    }
+
+    #game-page .section,
+    #time-attack-page .section,
+    #daily-challenge-page .section {
+        padding: 12px;
+        margin-bottom: 8px;
+    }
+
+    #game-page .section:nth-child(2),
+    #time-attack-page .section:nth-child(2),
+    #daily-challenge-page .section:nth-child(2) {
+        min-height: 220px; /* Show at least 2.5-3 guesses on shorter screens */
+    }
+
+    #game-status-display {
+        padding: 12px;
+        margin-bottom: 15px;
+    }
+
+    #game-status-text {
+        font-size: 1.5em;
+    }
+
+    /* Home page sections stay full size */
+    #home-page .section {
+        flex-shrink: 0;
+    }
+}
+
+/* Very short screens - ultra compact */
+@media screen and (max-height: 700px) {
+    body {
+        padding: 15px;
+        padding-top: 80px;
+    }
+
+    #game-container {
+        max-height: calc(100vh - 90px);
+        padding: 12px;
+    }
+
+    #game-page,
+    #time-attack-page,
+    #daily-challenge-page {
+        gap: 8px;
+    }
+
+    #game-page .section,
+    #time-attack-page .section,
+    #daily-challenge-page .section {
+        padding: 10px;
+        margin-bottom: 6px;
+    }
+
+    #game-page .section:nth-child(2),
+    #time-attack-page .section:nth-child(2),
+    #daily-challenge-page .section:nth-child(2) {
+        min-height: 180px; /* Show at least 2-3 guesses on very short screens */
+    }
+
+    #game-page .section:nth-child(2) h2,
+    #time-attack-page .section:nth-child(2) h2,
+    #daily-challenge-page .section:nth-child(2) h2 {
+        font-size: 1em;
+        margin-bottom: 10px;
+    }
+
+    #game-status-display {
+        padding: 10px;
+        margin-top: 5px;
+        margin-bottom: 12px;
+    }
+
+    #game-status-text {
+        font-size: 1.3em;
+    }
+
+    #game-status-icon {
+        font-size: 20px;
+    }
+
+    .digit-input {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+    }
+
+    #input-container,
+    #ta-input-container,
+    #daily-input-container {
+        padding: 12px;
+        gap: 6px;
+    }
+
+    button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close) {
+        padding: 12px 24px;
+        font-size: 15px;
+    }
+}
+
+/* Extremely short screens - minimal mode */
+@media screen and (max-height: 600px) {
+    #game-container {
+        max-height: calc(100vh - 70px);
+        padding: 10px;
+        border-radius: 20px;
+    }
+
+    #game-page,
+    #time-attack-page,
+    #daily-challenge-page {
+        gap: 6px;
+    }
+
+    #game-page .section,
+    #time-attack-page .section,
+    #daily-challenge-page .section {
+        padding: 8px;
+        margin-bottom: 4px;
+        border-radius: 15px;
+    }
+
+    #game-page .section:nth-child(2),
+    #time-attack-page .section:nth-child(2),
+    #daily-challenge-page .section:nth-child(2) {
+        min-height: 150px; /* Show at least 2 guesses on extremely short screens */
+    }
+
+    #game-page .section:nth-child(2) h2,
+    #time-attack-page .section:nth-child(2) h2,
+    #daily-challenge-page .section:nth-child(2) h2 {
+        font-size: 0.95em;
+        margin-bottom: 8px;
+    }
+
+    #game-status-display {
+        padding: 8px;
+        margin-top: 5px;
+        margin-bottom: 10px;
+        border-radius: 12px;
+    }
+
+    #game-status-text {
+        font-size: 1.1em;
+    }
+
+    #game-status-icon {
+        font-size: 18px;
+        margin-right: 8px;
+    }
+
+    .digit-input {
+        width: 45px;
+        height: 45px;
+        font-size: 20px;
+        border-width: 2px;
+    }
+
+    #input-container,
+    #ta-input-container,
+    #daily-input-container {
+        padding: 10px;
+        gap: 5px;
+        min-height: 60px;
+    }
+
+    button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close) {
+        padding: 10px 20px;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .history-item {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+    .stat-badge {
+        padding: 4px 10px;
+        font-size: 0.8em;
     }
 }
 

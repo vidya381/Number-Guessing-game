@@ -520,6 +520,9 @@ window.RegularGame = {
             historyItem.appendChild(misplacedSpan);
             historyContainer.appendChild(historyItem);
         });
+
+        // Always scroll to top to show the newest guess
+        historyContainer.scrollTop = 0;
     },
 
     updateGuessHistory: function() {
@@ -546,6 +549,9 @@ window.RegularGame = {
             historyItem.appendChild(misplacedSpan);
             historyContainer.appendChild(historyItem);
         });
+
+        // Always scroll to top to show the newest guess
+        historyContainer.scrollTop = 0;
     },
 
     // ==========================================

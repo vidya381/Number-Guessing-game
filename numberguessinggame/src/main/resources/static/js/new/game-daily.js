@@ -372,6 +372,9 @@ window.DailyGame = {
         historyItem.appendChild(misplacedSpan);
 
         historyDiv.insertBefore(historyItem, historyDiv.firstChild);
+
+        // Always scroll to top to show the newest guess
+        historyDiv.scrollTop = 0;
     },
 
     // ==========================================

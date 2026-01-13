@@ -399,12 +399,7 @@ body.dark-mode .digit-input:focus {
 /* GUESS HISTORY                         */
 /* ===================================== */
 
-#guess-history {
-    overflow-y: auto;
-    padding: 10px;
-    background-color: var(--background-color);
-    border-radius: 10px;
-}
+/* Base guess history styling moved to game-regular.css for proper flex layout */
 
 .history-item {
     display: flex;
