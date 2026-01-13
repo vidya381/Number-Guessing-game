@@ -29,6 +29,9 @@ public class DailyChallengeController {
     // Store active daily challenge sessions
     private final Map<String, DailyChallengeSession> activeSessions = new HashMap<>();
 
+    // Store cumulative attempts per user per day (userId-date -> attempts)
+    private final Map<String, Integer> dailyAttempts = new HashMap<>();
+
     /**
      * Get today's daily challenge info
      * Returns challenge details and user's status
@@ -118,13 +121,19 @@ public class DailyChallengeController {
             // Get today's challenge
             DailyChallenge challenge = dailyChallengeService.getTodayChallenge();
 
-            // Create session
+            // Get cumulative attempts for this user today
+            String attemptKey = userId + "-" + challenge.getChallengeDate().toString();
+            int cumulativeAttempts = dailyAttempts.getOrDefault(attemptKey, 0);
+
+            // Create session with cumulative attempts
             String sessionId = UUID.randomUUID().toString();
             DailyChallengeSession session = new DailyChallengeSession(
                 userId,
                 challenge.getTargetNumber(),
                 challenge.getDifficulty(),
-                System.currentTimeMillis()
+                System.currentTimeMillis(),
+                cumulativeAttempts,
+                attemptKey
             );
             activeSessions.put(sessionId, session);
 
@@ -133,6 +142,7 @@ public class DailyChallengeController {
             response.put("difficulty", challenge.getDifficulty());
             response.put("digitCount", 3 + challenge.getDifficulty());
             response.put("maxAttempts", 10);
+            response.put("currentAttempts", cumulativeAttempts);
 
             return ResponseEntity.ok(response);
 
@@ -210,8 +220,9 @@ public class DailyChallengeController {
                 }
             }
 
-            // Increment attempts
+            // Increment attempts (both in session and cumulative map)
             session.incrementAttempts();
+            dailyAttempts.put(session.getAttemptKey(), session.getAttempts());
 
             // Check if won
             boolean won = (bulls == expectedDigits);
@@ -278,12 +289,19 @@ public class DailyChallengeController {
             // Remove session
             activeSessions.remove(sessionId);
 
+            // If won, clear cumulative attempts for this user today
+            if (won != null && won) {
+                dailyAttempts.remove(session.getAttemptKey());
+            }
+
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
-            response.put("attempts", attempt.getAttempts());
-            response.put("won", attempt.getWon());
 
-            if (attempt.getWon()) {
+            // If won, attempt will have data; if lost, attempt is null
+            if (attempt != null && attempt.getWon()) {
+                response.put("attempts", attempt.getAttempts());
+                response.put("won", attempt.getWon());
+
                 Integer rank = dailyChallengeService.getUserRankToday(user);
                 response.put("rank", rank);
                 response.put("totalPlayers", dailyChallengeService.getTodayWinnersCount());
@@ -295,6 +313,10 @@ public class DailyChallengeController {
                 // Get updated user with new coin total
                 User updatedUser = userService.findById(user.getId()).orElse(user);
                 response.put("totalCoins", updatedUser.getCoins() != null ? updatedUser.getCoins() : 0);
+            } else {
+                // Lost - return cumulative attempts from session
+                response.put("attempts", session.getAttempts());
+                response.put("won", false);
             }
 
             return ResponseEntity.ok(response);
@@ -372,14 +394,16 @@ public class DailyChallengeController {
         private final Integer targetNumber;
         private final Integer difficulty;
         private final Long startTime;
+        private final String attemptKey;
         private int attempts;
 
-        public DailyChallengeSession(Long userId, Integer targetNumber, Integer difficulty, Long startTime) {
+        public DailyChallengeSession(Long userId, Integer targetNumber, Integer difficulty, Long startTime, int initialAttempts, String attemptKey) {
             this.userId = userId;
             this.targetNumber = targetNumber;
             this.difficulty = difficulty;
             this.startTime = startTime;
-            this.attempts = 0;
+            this.attempts = initialAttempts;
+            this.attemptKey = attemptKey;
         }
 
         public Long getUserId() {
@@ -400,6 +424,10 @@ public class DailyChallengeController {
 
         public int getAttempts() {
             return attempts;
+        }
+
+        public String getAttemptKey() {
+            return attemptKey;
         }
 
         public void incrementAttempts() {

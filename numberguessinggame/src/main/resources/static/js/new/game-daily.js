@@ -47,7 +47,7 @@ window.DailyGame = {
                     // User already completed today's challenge
                     if (playBtn) {
                         playBtn.disabled = false; // Make it clickable for toggle
-                        playBtn.innerHTML = '<i class="fas fa-check"></i> COMPLETED TODAY';
+                        playBtn.innerHTML = '<i class="fas fa-check"></i> COMPLETED TODAY <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i>';
                         playBtn.style.cursor = 'pointer';
 
                         // Add toggle functionality
@@ -56,6 +56,14 @@ window.DailyGame = {
                             if (statusDiv) {
                                 const isHidden = statusDiv.style.display === 'none';
                                 statusDiv.style.display = isHidden ? 'block' : 'none';
+
+                                // Update chevron direction
+                                const chevron = playBtn.querySelector('.fa-chevron-down, .fa-chevron-up');
+                                if (chevron) {
+                                    chevron.className = isHidden ? 'fas fa-chevron-up' : 'fas fa-chevron-down';
+                                    chevron.style.fontSize = '0.8em';
+                                    chevron.style.marginLeft = '5px';
+                                }
                             }
                         };
                     }
@@ -131,8 +139,10 @@ window.DailyGame = {
             if (response.ok) {
                 GameState.dailyChallenge.sessionId = data.sessionId;
                 GameState.dailyChallenge.digitCount = data.digitCount;
+                GameState.dailyChallenge.attempts = data.currentAttempts || 0; // Set cumulative attempts
                 console.log('Session created:', GameState.dailyChallenge.sessionId);
                 console.log('Digit count:', GameState.dailyChallenge.digitCount);
+                console.log('Starting with cumulative attempts:', GameState.dailyChallenge.attempts);
                 this.startDailyChallengeGame();
             } else {
                 console.error('Failed to start:', data.error);
@@ -153,8 +163,8 @@ window.DailyGame = {
     // ==========================================
 
     startDailyChallengeGame: function() {
-        // Reset state
-        GameState.dailyChallenge.attempts = 0;
+        // Reset state (but keep cumulative attempts from backend)
+        // GameState.dailyChallenge.attempts already set from /start response
         GameState.dailyChallenge.guessHistory = [];
         GameState.dailyChallenge.startTime = Date.now();
 

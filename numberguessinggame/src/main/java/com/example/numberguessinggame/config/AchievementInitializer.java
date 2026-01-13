@@ -97,7 +97,7 @@ public class AchievementInitializer implements ApplicationRunner {
             AchievementCategory.WINS,
             50,
             "fa-star",
-            "#9B59B6",
+            "#F39C12",
             100
         ));
 
@@ -109,7 +109,7 @@ public class AchievementInitializer implements ApplicationRunner {
             AchievementCategory.WINS,
             100,
             "fa-gem",
-            "#E74C3C",
+            "#9B59B6",
             200
         ));
 
@@ -122,7 +122,7 @@ public class AchievementInitializer implements ApplicationRunner {
             AchievementCategory.GAMES,
             10,
             "fa-play",
-            "#3498DB",
+            "#27AE60",
             15
         ));
 
@@ -257,7 +257,7 @@ public class AchievementInitializer implements ApplicationRunner {
             AchievementType.DIFFICULTY,
             AchievementCategory.DIFFICULTY,
             10,
-            "fa-shield-alt",
+            "fa-shield",
             "#9B59B6",
             75
         ));
@@ -336,7 +336,7 @@ public class AchievementInitializer implements ApplicationRunner {
             AchievementType.SKILL,
             AchievementCategory.TIME,
             30,
-            "fa-flash",
+            "fa-bolt",
             "#FFD700",
             100
         ));
@@ -387,7 +387,7 @@ public class AchievementInitializer implements ApplicationRunner {
             AchievementCategory.TIME,
             5,
             "fa-utensils",
-            "#2ECC71",
+            "#E67E22",
             35
         ));
 
@@ -398,8 +398,8 @@ public class AchievementInitializer implements ApplicationRunner {
             AchievementType.SKILL,
             AchievementCategory.TIME,
             5,
-            "fa-sunset",
-            "#E74C3C",
+            "fa-cloud-sun",
+            "#E67E22",
             35
         ));
     }
@@ -424,7 +424,7 @@ public class AchievementInitializer implements ApplicationRunner {
             AchievementType.SKILL,
             AchievementCategory.STREAK,
             5,
-            "fa-phoenix-squadron",
+            "fa-dragon",
             "#E74C3C",
             75
         ));
@@ -436,7 +436,7 @@ public class AchievementInitializer implements ApplicationRunner {
             AchievementType.SKILL,
             AchievementCategory.STREAK,
             10,
-            "fa-fire-alt",
+            "fa-fire-flame-curved",
             "#FFD700",
             150
         ));
