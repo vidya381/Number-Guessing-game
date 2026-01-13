@@ -286,14 +286,27 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
     min-height: 75px;
 }
 
+#ta-input-container,
+#daily-input-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin: 20px 0;
+    padding: 15px;
+    min-height: 75px;
+}
+
 #game-page #input-container,
-#time-attack-page #ta-input-container {
+#time-attack-page #ta-input-container,
+#daily-challenge-page #daily-input-container {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 15px;
     padding: 15px;
 }
 
 body.dark-mode #game-page #input-container,
-body.dark-mode #time-attack-page #ta-input-container {
+body.dark-mode #time-attack-page #ta-input-container,
+body.dark-mode #daily-challenge-page #daily-input-container {
     background: rgba(255, 255, 255, 0.05);
 }
