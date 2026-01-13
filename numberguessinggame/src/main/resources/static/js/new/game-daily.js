@@ -189,9 +189,6 @@ window.DailyGame = {
         }
 
         // Start timer
-        const attemptsEl = document.getElementById('daily-attempts');
-        if (attemptsEl) attemptsEl.textContent = '0';
-
         this.startDailyChallengeTimer();
 
         // Clear history
@@ -299,10 +296,6 @@ window.DailyGame = {
 
             if (response.ok) {
                 GameState.dailyChallenge.attempts = data.attempts;
-                const attemptsEl = document.getElementById('daily-attempts');
-                if (attemptsEl) {
-                    attemptsEl.textContent = GameState.dailyChallenge.attempts;
-                }
 
                 // Play sound
                 if (data.won) {
@@ -420,13 +413,20 @@ window.DailyGame = {
                 // Reload daily challenge info for home page (don't await - run in background)
                 this.loadDailyChallengeInfo();
             } else {
-                if (Achievements) {
-                    Achievements.showToast(data.error || 'Couldn\'t save your result. Try refreshing! 💾', 'error');
+                // For losses/quits, still show results even if not saved (unlimited attempts)
+                if (!won) {
+                    this.showDailyChallengeResult(won, GameState.dailyChallenge.attempts, timeDisplay, null, null);
+                    this.loadDailyChallengeInfo();
+                } else if (Achievements) {
+                    Achievements.showToast(data.error || 'Couldn\'t save your result. Try again! 💾', 'error');
                 }
             }
         } catch (error) {
-            if (Achievements) {
-                Achievements.showToast('Couldn\'t save your result. Try refreshing! 💾', 'error');
+            // For losses/quits, still show results even if network error
+            if (!won) {
+                this.showDailyChallengeResult(won, GameState.dailyChallenge.attempts, timeDisplay, null, null);
+            } else if (Achievements) {
+                Achievements.showToast('Couldn\'t save your result. Try again! 💾', 'error');
             }
         }
     },
@@ -472,7 +472,7 @@ window.DailyGame = {
                         <div style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(231, 76, 60, 0.3);">
                             <div style="font-size: 2.5em; margin-bottom: 10px;">😔</div>
                             <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">NOT TODAY</div>
-                            <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">Out of attempts</div>
+                            <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">Try again!</div>
                             <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">Daily Challenge</div>
                         </div>
                     `;
@@ -502,7 +502,7 @@ window.DailyGame = {
 
                 // Add stat cards
                 statsGrid.appendChild(createStatCard('fas fa-stopwatch', timeDisplay, 'Time'));
-                statsGrid.appendChild(createStatCard('fas fa-bullseye', `${attempts}/10`, 'Attempts'));
+                statsGrid.appendChild(createStatCard('fas fa-bullseye', attempts, 'Attempts'));
 
                 // Rank card (with medal emoji)
                 if (rank) {
@@ -616,20 +616,8 @@ window.DailyGame = {
     // ==========================================
 
     quitDailyChallenge: function() {
-        if (confirm('Are you sure you want to quit? You can only attempt the daily challenge once per day!')) {
-            clearInterval(GameState.dailyChallenge.timerInterval);
-
-            const dailyChallengePage = document.getElementById('daily-challenge-page');
-            const homePage = document.getElementById('home-page');
-
-            if (Utils) {
-                Utils.fadeOutElement(dailyChallengePage, () => {
-                    Utils.fadeInElement(homePage, 'flex');
-                });
-            }
-
-            // Note: We don't save the attempt as they're quitting
-            GameState.dailyChallenge.sessionId = null;
+        if (confirm('Are you sure you want to quit and see results?')) {
+            this.endDailyChallenge(false);
         }
     },
 
