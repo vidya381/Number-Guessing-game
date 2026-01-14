@@ -16,11 +16,22 @@ public interface TimeAttackSessionRepository extends JpaRepository<TimeAttackSes
 
     /**
      * Get leaderboard for a specific difficulty level
+     * Shows only the BEST session per player
      * Ranked by: totalScore DESC, gamesWon DESC, averageAttempts ASC
      * Only includes authenticated users (user IS NOT NULL)
      */
     @Query("SELECT t FROM TimeAttackSession t " +
+           "JOIN FETCH t.user u " +
            "WHERE t.difficulty = :difficulty AND t.user IS NOT NULL " +
+           "AND t.totalScore = (" +
+           "  SELECT MAX(t2.totalScore) FROM TimeAttackSession t2 " +
+           "  WHERE t2.user = t.user AND t2.difficulty = :difficulty" +
+           ") " +
+           "AND t.id = (" +
+           "  SELECT MIN(t3.id) FROM TimeAttackSession t3 " +
+           "  WHERE t3.user = t.user AND t3.difficulty = :difficulty " +
+           "  AND t3.totalScore = t.totalScore" +
+           ") " +
            "ORDER BY t.totalScore DESC, t.gamesWon DESC, t.averageAttempts ASC")
     List<TimeAttackSession> findLeaderboardByDifficulty(
         @Param("difficulty") Integer difficulty,

@@ -53,10 +53,6 @@ window.GameState = {
     profileCurrentFilter: 'all',
     profileAchievements: [],
 
-    // Leaderboard cache (30-second cache)
-    leaderboardCache: null,
-    leaderboardCacheTime: 0,
-
     // Daily Challenge state
     dailyChallenge: {
         info: null,

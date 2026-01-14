@@ -4,6 +4,82 @@
  */
 
 /* ===================================== */
+/* DAILY CHALLENGE LEADERBOARD MODAL HEADER */
+/* ===================================== */
+
+.daily-leaderboard-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 25px;
+    margin: -25px -25px 25px -25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 28px 28px 0 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.daily-leaderboard-modal-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+    animation: pulse-slow 4s ease-in-out infinite;
+}
+
+.daily-leaderboard-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 245, 157, 0.25) 100%);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    color: #FFD700;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(255, 215, 0, 0.3);
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.4));
+}
+
+.daily-leaderboard-title-section {
+    flex: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.daily-leaderboard-title {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #FFD700 0%, #FFF59D 50%, #FFD700 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.daily-leaderboard-subtitle {
+    margin: 8px 0 0 0;
+    font-size: 15px;
+    color: #FFF9E6;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* ===================================== */
 /* DAILY CHALLENGE BANNER                */
 /* ===================================== */
 
@@ -306,7 +382,7 @@ body.dark-mode #daily-challenge-page .section:nth-child(2) {
 /* ===================================== */
 
 #daily-leaderboard-modal .modal-content {
-    max-width: 600px;
+    max-width: 650px;
 }
 
 .daily-challenge-date {
@@ -320,16 +396,128 @@ body.dark-mode #daily-challenge-page .section:nth-child(2) {
     margin-bottom: 15px;
 }
 
-#modal-daily-leaderboard-content {
-    max-height: 60vh;
-    overflow-y: auto;
+/* Daily Challenge Leaderboard - Match Time Attack Style */
+#modal-daily-leaderboard-container {
+    height: 400px;
+    overflow: hidden;
 }
 
-/* Highlight user's row in daily leaderboard */
-#modal-daily-leaderboard-content .leaderboard-row.current-user {
-    background: rgba(240, 179, 71, 0.15);
-    border: 2px solid var(--warning-color);
+#modal-daily-leaderboard-content {
+    height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+#modal-daily-leaderboard-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+#modal-daily-leaderboard-content .leaderboard-header,
+#modal-daily-leaderboard-content .leaderboard-row {
+    display: grid;
+    grid-template-columns: 70px 220px 110px 110px;
+    gap: 15px;
+    padding: 12px 20px;
+    align-items: center;
+}
+
+#modal-daily-leaderboard-content .leaderboard-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, rgba(var(--primary-color-rgb), 0.85) 100%);
+    color: white;
     font-weight: 700;
+    border-radius: 10px;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin-bottom: 2px;
+}
+
+/* Header text must be WHITE on purple gradient */
+#modal-daily-leaderboard-content .leaderboard-header .lb-rank,
+#modal-daily-leaderboard-content .leaderboard-header .lb-username,
+#modal-daily-leaderboard-content .leaderboard-header .lb-attempts,
+#modal-daily-leaderboard-content .leaderboard-header .lb-time {
+    color: #ffffff !important;
+}
+
+/* Header column alignment - must match row alignment */
+#modal-daily-leaderboard-content .leaderboard-header .lb-rank {
+    text-align: center;
+    font-size: 0.9em;
+}
+
+#modal-daily-leaderboard-content .leaderboard-header .lb-username {
+    text-align: left;
+}
+
+#modal-daily-leaderboard-content .leaderboard-header .lb-attempts {
+    text-align: center;
+}
+
+#modal-daily-leaderboard-content .leaderboard-header .lb-time {
+    text-align: center;
+}
+
+#modal-daily-leaderboard-content .leaderboard-row {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(var(--primary-color-rgb), 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+#modal-daily-leaderboard-content .leaderboard-row:hover {
+    transform: translateX(3px);
+    box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.15);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(var(--primary-color-rgb), 0.2);
+}
+
+/* Row text colors (for light backgrounds) */
+#modal-daily-leaderboard-content .leaderboard-row .lb-rank {
+    font-weight: 700;
+    text-align: center;
+    color: #6b5a9f;
+    font-size: 1.2em;
+}
+
+#modal-daily-leaderboard-content .leaderboard-row .lb-username {
+    font-weight: 600;
+    text-align: left;
+    color: #2d2748;
+}
+
+#modal-daily-leaderboard-content .leaderboard-row .lb-attempts {
+    text-align: center;
+    font-weight: 700;
+    color: #e74c3c;
+    font-size: 1.05em;
+    background: rgba(231, 76, 60, 0.08);
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+#modal-daily-leaderboard-content .leaderboard-row .lb-time {
+    text-align: center;
+    font-size: 0.95em;
+    color: #5a4d73;
+    font-weight: 500;
+}
+
+/* Highlight current user's row */
+#modal-daily-leaderboard-content .leaderboard-row.current-user {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.25) 0%, rgba(167, 139, 250, 0.15) 100%) !important;
+    border: 2px solid rgba(var(--primary-color-rgb), 0.5) !important;
+    border-left: 4px solid var(--primary-color) !important;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.2) !important;
 }
 
 /* ===================================== */
@@ -355,6 +543,70 @@ body.dark-mode .daily-challenge-status {
 
 body.dark-mode .daily-challenge-date {
     background: rgba(240, 179, 71, 0.15);
+}
+
+body.dark-mode .daily-leaderboard-modal-header {
+    background: linear-gradient(135deg, #5a67d8 0%, #6b48a2 100%);
+}
+
+body.dark-mode .daily-leaderboard-icon {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 245, 157, 0.2) 100%);
+    border-color: rgba(255, 215, 0, 0.4);
+    color: #FFD700;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 35px rgba(255, 215, 0, 0.4);
+}
+
+body.dark-mode #modal-daily-leaderboard-content .leaderboard-header {
+    background: linear-gradient(135deg, rgba(var(--primary-color-rgb), 0.3) 0%, rgba(var(--primary-color-rgb), 0.2) 100%);
+    border: 1px solid rgba(var(--primary-color-rgb), 0.4);
+    box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.2);
+    color: white;
+}
+
+/* Dark mode - Header text stays WHITE */
+body.dark-mode #modal-daily-leaderboard-content .leaderboard-header .lb-rank,
+body.dark-mode #modal-daily-leaderboard-content .leaderboard-header .lb-username,
+body.dark-mode #modal-daily-leaderboard-content .leaderboard-header .lb-attempts,
+body.dark-mode #modal-daily-leaderboard-content .leaderboard-header .lb-time {
+    color: #ffffff !important;
+}
+
+body.dark-mode #modal-daily-leaderboard-content .leaderboard-row {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(167, 139, 250, 0.15);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode #modal-daily-leaderboard-content .leaderboard-row:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(167, 139, 250, 0.3);
+    box-shadow: 0 4px 12px rgba(167, 139, 250, 0.15);
+}
+
+/* Dark mode - Row text colors (bright on dark background) */
+body.dark-mode #modal-daily-leaderboard-content .leaderboard-row .lb-rank {
+    color: #a78bfa;
+    font-size: 1.2em;
+}
+
+body.dark-mode #modal-daily-leaderboard-content .leaderboard-row .lb-username {
+    color: #e4e7f0;
+}
+
+body.dark-mode #modal-daily-leaderboard-content .leaderboard-row .lb-attempts {
+    color: #ff8585;
+    background: rgba(255, 107, 107, 0.15);
+}
+
+body.dark-mode #modal-daily-leaderboard-content .leaderboard-row .lb-time {
+    color: #a0a8c8;
+}
+
+body.dark-mode #modal-daily-leaderboard-content .leaderboard-row.current-user {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(167, 139, 250, 0.08) 100%) !important;
+    border: 2px solid rgba(167, 139, 250, 0.4) !important;
+    border-left: 4px solid rgba(167, 139, 250, 0.8) !important;
+    box-shadow: 0 2px 8px rgba(167, 139, 250, 0.15) !important;
 }
 
 /* ===================================== */
@@ -388,6 +640,65 @@ body.dark-mode .daily-challenge-date {
     .daily-challenge-badge {
         font-size: 0.75em;
         padding: 5px 12px;
+    }
+
+    .daily-leaderboard-modal-header {
+        padding: 20px;
+        margin: -20px -20px 20px -20px;
+        gap: 15px;
+    }
+
+    .daily-leaderboard-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+    }
+
+    .daily-leaderboard-title {
+        font-size: 24px;
+    }
+
+    .daily-leaderboard-subtitle {
+        font-size: 14px;
+    }
+
+    #modal-daily-leaderboard-content .leaderboard-header,
+    #modal-daily-leaderboard-content .leaderboard-row {
+        grid-template-columns: 60px 170px 90px 90px;
+        gap: 12px;
+        font-size: 0.9em;
+        padding: 10px 15px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .daily-leaderboard-modal-header {
+        padding: 15px;
+        margin: -15px -15px 15px -15px;
+        gap: 12px;
+    }
+
+    .daily-leaderboard-icon {
+        width: 55px;
+        height: 55px;
+        font-size: 26px;
+        border-radius: 14px;
+    }
+
+    .daily-leaderboard-title {
+        font-size: 20px;
+    }
+
+    .daily-leaderboard-subtitle {
+        font-size: 13px;
+    }
+
+    #modal-daily-leaderboard-content .leaderboard-header,
+    #modal-daily-leaderboard-content .leaderboard-row {
+        grid-template-columns: 50px 140px 75px 75px;
+        gap: 10px;
+        font-size: 0.85em;
+        padding: 10px 12px;
     }
 }
 

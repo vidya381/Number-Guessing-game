@@ -594,11 +594,21 @@ window.TimeAttackGame = {
 
                 leaderboard.forEach((entry, index) => {
                     const rankClass = index < 3 ? `top-${index + 1}` : '';
+                    const isCurrentUser = GameState.currentUser && entry.username === GameState.currentUser.username;
+                    const rowClass = isCurrentUser ? `${rankClass} current-user` : rankClass;
                     const escapedUsername = Utils ? Utils.escapeHtml(entry.username) : entry.username;
+
+                    // Display medals for top 3, numbers for rest
+                    let rankDisplay;
+                    if (entry.rank === 1) rankDisplay = '🥇';
+                    else if (entry.rank === 2) rankDisplay = '🥈';
+                    else if (entry.rank === 3) rankDisplay = '🥉';
+                    else rankDisplay = entry.rank;
+
                     html += `
-                        <div class="leaderboard-row ${rankClass}">
-                            <div class="lb-rank">#${entry.rank}</div>
-                            <div class="lb-username">${escapedUsername}</div>
+                        <div class="leaderboard-row ${rowClass}">
+                            <div class="lb-rank">${rankDisplay}</div>
+                            <div class="lb-username">${escapedUsername}${isCurrentUser ? ' (You)' : ''}</div>
                             <div class="lb-score">${entry.totalScore}</div>
                             <div class="lb-wins">${entry.gamesWon}</div>
                             <div class="lb-avg">${entry.averageAttempts ? entry.averageAttempts.toFixed(1) : '--'}</div>
@@ -775,15 +785,7 @@ window.TimeAttackGame = {
             });
         });
 
-        // Close modal when clicking outside
-        const modal = document.getElementById('time-attack-leaderboard-modal');
-        if (modal) {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal && Utils) {
-                    Utils.closeModalWithAnimation(modal);
-                }
-            });
-        }
+        // Click-outside-to-close is now handled globally in utils.js
     },
 
     // ==========================================

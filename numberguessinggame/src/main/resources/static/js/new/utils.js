@@ -568,6 +568,40 @@ window.Utils = {
     },
 
     // ==========================================
+    // MODAL CLICK-OUTSIDE-TO-CLOSE
+    // ==========================================
+
+    setupModalClickOutside: function() {
+        // Get all modal elements
+        const modals = [
+            document.getElementById('auth-modal'),
+            document.getElementById('profile-modal'),
+            document.getElementById('settings-modal'),
+            document.getElementById('daily-leaderboard-modal'),
+            document.getElementById('time-attack-leaderboard-modal')
+        ];
+
+        // Add click-outside-to-close functionality to each modal
+        modals.forEach(modal => {
+            if (modal) {
+                // Remove any existing listeners to avoid duplicates
+                const handler = (e) => {
+                    // Only close if clicking the modal backdrop (not the content)
+                    if (e.target === modal) {
+                        // Special handling for auth modal to clear forms
+                        if (modal.id === 'auth-modal') {
+                            this.closeModalWithAnimation(modal, window.Auth ? Auth.clearAuthForms : null);
+                        } else {
+                            this.closeModalWithAnimation(modal);
+                        }
+                    }
+                };
+                modal.addEventListener('click', handler);
+            }
+        });
+    },
+
+    // ==========================================
     // INITIALIZATION
     // ==========================================
 
@@ -576,6 +610,7 @@ window.Utils = {
         this.setupKeyboardShortcuts();
         this.createFloatingNumbers();
         this.setupHowToPlay();
+        this.setupModalClickOutside();
 
         // Attach theme toggle button event listener
         const themeToggleButton = document.getElementById('theme-toggle');

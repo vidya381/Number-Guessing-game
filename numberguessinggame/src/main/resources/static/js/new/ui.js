@@ -1,12 +1,9 @@
 /**
  * UI Components
- * Handles modals, leaderboard, profile, settings, and UI updates
+ * Handles modals, profile, settings, and UI updates
  */
 
 window.UI = {
-    // Leaderboard cache (30-second cache)
-    LEADERBOARD_CACHE_DURATION: 30000,
-
     // ==========================================
     // STATS UPDATES
     // ==========================================
@@ -192,113 +189,6 @@ window.UI = {
                     GameConfig.sounds.correct.play();
                 }
             });
-        }
-    },
-
-    // ==========================================
-    // LEADERBOARD MODAL
-    // ==========================================
-
-    setupLeaderboardModal: function() {
-        const leaderboardModal = document.getElementById('leaderboard-modal');
-        const viewLeaderboardBtn = document.getElementById('view-leaderboard');
-        const closeLeaderboardBtn = document.getElementById('close-leaderboard');
-
-        if (!leaderboardModal) return;
-
-        if (viewLeaderboardBtn && Utils) {
-            viewLeaderboardBtn.addEventListener('click', () => {
-                Utils.openModalWithAnimation(leaderboardModal);
-                this.loadLeaderboard(false, true);
-            });
-        }
-
-        if (closeLeaderboardBtn && Utils) {
-            closeLeaderboardBtn.addEventListener('click', () => {
-                Utils.closeModalWithAnimation(leaderboardModal);
-            });
-        }
-
-        leaderboardModal.addEventListener('click', (e) => {
-            if (e.target === leaderboardModal && Utils) {
-                Utils.closeModalWithAnimation(leaderboardModal);
-            }
-        });
-    },
-
-    loadLeaderboard: async function(forceRefresh = false, isModal = false) {
-        // Support both modal and inline leaderboard
-        const loadingDiv = isModal ?
-            document.getElementById('modal-leaderboard-loading') :
-            document.getElementById('leaderboard-loading');
-        const contentDiv = isModal ?
-            document.getElementById('modal-leaderboard-content') :
-            document.getElementById('leaderboard-content');
-
-        if (!loadingDiv || !contentDiv) return;
-
-        // Check if we have cached data and it's still valid
-        const now = Date.now();
-        if (!forceRefresh && GameState.leaderboardCache && (now - GameState.leaderboardCacheTime) < this.LEADERBOARD_CACHE_DURATION) {
-            // Use cached data
-            contentDiv.innerHTML = this.createLeaderboardHTML(GameState.leaderboardCache);
-            loadingDiv.style.display = 'none';
-            contentDiv.style.display = 'block';
-            return;
-        }
-
-        try {
-            const response = await fetch('/api/leaderboard?limit=10');
-            const data = await response.json();
-
-            if (data.success && data.leaderboard && data.leaderboard.length > 0) {
-                // Update cache
-                GameState.leaderboardCache = data.leaderboard;
-                GameState.leaderboardCacheTime = now;
-
-                contentDiv.innerHTML = this.createLeaderboardHTML(data.leaderboard);
-                loadingDiv.style.display = 'none';
-                contentDiv.style.display = 'block';
-            } else {
-                loadingDiv.textContent = 'No players on the leaderboard yet. Be the first!';
-            }
-        } catch (error) {
-            loadingDiv.textContent = 'Couldn\'t load the leaderboard. Try again in a moment!';
-        }
-    },
-
-    createLeaderboardHTML: function(players) {
-        let html = '<table class="leaderboard-table"><thead><tr>';
-        html += '<th>Rank</th>';
-        html += '<th>Player</th>';
-        html += '<th>Best Score</th>';
-        html += '<th>Win Rate</th>';
-        html += '<th>Games</th>';
-        html += '</tr></thead><tbody>';
-
-        players.forEach(player => {
-            const rankClass = player.rank <= 3 ? 'rank-' + player.rank : '';
-            const rankIcon = this.getRankIcon(player.rank);
-
-            html += '<tr class="' + rankClass + '">';
-            html += '<td class="rank-cell">' + rankIcon + ' ' + player.rank + '</td>';
-            html += '<td class="username-cell">' + Utils.escapeHtml(player.username) + '</td>';
-            html += '<td class="score-cell">' + player.bestScore + ' attempts</td>';
-            html += '<td class="winrate-cell">' + player.winRate + '%</td>';
-            html += '<td class="games-cell">' + player.totalWins + '/' + player.totalGames + '</td>';
-            html += '</tr>';
-        });
-
-        html += '</tbody></table>';
-        return html;
-    },
-
-    getRankIcon: function(rank) {
-        switch (rank) {
-            case 1: return '🥇';
-            case 2: return '🥈';
-            case 3: return '🥉';
-            default: return '';
         }
     },
 
@@ -654,7 +544,6 @@ window.UI = {
     init: function() {
         this.setupHeaderDropdown();
         this.setupSettingsModal();
-        this.setupLeaderboardModal();
         this.setupProfileListeners();
     }
 };

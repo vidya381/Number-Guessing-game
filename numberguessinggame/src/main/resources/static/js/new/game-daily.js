@@ -564,23 +564,20 @@ window.DailyGame = {
             if (response.ok && Array.isArray(data)) {
                 // Update date
                 if (dateDiv && GameState.dailyChallenge.info && Utils) {
-                    dateDiv.textContent = `📅 ${Utils.formatDate(GameState.dailyChallenge.info.challengeDate)}`;
+                    dateDiv.textContent = Utils.formatDate(GameState.dailyChallenge.info.challengeDate);
                 }
 
                 if (data.length === 0) {
                     contentDiv.innerHTML = '<div class="no-data">No one has completed today\'s challenge yet. Be the first! 🏆</div>';
                 } else {
-                    let tableHTML = `
-                        <table class="leaderboard-table">
-                            <thead>
-                                <tr>
-                                    <th>Rank</th>
-                                    <th>Player</th>
-                                    <th>Attempts</th>
-                                    <th>Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    let html = `
+                        <div class="leaderboard-table">
+                            <div class="leaderboard-header">
+                                <div class="lb-rank">Rank</div>
+                                <div class="lb-username">Player</div>
+                                <div class="lb-attempts">Attempts</div>
+                                <div class="lb-time">Time</div>
+                            </div>
                     `;
 
                     data.forEach(entry => {
@@ -588,22 +585,18 @@ window.DailyGame = {
                         const rowClass = isCurrentUser ? 'leaderboard-row current-user' : 'leaderboard-row';
                         const escapedUsername = Utils ? Utils.escapeHtml(entry.username) : entry.username;
 
-                        tableHTML += `
-                            <tr class="${rowClass}">
-                                <td>${this.getRankDisplay(entry.rank)}</td>
-                                <td>${escapedUsername}${isCurrentUser ? ' (You)' : ''}</td>
-                                <td>${entry.attempts}</td>
-                                <td>${entry.timeDisplay}</td>
-                            </tr>
+                        html += `
+                            <div class="${rowClass}">
+                                <div class="lb-rank">${this.getRankDisplay(entry.rank)}</div>
+                                <div class="lb-username">${escapedUsername}${isCurrentUser ? ' (You)' : ''}</div>
+                                <div class="lb-attempts">${entry.attempts}</div>
+                                <div class="lb-time">${entry.timeDisplay}</div>
+                            </div>
                         `;
                     });
 
-                    tableHTML += `
-                            </tbody>
-                        </table>
-                    `;
-
-                    contentDiv.innerHTML = tableHTML;
+                    html += '</div>';
+                    contentDiv.innerHTML = html;
                 }
 
                 loadingDiv.style.display = 'none';
@@ -628,7 +621,7 @@ window.DailyGame = {
         if (rank === 1) return '🥇';
         if (rank === 2) return '🥈';
         if (rank === 3) return '🥉';
-        return `#${rank}`;
+        return rank;
     },
 
     // ==========================================

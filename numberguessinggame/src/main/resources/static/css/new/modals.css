@@ -32,6 +32,14 @@
     border: 1px solid rgba(139, 122, 191, 0.15);
 }
 
+/* Wider modal for leaderboards */
+.modal-content-wide {
+    max-width: 650px;
+    padding: 25px;
+    border: 2px solid rgba(139, 122, 191, 0.25);
+    box-shadow: 0 15px 60px rgba(139, 122, 191, 0.35);
+}
+
 .close-modal {
     position: absolute;
     top: 10px;
@@ -1225,6 +1233,11 @@
 
 body.dark-mode .modal-content {
     background-color: var(--card-background);
+}
+
+body.dark-mode .modal-content-wide {
+    border: 2px solid rgba(167, 139, 250, 0.35);
+    box-shadow: 0 15px 60px rgba(167, 139, 250, 0.45);
 }
 
 body.dark-mode .form-group input {

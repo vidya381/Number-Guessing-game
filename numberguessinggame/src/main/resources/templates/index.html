@@ -575,34 +575,27 @@
         </div>
     </div>
 
-    <!-- Leaderboard Modal -->
-    <div id="leaderboard-modal" class="modal" style="display: none;">
-        <div class="modal-content">
-            <button class="modal-close-btn" id="leaderboard-modal-close">
-                <i class="fas fa-times"></i>
-            </button>
-            <h2 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                <i class="fas fa-trophy"></i> Global Leaderboard
-            </h2>
-            <div id="modal-leaderboard-container">
-                <div id="modal-leaderboard-loading">Loading leaderboard...</div>
-                <div id="modal-leaderboard-content" style="display: none;"></div>
-            </div>
-        </div>
-    </div>
-
     <!-- Daily Challenge Leaderboard Modal -->
     <div id="daily-leaderboard-modal" class="modal" style="display: none;">
-        <div class="modal-content">
+        <div class="modal-content modal-content-wide">
             <button class="modal-close-btn" id="daily-leaderboard-modal-close">
                 <i class="fas fa-times"></i>
             </button>
-            <h2 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                <i class="fas fa-trophy"></i> Daily Challenge Leaderboard
-            </h2>
-            <div class="daily-challenge-date" id="daily-leaderboard-date" style="text-align: center; margin-bottom: 15px; color: var(--text-secondary); font-size: 0.9em;">
-                <!-- Will show today's date -->
+
+            <!-- Enhanced Header -->
+            <div class="daily-leaderboard-modal-header">
+                <div class="daily-leaderboard-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="daily-leaderboard-title-section">
+                    <h2 class="daily-leaderboard-title">Daily Challenge Leaderboard</h2>
+                    <p class="daily-leaderboard-subtitle">
+                        <i class="fas fa-calendar-day" style="margin-right: 5px;"></i>
+                        <span id="daily-leaderboard-date"></span>
+                    </p>
+                </div>
             </div>
+
             <div id="modal-daily-leaderboard-container">
                 <div id="modal-daily-leaderboard-loading">Loading leaderboard...</div>
                 <div id="modal-daily-leaderboard-content" style="display: none;"></div>
@@ -612,13 +605,21 @@
 
     <!-- Time Attack Leaderboard Modal -->
     <div id="time-attack-leaderboard-modal" class="modal" style="display: none;">
-        <div class="modal-content">
+        <div class="modal-content modal-content-wide">
             <button class="modal-close-btn" id="ta-leaderboard-close">
                 <i class="fas fa-times"></i>
             </button>
-            <h2 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                <i class="fas fa-trophy"></i> Time Attack Leaderboard
-            </h2>
+
+            <!-- Enhanced Header -->
+            <div class="ta-leaderboard-modal-header">
+                <div class="ta-leaderboard-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="ta-leaderboard-title-section">
+                    <h2 class="ta-leaderboard-title">Time Attack Leaderboard</h2>
+                    <p class="ta-leaderboard-subtitle">Top players across all difficulties</p>
+                </div>
+            </div>
 
             <!-- Difficulty Tabs -->
             <div class="leaderboard-tabs">
