@@ -309,11 +309,6 @@ window.RegularGame = {
     // ==========================================
 
     requestHint: async function() {
-        console.log('💡 requestHint called');
-        console.log('Current user:', GameState.currentUser);
-        console.log('Auth token:', GameState.authToken);
-        console.log('TabId:', GameState.tabId);
-
         // Check if user is logged in
         if (!GameState.currentUser || !GameState.authToken) {
             if (Achievements) {
@@ -418,7 +413,7 @@ window.RegularGame = {
         // Play sound effect
         if (GameState.soundVolume > 0 && GameConfig) {
             GameConfig.sounds.correct.currentTime = 0;
-            GameConfig.sounds.correct.play().catch(err => console.log('Sound play failed:', err));
+            GameConfig.sounds.correct.play().catch(() => {});
         }
     },
 
@@ -426,11 +421,8 @@ window.RegularGame = {
         const hintBtn = document.getElementById('hint-btn');
 
         if (!hintBtn) {
-            console.log('⚠️ Hint button not found');
             return;
         }
-
-        console.log('🔄 Updating hint button. Cost:', GameState.nextHintCost, 'User coins:', GameState.currentUser?.coins);
 
         // Recreate button HTML
         hintBtn.innerHTML = `<span class="hint-text">Hint</span> <span class="hint-cost" id="hint-cost">${GameState.nextHintCost}</span> <i class="fas fa-coins"></i>`;
@@ -440,7 +432,6 @@ window.RegularGame = {
             hintBtn.disabled = true;
             hintBtn.setAttribute('data-locked', 'true');
             hintBtn.setAttribute('data-tooltip', 'Login required for hints');
-            console.log('🔒 Hint button disabled - user not logged in');
             return;
         }
 
@@ -449,7 +440,6 @@ window.RegularGame = {
             hintBtn.disabled = true;
             hintBtn.setAttribute('data-locked', 'true');
             hintBtn.setAttribute('data-tooltip', `Need ${GameState.nextHintCost} coins (you have ${GameState.currentUser.coins})`);
-            console.log('🔒 Hint button disabled - insufficient coins');
             return;
         }
 
@@ -457,7 +447,6 @@ window.RegularGame = {
         hintBtn.disabled = false;
         hintBtn.removeAttribute('data-locked');
         hintBtn.setAttribute('data-tooltip', 'Reveal one digit position');
-        console.log('✅ Hint button enabled');
     },
 
     resetHintState: function() {
@@ -881,7 +870,6 @@ window.RegularGame = {
         const hintBtn = document.getElementById('hint-btn');
         if (hintBtn) {
             hintBtn.addEventListener('click', () => this.requestHint());
-            console.log('✅ Hint button event listener attached');
         } else {
             console.error('❌ Hint button not found in DOM');
         }

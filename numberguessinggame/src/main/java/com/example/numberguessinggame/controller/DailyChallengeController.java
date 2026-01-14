@@ -137,6 +137,12 @@ public class DailyChallengeController {
             );
             activeSessions.put(sessionId, session);
 
+            // Log target number for reference
+            String difficultyName = challenge.getDifficulty() == 0 ? "Easy" : challenge.getDifficulty() == 1 ? "Medium" : "Hard";
+            System.out.println("[Game Start] Mode: Daily Challenge | User: " + user.getUsername() +
+                " | Difficulty: " + difficultyName + " | Target: " + challenge.getTargetNumber() +
+                " | Session: " + sessionId + " | Attempts: " + cumulativeAttempts);
+
             Map<String, Object> response = new HashMap<>();
             response.put("sessionId", sessionId);
             response.put("difficulty", challenge.getDifficulty());

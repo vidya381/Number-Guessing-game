@@ -120,9 +120,6 @@ window.DailyGame = {
             return; // Silently return - button handles toggle
         }
 
-        console.log('=== Starting Daily Challenge ===');
-        console.log('Auth Token:', GameState.authToken ? 'Present' : 'Missing');
-
         try {
             const response = await fetch('/api/daily-challenge/start', {
                 method: 'POST',
@@ -132,17 +129,12 @@ window.DailyGame = {
                 }
             });
 
-            console.log('Start response status:', response.status);
             const data = await response.json();
-            console.log('Start response data:', data);
 
             if (response.ok) {
                 GameState.dailyChallenge.sessionId = data.sessionId;
                 GameState.dailyChallenge.digitCount = data.digitCount;
                 GameState.dailyChallenge.attempts = data.currentAttempts || 0; // Set cumulative attempts
-                console.log('Session created:', GameState.dailyChallenge.sessionId);
-                console.log('Digit count:', GameState.dailyChallenge.digitCount);
-                console.log('Starting with cumulative attempts:', GameState.dailyChallenge.attempts);
                 this.startDailyChallengeGame();
             } else {
                 console.error('Failed to start:', data.error);
@@ -290,13 +282,6 @@ window.DailyGame = {
             return;
         }
 
-        // Debug logging
-        console.log('=== Daily Challenge Guess Debug ===');
-        console.log('Session ID:', GameState.dailyChallenge.sessionId);
-        console.log('Auth Token:', GameState.authToken ? 'Present' : 'Missing');
-        console.log('Guess:', guess);
-        console.log('Digit Count:', GameState.dailyChallenge.digitCount);
-
         try {
             const response = await fetch('/api/daily-challenge/guess', {
                 method: 'POST',
@@ -310,9 +295,7 @@ window.DailyGame = {
                 })
             });
 
-            console.log('Response status:', response.status);
             const data = await response.json();
-            console.log('Response data:', data);
 
             if (response.ok) {
                 GameState.dailyChallenge.attempts = data.attempts;

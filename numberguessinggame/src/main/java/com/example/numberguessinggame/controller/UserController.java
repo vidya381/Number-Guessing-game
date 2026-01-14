@@ -78,13 +78,6 @@ public class UserController {
             Integer playDays = user.getConsecutivePlayDays() != null ? user.getConsecutivePlayDays() : 0;
             Integer bestDays = user.getBestPlayDayStreak() != null ? user.getBestPlayDayStreak() : 0;
 
-            System.out.println("=== Profile API returning streaks ===");
-            System.out.println("User: " + user.getUsername());
-            System.out.println("Current win streak: " + currentStreak);
-            System.out.println("Best win streak: " + bestStreak);
-            System.out.println("Consecutive play days: " + playDays);
-            System.out.println("Best play day streak: " + bestDays);
-
             profile.put("currentWinStreak", currentStreak);
             profile.put("bestWinStreak", bestStreak);
             profile.put("consecutivePlayDays", playDays);
@@ -96,8 +89,6 @@ public class UserController {
 
             // Recent games (last 10)
             List<Game> recentGames = gameRepository.findTop10ByUserOrderByPlayedAtDesc(user);
-            System.out.println("=== Recent Games Query ===");
-            System.out.println("Found " + recentGames.size() + " recent games for user: " + user.getUsername());
             List<Map<String, Object>> recentGamesData = recentGames.stream()
                 .map(game -> {
                     Map<String, Object> gameData = new HashMap<>();
@@ -123,7 +114,6 @@ public class UserController {
                     return gameData;
                 })
                 .collect(Collectors.toList());
-            System.out.println("Mapped " + recentGamesData.size() + " games to response");
             profile.put("recentGames", recentGamesData);
 
             // Difficulty breakdown

@@ -77,23 +77,17 @@ window.Auth = {
     },
 
     showCoinAnimation: function(amount) {
-        console.log('🪙 showCoinAnimation called:', { amount, hasCurrentUser: !!GameState.currentUser, currentUserCoins: GameState.currentUser?.coins });
-
         if (!GameState.currentUser || amount === 0) {
-            console.log('❌ Animation skipped - no user or zero amount');
             return;
         }
 
         const coinDisplay = document.getElementById('coin-display');
         if (!coinDisplay) {
-            console.log('❌ coin-display element not found');
             return;
         }
 
         const isDeduction = amount < 0;
         const absAmount = Math.abs(amount);
-
-        console.log('✅ Starting coin animation with', amount, 'coins');
 
         const rect = coinDisplay.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;

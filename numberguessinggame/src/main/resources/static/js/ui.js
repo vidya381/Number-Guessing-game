@@ -278,11 +278,6 @@ window.UI = {
     },
 
     populateProfileModal: function(profile) {
-        console.log('=== populateProfileModal called ===');
-        console.log('Profile data:', profile);
-        console.log('Recent games:', profile.recentGames);
-        console.log('Recent games length:', profile.recentGames ? profile.recentGames.length : 0);
-
         // Update header info
         const usernameEl = document.getElementById('profile-username');
         const emailEl = document.getElementById('profile-email');
@@ -353,25 +348,17 @@ window.UI = {
     },
 
     updateRecentGamesList: function(games) {
-        console.log('=== updateRecentGamesList called ===');
-        console.log('Games received:', games);
-        console.log('Games length:', games ? games.length : 0);
-
         const recentGamesList = document.getElementById('profile-recent-games');
         if (!recentGamesList) {
-            console.log('ERROR: profile-recent-games element not found!');
             return;
         }
 
         recentGamesList.innerHTML = '';
 
         if (!games || games.length === 0) {
-            console.log('No games to display');
             recentGamesList.innerHTML = '<p style="text-align: center; opacity: 0.7; padding: 20px;">No recent games yet.</p>';
             return;
         }
-
-        console.log('Displaying', games.length, 'games');
 
         games.forEach(game => {
             const gameItem = document.createElement('div');

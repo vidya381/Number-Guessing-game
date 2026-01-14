@@ -508,9 +508,6 @@ public class AchievementService {
         if (!userAchievementRepository.existsByUserAndAchievement(user, achievement)) {
             UserAchievement ua = new UserAchievement(user, achievement);
             userAchievementRepository.save(ua);
-            System.out.println("Achievement unlocked: user=" + user.getUsername() +
-                             ", achievement=" + achievement.getName() +
-                             ", code=" + achievement.getCode());
         }
     }
 
