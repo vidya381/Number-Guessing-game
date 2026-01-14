@@ -196,9 +196,6 @@ window.UI = {
     // PROFILE MODAL
     // ==========================================
 
-    profileCurrentFilter: 'all',
-    profileAchievements: [],
-
     setupProfileListeners: function() {
         const profileBtn = document.getElementById('profile-btn');
         const profileModal = document.getElementById('profile-modal');
@@ -452,7 +449,7 @@ window.UI = {
             const data = await response.json();
 
             if (data.success && data.achievements) {
-                this.profileAchievements = data.achievements;
+                GameState.profileAchievements = data.achievements;
                 this.displayProfileAchievements(data.achievements);
                 this.setupProfileAchievementTabs();
             }
@@ -487,9 +484,9 @@ window.UI = {
 
         // Filter achievements based on current filter
         let filteredAchievements = achievements;
-        if (this.profileCurrentFilter === 'unlocked') {
+        if (GameState.profileCurrentFilter === 'unlocked') {
             filteredAchievements = achievements.filter(a => a.unlocked);
-        } else if (this.profileCurrentFilter === 'locked') {
+        } else if (GameState.profileCurrentFilter === 'locked') {
             filteredAchievements = achievements.filter(a => !a.unlocked);
         }
 
@@ -531,8 +528,8 @@ window.UI = {
                 tab.classList.add('active');
 
                 // Update filter and re-render
-                this.profileCurrentFilter = tab.dataset.filter;
-                this.renderProfileAchievementsList(this.profileAchievements);
+                GameState.profileCurrentFilter = tab.dataset.filter;
+                this.renderProfileAchievementsList(GameState.profileAchievements);
             });
         });
     },
