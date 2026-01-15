@@ -597,13 +597,7 @@ window.TimeAttackGame = {
                     const isCurrentUser = GameState.currentUser && entry.username === GameState.currentUser.username;
                     const rowClass = isCurrentUser ? `${rankClass} current-user` : rankClass;
                     const escapedUsername = Utils ? Utils.escapeHtml(entry.username) : entry.username;
-
-                    // Display medals for top 3, numbers for rest
-                    let rankDisplay;
-                    if (entry.rank === 1) rankDisplay = '🥇';
-                    else if (entry.rank === 2) rankDisplay = '🥈';
-                    else if (entry.rank === 3) rankDisplay = '🥉';
-                    else rankDisplay = entry.rank;
+                    const rankDisplay = Utils ? Utils.getRankDisplay(entry.rank) : entry.rank;
 
                     html += `
                         <div class="leaderboard-row ${rowClass}">

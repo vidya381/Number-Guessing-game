@@ -472,6 +472,13 @@ window.Utils = {
         return div.innerHTML;
     },
 
+    getRankDisplay: function(rank) {
+        if (rank === 1) return '🥇';
+        if (rank === 2) return '🥈';
+        if (rank === 3) return '🥉';
+        return rank;
+    },
+
     // ==========================================
     // UI HELPERS
     // ==========================================

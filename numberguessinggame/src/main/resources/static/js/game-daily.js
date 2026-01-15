@@ -567,10 +567,11 @@ window.DailyGame = {
                         const isCurrentUser = GameState.currentUser && entry.username === GameState.currentUser.username;
                         const rowClass = isCurrentUser ? 'leaderboard-row current-user' : 'leaderboard-row';
                         const escapedUsername = Utils ? Utils.escapeHtml(entry.username) : entry.username;
+                        const rankDisplay = Utils ? Utils.getRankDisplay(entry.rank) : entry.rank;
 
                         html += `
                             <div class="${rowClass}">
-                                <div class="lb-rank">${this.getRankDisplay(entry.rank)}</div>
+                                <div class="lb-rank">${rankDisplay}</div>
                                 <div class="lb-username">${escapedUsername}${isCurrentUser ? ' (You)' : ''}</div>
                                 <div class="lb-attempts">${entry.attempts}</div>
                                 <div class="lb-time">${entry.timeDisplay}</div>
@@ -598,13 +599,6 @@ window.DailyGame = {
         if (Utils) {
             Utils.openModalWithAnimation(modal);
         }
-    },
-
-    getRankDisplay: function(rank) {
-        if (rank === 1) return '🥇';
-        if (rank === 2) return '🥈';
-        if (rank === 3) return '🥉';
-        return rank;
     },
 
     // ==========================================
