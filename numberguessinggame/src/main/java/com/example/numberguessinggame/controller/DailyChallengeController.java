@@ -6,16 +6,23 @@ import com.example.numberguessinggame.entity.User;
 import com.example.numberguessinggame.service.DailyChallengeService;
 import com.example.numberguessinggame.service.JwtUtil;
 import com.example.numberguessinggame.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/api/daily-challenge")
 public class DailyChallengeController {
+
+    private static final Logger logger = LoggerFactory.getLogger(DailyChallengeController.class);
+    private static final int SESSION_DURATION_MS = 1800000;  // 30 minutes
 
     @Autowired
     private DailyChallengeService dailyChallengeService;
@@ -27,10 +34,10 @@ public class DailyChallengeController {
     private JwtUtil jwtUtil;
 
     // Store active daily challenge sessions
-    private final Map<String, DailyChallengeSession> activeSessions = new HashMap<>();
+    private final Map<String, DailyChallengeSession> activeSessions = new ConcurrentHashMap<>();
 
     // Store cumulative attempts per user per day (userId-date -> attempts)
-    private final Map<String, Integer> dailyAttempts = new HashMap<>();
+    private final Map<String, Integer> dailyAttempts = new ConcurrentHashMap<>();
 
     /**
      * Get today's daily challenge info
@@ -393,6 +400,27 @@ public class DailyChallengeController {
     }
 
     /**
+     * Scheduled cleanup of expired sessions (runs every 10 minutes)
+     */
+    @Scheduled(fixedRate = 600000)
+    public void cleanupExpiredSessions() {
+        int removed = 0;
+        Iterator<Map.Entry<String, DailyChallengeSession>> iterator = activeSessions.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<String, DailyChallengeSession> entry = iterator.next();
+            if (entry.getValue().isExpired()) {
+                iterator.remove();
+                removed++;
+            }
+        }
+
+        if (removed > 0) {
+            logger.info("Cleaned up {} expired Daily Challenge sessions", removed);
+        }
+    }
+
+    /**
      * Session data class
      */
     private static class DailyChallengeSession {
@@ -438,6 +466,10 @@ public class DailyChallengeController {
 
         public void incrementAttempts() {
             this.attempts++;
+        }
+
+        public boolean isExpired() {
+            return System.currentTimeMillis() - startTime > SESSION_DURATION_MS;
         }
     }
 }

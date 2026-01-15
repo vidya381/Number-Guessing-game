@@ -288,6 +288,11 @@ window.Auth = {
                     Utils.closeModalWithAnimation(document.getElementById('auth-modal'), () => this.clearAuthForms());
                 }
 
+                // Reload daily challenge info for the newly logged-in user
+                if (DailyGame && DailyGame.loadDailyChallengeInfo) {
+                    DailyGame.loadDailyChallengeInfo();
+                }
+
                 if (Achievements) {
                     Achievements.showToast('Welcome back, ' + GameState.currentUser.username + '!', 'success');
                 }
@@ -347,6 +352,11 @@ window.Auth = {
                 }
                 this.clearAuthForms();
 
+                // Reload daily challenge info for the newly signed-up user
+                if (DailyGame && DailyGame.loadDailyChallengeInfo) {
+                    DailyGame.loadDailyChallengeInfo();
+                }
+
                 if (Achievements) {
                     Achievements.showToast('Welcome to NumVana, ' + GameState.currentUser.username + '!', 'success');
                 }
@@ -362,7 +372,25 @@ window.Auth = {
         GameState.authToken = null;
         localStorage.removeItem('authToken');
         localStorage.removeItem('currentUser');
+
+        // Clear daily challenge state to prevent showing previous user's status
+        GameState.dailyChallenge = {
+            info: null,
+            sessionId: null,
+            attempts: 0,
+            startTime: null,
+            timerInterval: null,
+            guessHistory: [],
+            digitCount: 0
+        };
+
         this.updateAuthUI();
+
+        // Reload daily challenge info for guest view
+        if (DailyGame && DailyGame.loadDailyChallengeInfo) {
+            DailyGame.loadDailyChallengeInfo();
+        }
+
         if (Achievements) {
             Achievements.showToast('Logged out successfully!', 'success');
         }
