@@ -16,11 +16,26 @@ public interface SurvivalSessionRepository extends JpaRepository<SurvivalSession
 
     /**
      * Get leaderboard for a specific difficulty
-     * Sorted by: completed DESC, rounds_survived DESC, total_attempts_used ASC
+     * Shows only the BEST run per player
+     * Ranked by: completed DESC, roundsSurvived DESC, totalAttemptsUsed ASC
+     * Only includes authenticated users (user IS NOT NULL)
      */
     @Query("SELECT s FROM SurvivalSession s " +
            "JOIN FETCH s.user u " +
-           "WHERE s.difficulty = :difficulty " +
+           "WHERE s.difficulty = :difficulty AND s.user IS NOT NULL " +
+           "AND (s.completed, s.roundsSurvived, -s.totalAttemptsUsed) = (" +
+           "  SELECT s2.completed, s2.roundsSurvived, -s2.totalAttemptsUsed FROM SurvivalSession s2 " +
+           "  WHERE s2.user = s.user AND s2.difficulty = :difficulty " +
+           "  ORDER BY s2.completed DESC, s2.roundsSurvived DESC, s2.totalAttemptsUsed ASC " +
+           "  LIMIT 1" +
+           ") " +
+           "AND s.id = (" +
+           "  SELECT MIN(s3.id) FROM SurvivalSession s3 " +
+           "  WHERE s3.user = s.user AND s3.difficulty = :difficulty " +
+           "  AND s3.completed = s.completed " +
+           "  AND s3.roundsSurvived = s.roundsSurvived " +
+           "  AND s3.totalAttemptsUsed = s.totalAttemptsUsed" +
+           ") " +
            "ORDER BY s.completed DESC, s.roundsSurvived DESC, s.totalAttemptsUsed ASC")
     List<SurvivalSession> findLeaderboardByDifficulty(
         @Param("difficulty") Integer difficulty,

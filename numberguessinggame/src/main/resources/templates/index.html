@@ -703,6 +703,38 @@
         </div>
     </div>
 
+    <!-- Survival Mode Leaderboard Modal -->
+    <div id="survival-leaderboard-modal" class="modal" style="display: none;">
+        <div class="modal-content modal-content-wide">
+            <button class="modal-close-btn" id="survival-leaderboard-close">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <!-- Enhanced Header -->
+            <div class="ta-leaderboard-modal-header">
+                <div class="ta-leaderboard-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="ta-leaderboard-title-section">
+                    <h2 class="ta-leaderboard-title">Survival Mode Leaderboard</h2>
+                    <p class="ta-leaderboard-subtitle">Top survivors - best runs only</p>
+                </div>
+            </div>
+
+            <!-- Difficulty Tabs -->
+            <div class="leaderboard-tabs">
+                <button class="lb-tab active" data-difficulty="0">Easy</button>
+                <button class="lb-tab" data-difficulty="1">Medium</button>
+                <button class="lb-tab" data-difficulty="2">Hard</button>
+            </div>
+
+            <div id="survival-leaderboard-container">
+                <div id="survival-leaderboard-loading">Loading leaderboard...</div>
+                <div id="survival-leaderboard-content" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Achievement Notification Toast Container -->
     <div id="achievement-toast-container"></div>
 

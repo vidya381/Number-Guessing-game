@@ -37,9 +37,17 @@ window.SurvivalGame = {
         if (playAgainBtn) {
             playAgainBtn.addEventListener('click', () => {
                 const difficulty = GameState.survival?.difficulty ?? 0;
-                this.showHomeFromResult();
-                // Small delay to ensure page transition completes
-                setTimeout(() => this.startSurvival(difficulty), 100);
+                const resultPage = document.getElementById('survival-result-page');
+                const homePage = document.getElementById('home-page');
+
+                // Immediately hide result page and show home
+                if (resultPage) resultPage.style.display = 'none';
+                if (homePage) homePage.style.display = 'block';
+
+                GameState.resetSurvival();
+
+                // Start new game immediately (no delay/flash)
+                this.startSurvival(difficulty);
             });
         }
 
@@ -47,6 +55,37 @@ window.SurvivalGame = {
         if (mainMenuBtn) {
             mainMenuBtn.addEventListener('click', () => this.showHomeFromResult());
         }
+
+        // Leaderboard modal buttons
+        const viewLeaderboardBtn = document.getElementById('view-survival-leaderboard');
+        if (viewLeaderboardBtn) {
+            viewLeaderboardBtn.addEventListener('click', () => {
+                this.loadSurvivalLeaderboard(0); // Default to Easy
+            });
+        }
+
+        const closeLeaderboardBtn = document.getElementById('survival-leaderboard-close');
+        if (closeLeaderboardBtn) {
+            closeLeaderboardBtn.addEventListener('click', () => {
+                const modal = document.getElementById('survival-leaderboard-modal');
+                if (modal && Utils) {
+                    Utils.closeModalWithAnimation(modal);
+                }
+            });
+        }
+
+        // Leaderboard difficulty tabs
+        document.querySelectorAll('#survival-leaderboard-modal .lb-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab
+                document.querySelectorAll('#survival-leaderboard-modal .lb-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                // Load leaderboard for selected difficulty
+                const difficulty = parseInt(tab.dataset.difficulty);
+                this.loadSurvivalLeaderboard(difficulty);
+            });
+        });
     },
 
     // ==========================================
@@ -584,6 +623,89 @@ window.SurvivalGame = {
         }
 
         GameState.resetSurvival();
+    },
+
+    // ==========================================
+    // LEADERBOARD
+    // ==========================================
+
+    loadSurvivalLeaderboard: async function(difficulty = 0) {
+        const modal = document.getElementById('survival-leaderboard-modal');
+        const loadingDiv = document.getElementById('survival-leaderboard-loading');
+        const contentDiv = document.getElementById('survival-leaderboard-content');
+
+        if (!modal || !loadingDiv || !contentDiv) return;
+
+        // Check if modal is already open (before we start loading)
+        const isAlreadyOpen = modal.style.display === 'flex';
+
+        // Show loading state
+        loadingDiv.style.display = 'block';
+        contentDiv.style.display = 'none';
+
+        try {
+            const response = await fetch(`/api/survival/leaderboard?difficulty=${difficulty}&limit=50`);
+
+            if (!response.ok) {
+                throw new Error('Failed to load leaderboard');
+            }
+
+            const leaderboard = await response.json();
+
+            // Hide loading, show content
+            loadingDiv.style.display = 'none';
+            contentDiv.style.display = 'block';
+
+            if (leaderboard.length === 0) {
+                contentDiv.innerHTML = '<div class="no-data">No players yet on this difficulty. Be the first! 🏆</div>';
+            } else {
+                // Create leaderboard table
+                let html = `
+                    <div class="leaderboard-table">
+                        <div class="leaderboard-header">
+                            <div class="lb-rank">Rank</div>
+                            <div class="lb-username">Player</div>
+                            <div class="lb-rounds">Cleared</div>
+                            <div class="lb-attempts">Attempts</div>
+                            <div class="lb-status">Status</div>
+                        </div>
+                `;
+
+                leaderboard.forEach((entry, index) => {
+                    const rankClass = index < 3 ? `top-${index + 1}` : '';
+                    const isCurrentUser = GameState.currentUser && entry.username === GameState.currentUser.username;
+                    const rowClass = isCurrentUser ? `${rankClass} current-user` : rankClass;
+                    const escapedUsername = Utils ? Utils.escapeHtml(entry.username) : entry.username;
+                    const rankDisplay = Utils ? Utils.getRankDisplay(entry.rank) : entry.rank;
+                    const statusIcon = entry.completed ? '✓' : '—';
+
+                    html += `
+                        <div class="leaderboard-row ${rowClass}">
+                            <div class="lb-rank">${rankDisplay}</div>
+                            <div class="lb-username">${escapedUsername}${isCurrentUser ? ' (You)' : ''}</div>
+                            <div class="lb-rounds">${entry.roundsSurvived}/5</div>
+                            <div class="lb-attempts">${entry.totalAttemptsUsed}</div>
+                            <div class="lb-status">${statusIcon}</div>
+                        </div>
+                    `;
+                });
+
+                html += '</div>';
+                contentDiv.innerHTML = html;
+            }
+
+        } catch (error) {
+            console.error('Failed to load leaderboard:', error);
+            loadingDiv.style.display = 'none';
+            contentDiv.style.display = 'block';
+            contentDiv.innerHTML = '<div class="error-message">Couldn\'t load the leaderboard. Try again in a moment! 🏆</div>';
+        }
+
+        // Only animate modal opening if it wasn't already open
+        // This prevents re-animation when switching tabs
+        if (!isAlreadyOpen && Utils) {
+            Utils.openModalWithAnimation(modal);
+        }
     },
 
     showGameOverScreen: async function(data) {
