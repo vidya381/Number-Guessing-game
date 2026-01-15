@@ -31,6 +31,17 @@ window.SurvivalGame = {
         if (quitBtn) {
             quitBtn.addEventListener('click', () => this.quitGame());
         }
+
+        // Result page buttons
+        const playAgainBtn = document.getElementById('survival-play-again');
+        if (playAgainBtn) {
+            playAgainBtn.addEventListener('click', () => this.showHomeFromResult());
+        }
+
+        const mainMenuBtn = document.getElementById('survival-main-menu');
+        if (mainMenuBtn) {
+            mainMenuBtn.addEventListener('click', () => this.showHomeFromResult());
+        }
     },
 
     // ==========================================
@@ -370,12 +381,12 @@ window.SurvivalGame = {
     // ==========================================
 
     quitGame: async function() {
-        if (!confirm('Quit survival mode? You will lose all progress!')) {
+        if (!confirm('End session? Your progress will be saved.')) {
             return;
         }
 
         try {
-            await fetch('/api/survival/end', {
+            const endResponse = await fetch('/api/survival/end', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -386,25 +397,49 @@ window.SurvivalGame = {
                 })
             });
 
-            // Navigate back to home page
-            const survivalPage = document.getElementById('survival-page');
-            const homePage = document.getElementById('home-page');
+            const endData = await endResponse.json();
 
-            if (survivalPage && homePage) {
+            // Show result page with stats
+            const survivalPage = document.getElementById('survival-page');
+            const resultPage = document.getElementById('survival-result-page');
+
+            if (survivalPage && resultPage) {
                 if (Utils) {
                     Utils.fadeOutElement(survivalPage, () => {
-                        Utils.fadeInElement(homePage, 'block');
+                        Utils.fadeInElement(resultPage, 'flex');
                     });
                 } else {
                     survivalPage.style.display = 'none';
-                    homePage.style.display = 'block';
+                    resultPage.style.display = 'flex';
                 }
             }
 
-            GameState.resetSurvival();
+            // Display results
+            const resultContainer = document.getElementById('survival-result-content');
+            if (resultContainer) {
+                const title = endData.roundsSurvived >= 5 ? '🎉 VICTORY! 🎉' : '📊 SESSION ENDED';
+                resultContainer.innerHTML = `
+                    <h2>${title}</h2>
+                    <div class="result-stats">
+                        <p><strong>Rounds Survived:</strong> ${endData.roundsSurvived}/5</p>
+                        <p><strong>Total Attempts:</strong> ${endData.totalAttemptsUsed}</p>
+                        <p><strong>Coins Earned:</strong> ${endData.coinsEarned}</p>
+                        ${endData.rank ? `<p><strong>Rank:</strong> #${endData.rank}</p>` : ''}
+                    </div>
+                `;
+            }
+
+            // Update coin display
+            if (endData.totalCoins && Auth) {
+                GameState.currentUser.coins = endData.totalCoins;
+                Auth.updateCoinDisplay();
+                if (endData.coinsEarned > 0) {
+                    Auth.showCoinAnimation(endData.coinsEarned);
+                }
+            }
 
         } catch (error) {
-            console.error('Error quitting:', error);
+            console.error('Error ending session:', error);
         }
     },
 
@@ -462,6 +497,24 @@ window.SurvivalGame = {
         } catch (error) {
             console.error('Error ending session:', error);
         }
+    },
+
+    showHomeFromResult: function() {
+        const resultPage = document.getElementById('survival-result-page');
+        const homePage = document.getElementById('home-page');
+
+        if (resultPage && homePage) {
+            if (Utils) {
+                Utils.fadeOutElement(resultPage, () => {
+                    Utils.fadeInElement(homePage, 'block');
+                });
+            } else {
+                resultPage.style.display = 'none';
+                homePage.style.display = 'block';
+            }
+        }
+
+        GameState.resetSurvival();
     },
 
     showGameOverScreen: async function(data) {

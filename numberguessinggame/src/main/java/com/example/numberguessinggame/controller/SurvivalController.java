@@ -305,6 +305,12 @@ public class SurvivalController {
                     int digitCount = 3 + session.getDifficulty();
                     session.setCurrentTargetNumber(generateUniqueDigitNumber(digitCount));
 
+                    // Log new round start
+                    String difficultyName = survivalService.getDifficultyText(session.getDifficulty());
+                    logger.info("[Survival Round {}] UserID: {} | Difficulty: {} | Target: {} | Session: {}",
+                            session.getCurrentRound(), session.getUserId(), difficultyName,
+                            session.getCurrentTargetNumber(), sessionId);
+
                     response.put("completed", false);
                     response.put("nextRound", session.getCurrentRound());
                 }
