@@ -377,6 +377,83 @@ window.SurvivalGame = {
     },
 
     // ==========================================
+    // RESULTS DISPLAY
+    // ==========================================
+
+    displaySurvivalResults: function(data) {
+        if (Utils) {
+            Utils.updateGameStatus('result');
+        }
+
+        const statsContainer = document.getElementById('survival-stats');
+        if (!statsContainer) return;
+
+        statsContainer.textContent = '';
+
+        const completed = data.roundsSurvived >= 5;
+        const title = completed ? '🎉 VICTORY!' : '💀 SESSION ENDED';
+
+        // Hero Section - Coins Earned
+        const heroSection = document.createElement('div');
+        heroSection.style.cssText = 'text-align: center; margin-bottom: 30px;';
+        heroSection.innerHTML = `
+            <h2 style="color: var(--primary-color); margin: 0 0 20px 0; font-size: 1.5em; font-weight: 700;">${title}</h2>
+            <div style="background: linear-gradient(135deg, ${completed ? '#52c98c 0%, #4ea8de' : '#8b0000 0%, #4a0000'} 100%); padding: 30px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 8px 24px ${completed ? 'rgba(82, 201, 140, 0.3)' : 'rgba(139, 0, 0, 0.3)'};">
+                <div style="font-size: 3.5em; font-weight: 800; color: #fff; line-height: 1;">
+                    ${data.coinsEarned || 0} <i class="fas fa-coins" style="font-size: 0.8em; color: #ffd700;"></i>
+                </div>
+                <div style="font-size: 0.9em; color: rgba(255,255,255,0.9); margin-top: 8px; font-weight: 600;">COINS EARNED</div>
+            </div>
+        `;
+        statsContainer.appendChild(heroSection);
+
+        // Stats Grid - 2x2 Grid with exactly 4 cards
+        const statsGrid = document.createElement('div');
+        statsGrid.style.cssText = 'display: grid; grid-template-columns: 1fr 1fr; gap: 12px;';
+
+        const createStatCard = (icon, value, label, highlight = false) => {
+            const card = document.createElement('div');
+            const bgColor = highlight ? 'linear-gradient(135deg, #52c98c 0%, #4ea8de 100%)' : 'rgba(167, 139, 250, 0.1)';
+            const textColor = highlight ? '#fff' : 'var(--text-color)';
+            card.style.cssText = `background: ${bgColor}; padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);`;
+            card.innerHTML = `
+                <i class="${icon}" style="font-size: 2em; color: ${highlight ? '#fff' : 'var(--primary-color)'}; margin-bottom: 8px;"></i>
+                <div style="font-size: 1.8em; font-weight: 700; color: ${textColor}; line-height: 1.2;">${value}</div>
+                <div style="font-size: 0.75em; color: ${highlight ? 'rgba(255,255,255,0.9)' : 'var(--text-secondary)'}; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">${label}</div>
+            `;
+            return card;
+        };
+
+        // Card 1: Rounds Cleared
+        const roundsValue = `${data.roundsSurvived}/5`;
+        statsGrid.appendChild(createStatCard('fas fa-shield-alt', roundsValue, 'Cleared', completed));
+
+        // Card 2: Total Attempts
+        statsGrid.appendChild(createStatCard('fas fa-bullseye', data.totalAttemptsUsed || 0, 'Total Tries'));
+
+        // Card 3: Average Attempts per Round
+        const avgAttempts = data.roundsSurvived > 0
+            ? (data.totalAttemptsUsed / data.roundsSurvived).toFixed(1)
+            : '0.0';
+        statsGrid.appendChild(createStatCard('fas fa-tachometer-alt', avgAttempts, 'Avg Per Round'));
+
+        // Card 4: Rank or Difficulty
+        if (data.rank && GameState.authToken) {
+            const rankEmoji = data.rank === 1 ? '🥇' : data.rank === 2 ? '🥈' : data.rank === 3 ? '🥉' : '📊';
+            const isTopThree = data.rank <= 3;
+            statsGrid.appendChild(createStatCard('fas fa-ranking-star', `${rankEmoji} #${data.rank}`, 'Rank', isTopThree));
+        } else {
+            // Show difficulty level
+            const difficultyNames = ['EASY', 'MEDIUM', 'HARD'];
+            const difficultyIcons = ['fas fa-smile', 'fas fa-meh', 'fas fa-fire'];
+            const difficulty = GameState.survival?.difficulty ?? 0;
+            statsGrid.appendChild(createStatCard(difficultyIcons[difficulty], difficultyNames[difficulty], 'Difficulty'));
+        }
+
+        statsContainer.appendChild(statsGrid);
+    },
+
+    // ==========================================
     // END GAME
     // ==========================================
 
@@ -399,7 +476,10 @@ window.SurvivalGame = {
 
             const endData = await endResponse.json();
 
-            // Show result page with stats
+            // Display results
+            this.displaySurvivalResults(endData);
+
+            // Show result page
             const survivalPage = document.getElementById('survival-page');
             const resultPage = document.getElementById('survival-result-page');
 
@@ -412,21 +492,6 @@ window.SurvivalGame = {
                     survivalPage.style.display = 'none';
                     resultPage.style.display = 'flex';
                 }
-            }
-
-            // Display results
-            const resultContainer = document.getElementById('survival-result-content');
-            if (resultContainer) {
-                const title = endData.roundsSurvived >= 5 ? '🎉 VICTORY! 🎉' : '📊 SESSION ENDED';
-                resultContainer.innerHTML = `
-                    <h2>${title}</h2>
-                    <div class="result-stats">
-                        <p><strong>Rounds Survived:</strong> ${endData.roundsSurvived}/5</p>
-                        <p><strong>Total Attempts:</strong> ${endData.totalAttemptsUsed}</p>
-                        <p><strong>Coins Earned:</strong> ${endData.coinsEarned}</p>
-                        ${endData.rank ? `<p><strong>Rank:</strong> #${endData.rank}</p>` : ''}
-                    </div>
-                `;
             }
 
             // Update coin display
@@ -459,6 +524,18 @@ window.SurvivalGame = {
 
             const endData = await endResponse.json();
 
+            // Prepare result data
+            const resultData = {
+                roundsSurvived: 5,
+                totalAttemptsUsed: data.totalAttemptsUsed,
+                coinsEarned: data.totalCoinsEarned,
+                rank: endData.rank,
+                completed: true
+            };
+
+            // Display results
+            this.displaySurvivalResults(resultData);
+
             // Show result page
             const survivalPage = document.getElementById('survival-page');
             const resultPage = document.getElementById('survival-result-page');
@@ -472,19 +549,6 @@ window.SurvivalGame = {
                     survivalPage.style.display = 'none';
                     resultPage.style.display = 'flex';
                 }
-            }
-
-            const resultContainer = document.getElementById('survival-result-content');
-            if (resultContainer) {
-                resultContainer.innerHTML = `
-                    <h2>🎉 VICTORY! 🎉</h2>
-                    <div class="result-stats">
-                        <p><strong>Rounds Survived:</strong> 5/5</p>
-                        <p><strong>Total Attempts:</strong> ${data.totalAttemptsUsed}</p>
-                        <p><strong>Coins Earned:</strong> ${data.totalCoinsEarned}</p>
-                        ${endData.rank ? `<p><strong>Rank:</strong> #${endData.rank}</p>` : ''}
-                    </div>
-                `;
             }
 
             // Update coin display
@@ -533,6 +597,18 @@ window.SurvivalGame = {
 
             const endData = await endResponse.json();
 
+            // Prepare result data
+            const resultData = {
+                roundsSurvived: data.roundsSurvived,
+                totalAttemptsUsed: data.totalAttemptsUsed,
+                coinsEarned: data.totalCoinsEarned,
+                rank: endData.rank,
+                completed: false
+            };
+
+            // Display results
+            this.displaySurvivalResults(resultData);
+
             // Show result page
             const survivalPage = document.getElementById('survival-page');
             const resultPage = document.getElementById('survival-result-page');
@@ -546,19 +622,6 @@ window.SurvivalGame = {
                     survivalPage.style.display = 'none';
                     resultPage.style.display = 'flex';
                 }
-            }
-
-            const resultContainer = document.getElementById('survival-result-content');
-            if (resultContainer) {
-                resultContainer.innerHTML = `
-                    <h2>💀 GAME OVER 💀</h2>
-                    <div class="result-stats">
-                        <p><strong>Rounds Survived:</strong> ${data.roundsSurvived}/5</p>
-                        <p><strong>Total Attempts:</strong> ${data.totalAttemptsUsed}</p>
-                        <p><strong>Coins Earned:</strong> ${data.totalCoinsEarned}</p>
-                        ${endData.rank ? `<p><strong>Rank:</strong> #${endData.rank}</p>` : ''}
-                    </div>
-                `;
             }
 
             // Update coin display

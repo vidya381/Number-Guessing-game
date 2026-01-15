@@ -357,10 +357,10 @@ public class SurvivalController {
                         .body(Map.of("error", "Session not found"));
             }
 
-            // Calculate final stats
-            int roundsSurvived = session.getRoundResults().isEmpty() ? 0 :
-                                session.getRoundResults().get(session.getRoundResults().size() - 1).getWon() ?
-                                session.getCurrentRound() : session.getCurrentRound() - 1;
+            // Calculate final stats - count how many rounds were actually won
+            int roundsSurvived = (int) session.getRoundResults().stream()
+                    .filter(RoundResult::getWon)
+                    .count();
 
             boolean completed = roundsSurvived >= 5;
 
