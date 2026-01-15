@@ -159,7 +159,7 @@ window.RegularGame = {
             if (Achievements) {
                 Achievements.showToast('Your game session expired. Let\'s start a fresh game!', 'error');
             }
-            setTimeout(() => this.showHomePage(), 2000);
+            setTimeout(() => this.showHomePage(), GameConfig.UI.HOME_NAVIGATION_DELAY_MS);
             return;
         }
 

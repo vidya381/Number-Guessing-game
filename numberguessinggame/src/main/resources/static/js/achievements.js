@@ -173,10 +173,10 @@ window.Achievements = {
             Utils.createAchievementConfetti();
         }
 
-        // Auto-remove after 5 seconds
+        // Auto-remove after achievement display duration
         setTimeout(() => {
             this.removeToast(toast);
-        }, 5000);
+        }, GameConfig.UI.ACHIEVEMENT_TOAST_DURATION_MS);
     },
 
     removeToast: function(toast) {
@@ -188,8 +188,8 @@ window.Achievements = {
             // Process next achievement in queue
             setTimeout(() => {
                 this.processAchievementQueue();
-            }, 300);
-        }, 500);
+            }, GameConfig.UI.ACHIEVEMENT_QUEUE_DELAY_MS);
+        }, GameConfig.UI.ACHIEVEMENT_REMOVAL_DURATION_MS);
     },
 
     // ==========================================
@@ -240,10 +240,10 @@ window.Achievements = {
         toast.appendChild(closeBtn);
         container.appendChild(toast);
 
-        // Auto-remove after 4 seconds
+        // Auto-remove after simple toast display duration
         setTimeout(() => {
             this.removeSimpleToast(toast);
-        }, 4000);
+        }, GameConfig.UI.SIMPLE_TOAST_DURATION_MS);
     },
 
     removeSimpleToast: function(toast) {
@@ -252,7 +252,7 @@ window.Achievements = {
             if (toast.parentNode) {
                 toast.parentNode.removeChild(toast);
             }
-        }, 300);
+        }, GameConfig.UI.TOAST_REMOVAL_DURATION_MS);
     },
 
     // ==========================================

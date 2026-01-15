@@ -59,6 +59,27 @@ window.GameConfig = {
         SHAKE_DURATION_MS: 500
     },
 
+    // UI Animation configuration
+    UI: {
+        MODAL_ANIMATION_DURATION_MS: 300,      // Matches CSS transition
+        DROPDOWN_ANIMATION_DURATION_MS: 200,   // Dropdown fade duration
+        TOAST_DISPLAY_DURATION_MS: 3000,       // How long toast shows
+        TOAST_FADE_DURATION_MS: 500,           // Toast fade animation
+        HOME_NAVIGATION_DELAY_MS: 2000,        // Delay before returning home
+        ACHIEVEMENT_TOAST_DURATION_MS: 5000,   // Achievement toast display time
+        SIMPLE_TOAST_DURATION_MS: 4000,        // Simple toast display time
+        ACHIEVEMENT_REMOVAL_DURATION_MS: 500,  // Achievement toast removal animation
+        TOAST_REMOVAL_DURATION_MS: 300,        // Simple toast removal animation
+        ACHIEVEMENT_QUEUE_DELAY_MS: 300        // Delay between achievement notifications
+    },
+
+    // Volume configuration
+    VOLUME: {
+        PERCENTAGE_MULTIPLIER: 100,            // For 0-100% conversion
+        MIN: 0,
+        MAX: 1
+    },
+
     // Color configuration
     COLOR: {
         RGB_MAX: 256,

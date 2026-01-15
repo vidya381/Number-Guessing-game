@@ -66,7 +66,7 @@ window.UI = {
                 setTimeout(() => {
                     dropdown.style.display = 'none';
                     dropdown.classList.remove('dropdown-exit');
-                }, 200);
+                }, GameConfig.UI.DROPDOWN_ANIMATION_DURATION_MS);
             } else {
                 dropdown.style.display = 'block';
                 void dropdown.offsetWidth; // Force reflow
@@ -81,7 +81,7 @@ window.UI = {
                     setTimeout(() => {
                         dropdown.style.display = 'none';
                         dropdown.classList.remove('dropdown-exit');
-                    }, 200);
+                    }, GameConfig.UI.DROPDOWN_ANIMATION_DURATION_MS);
                 }
             }
         });
@@ -94,7 +94,7 @@ window.UI = {
                     dropdown.style.display = 'none';
                     dropdown.classList.remove('dropdown-exit');
                     this.loadAndShowProfile();
-                }, 200);
+                }, GameConfig.UI.DROPDOWN_ANIMATION_DURATION_MS);
             });
         }
 
@@ -109,7 +109,7 @@ window.UI = {
                     if (settingsModal && Utils) {
                         Utils.openModalWithAnimation(settingsModal);
                     }
-                }, 200);
+                }, GameConfig.UI.DROPDOWN_ANIMATION_DURATION_MS);
             });
         }
 
@@ -123,7 +123,7 @@ window.UI = {
                     if (Auth) {
                         Auth.logout();
                     }
-                }, 200);
+                }, GameConfig.UI.DROPDOWN_ANIMATION_DURATION_MS);
             });
         }
     },
@@ -165,7 +165,7 @@ window.UI = {
         // Volume slider in settings
         if (volumeSlider && volumePercentage) {
             // Initialize slider with saved volume
-            volumeSlider.value = Math.round(GameState.soundVolume * 100);
+            volumeSlider.value = Math.round(GameState.soundVolume * GameConfig.VOLUME.PERCENTAGE_MULTIPLIER);
             volumePercentage.textContent = volumeSlider.value + '%';
             if (Utils) {
                 Utils.updateVolumeIcon(GameState.soundVolume);
@@ -173,7 +173,7 @@ window.UI = {
 
             volumeSlider.addEventListener('input', (e) => {
                 const volume = parseInt(e.target.value);
-                GameState.soundVolume = volume / 100;
+                GameState.soundVolume = volume / GameConfig.VOLUME.PERCENTAGE_MULTIPLIER;
                 volumePercentage.textContent = volume + '%';
                 if (GameConfig) {
                     GameConfig.updateSoundVolumes(GameState.soundVolume);

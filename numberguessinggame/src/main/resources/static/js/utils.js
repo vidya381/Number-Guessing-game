@@ -15,7 +15,7 @@ window.Utils = {
             element.style.display = 'none';
             element.classList.remove('page-exit');
             if (callback) callback();
-        }, 300); // Match CSS animation duration
+        }, GameConfig.UI.MODAL_ANIMATION_DURATION_MS);
     },
 
     fadeInElement: function(element, displayType = 'block') {
