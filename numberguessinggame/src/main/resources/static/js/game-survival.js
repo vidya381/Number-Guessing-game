@@ -35,7 +35,12 @@ window.SurvivalGame = {
         // Result page buttons
         const playAgainBtn = document.getElementById('survival-play-again');
         if (playAgainBtn) {
-            playAgainBtn.addEventListener('click', () => this.showHomeFromResult());
+            playAgainBtn.addEventListener('click', () => {
+                const difficulty = GameState.survival?.difficulty ?? 0;
+                this.showHomeFromResult();
+                // Small delay to ensure page transition completes
+                setTimeout(() => this.startSurvival(difficulty), 100);
+            });
         }
 
         const mainMenuBtn = document.getElementById('survival-main-menu');
