@@ -172,7 +172,7 @@
             <section class="section survival-banner">
                 <div class="survival-header">
                     <h2>💀 SURVIVAL MODE</h2>
-                    <div class="survival-badge">1 LIFE</div>
+                    <div class="survival-badge">5 ROUNDS</div>
                 </div>
                 <p class="survival-description">
                     Complete 5 rounds without losing. One mistake = Game Over!
@@ -180,20 +180,17 @@
                 <div class="survival-difficulty-select">
                     <button class="start-survival-btn survival-diff-btn" data-difficulty="0">
                         <span class="survival-diff-name">EASY</span>
-                        <span class="survival-diff-details">3 digits • 7 attempts</span>
-                        <span class="survival-diff-reward">💰 20 coins</span>
                     </button>
                     <button class="start-survival-btn survival-diff-btn" data-difficulty="1">
                         <span class="survival-diff-name">MEDIUM</span>
-                        <span class="survival-diff-details">4 digits • 10 attempts</span>
-                        <span class="survival-diff-reward">💰 40 coins</span>
                     </button>
                     <button class="start-survival-btn survival-diff-btn" data-difficulty="2">
                         <span class="survival-diff-name">HARD</span>
-                        <span class="survival-diff-details">5 digits • 13 attempts</span>
-                        <span class="survival-diff-reward">💰 60 coins</span>
                     </button>
                 </div>
+                <button id="view-survival-leaderboard" class="survival-leaderboard-btn">
+                    <i class="fas fa-trophy"></i> LEADERBOARD
+                </button>
             </section>
 
             <section class="section">
@@ -321,13 +318,14 @@
             <section class="section">
                 <div class="game-header">
                     <h2>💀 SURVIVAL MODE</h2>
-                    <div class="game-stats-inline survival-hud">
+                    <div class="game-stats-inline">
                         <div class="stat-badge">
                             <span class="stat-icon">📍</span>
                             <span id="survival-round-display">ROUND 1/5</span>
                         </div>
                         <div class="stat-badge">
-                            <span id="survival-coins-display">💰 0</span>
+                            <i class="fas fa-coins stat-icon coin-icon"></i>
+                            <span id="survival-coins-display">0</span>
                         </div>
                         <div class="stat-badge">
                             <span class="stat-icon">🎯</span>
@@ -337,6 +335,7 @@
                 </div>
                 <div id="survival-input-container"></div>
                 <button id="survival-submit-guess">⚡ SUBMIT GUESS</button>
+                <div id="survival-feedback" class="fade-in"></div>
             </section>
 
             <section class="section">
@@ -344,7 +343,7 @@
                 <div id="survival-guess-history"></div>
             </section>
 
-            <button id="survival-quit-btn" class="quit-btn">❌ QUIT GAME</button>
+            <button id="survival-quit-btn" class="quit-btn">❌ END SESSION</button>
         </div>
 
         <!-- Survival Mode Result Page -->

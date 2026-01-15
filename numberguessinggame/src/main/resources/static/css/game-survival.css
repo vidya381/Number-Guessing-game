@@ -44,14 +44,12 @@
 }
 
 .survival-badge {
-    background: rgba(255, 0, 0, 0.4);
+    background: rgba(255, 255, 255, 0.3);
     padding: 8px 16px;
     border-radius: 20px;
     font-weight: bold;
     font-size: 0.9em;
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 0, 0, 0.6);
-    animation: pulse 2s infinite;
 }
 
 .survival-description {
@@ -71,9 +69,9 @@
 
 .survival-diff-btn {
     flex: 1;
-    padding: 15px 18px;
+    padding: 12px 16px;
     border: 2px solid rgba(255, 255, 255, 0.4);
-    background: rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.15);
     border-radius: 10px;
     color: white;
     font-weight: 700;
@@ -82,154 +80,43 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
 }
 
 .survival-diff-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(255, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     border-color: rgba(255, 255, 255, 0.6);
 }
 
 .survival-diff-name {
-    font-size: 1em;
+    font-size: 0.95em;
     letter-spacing: 0.5px;
 }
 
-.survival-diff-details {
-    font-size: 0.85em;
-    opacity: 0.9;
-    font-weight: 500;
-}
-
-.survival-diff-reward {
-    font-size: 0.95em;
-    margin-top: 2px;
-    padding: 4px 8px;
-    background: rgba(255, 215, 0, 0.2);
-    border-radius: 6px;
-    border: 1px solid rgba(255, 215, 0, 0.4);
-}
-
-/* ===================================== */
-/* SURVIVAL GAME PAGE LAYOUT             */
-/* ===================================== */
-
-#survival-page {
-    flex: 1;
-    min-height: 0;
-    overflow: visible;
-}
-
-#survival-page .section:nth-child(1) {
-    flex-shrink: 0;
-    flex-grow: 0;
-}
-
-#survival-page .section:nth-child(2) {
-    display: flex;
-    flex-direction: column;
-    background: linear-gradient(135deg, rgba(139, 0, 0, 0.05) 0%, rgba(74, 0, 0, 0.05) 100%);
-    border: 1px solid rgba(255, 0, 0, 0.15);
-    flex: 1;
-    min-height: 150px;
-    overflow: hidden;
-}
-
-#survival-page .section:nth-child(2) h2 {
-    margin-bottom: 15px;
-    font-size: 1.1em;
-    color: #8b0000;
-    flex-shrink: 0;
-}
-
-#survival-page .section:nth-child(2) #survival-guess-history {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    background: rgba(255, 255, 255, 0.4);
-    border: 1px solid rgba(255, 0, 0, 0.15);
-    border-radius: 10px;
-    padding: 10px;
-}
-
-/* Custom scrollbar for guess history */
-#survival-page .section:nth-child(2) #survival-guess-history::-webkit-scrollbar {
-    width: 8px;
-}
-
-#survival-page .section:nth-child(2) #survival-guess-history::-webkit-scrollbar-track {
-    background: rgba(255, 0, 0, 0.1);
-    border-radius: 4px;
-}
-
-#survival-page .section:nth-child(2) #survival-guess-history::-webkit-scrollbar-thumb {
-    background: rgba(139, 0, 0, 0.4);
-    border-radius: 4px;
-}
-
-#survival-page .section:nth-child(2) #survival-guess-history::-webkit-scrollbar-thumb:hover {
-    background: rgba(139, 0, 0, 0.6);
-}
-
-body.dark-mode #survival-page .section:nth-child(2) #survival-guess-history {
-    background: rgba(0, 0, 0, 0.3);
-}
-
-body.dark-mode #survival-page .section:nth-child(2) #survival-guess-history::-webkit-scrollbar-thumb {
-    background: rgba(255, 0, 0, 0.3);
-}
-
-body.dark-mode #survival-page .section:nth-child(2) #survival-guess-history::-webkit-scrollbar-thumb:hover {
-    background: rgba(255, 0, 0, 0.5);
-}
-
-body.dark-mode #survival-page .section:nth-child(1) {
-    background: linear-gradient(135deg, rgba(139, 0, 0, 0.12) 0%, rgba(74, 0, 0, 0.12) 100%);
-    border: 2px solid rgba(255, 0, 0, 0.3);
-}
-
-body.dark-mode #survival-page .section:nth-child(2) {
-    background: linear-gradient(135deg, rgba(139, 0, 0, 0.08) 0%, rgba(74, 0, 0, 0.08) 100%);
-    border: 1px solid rgba(255, 0, 0, 0.25);
-}
-
-/* ===================================== */
-/* SURVIVAL HUD                          */
-/* ===================================== */
-
-.survival-hud {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 15px 0;
-}
-
-.survival-hud .stat-badge {
-    background: linear-gradient(135deg, rgba(139, 0, 0, 0.15) 0%, rgba(74, 0, 0, 0.1) 100%);
-    border: 2px solid rgba(255, 0, 0, 0.3);
-    padding: 10px 18px;
-    border-radius: 12px;
-    font-weight: 700;
-    color: #8b0000;
-    font-size: 1em;
-    box-shadow: 0 3px 10px rgba(139, 0, 0, 0.2);
+.survival-leaderboard-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
 }
 
-.survival-hud .stat-badge:hover {
+.survival-leaderboard-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.7);
 }
 
-body.dark-mode .survival-hud .stat-badge {
-    background: linear-gradient(135deg, rgba(139, 0, 0, 0.25) 0%, rgba(74, 0, 0, 0.2) 100%);
-    border-color: rgba(255, 0, 0, 0.4);
-    color: #ff6b6b;
-}
 
 /* ===================================== */
 /* SURVIVAL INPUT CONTAINER              */
@@ -281,147 +168,32 @@ body.dark-mode #survival-input-container .digit-input:focus {
 /* SURVIVAL SUBMIT BUTTON                */
 /* ===================================== */
 
-#survival-submit-guess {
-    width: 100%;
-    max-width: 350px;
-    padding: 16px 30px;
-    margin: 20px auto;
-    display: block;
-    background: linear-gradient(135deg, #8b0000 0%, #4a0000 100%);
-    color: white;
-    border: none;
-    border-radius: 12px;
+#survival-page #survival-submit-guess {
+    margin-top: 20px;
     font-size: 1.1em;
-    font-weight: 700;
-    cursor: pointer;
+    padding: 15px 30px;
+    box-shadow: 0 4px 15px rgba(139, 122, 191, 0.3);
     transition: all 0.3s ease;
-    box-shadow: 0 5px 20px rgba(139, 0, 0, 0.3);
 }
 
-#survival-submit-guess:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 30px rgba(139, 0, 0, 0.4);
-    background: linear-gradient(135deg, #a00000 0%, #5a0000 100%);
+#survival-page #survival-submit-guess:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(139, 122, 191, 0.4);
 }
 
-#survival-submit-guess:active {
-    transform: translateY(-1px);
-}
-
-body.dark-mode #survival-submit-guess {
-    background: linear-gradient(135deg, #b00000 0%, #600000 100%);
-}
-
-body.dark-mode #survival-submit-guess:hover {
-    background: linear-gradient(135deg, #c00000 0%, #700000 100%);
+#survival-page #survival-submit-guess:active {
+    transform: translateY(0);
 }
 
 /* ===================================== */
 /* SURVIVAL QUIT BUTTON                  */
 /* ===================================== */
 
-#survival-quit-btn {
-    width: 100%;
-    max-width: 350px;
-    padding: 14px 28px;
-    margin: 15px auto 0;
-    display: block;
-    background: rgba(255, 0, 0, 0.15);
-    color: #8b0000;
-    border: 2px solid rgba(255, 0, 0, 0.3);
-    border-radius: 10px;
-    font-size: 1em;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-#survival-quit-btn:hover {
-    background: rgba(255, 0, 0, 0.25);
-    border-color: rgba(255, 0, 0, 0.5);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.2);
-}
-
-body.dark-mode #survival-quit-btn {
-    background: rgba(255, 0, 0, 0.2);
-    color: #ff6b6b;
-    border-color: rgba(255, 0, 0, 0.4);
-}
-
-body.dark-mode #survival-quit-btn:hover {
-    background: rgba(255, 0, 0, 0.3);
-    border-color: rgba(255, 0, 0, 0.6);
-}
-
-/* ===================================== */
-/* SURVIVAL GUESS HISTORY                */
-/* ===================================== */
-
-#survival-guess-history .guess-card {
-    background: rgba(255, 255, 255, 0.9);
-    border: 2px solid rgba(139, 0, 0, 0.2);
-    border-radius: 10px;
-    padding: 12px 16px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(139, 0, 0, 0.1);
-}
-
-#survival-guess-history .guess-card:hover {
-    transform: translateX(5px);
-    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.2);
-    border-color: rgba(139, 0, 0, 0.4);
-}
-
-#survival-guess-history .guess-number {
-    font-size: 1.4em;
-    font-weight: 700;
-    color: #8b0000;
-    letter-spacing: 3px;
-}
-
-#survival-guess-history .guess-feedback {
-    display: flex;
-    gap: 15px;
-    font-size: 1em;
-    font-weight: 600;
-}
-
-#survival-guess-history .guess-feedback .bulls {
-    color: #27ae60;
-    background: rgba(39, 174, 96, 0.1);
-    padding: 5px 10px;
-    border-radius: 6px;
-}
-
-#survival-guess-history .guess-feedback .cows {
-    color: #f39c12;
-    background: rgba(243, 156, 18, 0.1);
-    padding: 5px 10px;
-    border-radius: 6px;
-}
-
-body.dark-mode #survival-guess-history .guess-card {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 0, 0, 0.3);
-}
-
-body.dark-mode #survival-guess-history .guess-number {
-    color: #ff6b6b;
-}
-
-body.dark-mode #survival-guess-history .guess-feedback .bulls {
-    color: #5edc8b;
-    background: rgba(94, 220, 139, 0.15);
-}
-
-body.dark-mode #survival-guess-history .guess-feedback .cows {
-    color: #ffb84d;
-    background: rgba(255, 184, 77, 0.15);
+#survival-page button#survival-quit-btn {
+    margin-top: 8px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+    flex-grow: 0;
 }
 
 /* ===================================== */
@@ -567,11 +339,6 @@ body.dark-mode .survival-badge {
         width: 45px;
         height: 60px;
         font-size: 24px;
-    }
-
-    #survival-submit-guess {
-        font-size: 1em;
-        padding: 14px 24px;
     }
 
     #survival-result-content h2 {

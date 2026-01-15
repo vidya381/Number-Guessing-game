@@ -17,7 +17,7 @@ window.SurvivalGame = {
         const startButtons = document.querySelectorAll('.start-survival-btn');
         startButtons.forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const difficulty = parseInt(e.target.dataset.difficulty);
+                const difficulty = parseInt(e.currentTarget.dataset.difficulty);
                 this.startSurvival(difficulty);
             });
         });
@@ -53,7 +53,9 @@ window.SurvivalGame = {
                 }
             });
 
+            console.log('Survival start response status:', response.status);
             const data = await response.json();
+            console.log('Survival start response data:', data);
 
             if (response.ok) {
                 // Store session data
@@ -71,14 +73,28 @@ window.SurvivalGame = {
                     guessHistory: []
                 };
 
+                console.log('GameState.survival updated:', GameState.survival);
+
                 // Show survival game page
-                if (UI) {
-                    UI.showPage('survival-page');
+                const homePage = document.getElementById('home-page');
+                const survivalPage = document.getElementById('survival-page');
+
+                if (homePage && survivalPage) {
+                    if (Utils) {
+                        Utils.fadeOutElement(homePage, () => {
+                            Utils.fadeInElement(survivalPage, 'flex');
+                        });
+                    } else {
+                        homePage.style.display = 'none';
+                        survivalPage.style.display = 'flex';
+                    }
                 }
+
                 this.setupGameUI();
                 this.updateHUD();
 
             } else {
+                console.error('Survival start failed:', data);
                 if (Achievements) {
                     Achievements.showToast(data.error || 'Could not start survival mode', 'error');
                 }
@@ -133,11 +149,11 @@ window.SurvivalGame = {
             roundEl.textContent = `ROUND ${GameState.survival.currentRound}/${GameState.survival.totalRounds}`;
         }
         if (coinsEl) {
-            coinsEl.textContent = `💰 ${GameState.survival.totalCoinsEarned}`;
+            coinsEl.textContent = GameState.survival.totalCoinsEarned;
         }
         if (attemptsEl) {
             const remaining = GameState.survival.maxAttemptsPerRound - GameState.survival.currentRoundAttempts;
-            attemptsEl.textContent = `Attempts Left: ${remaining}/${GameState.survival.maxAttemptsPerRound}`;
+            attemptsEl.textContent = `${remaining}/${GameState.survival.maxAttemptsPerRound}`;
         }
     },
 
@@ -250,17 +266,26 @@ window.SurvivalGame = {
         const historyContainer = document.getElementById('survival-guess-history');
         if (!historyContainer) return;
 
-        const guessCard = document.createElement('div');
-        guessCard.className = 'guess-card';
-        guessCard.innerHTML = `
-            <div class="guess-number">${guess}</div>
-            <div class="guess-feedback">
-                <span class="bulls">${bulls} 🐂</span>
-                <span class="cows">${cows} 🐄</span>
-            </div>
-        `;
+        const historyItem = document.createElement('div');
+        historyItem.className = 'history-item new-item';
 
-        historyContainer.insertBefore(guessCard, historyContainer.firstChild);
+        const guessSpan = document.createElement('span');
+        guessSpan.className = 'guess';
+        guessSpan.textContent = guess;
+
+        const correctSpan = document.createElement('span');
+        correctSpan.className = 'correct';
+        correctSpan.textContent = `🐂 Correct: ${bulls}`;
+
+        const misplacedSpan = document.createElement('span');
+        misplacedSpan.className = 'misplaced';
+        misplacedSpan.textContent = `🐄 Misplaced: ${cows}`;
+
+        historyItem.appendChild(guessSpan);
+        historyItem.appendChild(correctSpan);
+        historyItem.appendChild(misplacedSpan);
+
+        historyContainer.insertBefore(historyItem, historyContainer.firstChild);
     },
 
     // ==========================================
@@ -361,9 +386,21 @@ window.SurvivalGame = {
                 })
             });
 
-            if (UI) {
-                UI.showPage('home-page');
+            // Navigate back to home page
+            const survivalPage = document.getElementById('survival-page');
+            const homePage = document.getElementById('home-page');
+
+            if (survivalPage && homePage) {
+                if (Utils) {
+                    Utils.fadeOutElement(survivalPage, () => {
+                        Utils.fadeInElement(homePage, 'block');
+                    });
+                } else {
+                    survivalPage.style.display = 'none';
+                    homePage.style.display = 'block';
+                }
             }
+
             GameState.resetSurvival();
 
         } catch (error) {
@@ -388,8 +425,18 @@ window.SurvivalGame = {
             const endData = await endResponse.json();
 
             // Show result page
-            if (UI) {
-                UI.showPage('survival-result-page');
+            const survivalPage = document.getElementById('survival-page');
+            const resultPage = document.getElementById('survival-result-page');
+
+            if (survivalPage && resultPage) {
+                if (Utils) {
+                    Utils.fadeOutElement(survivalPage, () => {
+                        Utils.fadeInElement(resultPage, 'flex');
+                    });
+                } else {
+                    survivalPage.style.display = 'none';
+                    resultPage.style.display = 'flex';
+                }
             }
 
             const resultContainer = document.getElementById('survival-result-content');
@@ -434,8 +481,18 @@ window.SurvivalGame = {
             const endData = await endResponse.json();
 
             // Show result page
-            if (UI) {
-                UI.showPage('survival-result-page');
+            const survivalPage = document.getElementById('survival-page');
+            const resultPage = document.getElementById('survival-result-page');
+
+            if (survivalPage && resultPage) {
+                if (Utils) {
+                    Utils.fadeOutElement(survivalPage, () => {
+                        Utils.fadeInElement(resultPage, 'flex');
+                    });
+                } else {
+                    survivalPage.style.display = 'none';
+                    resultPage.style.display = 'flex';
+                }
             }
 
             const resultContainer = document.getElementById('survival-result-content');
