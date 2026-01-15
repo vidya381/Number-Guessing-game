@@ -121,48 +121,7 @@
 /* ===================================== */
 /* SURVIVAL INPUT CONTAINER              */
 /* ===================================== */
-
-#survival-input-container {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin: 25px 0;
-    flex-wrap: wrap;
-}
-
-#survival-input-container .digit-input {
-    width: 55px;
-    height: 70px;
-    font-size: 32px;
-    font-weight: 700;
-    text-align: center;
-    border: 3px solid rgba(139, 0, 0, 0.3);
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.9);
-    color: #8b0000;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(139, 0, 0, 0.15);
-}
-
-#survival-input-container .digit-input:focus {
-    outline: none;
-    border-color: #8b0000;
-    background: white;
-    box-shadow: 0 6px 20px rgba(139, 0, 0, 0.3);
-    transform: translateY(-2px);
-}
-
-body.dark-mode #survival-input-container .digit-input {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 0, 0, 0.4);
-    color: #ff6b6b;
-}
-
-body.dark-mode #survival-input-container .digit-input:focus {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: #ff4444;
-    color: #ff8585;
-}
+/* Input container styling now uses shared base.css */
 
 /* ===================================== */
 /* SURVIVAL SUBMIT BUTTON                */

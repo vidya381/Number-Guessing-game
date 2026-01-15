@@ -796,6 +796,11 @@ window.RegularGame = {
             GameState.timeAttack.sessionId = null;
         }
 
+        // Clean up survival if active
+        if (GameState.survival && GameState.survival.sessionId !== null) {
+            GameState.resetSurvival();
+        }
+
         const homePage = document.getElementById('home-page');
         const gamePage = document.getElementById('game-page');
         const resultPage = document.getElementById('result-page');
@@ -803,6 +808,8 @@ window.RegularGame = {
         const dailyResultPage = document.getElementById('daily-result-page');
         const timeAttackPage = document.getElementById('time-attack-page');
         const timeAttackResultPage = document.getElementById('time-attack-result-page');
+        const survivalPage = document.getElementById('survival-page');
+        const survivalResultPage = document.getElementById('survival-result-page');
 
         // Fade out current page
         const currentPage = gamePage.style.display !== 'none' ? gamePage :
@@ -810,7 +817,9 @@ window.RegularGame = {
                 dailyChallengePage.style.display !== 'none' ? dailyChallengePage :
                     dailyResultPage.style.display !== 'none' ? dailyResultPage :
                         timeAttackPage.style.display !== 'none' ? timeAttackPage :
-                            timeAttackResultPage.style.display !== 'none' ? timeAttackResultPage : null;
+                            timeAttackResultPage.style.display !== 'none' ? timeAttackResultPage :
+                                survivalPage && survivalPage.style.display !== 'none' ? survivalPage :
+                                    survivalResultPage && survivalResultPage.style.display !== 'none' ? survivalResultPage : null;
 
         if (currentPage && Utils) {
             Utils.fadeOutElement(currentPage, () => {
@@ -830,6 +839,8 @@ window.RegularGame = {
             dailyResultPage.style.display = 'none';
             timeAttackPage.style.display = 'none';
             timeAttackResultPage.style.display = 'none';
+            if (survivalPage) survivalPage.style.display = 'none';
+            if (survivalResultPage) survivalResultPage.style.display = 'none';
             if (UI) {
                 UI.updateStreakStats();
                 UI.loadLeaderboard(this.gameJustCompleted);

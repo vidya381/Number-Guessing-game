@@ -395,20 +395,23 @@
 
     #game-page,
     #time-attack-page,
-    #daily-challenge-page {
+    #daily-challenge-page,
+    #survival-page {
         gap: 10px;
     }
 
     #game-page .section,
     #time-attack-page .section,
-    #daily-challenge-page .section {
+    #daily-challenge-page .section,
+    #survival-page .section {
         padding: 12px;
         margin-bottom: 8px;
     }
 
     #game-page .section:nth-child(2),
     #time-attack-page .section:nth-child(2),
-    #daily-challenge-page .section:nth-child(2) {
+    #daily-challenge-page .section:nth-child(2),
+    #survival-page .section:nth-child(2) {
         min-height: 140px; /* Reduced to fit quit button on shorter screens */
     }
 
@@ -487,7 +490,8 @@
 
     #input-container,
     #ta-input-container,
-    #daily-input-container {
+    #daily-input-container,
+    #survival-input-container {
         padding: 12px;
         gap: 6px;
     }
