@@ -332,18 +332,28 @@ window.RegularGame = {
         hintBtn.style.opacity = '0.5';
 
         try {
-            const response = await fetch('/get-hint', {
+            const response = await Utils.fetchWithTimeout('/get-hint', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
                 },
                 body: `tabId=${GameState.tabId}&userId=${GameState.currentUser.id}`,
                 credentials: 'include'
-            });
+            }, 8000);
+
+            if (!response.ok) {
+                const errorInfo = Utils.handleFetchError(new Error(`HTTP ${response.status}`), response);
+                this.updateHintButton();
+                hintBtn.style.opacity = '1';
+                if (Achievements) {
+                    Achievements.showToast(errorInfo.userMessage, 'error');
+                }
+                return;
+            }
 
             const data = await response.json();
 
-            if (response.ok && data.success) {
+            if (data.success) {
                 // Update local state
                 GameState.revealedHints.set(data.position, data.digit);
                 GameState.hintsUsed = data.hintsUsed;
@@ -383,8 +393,9 @@ window.RegularGame = {
 
         } catch (error) {
             console.error('Hint request failed:', error);
+            const errorInfo = Utils.handleFetchError(error);
             if (Achievements) {
-                Achievements.showToast('Connection error. Check your network and try again!', 'error');
+                Achievements.showToast(errorInfo.userMessage, 'error');
             }
             this.updateHintButton();
             if (hintBtn) hintBtn.style.opacity = '1';

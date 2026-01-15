@@ -246,17 +246,22 @@ window.UI = {
         if (profileContent) profileContent.style.display = 'none';
 
         try {
-            const response = await fetch('/api/user/profile', {
+            const response = await Utils.fetchWithTimeout('/api/user/profile', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + GameState.authToken
                 }
-            });
+            }, 10000);
+
+            if (!response.ok) {
+                const errorInfo = Utils.handleFetchError(new Error(`HTTP ${response.status}`), response);
+                throw new Error(errorInfo.userMessage);
+            }
 
             const data = await response.json();
 
-            if (!response.ok || data.error) {
-                throw new Error(data.error || 'Failed to load profile');
+            if (data.error) {
+                throw new Error(data.error);
             }
 
             if (data.success && data.profile) {
@@ -270,8 +275,9 @@ window.UI = {
             }
         } catch (error) {
             console.error('Failed to load profile:', error);
+            const errorInfo = Utils.handleFetchError(error);
             if (Achievements) {
-                Achievements.showToast('Couldn\'t load your profile right now. Try refreshing the page!', 'error');
+                Achievements.showToast(errorInfo.userMessage, 'error');
             }
             profileModal.style.display = 'none';
         }
