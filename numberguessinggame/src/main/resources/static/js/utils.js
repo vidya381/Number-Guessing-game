@@ -710,10 +710,57 @@ window.Utils = {
     },
 
     // ==========================================
+    // FONT AWESOME FALLBACK DETECTION
+    // ==========================================
+
+    /**
+     * Detects if Font Awesome has loaded successfully
+     * If not loaded, adds 'fa-fallback' class to body to use emoji fallbacks
+     */
+    detectFontAwesome: function() {
+        // Wait for fonts to load
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                this.checkFontAwesomeLoaded();
+            });
+        } else {
+            // Fallback for browsers without font loading API
+            setTimeout(() => this.checkFontAwesomeLoaded(), 1000);
+        }
+    },
+
+    checkFontAwesomeLoaded: function() {
+        // Create a test element with Font Awesome icon
+        const testEl = document.createElement('i');
+        testEl.className = 'fas fa-test';
+        testEl.style.position = 'absolute';
+        testEl.style.left = '-9999px';
+        testEl.style.fontSize = '100px';
+        document.body.appendChild(testEl);
+
+        // Get computed style
+        const computedStyle = window.getComputedStyle(testEl, '::before');
+        const fontFamily = computedStyle.getPropertyValue('font-family');
+
+        // Check if Font Awesome font is loaded
+        const isFontAwesomeLoaded = fontFamily.includes('Font Awesome');
+
+        if (!isFontAwesomeLoaded) {
+            // Font Awesome didn't load - add fallback class
+            document.body.classList.add('fa-fallback');
+            console.warn('Font Awesome failed to load. Using emoji fallbacks.');
+        }
+
+        // Clean up test element
+        document.body.removeChild(testEl);
+    },
+
+    // ==========================================
     // INITIALIZATION
     // ==========================================
 
     init: function() {
+        this.detectFontAwesome();
         this.initializeDarkMode();
         this.setupKeyboardShortcuts();
         this.createFloatingNumbers();
