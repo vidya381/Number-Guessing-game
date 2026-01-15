@@ -40,21 +40,6 @@
     box-shadow: 0 15px 60px rgba(139, 122, 191, 0.35);
 }
 
-.close-modal {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 28px;
-    font-weight: bold;
-    color: var(--text-color);
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.close-modal:hover {
-    color: var(--primary-color);
-}
-
 /* Modal Close Button (X button) */
 .modal-close-btn {
     position: absolute;
@@ -1249,10 +1234,6 @@ body.dark-mode .form-group input {
 body.dark-mode .form-group input:focus {
     background-color: var(--card-background);
     box-shadow: 0 4px 20px rgba(167, 139, 250, 0.35);
-}
-
-body.dark-mode .close-modal {
-    color: var(--text-color);
 }
 
 body.dark-mode .modal-close-btn {

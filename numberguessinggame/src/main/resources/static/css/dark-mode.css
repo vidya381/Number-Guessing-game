@@ -189,10 +189,6 @@ body.dark-mode .modal-content {
     background-color: var(--card-background);
 }
 
-body.dark-mode .close-modal {
-    color: var(--text-color);
-}
-
 body.dark-mode .modal-close-btn {
     background: rgba(255, 255, 255, 0.1);
 }
