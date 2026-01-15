@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/game-regular.css">
     <link rel="stylesheet" href="/css/game-timeattack.css">
     <link rel="stylesheet" href="/css/game-daily.css">
+    <link rel="stylesheet" href="/css/game-survival.css">
     <link rel="stylesheet" href="/css/modals.css">
     <link rel="stylesheet" href="/css/notifications.css">
     <link rel="stylesheet" href="/css/responsive.css">
@@ -167,6 +168,34 @@
                 </button>
             </section>
 
+            <!-- Survival Mode Banner -->
+            <section class="section survival-banner">
+                <div class="survival-header">
+                    <h2>💀 SURVIVAL MODE</h2>
+                    <div class="survival-badge">1 LIFE</div>
+                </div>
+                <p class="survival-description">
+                    Complete 5 rounds without losing. One mistake = Game Over!
+                </p>
+                <div class="survival-difficulty-select">
+                    <button class="start-survival-btn survival-diff-btn" data-difficulty="0">
+                        <span class="survival-diff-name">EASY</span>
+                        <span class="survival-diff-details">3 digits • 7 attempts</span>
+                        <span class="survival-diff-reward">💰 20 coins</span>
+                    </button>
+                    <button class="start-survival-btn survival-diff-btn" data-difficulty="1">
+                        <span class="survival-diff-name">MEDIUM</span>
+                        <span class="survival-diff-details">4 digits • 10 attempts</span>
+                        <span class="survival-diff-reward">💰 40 coins</span>
+                    </button>
+                    <button class="start-survival-btn survival-diff-btn" data-difficulty="2">
+                        <span class="survival-diff-name">HARD</span>
+                        <span class="survival-diff-details">5 digits • 13 attempts</span>
+                        <span class="survival-diff-reward">💰 60 coins</span>
+                    </button>
+                </div>
+            </section>
+
             <section class="section">
                 <h2>⚡ SELECT DIFFICULTY</h2>
                 <div class="button-group">
@@ -284,6 +313,46 @@
             <div class="ta-button-group">
                 <button id="ta-play-again">🔁 PLAY AGAIN</button>
                 <button id="ta-main-menu">🏠 MAIN MENU</button>
+            </div>
+        </div>
+
+        <!-- Survival Mode Game Page -->
+        <div id="survival-page" style="display: none;">
+            <section class="section">
+                <div class="game-header">
+                    <h2>💀 SURVIVAL MODE</h2>
+                    <div class="game-stats-inline survival-hud">
+                        <div class="stat-badge">
+                            <span class="stat-icon">📍</span>
+                            <span id="survival-round-display">ROUND 1/5</span>
+                        </div>
+                        <div class="stat-badge">
+                            <span id="survival-coins-display">💰 0</span>
+                        </div>
+                        <div class="stat-badge">
+                            <span class="stat-icon">🎯</span>
+                            <span id="survival-attempts-display">7/7</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="survival-input-container"></div>
+                <button id="survival-submit-guess">⚡ SUBMIT GUESS</button>
+            </section>
+
+            <section class="section">
+                <h2>📋 GUESS HISTORY</h2>
+                <div id="survival-guess-history"></div>
+            </section>
+
+            <button id="survival-quit-btn" class="quit-btn">❌ QUIT GAME</button>
+        </div>
+
+        <!-- Survival Mode Result Page -->
+        <div id="survival-result-page" class="card" style="display: none;">
+            <div id="survival-result-content"></div>
+            <div class="ta-button-group">
+                <button id="survival-play-again" onclick="UI.showPage('home-page')">🔁 PLAY AGAIN</button>
+                <button id="survival-main-menu" onclick="UI.showPage('home-page')">🏠 MAIN MENU</button>
             </div>
         </div>
     </div>
@@ -648,6 +717,7 @@
     <script src="/js/game-regular.js"></script>
     <script src="/js/game-timeattack.js"></script>
     <script src="/js/game-daily.js"></script>
+    <script src="/js/game-survival.js"></script>
 
     <!-- Initialize all modules when DOM is ready -->
     <script>
@@ -683,6 +753,11 @@
             if (typeof DailyGame !== 'undefined') {
                 DailyGame.init();
                 console.log('✓ Daily Challenge initialized');
+            }
+
+            if (typeof SurvivalGame !== 'undefined') {
+                SurvivalGame.init();
+                console.log('✓ Survival Mode initialized');
             }
 
             if (typeof Achievements !== 'undefined') {
