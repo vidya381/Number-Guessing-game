@@ -642,7 +642,8 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
     font-size: 1em;
 }
 
-#ta-leaderboard-content p,
+/* Empty state for leaderboards */
+#ta-leaderboard-content .no-data,
 #modal-daily-leaderboard-content .no-data {
     text-align: center;
     padding: 40px 20px;
@@ -651,6 +652,17 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
     background: rgba(var(--primary-color-rgb), 0.05);
     border-radius: 10px;
     border: 2px dashed rgba(var(--primary-color-rgb), 0.2);
+}
+
+#ta-leaderboard-content .error-message,
+#modal-daily-leaderboard-content .error-message {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--danger-color);
+    font-size: 1em;
+    background: rgba(231, 76, 60, 0.1);
+    border-radius: 10px;
+    border: 2px solid rgba(231, 76, 60, 0.3);
 }
 
 /* ===================================== */

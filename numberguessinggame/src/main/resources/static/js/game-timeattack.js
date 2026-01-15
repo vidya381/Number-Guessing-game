@@ -578,7 +578,7 @@ window.TimeAttackGame = {
             contentDiv.style.display = 'block';
 
             if (leaderboard.length === 0) {
-                contentDiv.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-secondary);">No players yet. Be the first!</p>';
+                contentDiv.innerHTML = '<div class="no-data">No players yet on this difficulty. Be the first! 🏆</div>';
             } else {
                 // Create leaderboard table
                 let html = `
@@ -618,7 +618,7 @@ window.TimeAttackGame = {
             console.error('Failed to load leaderboard:', error);
             loadingDiv.style.display = 'none';
             contentDiv.style.display = 'block';
-            contentDiv.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--danger-color);">Failed to load leaderboard</p>';
+            contentDiv.innerHTML = '<div class="error-message">Couldn\'t load the leaderboard. Try again in a moment! 🏆</div>';
         }
 
         // Only animate modal opening if it wasn't already open
