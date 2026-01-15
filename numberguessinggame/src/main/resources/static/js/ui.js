@@ -500,25 +500,32 @@ window.UI = {
         const modal = document.getElementById('profile-modal');
         if (!modal) return;
 
-        const tabs = modal.querySelectorAll('.achievement-tab');
-        tabs.forEach(tab => {
-            // Remove any existing listeners
-            tab.replaceWith(tab.cloneNode(true));
-        });
+        // Use event delegation to avoid memory leaks and repeated listener attachment
+        const tabsContainer = modal.querySelector('.achievements-tabs');
+        if (!tabsContainer) return;
 
-        // Re-query after replacing
-        const newTabs = modal.querySelectorAll('.achievement-tab');
-        newTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Update active state
-                newTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+        // Remove existing listener if present (to avoid duplicates)
+        if (tabsContainer._achievementTabsHandler) {
+            tabsContainer.removeEventListener('click', tabsContainer._achievementTabsHandler);
+        }
 
-                // Update filter and re-render
-                GameState.profileCurrentFilter = tab.dataset.filter;
-                this.renderProfileAchievementsList(GameState.profileAchievements);
-            });
-        });
+        // Create and store handler function
+        tabsContainer._achievementTabsHandler = (e) => {
+            const tab = e.target.closest('.achievement-tab');
+            if (!tab) return;
+
+            // Update active state
+            const allTabs = tabsContainer.querySelectorAll('.achievement-tab');
+            allTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Update filter and re-render
+            GameState.profileCurrentFilter = tab.dataset.filter;
+            this.renderProfileAchievementsList(GameState.profileAchievements);
+        };
+
+        // Attach single event listener to parent container
+        tabsContainer.addEventListener('click', tabsContainer._achievementTabsHandler);
     },
 
     // ==========================================
