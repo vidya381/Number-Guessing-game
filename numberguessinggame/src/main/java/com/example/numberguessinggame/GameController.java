@@ -72,7 +72,15 @@ public class GameController {
         GameSession gameSession = new GameSession(tabId, targetNumber, difficulty, userId);
         gameSessions.put(compositeKey, gameSession);
 
-        System.out.println("Target number for session " + compositeKey + ": " + targetNumber);
+        // Log target number for reference
+        String difficultyName = difficulty == DIFFICULTY_EASY ? "Easy" : difficulty == DIFFICULTY_MEDIUM ? "Medium" : "Hard";
+        if (userId != null) {
+            userRepository.findById(userId).ifPresent(user ->
+                System.out.println("[Game Start] Mode: Regular | User: " + user.getUsername() + " | Difficulty: " + difficultyName + " | Target: " + targetNumber + " | Session: " + compositeKey)
+            );
+        } else {
+            System.out.println("[Game Start] Mode: Regular | Guest | Difficulty: " + difficultyName + " | Target: " + targetNumber + " | Session: " + compositeKey);
+        }
 
         Map<String, Object> response = new HashMap<>();
         response.put("message", "New game started with difficulty " + difficulty);
@@ -380,12 +388,9 @@ public class GameController {
         // Check and unlock achievements
         try {
             newAchievements = achievementService.checkAndUnlockAchievements(user, game);
-            if (!newAchievements.isEmpty()) {
-                System.out.println("User " + user.getUsername() + " unlocked " + newAchievements.size() + " achievement(s)");
-            }
         } catch (Exception e) {
             // Don't fail game save if achievement check fails
-            System.err.println("Achievement check failed: " + e.getMessage());
+            // Silent failure - achievements will be checked on next game
         }
 
         return new GameSaveResult(newAchievements, coinsAwarded);

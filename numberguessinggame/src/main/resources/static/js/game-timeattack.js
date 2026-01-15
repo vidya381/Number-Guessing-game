@@ -578,7 +578,7 @@ window.TimeAttackGame = {
             contentDiv.style.display = 'block';
 
             if (leaderboard.length === 0) {
-                contentDiv.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--text-secondary);">No players yet. Be the first!</p>';
+                contentDiv.innerHTML = '<div class="no-data">No players yet on this difficulty. Be the first! 🏆</div>';
             } else {
                 // Create leaderboard table
                 let html = `
@@ -594,11 +594,15 @@ window.TimeAttackGame = {
 
                 leaderboard.forEach((entry, index) => {
                     const rankClass = index < 3 ? `top-${index + 1}` : '';
+                    const isCurrentUser = GameState.currentUser && entry.username === GameState.currentUser.username;
+                    const rowClass = isCurrentUser ? `${rankClass} current-user` : rankClass;
                     const escapedUsername = Utils ? Utils.escapeHtml(entry.username) : entry.username;
+                    const rankDisplay = Utils ? Utils.getRankDisplay(entry.rank) : entry.rank;
+
                     html += `
-                        <div class="leaderboard-row ${rankClass}">
-                            <div class="lb-rank">#${entry.rank}</div>
-                            <div class="lb-username">${escapedUsername}</div>
+                        <div class="leaderboard-row ${rowClass}">
+                            <div class="lb-rank">${rankDisplay}</div>
+                            <div class="lb-username">${escapedUsername}${isCurrentUser ? ' (You)' : ''}</div>
                             <div class="lb-score">${entry.totalScore}</div>
                             <div class="lb-wins">${entry.gamesWon}</div>
                             <div class="lb-avg">${entry.averageAttempts ? entry.averageAttempts.toFixed(1) : '--'}</div>
@@ -614,7 +618,7 @@ window.TimeAttackGame = {
             console.error('Failed to load leaderboard:', error);
             loadingDiv.style.display = 'none';
             contentDiv.style.display = 'block';
-            contentDiv.innerHTML = '<p style="text-align: center; padding: 20px; color: var(--danger-color);">Failed to load leaderboard</p>';
+            contentDiv.innerHTML = '<div class="error-message">Couldn\'t load the leaderboard. Try again in a moment! 🏆</div>';
         }
 
         // Only animate modal opening if it wasn't already open
@@ -775,15 +779,7 @@ window.TimeAttackGame = {
             });
         });
 
-        // Close modal when clicking outside
-        const modal = document.getElementById('time-attack-leaderboard-modal');
-        if (modal) {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal && Utils) {
-                    Utils.closeModalWithAnimation(modal);
-                }
-            });
-        }
+        // Click-outside-to-close is now handled globally in utils.js
     },
 
     // ==========================================

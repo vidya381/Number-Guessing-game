@@ -77,23 +77,17 @@ window.Auth = {
     },
 
     showCoinAnimation: function(amount) {
-        console.log('🪙 showCoinAnimation called:', { amount, hasCurrentUser: !!GameState.currentUser, currentUserCoins: GameState.currentUser?.coins });
-
         if (!GameState.currentUser || amount === 0) {
-            console.log('❌ Animation skipped - no user or zero amount');
             return;
         }
 
         const coinDisplay = document.getElementById('coin-display');
         if (!coinDisplay) {
-            console.log('❌ coin-display element not found');
             return;
         }
 
         const isDeduction = amount < 0;
         const absAmount = Math.abs(amount);
-
-        console.log('✅ Starting coin animation with', amount, 'coins');
 
         const rect = coinDisplay.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
@@ -243,13 +237,20 @@ window.Auth = {
         const errorDiv = document.getElementById('login-error');
 
         try {
-            const response = await fetch('/api/auth/login', {
+            const response = await Utils.fetchWithTimeout('/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ username, password })
-            });
+            }, 8000);
+
+            // Handle non-OK responses
+            if (!response.ok) {
+                const errorInfo = Utils.handleFetchError(new Error(`HTTP ${response.status}`), response);
+                errorDiv.textContent = errorInfo.userMessage;
+                return;
+            }
 
             const data = await response.json();
 
@@ -292,7 +293,8 @@ window.Auth = {
                 }
             }
         } catch (error) {
-            errorDiv.textContent = 'Couldn\'t log you in right now. Please try again!';
+            const errorInfo = Utils.handleFetchError(error);
+            errorDiv.textContent = errorInfo.userMessage;
         }
     },
 
@@ -305,13 +307,20 @@ window.Auth = {
         const errorDiv = document.getElementById('signup-error');
 
         try {
-            const response = await fetch('/api/auth/signup', {
+            const response = await Utils.fetchWithTimeout('/api/auth/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ username, email, password })
-            });
+            }, 8000);
+
+            // Handle non-OK responses
+            if (!response.ok) {
+                const errorInfo = Utils.handleFetchError(new Error(`HTTP ${response.status}`), response);
+                errorDiv.textContent = errorInfo.userMessage;
+                return;
+            }
 
             const data = await response.json();
 
@@ -343,7 +352,8 @@ window.Auth = {
                 }
             }
         } catch (error) {
-            errorDiv.textContent = 'Couldn\'t create your account right now. Please try again!';
+            const errorInfo = Utils.handleFetchError(error);
+            errorDiv.textContent = errorInfo.userMessage;
         }
     },
 

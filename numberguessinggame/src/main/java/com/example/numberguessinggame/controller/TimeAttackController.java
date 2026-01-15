@@ -164,8 +164,19 @@ public class TimeAttackController {
         // Store in active sessions
         activeSessions.put(sessionId, session);
 
-        logger.info("Time Attack session started - SessionID: {}, UserID: {}, Difficulty: {}, Target: {}",
-                sessionId, userId, difficulty, targetNumber);
+        // Log target number for reference
+        String difficultyName = difficulty == 0 ? "Easy" : difficulty == 1 ? "Medium" : "Hard";
+        if (userId != null) {
+            userRepository.findById(userId).ifPresent(user ->
+                System.out.println("[Game Start] Mode: Time Attack | User: " + user.getUsername() +
+                    " | Difficulty: " + difficultyName + " | Target: " + targetNumber +
+                    " | Session: " + sessionId + " | Game: 1")
+            );
+        } else {
+            System.out.println("[Game Start] Mode: Time Attack | Guest" +
+                " | Difficulty: " + difficultyName + " | Target: " + targetNumber +
+                " | Session: " + sessionId + " | Game: 1");
+        }
 
         return ResponseEntity.ok(Map.of(
                 "sessionId", sessionId,
@@ -203,8 +214,20 @@ public class TimeAttackController {
         session.setCurrentGameStartTime(System.currentTimeMillis());
         session.setCurrentGameAttempts(0);
 
-        logger.info("Time Attack new game started - SessionID: {}, Difficulty: {}, Target: {}",
-                sessionId, session.getDifficulty(), targetNumber);
+        // Log target number for reference
+        String difficultyName = session.getDifficulty() == 0 ? "Easy" : session.getDifficulty() == 1 ? "Medium" : "Hard";
+        int gameNumber = session.getGamesPlayed() + 1;
+        if (session.getUserId() != null) {
+            userRepository.findById(session.getUserId()).ifPresent(user ->
+                System.out.println("[Game Start] Mode: Time Attack | User: " + user.getUsername() +
+                    " | Difficulty: " + difficultyName + " | Target: " + targetNumber +
+                    " | Session: " + sessionId + " | Game: " + gameNumber)
+            );
+        } else {
+            System.out.println("[Game Start] Mode: Time Attack | Guest" +
+                " | Difficulty: " + difficultyName + " | Target: " + targetNumber +
+                " | Session: " + sessionId + " | Game: " + gameNumber);
+        }
 
         return ResponseEntity.ok(Map.of(
                 "digitCount", digitCount,

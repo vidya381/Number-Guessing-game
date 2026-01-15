@@ -4,6 +4,22 @@
  */
 
 /* ===================================== */
+/* RESPONSIVE BREAKPOINTS                */
+/* ===================================== */
+/*
+ * Standard breakpoints used across all CSS files:
+ *
+ * Desktop:      > 768px    (default, no media query needed)
+ * Tablet:       <= 768px   @media screen and (max-width: 768px)
+ * Large Mobile: <= 600px   @media screen and (max-width: 600px)
+ * Mobile:       <= 480px   @media screen and (max-width: 480px)
+ * Small Mobile: <= 360px   @media screen and (max-width: 360px)
+ *
+ * Note: CSS variables cannot be used in media queries.
+ * These values must be hardcoded in @media rules.
+ */
+
+/* ===================================== */
 /* LIGHT MODE (DEFAULT)                  */
 /* ===================================== */
 

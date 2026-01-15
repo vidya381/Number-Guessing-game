@@ -32,19 +32,12 @@
     border: 1px solid rgba(139, 122, 191, 0.15);
 }
 
-.close-modal {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 28px;
-    font-weight: bold;
-    color: var(--text-color);
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.close-modal:hover {
-    color: var(--primary-color);
+/* Wider modal for leaderboards */
+.modal-content-wide {
+    max-width: 650px;
+    padding: 25px;
+    border: 2px solid rgba(139, 122, 191, 0.25);
+    box-shadow: 0 15px 60px rgba(139, 122, 191, 0.35);
 }
 
 /* Modal Close Button (X button) */
@@ -1227,6 +1220,11 @@ body.dark-mode .modal-content {
     background-color: var(--card-background);
 }
 
+body.dark-mode .modal-content-wide {
+    border: 2px solid rgba(167, 139, 250, 0.35);
+    box-shadow: 0 15px 60px rgba(167, 139, 250, 0.45);
+}
+
 body.dark-mode .form-group input {
     background-color: var(--input-background);
     border-color: #495057;
@@ -1236,10 +1234,6 @@ body.dark-mode .form-group input {
 body.dark-mode .form-group input:focus {
     background-color: var(--card-background);
     box-shadow: 0 4px 20px rgba(167, 139, 250, 0.35);
-}
-
-body.dark-mode .close-modal {
-    color: var(--text-color);
 }
 
 body.dark-mode .modal-close-btn {

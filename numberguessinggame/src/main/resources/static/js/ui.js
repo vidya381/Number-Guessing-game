@@ -1,12 +1,9 @@
 /**
  * UI Components
- * Handles modals, leaderboard, profile, settings, and UI updates
+ * Handles modals, profile, settings, and UI updates
  */
 
 window.UI = {
-    // Leaderboard cache (30-second cache)
-    LEADERBOARD_CACHE_DURATION: 30000,
-
     // ==========================================
     // STATS UPDATES
     // ==========================================
@@ -69,7 +66,7 @@ window.UI = {
                 setTimeout(() => {
                     dropdown.style.display = 'none';
                     dropdown.classList.remove('dropdown-exit');
-                }, 200);
+                }, GameConfig.UI.DROPDOWN_ANIMATION_DURATION_MS);
             } else {
                 dropdown.style.display = 'block';
                 void dropdown.offsetWidth; // Force reflow
@@ -84,7 +81,7 @@ window.UI = {
                     setTimeout(() => {
                         dropdown.style.display = 'none';
                         dropdown.classList.remove('dropdown-exit');
-                    }, 200);
+                    }, GameConfig.UI.DROPDOWN_ANIMATION_DURATION_MS);
                 }
             }
         });
@@ -97,7 +94,7 @@ window.UI = {
                     dropdown.style.display = 'none';
                     dropdown.classList.remove('dropdown-exit');
                     this.loadAndShowProfile();
-                }, 200);
+                }, GameConfig.UI.DROPDOWN_ANIMATION_DURATION_MS);
             });
         }
 
@@ -112,7 +109,7 @@ window.UI = {
                     if (settingsModal && Utils) {
                         Utils.openModalWithAnimation(settingsModal);
                     }
-                }, 200);
+                }, GameConfig.UI.DROPDOWN_ANIMATION_DURATION_MS);
             });
         }
 
@@ -126,7 +123,7 @@ window.UI = {
                     if (Auth) {
                         Auth.logout();
                     }
-                }, 200);
+                }, GameConfig.UI.DROPDOWN_ANIMATION_DURATION_MS);
             });
         }
     },
@@ -168,7 +165,7 @@ window.UI = {
         // Volume slider in settings
         if (volumeSlider && volumePercentage) {
             // Initialize slider with saved volume
-            volumeSlider.value = Math.round(GameState.soundVolume * 100);
+            volumeSlider.value = Math.round(GameState.soundVolume * GameConfig.VOLUME.PERCENTAGE_MULTIPLIER);
             volumePercentage.textContent = volumeSlider.value + '%';
             if (Utils) {
                 Utils.updateVolumeIcon(GameState.soundVolume);
@@ -176,7 +173,7 @@ window.UI = {
 
             volumeSlider.addEventListener('input', (e) => {
                 const volume = parseInt(e.target.value);
-                GameState.soundVolume = volume / 100;
+                GameState.soundVolume = volume / GameConfig.VOLUME.PERCENTAGE_MULTIPLIER;
                 volumePercentage.textContent = volume + '%';
                 if (GameConfig) {
                     GameConfig.updateSoundVolumes(GameState.soundVolume);
@@ -196,118 +193,8 @@ window.UI = {
     },
 
     // ==========================================
-    // LEADERBOARD MODAL
-    // ==========================================
-
-    setupLeaderboardModal: function() {
-        const leaderboardModal = document.getElementById('leaderboard-modal');
-        const viewLeaderboardBtn = document.getElementById('view-leaderboard');
-        const closeLeaderboardBtn = document.getElementById('close-leaderboard');
-
-        if (!leaderboardModal) return;
-
-        if (viewLeaderboardBtn && Utils) {
-            viewLeaderboardBtn.addEventListener('click', () => {
-                Utils.openModalWithAnimation(leaderboardModal);
-                this.loadLeaderboard(false, true);
-            });
-        }
-
-        if (closeLeaderboardBtn && Utils) {
-            closeLeaderboardBtn.addEventListener('click', () => {
-                Utils.closeModalWithAnimation(leaderboardModal);
-            });
-        }
-
-        leaderboardModal.addEventListener('click', (e) => {
-            if (e.target === leaderboardModal && Utils) {
-                Utils.closeModalWithAnimation(leaderboardModal);
-            }
-        });
-    },
-
-    loadLeaderboard: async function(forceRefresh = false, isModal = false) {
-        // Support both modal and inline leaderboard
-        const loadingDiv = isModal ?
-            document.getElementById('modal-leaderboard-loading') :
-            document.getElementById('leaderboard-loading');
-        const contentDiv = isModal ?
-            document.getElementById('modal-leaderboard-content') :
-            document.getElementById('leaderboard-content');
-
-        if (!loadingDiv || !contentDiv) return;
-
-        // Check if we have cached data and it's still valid
-        const now = Date.now();
-        if (!forceRefresh && GameState.leaderboardCache && (now - GameState.leaderboardCacheTime) < this.LEADERBOARD_CACHE_DURATION) {
-            // Use cached data
-            contentDiv.innerHTML = this.createLeaderboardHTML(GameState.leaderboardCache);
-            loadingDiv.style.display = 'none';
-            contentDiv.style.display = 'block';
-            return;
-        }
-
-        try {
-            const response = await fetch('/api/leaderboard?limit=10');
-            const data = await response.json();
-
-            if (data.success && data.leaderboard && data.leaderboard.length > 0) {
-                // Update cache
-                GameState.leaderboardCache = data.leaderboard;
-                GameState.leaderboardCacheTime = now;
-
-                contentDiv.innerHTML = this.createLeaderboardHTML(data.leaderboard);
-                loadingDiv.style.display = 'none';
-                contentDiv.style.display = 'block';
-            } else {
-                loadingDiv.textContent = 'No players on the leaderboard yet. Be the first!';
-            }
-        } catch (error) {
-            loadingDiv.textContent = 'Couldn\'t load the leaderboard. Try again in a moment!';
-        }
-    },
-
-    createLeaderboardHTML: function(players) {
-        let html = '<table class="leaderboard-table"><thead><tr>';
-        html += '<th>Rank</th>';
-        html += '<th>Player</th>';
-        html += '<th>Best Score</th>';
-        html += '<th>Win Rate</th>';
-        html += '<th>Games</th>';
-        html += '</tr></thead><tbody>';
-
-        players.forEach(player => {
-            const rankClass = player.rank <= 3 ? 'rank-' + player.rank : '';
-            const rankIcon = this.getRankIcon(player.rank);
-
-            html += '<tr class="' + rankClass + '">';
-            html += '<td class="rank-cell">' + rankIcon + ' ' + player.rank + '</td>';
-            html += '<td class="username-cell">' + Utils.escapeHtml(player.username) + '</td>';
-            html += '<td class="score-cell">' + player.bestScore + ' attempts</td>';
-            html += '<td class="winrate-cell">' + player.winRate + '%</td>';
-            html += '<td class="games-cell">' + player.totalWins + '/' + player.totalGames + '</td>';
-            html += '</tr>';
-        });
-
-        html += '</tbody></table>';
-        return html;
-    },
-
-    getRankIcon: function(rank) {
-        switch (rank) {
-            case 1: return '🥇';
-            case 2: return '🥈';
-            case 3: return '🥉';
-            default: return '';
-        }
-    },
-
-    // ==========================================
     // PROFILE MODAL
     // ==========================================
-
-    profileCurrentFilter: 'all',
-    profileAchievements: [],
 
     setupProfileListeners: function() {
         const profileBtn = document.getElementById('profile-btn');
@@ -359,17 +246,22 @@ window.UI = {
         if (profileContent) profileContent.style.display = 'none';
 
         try {
-            const response = await fetch('/api/user/profile', {
+            const response = await Utils.fetchWithTimeout('/api/user/profile', {
                 method: 'GET',
                 headers: {
                     'Authorization': 'Bearer ' + GameState.authToken
                 }
-            });
+            }, 10000);
+
+            if (!response.ok) {
+                const errorInfo = Utils.handleFetchError(new Error(`HTTP ${response.status}`), response);
+                throw new Error(errorInfo.userMessage);
+            }
 
             const data = await response.json();
 
-            if (!response.ok || data.error) {
-                throw new Error(data.error || 'Failed to load profile');
+            if (data.error) {
+                throw new Error(data.error);
             }
 
             if (data.success && data.profile) {
@@ -383,19 +275,15 @@ window.UI = {
             }
         } catch (error) {
             console.error('Failed to load profile:', error);
+            const errorInfo = Utils.handleFetchError(error);
             if (Achievements) {
-                Achievements.showToast('Couldn\'t load your profile right now. Try refreshing the page!', 'error');
+                Achievements.showToast(errorInfo.userMessage, 'error');
             }
             profileModal.style.display = 'none';
         }
     },
 
     populateProfileModal: function(profile) {
-        console.log('=== populateProfileModal called ===');
-        console.log('Profile data:', profile);
-        console.log('Recent games:', profile.recentGames);
-        console.log('Recent games length:', profile.recentGames ? profile.recentGames.length : 0);
-
         // Update header info
         const usernameEl = document.getElementById('profile-username');
         const emailEl = document.getElementById('profile-email');
@@ -466,25 +354,17 @@ window.UI = {
     },
 
     updateRecentGamesList: function(games) {
-        console.log('=== updateRecentGamesList called ===');
-        console.log('Games received:', games);
-        console.log('Games length:', games ? games.length : 0);
-
         const recentGamesList = document.getElementById('profile-recent-games');
         if (!recentGamesList) {
-            console.log('ERROR: profile-recent-games element not found!');
             return;
         }
 
         recentGamesList.innerHTML = '';
 
         if (!games || games.length === 0) {
-            console.log('No games to display');
             recentGamesList.innerHTML = '<p style="text-align: center; opacity: 0.7; padding: 20px;">No recent games yet.</p>';
             return;
         }
-
-        console.log('Displaying', games.length, 'games');
 
         games.forEach(game => {
             const gameItem = document.createElement('div');
@@ -562,7 +442,7 @@ window.UI = {
             const data = await response.json();
 
             if (data.success && data.achievements) {
-                this.profileAchievements = data.achievements;
+                GameState.profileAchievements = data.achievements;
                 this.displayProfileAchievements(data.achievements);
                 this.setupProfileAchievementTabs();
             }
@@ -597,9 +477,9 @@ window.UI = {
 
         // Filter achievements based on current filter
         let filteredAchievements = achievements;
-        if (this.profileCurrentFilter === 'unlocked') {
+        if (GameState.profileCurrentFilter === 'unlocked') {
             filteredAchievements = achievements.filter(a => a.unlocked);
-        } else if (this.profileCurrentFilter === 'locked') {
+        } else if (GameState.profileCurrentFilter === 'locked') {
             filteredAchievements = achievements.filter(a => !a.unlocked);
         }
 
@@ -626,25 +506,32 @@ window.UI = {
         const modal = document.getElementById('profile-modal');
         if (!modal) return;
 
-        const tabs = modal.querySelectorAll('.achievement-tab');
-        tabs.forEach(tab => {
-            // Remove any existing listeners
-            tab.replaceWith(tab.cloneNode(true));
-        });
+        // Use event delegation to avoid memory leaks and repeated listener attachment
+        const tabsContainer = modal.querySelector('.achievements-tabs');
+        if (!tabsContainer) return;
 
-        // Re-query after replacing
-        const newTabs = modal.querySelectorAll('.achievement-tab');
-        newTabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                // Update active state
-                newTabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+        // Remove existing listener if present (to avoid duplicates)
+        if (tabsContainer._achievementTabsHandler) {
+            tabsContainer.removeEventListener('click', tabsContainer._achievementTabsHandler);
+        }
 
-                // Update filter and re-render
-                this.profileCurrentFilter = tab.dataset.filter;
-                this.renderProfileAchievementsList(this.profileAchievements);
-            });
-        });
+        // Create and store handler function
+        tabsContainer._achievementTabsHandler = (e) => {
+            const tab = e.target.closest('.achievement-tab');
+            if (!tab) return;
+
+            // Update active state
+            const allTabs = tabsContainer.querySelectorAll('.achievement-tab');
+            allTabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+
+            // Update filter and re-render
+            GameState.profileCurrentFilter = tab.dataset.filter;
+            this.renderProfileAchievementsList(GameState.profileAchievements);
+        };
+
+        // Attach single event listener to parent container
+        tabsContainer.addEventListener('click', tabsContainer._achievementTabsHandler);
     },
 
     // ==========================================
@@ -654,7 +541,6 @@ window.UI = {
     init: function() {
         this.setupHeaderDropdown();
         this.setupSettingsModal();
-        this.setupLeaderboardModal();
         this.setupProfileListeners();
     }
 };

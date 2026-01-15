@@ -120,9 +120,6 @@ window.DailyGame = {
             return; // Silently return - button handles toggle
         }
 
-        console.log('=== Starting Daily Challenge ===');
-        console.log('Auth Token:', GameState.authToken ? 'Present' : 'Missing');
-
         try {
             const response = await fetch('/api/daily-challenge/start', {
                 method: 'POST',
@@ -132,17 +129,12 @@ window.DailyGame = {
                 }
             });
 
-            console.log('Start response status:', response.status);
             const data = await response.json();
-            console.log('Start response data:', data);
 
             if (response.ok) {
                 GameState.dailyChallenge.sessionId = data.sessionId;
                 GameState.dailyChallenge.digitCount = data.digitCount;
                 GameState.dailyChallenge.attempts = data.currentAttempts || 0; // Set cumulative attempts
-                console.log('Session created:', GameState.dailyChallenge.sessionId);
-                console.log('Digit count:', GameState.dailyChallenge.digitCount);
-                console.log('Starting with cumulative attempts:', GameState.dailyChallenge.attempts);
                 this.startDailyChallengeGame();
             } else {
                 console.error('Failed to start:', data.error);
@@ -290,13 +282,6 @@ window.DailyGame = {
             return;
         }
 
-        // Debug logging
-        console.log('=== Daily Challenge Guess Debug ===');
-        console.log('Session ID:', GameState.dailyChallenge.sessionId);
-        console.log('Auth Token:', GameState.authToken ? 'Present' : 'Missing');
-        console.log('Guess:', guess);
-        console.log('Digit Count:', GameState.dailyChallenge.digitCount);
-
         try {
             const response = await fetch('/api/daily-challenge/guess', {
                 method: 'POST',
@@ -310,9 +295,7 @@ window.DailyGame = {
                 })
             });
 
-            console.log('Response status:', response.status);
             const data = await response.json();
-            console.log('Response data:', data);
 
             if (response.ok) {
                 GameState.dailyChallenge.attempts = data.attempts;
@@ -564,46 +547,40 @@ window.DailyGame = {
             if (response.ok && Array.isArray(data)) {
                 // Update date
                 if (dateDiv && GameState.dailyChallenge.info && Utils) {
-                    dateDiv.textContent = `📅 ${Utils.formatDate(GameState.dailyChallenge.info.challengeDate)}`;
+                    dateDiv.textContent = Utils.formatDate(GameState.dailyChallenge.info.challengeDate);
                 }
 
                 if (data.length === 0) {
                     contentDiv.innerHTML = '<div class="no-data">No one has completed today\'s challenge yet. Be the first! 🏆</div>';
                 } else {
-                    let tableHTML = `
-                        <table class="leaderboard-table">
-                            <thead>
-                                <tr>
-                                    <th>Rank</th>
-                                    <th>Player</th>
-                                    <th>Attempts</th>
-                                    <th>Time</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                    let html = `
+                        <div class="leaderboard-table">
+                            <div class="leaderboard-header">
+                                <div class="lb-rank">Rank</div>
+                                <div class="lb-username">Player</div>
+                                <div class="lb-attempts">Attempts</div>
+                                <div class="lb-time">Time</div>
+                            </div>
                     `;
 
                     data.forEach(entry => {
                         const isCurrentUser = GameState.currentUser && entry.username === GameState.currentUser.username;
                         const rowClass = isCurrentUser ? 'leaderboard-row current-user' : 'leaderboard-row';
                         const escapedUsername = Utils ? Utils.escapeHtml(entry.username) : entry.username;
+                        const rankDisplay = Utils ? Utils.getRankDisplay(entry.rank) : entry.rank;
 
-                        tableHTML += `
-                            <tr class="${rowClass}">
-                                <td>${this.getRankDisplay(entry.rank)}</td>
-                                <td>${escapedUsername}${isCurrentUser ? ' (You)' : ''}</td>
-                                <td>${entry.attempts}</td>
-                                <td>${entry.timeDisplay}</td>
-                            </tr>
+                        html += `
+                            <div class="${rowClass}">
+                                <div class="lb-rank">${rankDisplay}</div>
+                                <div class="lb-username">${escapedUsername}${isCurrentUser ? ' (You)' : ''}</div>
+                                <div class="lb-attempts">${entry.attempts}</div>
+                                <div class="lb-time">${entry.timeDisplay}</div>
+                            </div>
                         `;
                     });
 
-                    tableHTML += `
-                            </tbody>
-                        </table>
-                    `;
-
-                    contentDiv.innerHTML = tableHTML;
+                    html += '</div>';
+                    contentDiv.innerHTML = html;
                 }
 
                 loadingDiv.style.display = 'none';
@@ -622,13 +599,6 @@ window.DailyGame = {
         if (Utils) {
             Utils.openModalWithAnimation(modal);
         }
-    },
-
-    getRankDisplay: function(rank) {
-        if (rank === 1) return '🥇';
-        if (rank === 2) return '🥈';
-        if (rank === 3) return '🥉';
-        return `#${rank}`;
     },
 
     // ==========================================

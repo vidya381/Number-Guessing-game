@@ -15,7 +15,7 @@ window.Utils = {
             element.style.display = 'none';
             element.classList.remove('page-exit');
             if (callback) callback();
-        }, 300); // Match CSS animation duration
+        }, GameConfig.UI.MODAL_ANIMATION_DURATION_MS);
     },
 
     fadeInElement: function(element, displayType = 'block') {
@@ -472,6 +472,13 @@ window.Utils = {
         return div.innerHTML;
     },
 
+    getRankDisplay: function(rank) {
+        if (rank === 1) return '🥇';
+        if (rank === 2) return '🥈';
+        if (rank === 3) return '🥉';
+        return rank;
+    },
+
     // ==========================================
     // UI HELPERS
     // ==========================================
@@ -568,14 +575,197 @@ window.Utils = {
     },
 
     // ==========================================
+    // MODAL CLICK-OUTSIDE-TO-CLOSE
+    // ==========================================
+
+    setupModalClickOutside: function() {
+        // Get all modal elements
+        const modals = [
+            document.getElementById('auth-modal'),
+            document.getElementById('profile-modal'),
+            document.getElementById('settings-modal'),
+            document.getElementById('daily-leaderboard-modal'),
+            document.getElementById('time-attack-leaderboard-modal')
+        ];
+
+        // Add click-outside-to-close functionality to each modal
+        modals.forEach(modal => {
+            if (modal) {
+                // Remove any existing listeners to avoid duplicates
+                const handler = (e) => {
+                    // Only close if clicking the modal backdrop (not the content)
+                    if (e.target === modal) {
+                        // Special handling for auth modal to clear forms
+                        if (modal.id === 'auth-modal') {
+                            this.closeModalWithAnimation(modal, window.Auth ? Auth.clearAuthForms : null);
+                        } else {
+                            this.closeModalWithAnimation(modal);
+                        }
+                    }
+                };
+                modal.addEventListener('click', handler);
+            }
+        });
+    },
+
+    // ==========================================
+    // FETCH ERROR HANDLING
+    // ==========================================
+
+    /**
+     * Handles fetch errors and provides specific user-facing messages
+     * @param {Error} error - The error object from catch block
+     * @param {Response} response - The fetch response object (if available)
+     * @returns {Object} - { type, message, userMessage }
+     */
+    handleFetchError: function(error, response = null) {
+        // Network error (no internet, DNS failure, CORS)
+        if (!response || error.message === 'Failed to fetch' || error.name === 'TypeError') {
+            return {
+                type: 'network',
+                message: 'Network error: No internet connection or server unreachable',
+                userMessage: 'No internet connection. Please check your network and try again.'
+            };
+        }
+
+        // Timeout error
+        if (error.name === 'AbortError') {
+            return {
+                type: 'timeout',
+                message: 'Request timed out',
+                userMessage: 'Request took too long. Please try again.'
+            };
+        }
+
+        // Parse error (invalid JSON)
+        if (error instanceof SyntaxError) {
+            return {
+                type: 'parse',
+                message: 'Failed to parse server response',
+                userMessage: 'Server returned invalid data. Please refresh and try again.'
+            };
+        }
+
+        // Server errors (5xx)
+        if (response && response.status >= 500) {
+            const serverMessages = {
+                500: 'Server encountered an error. Please try again in a moment.',
+                502: 'Gateway error. The server is temporarily unavailable.',
+                503: 'Service unavailable. Please try again later.',
+                504: 'Gateway timeout. The server took too long to respond.'
+            };
+            return {
+                type: 'server',
+                message: `Server error ${response.status}`,
+                userMessage: serverMessages[response.status] || 'Server is having issues. Please try again later.'
+            };
+        }
+
+        // Client errors (4xx)
+        if (response && response.status >= 400) {
+            const clientMessages = {
+                400: 'Invalid request. Please check your input and try again.',
+                401: 'Session expired. Please log in again.',
+                403: 'You don\'t have permission to perform this action.',
+                404: 'Resource not found. Please refresh the page.',
+                429: 'Too many requests. Please slow down and try again in a moment.'
+            };
+            return {
+                type: 'client',
+                message: `Client error ${response.status}`,
+                userMessage: clientMessages[response.status] || 'Request failed. Please try again.'
+            };
+        }
+
+        // Unknown error
+        return {
+            type: 'unknown',
+            message: error.message || 'Unknown error occurred',
+            userMessage: 'Something went wrong. Please try again.'
+        };
+    },
+
+    /**
+     * Wrapper for fetch with comprehensive error handling
+     * @param {string} url - The URL to fetch
+     * @param {Object} options - Fetch options
+     * @param {number} timeout - Timeout in milliseconds (default: 10000)
+     * @returns {Promise<Response>} - The fetch response
+     */
+    fetchWithTimeout: async function(url, options = {}, timeout = 10000) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+        try {
+            const response = await fetch(url, {
+                ...options,
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+            return response;
+        } catch (error) {
+            clearTimeout(timeoutId);
+            throw error;
+        }
+    },
+
+    // ==========================================
+    // FONT AWESOME FALLBACK DETECTION
+    // ==========================================
+
+    /**
+     * Detects if Font Awesome has loaded successfully
+     * If not loaded, adds 'fa-fallback' class to body to use emoji fallbacks
+     */
+    detectFontAwesome: function() {
+        // Wait for fonts to load
+        if (document.fonts && document.fonts.ready) {
+            document.fonts.ready.then(() => {
+                this.checkFontAwesomeLoaded();
+            });
+        } else {
+            // Fallback for browsers without font loading API
+            setTimeout(() => this.checkFontAwesomeLoaded(), 1000);
+        }
+    },
+
+    checkFontAwesomeLoaded: function() {
+        // Create a test element with Font Awesome icon
+        const testEl = document.createElement('i');
+        testEl.className = 'fas fa-test';
+        testEl.style.position = 'absolute';
+        testEl.style.left = '-9999px';
+        testEl.style.fontSize = '100px';
+        document.body.appendChild(testEl);
+
+        // Get computed style
+        const computedStyle = window.getComputedStyle(testEl, '::before');
+        const fontFamily = computedStyle.getPropertyValue('font-family');
+
+        // Check if Font Awesome font is loaded
+        const isFontAwesomeLoaded = fontFamily.includes('Font Awesome');
+
+        if (!isFontAwesomeLoaded) {
+            // Font Awesome didn't load - add fallback class
+            document.body.classList.add('fa-fallback');
+            console.warn('Font Awesome failed to load. Using emoji fallbacks.');
+        }
+
+        // Clean up test element
+        document.body.removeChild(testEl);
+    },
+
+    // ==========================================
     // INITIALIZATION
     // ==========================================
 
     init: function() {
+        this.detectFontAwesome();
         this.initializeDarkMode();
         this.setupKeyboardShortcuts();
         this.createFloatingNumbers();
         this.setupHowToPlay();
+        this.setupModalClickOutside();
 
         // Attach theme toggle button event listener
         const themeToggleButton = document.getElementById('theme-toggle');

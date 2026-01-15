@@ -30,6 +30,7 @@ public interface DailyChallengeAttemptRepository extends JpaRepository<DailyChal
      * Ranked by: won first, then fewest attempts, then fastest time
      */
     @Query("SELECT a FROM DailyChallengeAttempt a " +
+           "JOIN FETCH a.user " +
            "WHERE a.challenge = :challenge AND a.won = true " +
            "ORDER BY a.attempts ASC, a.timeTakenSeconds ASC")
     List<DailyChallengeAttempt> findTopAttemptsByChallenge(
