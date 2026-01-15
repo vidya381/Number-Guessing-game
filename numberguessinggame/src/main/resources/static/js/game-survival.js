@@ -36,18 +36,7 @@ window.SurvivalGame = {
         const playAgainBtn = document.getElementById('survival-play-again');
         if (playAgainBtn) {
             playAgainBtn.addEventListener('click', () => {
-                const difficulty = GameState.survival?.difficulty ?? 0;
-                const resultPage = document.getElementById('survival-result-page');
-                const homePage = document.getElementById('home-page');
-
-                // Immediately hide result page and show home
-                if (resultPage) resultPage.style.display = 'none';
-                if (homePage) homePage.style.display = 'block';
-
-                GameState.resetSurvival();
-
-                // Start new game immediately (no delay/flash)
-                this.startSurvival(difficulty);
+                this.startSurvival(GameState.survival.difficulty);
             });
         }
 
@@ -132,15 +121,32 @@ window.SurvivalGame = {
 
                 // Show survival game page
                 const homePage = document.getElementById('home-page');
+                const resultPage = document.getElementById('survival-result-page');
                 const survivalPage = document.getElementById('survival-page');
 
-                if (homePage && survivalPage) {
+                // Transition from whichever page is currently visible
+                if (homePage && homePage.style.display !== 'none') {
                     if (Utils) {
                         Utils.fadeOutElement(homePage, () => {
                             Utils.fadeInElement(survivalPage, 'flex');
                         });
                     } else {
                         homePage.style.display = 'none';
+                        survivalPage.style.display = 'flex';
+                    }
+                } else if (resultPage && resultPage.style.display !== 'none') {
+                    if (Utils) {
+                        Utils.fadeOutElement(resultPage, () => {
+                            Utils.fadeInElement(survivalPage, 'flex');
+                        });
+                    } else {
+                        resultPage.style.display = 'none';
+                        survivalPage.style.display = 'flex';
+                    }
+                } else {
+                    if (Utils) {
+                        Utils.fadeInElement(survivalPage, 'flex');
+                    } else {
                         survivalPage.style.display = 'flex';
                     }
                 }
