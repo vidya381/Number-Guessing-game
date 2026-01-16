@@ -528,6 +528,19 @@ body.dark-mode .daily-challenge-banner {
     border: 2px solid rgba(240, 179, 71, 0.4) !important;
 }
 
+body.dark-mode .daily-challenge-header h2 {
+    color: #ffffff;
+}
+
+body.dark-mode .daily-challenge-description {
+    color: #e0d8f0;
+}
+
+body.dark-mode .daily-challenge-badge {
+    color: #ffffff;
+    background: rgba(240, 179, 71, 0.3);
+}
+
 body.dark-mode .challenge-stat {
     background: rgba(61, 51, 88, 0.6);
     color: var(--text-color);
