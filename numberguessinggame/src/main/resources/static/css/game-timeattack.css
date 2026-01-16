@@ -482,7 +482,7 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
 
 .leaderboard-header, .leaderboard-row {
     display: grid;
-    grid-template-columns: 70px 200px 100px 80px 80px;
+    grid-template-columns: 70px 150px 90px 90px;
     gap: 15px;
     padding: 12px 20px;
     align-items: center;
@@ -506,7 +506,6 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
 /* Header text must be WHITE on purple gradient */
 .leaderboard-header .lb-rank,
 .leaderboard-header .lb-username,
-.leaderboard-header .lb-score,
 .leaderboard-header .lb-wins,
 .leaderboard-header .lb-avg {
     color: #ffffff !important;
@@ -520,10 +519,6 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
 
 .leaderboard-header .lb-username {
     text-align: left;
-}
-
-.leaderboard-header .lb-score {
-    text-align: center;
 }
 
 .leaderboard-header .lb-wins {
@@ -594,16 +589,6 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
     font-weight: 600;
     text-align: left;
     color: #2d2748;
-}
-
-.leaderboard-row .lb-score {
-    text-align: center;
-    font-weight: 700;
-    color: #e74c3c;
-    font-size: 1.05em;
-    background: rgba(231, 76, 60, 0.08);
-    padding: 4px 8px;
-    border-radius: 6px;
 }
 
 .leaderboard-row .lb-wins,
@@ -918,7 +903,6 @@ body.dark-mode .leaderboard-header {
 /* Dark mode - Header text stays WHITE */
 body.dark-mode .leaderboard-header .lb-rank,
 body.dark-mode .leaderboard-header .lb-username,
-body.dark-mode .leaderboard-header .lb-score,
 body.dark-mode .leaderboard-header .lb-wins,
 body.dark-mode .leaderboard-header .lb-avg {
     color: #ffffff !important;
@@ -965,11 +949,6 @@ body.dark-mode .leaderboard-row .lb-rank {
 
 body.dark-mode .leaderboard-row .lb-username {
     color: #e4e7f0;
-}
-
-body.dark-mode .leaderboard-row .lb-score {
-    color: #ff8585;
-    background: rgba(255, 107, 107, 0.15);
 }
 
 body.dark-mode .leaderboard-row .lb-wins,

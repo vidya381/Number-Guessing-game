@@ -673,7 +673,6 @@ window.SurvivalGame = {
                             <div class="lb-username">Player</div>
                             <div class="lb-rounds">Cleared</div>
                             <div class="lb-attempts">Attempts</div>
-                            <div class="lb-status">Status</div>
                         </div>
                 `;
 
@@ -683,7 +682,6 @@ window.SurvivalGame = {
                     const rowClass = isCurrentUser ? `${rankClass} current-user` : rankClass;
                     const escapedUsername = Utils ? Utils.escapeHtml(entry.username) : entry.username;
                     const rankDisplay = Utils ? Utils.getRankDisplay(entry.rank) : entry.rank;
-                    const statusIcon = entry.completed ? '✓' : '—';
 
                     html += `
                         <div class="leaderboard-row ${rowClass}">
@@ -691,7 +689,6 @@ window.SurvivalGame = {
                             <div class="lb-username">${escapedUsername}${isCurrentUser ? ' (You)' : ''}</div>
                             <div class="lb-rounds">${entry.roundsSurvived}/5</div>
                             <div class="lb-attempts">${entry.totalAttemptsUsed}</div>
-                            <div class="lb-status">${statusIcon}</div>
                         </div>
                     `;
                 });

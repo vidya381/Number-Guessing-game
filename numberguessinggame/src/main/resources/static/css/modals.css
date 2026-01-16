@@ -34,7 +34,7 @@
 
 /* Wider modal for leaderboards */
 .modal-content-wide {
-    max-width: 650px;
+    max-width: 520px;
     padding: 25px;
     border: 2px solid rgba(139, 122, 191, 0.25);
     box-shadow: 0 15px 60px rgba(139, 122, 191, 0.35);

@@ -117,6 +117,169 @@
     border-color: rgba(255, 255, 255, 0.7);
 }
 
+/* ===================================== */
+/* SURVIVAL LEADERBOARD MODAL            */
+/* ===================================== */
+
+#survival-leaderboard-container {
+    height: 400px;
+    overflow: hidden;
+}
+
+#survival-leaderboard-content {
+    height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+#survival-leaderboard-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+#survival-leaderboard-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    font-size: 1em;
+}
+
+#survival-leaderboard-content .no-data {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+    font-size: 1.1em;
+}
+
+#survival-leaderboard-content .error-message {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--danger-color);
+    font-size: 1.1em;
+}
+
+/* Survival Leaderboard Columns - 4 columns like Daily/Time Attack */
+#survival-leaderboard-content .leaderboard-header,
+#survival-leaderboard-content .leaderboard-row {
+    display: grid;
+    grid-template-columns: 70px 150px 90px 90px;
+    gap: 15px;
+    padding: 12px 20px;
+    align-items: center;
+}
+
+#survival-leaderboard-content .leaderboard-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, rgba(var(--primary-color-rgb), 0.85) 100%);
+    color: white;
+    font-weight: 700;
+    border-radius: 10px;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin-bottom: 2px;
+}
+
+/* Header text must be WHITE on purple gradient */
+#survival-leaderboard-content .leaderboard-header .lb-rank,
+#survival-leaderboard-content .leaderboard-header .lb-username,
+#survival-leaderboard-content .leaderboard-header .lb-rounds,
+#survival-leaderboard-content .leaderboard-header .lb-attempts {
+    color: #ffffff !important;
+}
+
+/* Header column alignment */
+#survival-leaderboard-content .leaderboard-header .lb-rank {
+    text-align: center;
+    font-size: 0.9em;
+}
+
+#survival-leaderboard-content .leaderboard-header .lb-username {
+    text-align: left;
+}
+
+#survival-leaderboard-content .leaderboard-header .lb-rounds {
+    text-align: center;
+}
+
+#survival-leaderboard-content .leaderboard-header .lb-attempts {
+    text-align: center;
+}
+
+#survival-leaderboard-content .leaderboard-row {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(var(--primary-color-rgb), 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+#survival-leaderboard-content .leaderboard-row:hover {
+    transform: translateX(3px);
+    box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.15);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(var(--primary-color-rgb), 0.2);
+}
+
+#survival-leaderboard-content .leaderboard-row.top-1 {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 215, 0, 0.15) 100%);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    border-left: 4px solid #ffd700;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2);
+}
+
+#survival-leaderboard-content .leaderboard-row.top-2 {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.25) 0%, rgba(192, 192, 192, 0.15) 100%);
+    border: 2px solid rgba(192, 192, 192, 0.5);
+    border-left: 4px solid #c0c0c0;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(192, 192, 192, 0.2);
+}
+
+#survival-leaderboard-content .leaderboard-row.top-3 {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.25) 0%, rgba(205, 127, 50, 0.15) 100%);
+    border: 2px solid rgba(205, 127, 50, 0.5);
+    border-left: 4px solid #cd7f32;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(205, 127, 50, 0.2);
+}
+
+/* Highlight current user's row */
+#survival-leaderboard-content .leaderboard-row.current-user {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.25) 0%, rgba(167, 139, 250, 0.15) 100%) !important;
+    border: 2px solid rgba(167, 139, 250, 0.5) !important;
+    border-left: 4px solid rgba(167, 139, 250, 0.8) !important;
+    font-weight: 600;
+    box-shadow: 0 3px 12px rgba(167, 139, 250, 0.3) !important;
+}
+
+/* Row text colors */
+#survival-leaderboard-content .leaderboard-row .lb-rank {
+    font-weight: 700;
+    text-align: center;
+    color: #6b5a9f;
+    font-size: 1.2em;
+}
+
+#survival-leaderboard-content .leaderboard-row .lb-username {
+    font-weight: 600;
+    text-align: left;
+    color: #2d2748;
+}
+
+#survival-leaderboard-content .leaderboard-row .lb-rounds,
+#survival-leaderboard-content .leaderboard-row .lb-attempts {
+    text-align: center;
+    font-size: 0.95em;
+    color: #5a4d73;
+    font-weight: 500;
+}
 
 /* ===================================== */
 /* SURVIVAL INPUT CONTAINER              */
@@ -181,6 +344,63 @@ body.dark-mode .survival-diff-btn:hover {
 body.dark-mode .survival-badge {
     background: rgba(255, 0, 0, 0.3);
     border-color: rgba(255, 0, 0, 0.5);
+}
+
+/* Survival Leaderboard Dark Mode */
+body.dark-mode #survival-leaderboard-content .leaderboard-header .lb-rank,
+body.dark-mode #survival-leaderboard-content .leaderboard-header .lb-username,
+body.dark-mode #survival-leaderboard-content .leaderboard-header .lb-rounds,
+body.dark-mode #survival-leaderboard-content .leaderboard-header .lb-attempts {
+    color: #ffffff !important;
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(167, 139, 250, 0.15);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(167, 139, 250, 0.3);
+    box-shadow: 0 4px 12px rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row.top-1 {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.08) 100%);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-left: 4px solid rgba(255, 215, 0, 0.6);
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row.top-2 {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(192, 192, 192, 0.08) 100%);
+    border: 2px solid rgba(192, 192, 192, 0.3);
+    border-left: 4px solid rgba(192, 192, 192, 0.6);
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row.top-3 {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(205, 127, 50, 0.08) 100%);
+    border: 2px solid rgba(205, 127, 50, 0.3);
+    border-left: 4px solid rgba(205, 127, 50, 0.6);
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row.current-user {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(167, 139, 250, 0.08) 100%) !important;
+    border: 2px solid rgba(167, 139, 250, 0.4) !important;
+    border-left: 4px solid rgba(167, 139, 250, 0.8) !important;
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row .lb-rank {
+    color: #b8a4e6;
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row .lb-username {
+    color: #e0d8f0;
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row .lb-rounds,
+body.dark-mode #survival-leaderboard-content .leaderboard-row .lb-attempts {
+    color: #a0a8c8;
 }
 
 /* ===================================== */
