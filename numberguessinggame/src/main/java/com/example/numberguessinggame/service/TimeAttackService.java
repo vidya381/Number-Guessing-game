@@ -103,18 +103,31 @@ public class TimeAttackService {
      *
      * @param sessionId The session ID to find rank for
      * @param difficulty Difficulty level
-     * @return Rank (1-based) or null if not found
+     * @return Rank (1-based) or null if outside top 1000 or not found
      */
     public Integer getUserRank(Long sessionId, int difficulty) {
-        List<TimeAttackSession> leaderboard = getLeaderboard(difficulty, 1000);
+        try {
+            List<TimeAttackSession> leaderboard = getLeaderboard(difficulty, 1000);
 
-        for (int i = 0; i < leaderboard.size(); i++) {
-            if (leaderboard.get(i).getId().equals(sessionId)) {
-                return i + 1;  // 1-based rank
+            for (int i = 0; i < leaderboard.size(); i++) {
+                if (leaderboard.get(i).getId().equals(sessionId)) {
+                    return i + 1;  // 1-based rank
+                }
             }
-        }
 
-        return null;
+            // Session not in top 1000 - check if it exists at all
+            boolean sessionExists = repository.existsById(sessionId);
+            if (!sessionExists) {
+                logger.warn("Session {} not found in database for difficulty {}", sessionId, difficulty);
+            } else {
+                logger.info("Session {} ranked outside top 1000 for difficulty {}", sessionId, difficulty);
+            }
+
+            return null;  // Outside top 1000 or not found
+        } catch (Exception e) {
+            logger.error("Failed to get rank for session {} difficulty {}: {}", sessionId, difficulty, e.getMessage());
+            return null;
+        }
     }
 
     /**

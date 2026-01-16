@@ -90,17 +90,34 @@ public class SurvivalService {
 
     /**
      * Get user's rank on leaderboard for a specific session
+     * @param sessionId The session ID to find rank for
+     * @param difficulty Difficulty level
+     * @return Rank (1-based) or null if outside top 1000 or not found
      */
     public Integer getUserRank(Long sessionId, Integer difficulty) {
-        List<SurvivalSession> leaderboard = survivalSessionRepository
-            .findLeaderboardByDifficulty(difficulty, PageRequest.of(0, 1000));
+        try {
+            List<SurvivalSession> leaderboard = survivalSessionRepository
+                .findLeaderboardByDifficulty(difficulty, PageRequest.of(0, 1000));
 
-        for (int i = 0; i < leaderboard.size(); i++) {
-            if (leaderboard.get(i).getId().equals(sessionId)) {
-                return i + 1;
+            for (int i = 0; i < leaderboard.size(); i++) {
+                if (leaderboard.get(i).getId().equals(sessionId)) {
+                    return i + 1;
+                }
             }
+
+            // Session not in top 1000 - check if it exists at all
+            boolean sessionExists = survivalSessionRepository.existsById(sessionId);
+            if (!sessionExists) {
+                logger.warn("Session {} not found in database for difficulty {}", sessionId, difficulty);
+            } else {
+                logger.info("Session {} ranked outside top 1000 for difficulty {}", sessionId, difficulty);
+            }
+
+            return null;  // Outside top 1000 or not found
+        } catch (Exception e) {
+            logger.error("Failed to get rank for session {} difficulty {}: {}", sessionId, difficulty, e.getMessage());
+            return null;
         }
-        return null;
     }
 
     /**
