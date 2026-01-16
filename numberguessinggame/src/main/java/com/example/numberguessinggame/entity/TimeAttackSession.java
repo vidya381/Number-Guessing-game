@@ -45,6 +45,9 @@ public class TimeAttackSession {
     @Column(name = "game_details", columnDefinition = "TEXT")
     private String gameDetails;  // JSON string storing array of individual game results
 
+    @Column(name = "is_best_run", nullable = false)
+    private Boolean isBestRun = false;
+
     // Constructors
     public TimeAttackSession() {
     }
@@ -150,5 +153,13 @@ public class TimeAttackSession {
 
     public void setGameDetails(String gameDetails) {
         this.gameDetails = gameDetails;
+    }
+
+    public Boolean getIsBestRun() {
+        return isBestRun;
+    }
+
+    public void setIsBestRun(Boolean isBestRun) {
+        this.isBestRun = isBestRun;
     }
 }

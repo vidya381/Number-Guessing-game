@@ -41,7 +41,51 @@ public class SurvivalService {
         logger.info("Survival session saved - UserID: {}, Difficulty: {}, Rounds: {}/5, Completed: {}, Coins: {}",
                 user.getId(), difficulty, roundsSurvived, completed, coinsEarned);
 
+        // Update best run flags for this user-difficulty combination
+        updateBestRunFlags(user, difficulty);
+
         return saved;
+    }
+
+    /**
+     * Update best run flags for a user-difficulty combination
+     * Ensures only the user's best session for this difficulty has isBestRun = true
+     */
+    @Transactional
+    public void updateBestRunFlags(User user, Integer difficulty) {
+        // Get user's actual best session for this difficulty
+        List<SurvivalSession> bestSessions = survivalSessionRepository.findUserSessionsByDifficulty(
+            user, difficulty, PageRequest.of(0, 1)
+        );
+
+        if (bestSessions.isEmpty()) {
+            return; // No sessions for this user-difficulty
+        }
+
+        SurvivalSession actualBest = bestSessions.get(0);
+
+        // Get all sessions currently marked as best run
+        List<SurvivalSession> currentBestRuns = survivalSessionRepository.findBestRunsByUserAndDifficulty(
+            user, difficulty
+        );
+
+        // If the actual best is already marked as best run and no others are, we're done
+        if (currentBestRuns.size() == 1 && currentBestRuns.get(0).getId().equals(actualBest.getId())) {
+            return;
+        }
+
+        // Clear all best run flags for this user-difficulty
+        for (SurvivalSession session : currentBestRuns) {
+            session.setIsBestRun(false);
+            survivalSessionRepository.save(session);
+        }
+
+        // Set the actual best as best run
+        actualBest.setIsBestRun(true);
+        survivalSessionRepository.save(actualBest);
+
+        logger.info("Updated best run flag for user {} difficulty {} - session {} is now best",
+                user.getId(), difficulty, actualBest.getId());
     }
 
     /**
