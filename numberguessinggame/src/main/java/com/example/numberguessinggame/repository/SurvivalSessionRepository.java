@@ -64,26 +64,4 @@ public interface SurvivalSessionRepository extends JpaRepository<SurvivalSession
      * Count total sessions played by user
      */
     long countByUser(User user);
-
-    /**
-     * Get all sessions for a user (for profile stats)
-     */
-    List<SurvivalSession> findByUserOrderByCompletedAtDesc(User user);
-
-    /**
-     * Get user's recent sessions
-     */
-    List<SurvivalSession> findTop10ByUserOrderByCompletedAtDesc(User user);
-
-    /**
-     * Get user's best completed session for a specific difficulty
-     */
-    @Query("SELECT s FROM SurvivalSession s " +
-           "WHERE s.user = :user AND s.difficulty = :difficulty AND s.completed = true " +
-           "ORDER BY s.totalAttemptsUsed ASC")
-    List<SurvivalSession> findUserBestCompletedByDifficulty(
-        @Param("user") User user,
-        @Param("difficulty") Integer difficulty,
-        Pageable pageable
-    );
 }
