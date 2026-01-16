@@ -6,6 +6,7 @@ import com.example.numberguessinggame.repository.UserRepository;
 import com.example.numberguessinggame.service.JwtUtil;
 import com.example.numberguessinggame.service.SurvivalService;
 import com.example.numberguessinggame.service.UserService;
+import com.example.numberguessinggame.util.GameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,7 +139,7 @@ public class SurvivalController {
 
         // Generate first round target number
         int digitCount = 3 + difficulty;
-        session.setCurrentTargetNumber(generateUniqueDigitNumber(digitCount));
+        session.setCurrentTargetNumber(GameUtils.generateUniqueDigitNumber(digitCount));
 
         activeSessions.put(sessionId, session);
 
@@ -314,7 +315,7 @@ public class SurvivalController {
 
                     // Generate new target for next round
                     int digitCount = 3 + session.getDifficulty();
-                    session.setCurrentTargetNumber(generateUniqueDigitNumber(digitCount));
+                    session.setCurrentTargetNumber(GameUtils.generateUniqueDigitNumber(digitCount));
 
                     // Log new round start
                     String difficultyName = survivalService.getDifficultyText(session.getDifficulty());
@@ -527,24 +528,4 @@ public class SurvivalController {
         }
     }
 
-    // Helper method to generate unique digit number
-    private int generateUniqueDigitNumber(int digitCount) {
-        List<Integer> digits = new ArrayList<>();
-        for (int i = 0; i <= 9; i++) {
-            digits.add(i);
-        }
-        Collections.shuffle(digits);
-
-        // Ensure first digit is not 0
-        if (digits.get(0) == 0) {
-            Collections.swap(digits, 0, 1);
-        }
-
-        StringBuilder number = new StringBuilder();
-        for (int i = 0; i < digitCount; i++) {
-            number.append(digits.get(i));
-        }
-
-        return Integer.parseInt(number.toString());
-    }
 }
