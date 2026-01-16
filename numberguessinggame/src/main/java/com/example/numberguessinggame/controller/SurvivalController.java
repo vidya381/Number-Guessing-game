@@ -2,6 +2,7 @@ package com.example.numberguessinggame.controller;
 
 import com.example.numberguessinggame.entity.SurvivalSession;
 import com.example.numberguessinggame.entity.User;
+import com.example.numberguessinggame.repository.UserRepository;
 import com.example.numberguessinggame.service.JwtUtil;
 import com.example.numberguessinggame.service.SurvivalService;
 import com.example.numberguessinggame.service.UserService;
@@ -29,6 +30,9 @@ public class SurvivalController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -116,17 +120,17 @@ public class SurvivalController {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             try {
                 String token = authHeader.substring(7);
-                userId = jwtUtil.extractUserId(token);
-                userService.findById(userId)
-                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                String username = jwtUtil.extractUsername(token);
+                Optional<User> userOpt = userRepository.findByUsername(username);
+                if (userOpt.isPresent()) {
+                    userId = userOpt.get().getId();
+                }
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Please log in to play Survival Mode"));
+                logger.warn("Failed to extract user from token: {}", e.getMessage());
+                // Continue as guest if token extraction fails
             }
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("error", "Please log in to play Survival Mode"));
         }
+        // If userId is null, user plays as guest
 
         // Create session
         String sessionId = UUID.randomUUID().toString();
@@ -140,8 +144,15 @@ public class SurvivalController {
 
         // Log session start
         String difficultyName = survivalService.getDifficultyText(difficulty);
-        logger.info("[Survival Start] UserID: {} | Difficulty: {} | Target: {} | Session: {}",
-                userId, difficultyName, session.getCurrentTargetNumber(), sessionId);
+        if (userId != null) {
+            userRepository.findById(userId).ifPresent(user ->
+                logger.info("[Survival Start] User: {} | Difficulty: {} | Target: {} | Session: {}",
+                    user.getUsername(), difficultyName, session.getCurrentTargetNumber(), sessionId)
+            );
+        } else {
+            logger.info("[Survival Start] Guest | Difficulty: {} | Target: {} | Session: {}",
+                difficultyName, session.getCurrentTargetNumber(), sessionId);
+        }
 
         // Response
         int maxAttempts = survivalService.getMaxAttemptsForDifficulty(difficulty);
