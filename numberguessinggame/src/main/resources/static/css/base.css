@@ -47,7 +47,7 @@ body {
     flex-shrink: 0;
 }
 
-#game-page, #daily-challenge-page, #time-attack-page {
+#game-page, #daily-challenge-page, #time-attack-page, #survival-page {
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -84,7 +84,7 @@ body {
 }
 
 /* Game input section with inline stats */
-#game-page .section:nth-child(1), #daily-challenge-page .section:nth-child(1), #time-attack-page .section:nth-child(1) {
+#game-page .section:nth-child(1), #daily-challenge-page .section:nth-child(1), #time-attack-page .section:nth-child(1), #survival-page .section:nth-child(1) {
     background: linear-gradient(135deg, rgba(167, 139, 250, 0.05) 0%, rgba(78, 168, 222, 0.05) 100%);
     border: 2px solid rgba(167, 139, 250, 0.2);
     box-shadow: 0 8px 32px rgba(139, 122, 191, 0.12);
@@ -151,7 +151,8 @@ body.dark-mode .section:hover {
 /* Result pages - ensure they fit in container */
 #result-page,
 #time-attack-result-page,
-#daily-result-page {
+#daily-result-page,
+#survival-result-page {
     max-width: 100%;
     margin-bottom: 0;
     overflow: visible;
@@ -260,7 +261,7 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
 .ta-button-group {
     display: flex;
     gap: 10px;
-    margin-top: 0;
+    margin-top: 25px;
     width: 100%;
 }
 
@@ -287,7 +288,8 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
 }
 
 #ta-input-container,
-#daily-input-container {
+#daily-input-container,
+#survival-input-container {
     display: flex;
     justify-content: center;
     flex-wrap: nowrap;
@@ -299,7 +301,8 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
 
 #game-page #input-container,
 #time-attack-page #ta-input-container,
-#daily-challenge-page #daily-input-container {
+#daily-challenge-page #daily-input-container,
+#survival-page #survival-input-container {
     background: rgba(255, 255, 255, 0.5);
     border-radius: 15px;
     padding: 15px;
@@ -307,7 +310,8 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
 
 body.dark-mode #game-page #input-container,
 body.dark-mode #time-attack-page #ta-input-container,
-body.dark-mode #daily-challenge-page #daily-input-container {
+body.dark-mode #daily-challenge-page #daily-input-container,
+body.dark-mode #survival-page #survival-input-container {
     background: rgba(255, 255, 255, 0.05);
 }
 

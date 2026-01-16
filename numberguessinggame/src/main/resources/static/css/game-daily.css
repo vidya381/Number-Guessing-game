@@ -381,10 +381,6 @@ body.dark-mode #daily-challenge-page .section:nth-child(2) {
 /* DAILY LEADERBOARD MODAL               */
 /* ===================================== */
 
-#daily-leaderboard-modal .modal-content {
-    max-width: 650px;
-}
-
 .daily-challenge-date {
     display: flex;
     align-items: center;
@@ -397,13 +393,14 @@ body.dark-mode #daily-challenge-page .section:nth-child(2) {
 }
 
 /* Daily Challenge Leaderboard - Match Time Attack Style */
+/* Daily doesn't have tabs, so increase height to compensate (400 + 54 = 454) */
 #modal-daily-leaderboard-container {
-    height: 400px;
+    height: 454px;
     overflow: hidden;
 }
 
 #modal-daily-leaderboard-content {
-    height: 400px;
+    height: 454px;
     overflow-y: auto;
     overflow-x: hidden;
     /* Hide scrollbar but keep functionality */
@@ -418,7 +415,7 @@ body.dark-mode #daily-challenge-page .section:nth-child(2) {
 #modal-daily-leaderboard-content .leaderboard-header,
 #modal-daily-leaderboard-content .leaderboard-row {
     display: grid;
-    grid-template-columns: 70px 220px 110px 110px;
+    grid-template-columns: 70px 150px 90px 90px;
     gap: 15px;
     padding: 12px 20px;
     align-items: center;
@@ -529,6 +526,19 @@ body.dark-mode .daily-challenge-banner {
         rgba(240, 179, 71, 0.15) 0%,
         rgba(93, 211, 179, 0.15) 100%) !important;
     border: 2px solid rgba(240, 179, 71, 0.4) !important;
+}
+
+body.dark-mode .daily-challenge-header h2 {
+    color: #ffffff;
+}
+
+body.dark-mode .daily-challenge-description {
+    color: #e0d8f0;
+}
+
+body.dark-mode .daily-challenge-badge {
+    color: #ffffff;
+    background: rgba(240, 179, 71, 0.3);
 }
 
 body.dark-mode .challenge-stat {

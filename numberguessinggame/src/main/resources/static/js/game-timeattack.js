@@ -586,7 +586,6 @@ window.TimeAttackGame = {
                         <div class="leaderboard-header">
                             <div class="lb-rank">Rank</div>
                             <div class="lb-username">Player</div>
-                            <div class="lb-score">Score</div>
                             <div class="lb-wins">Wins</div>
                             <div class="lb-avg">Avg</div>
                         </div>
@@ -603,7 +602,6 @@ window.TimeAttackGame = {
                         <div class="leaderboard-row ${rowClass}">
                             <div class="lb-rank">${rankDisplay}</div>
                             <div class="lb-username">${escapedUsername}${isCurrentUser ? ' (You)' : ''}</div>
-                            <div class="lb-score">${entry.totalScore}</div>
                             <div class="lb-wins">${entry.gamesWon}</div>
                             <div class="lb-avg">${entry.averageAttempts ? entry.averageAttempts.toFixed(1) : '--'}</div>
                         </div>

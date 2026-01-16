@@ -1,0 +1,468 @@
+/**
+ * Survival Mode Game Mode
+ * Styles for Survival mode - single life, 5 rounds challenge
+ */
+
+/* ===================================== */
+/* SURVIVAL BANNER (Home Page)           */
+/* ===================================== */
+
+.survival-banner {
+    background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
+    border-radius: 20px;
+    padding: 30px;
+    color: #2d2748;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(139, 122, 191, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.survival-banner::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+    animation: pulse-slow 4s ease-in-out infinite;
+}
+
+.survival-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.survival-header h2 {
+    color: #2d2748;
+    margin: 0;
+}
+
+.survival-badge {
+    background: rgba(139, 122, 191, 0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9em;
+    color: #2d2748;
+    backdrop-filter: blur(10px);
+}
+
+.survival-description {
+    font-size: 1em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    color: #2d2748;
+}
+
+.survival-difficulty-select {
+    display: flex;
+    gap: 12px;
+    position: relative;
+    z-index: 1;
+}
+
+.survival-diff-btn {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #8b7abf;
+    background: #8b7abf;
+    border-radius: 10px;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.survival-diff-btn:hover {
+    background: #6b5a9f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(139, 122, 191, 0.4);
+    border-color: #6b5a9f;
+}
+
+.survival-diff-name {
+    font-size: 0.95em;
+    letter-spacing: 0.5px;
+}
+
+.survival-leaderboard-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 15px;
+    background: #8b7abf;
+    border: 2px solid #8b7abf;
+    border-radius: 15px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.survival-leaderboard-btn:hover {
+    background: #6b5a9f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(139, 122, 191, 0.4);
+    border-color: #6b5a9f;
+}
+
+/* ===================================== */
+/* SURVIVAL LEADERBOARD MODAL            */
+/* ===================================== */
+
+#survival-leaderboard-container {
+    height: 400px;
+    overflow: hidden;
+}
+
+#survival-leaderboard-content {
+    height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* Hide scrollbar but keep functionality */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+#survival-leaderboard-content::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+#survival-leaderboard-loading {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    font-size: 1em;
+}
+
+#survival-leaderboard-content .no-data {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-secondary);
+    font-size: 1.1em;
+}
+
+#survival-leaderboard-content .error-message {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--danger-color);
+    font-size: 1.1em;
+}
+
+/* Survival Leaderboard Columns - 4 columns like Daily/Time Attack */
+#survival-leaderboard-content .leaderboard-header,
+#survival-leaderboard-content .leaderboard-row {
+    display: grid;
+    grid-template-columns: 70px 150px 90px 90px;
+    gap: 15px;
+    padding: 12px 20px;
+    align-items: center;
+}
+
+#survival-leaderboard-content .leaderboard-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, rgba(var(--primary-color-rgb), 0.85) 100%);
+    color: white;
+    font-weight: 700;
+    border-radius: 10px;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    margin-bottom: 2px;
+}
+
+/* Header text must be WHITE on purple gradient */
+#survival-leaderboard-content .leaderboard-header .lb-rank,
+#survival-leaderboard-content .leaderboard-header .lb-username,
+#survival-leaderboard-content .leaderboard-header .lb-rounds,
+#survival-leaderboard-content .leaderboard-header .lb-attempts {
+    color: #ffffff !important;
+}
+
+/* Header column alignment */
+#survival-leaderboard-content .leaderboard-header .lb-rank {
+    text-align: center;
+    font-size: 0.9em;
+}
+
+#survival-leaderboard-content .leaderboard-header .lb-username {
+    text-align: left;
+}
+
+#survival-leaderboard-content .leaderboard-header .lb-rounds {
+    text-align: center;
+}
+
+#survival-leaderboard-content .leaderboard-header .lb-attempts {
+    text-align: center;
+}
+
+#survival-leaderboard-content .leaderboard-row {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(var(--primary-color-rgb), 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+#survival-leaderboard-content .leaderboard-row:hover {
+    transform: translateX(3px);
+    box-shadow: 0 4px 12px rgba(var(--primary-color-rgb), 0.15);
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(var(--primary-color-rgb), 0.2);
+}
+
+#survival-leaderboard-content .leaderboard-row.top-1 {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 215, 0, 0.15) 100%);
+    border: 2px solid rgba(255, 215, 0, 0.5);
+    border-left: 4px solid #ffd700;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2);
+}
+
+#survival-leaderboard-content .leaderboard-row.top-2 {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.25) 0%, rgba(192, 192, 192, 0.15) 100%);
+    border: 2px solid rgba(192, 192, 192, 0.5);
+    border-left: 4px solid #c0c0c0;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(192, 192, 192, 0.2);
+}
+
+#survival-leaderboard-content .leaderboard-row.top-3 {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.25) 0%, rgba(205, 127, 50, 0.15) 100%);
+    border: 2px solid rgba(205, 127, 50, 0.5);
+    border-left: 4px solid #cd7f32;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(205, 127, 50, 0.2);
+}
+
+/* Highlight current user's row */
+#survival-leaderboard-content .leaderboard-row.current-user {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.25) 0%, rgba(167, 139, 250, 0.15) 100%) !important;
+    border: 2px solid rgba(167, 139, 250, 0.5) !important;
+    border-left: 4px solid rgba(167, 139, 250, 0.8) !important;
+    font-weight: 600;
+    box-shadow: 0 3px 12px rgba(167, 139, 250, 0.3) !important;
+}
+
+/* Row text colors */
+#survival-leaderboard-content .leaderboard-row .lb-rank {
+    font-weight: 700;
+    text-align: center;
+    color: #6b5a9f;
+    font-size: 1.2em;
+}
+
+#survival-leaderboard-content .leaderboard-row .lb-username {
+    font-weight: 600;
+    text-align: left;
+    color: #2d2748;
+}
+
+#survival-leaderboard-content .leaderboard-row .lb-rounds,
+#survival-leaderboard-content .leaderboard-row .lb-attempts {
+    text-align: center;
+    font-size: 0.95em;
+    color: #5a4d73;
+    font-weight: 500;
+}
+
+/* ===================================== */
+/* SURVIVAL INPUT CONTAINER              */
+/* ===================================== */
+/* Input container styling now uses shared base.css */
+
+/* ===================================== */
+/* SURVIVAL SUBMIT BUTTON                */
+/* ===================================== */
+
+#survival-page #survival-submit-guess {
+    margin-top: 20px;
+    font-size: 1.1em;
+    padding: 15px 30px;
+    box-shadow: 0 4px 15px rgba(139, 122, 191, 0.3);
+    transition: all 0.3s ease;
+}
+
+#survival-page #survival-submit-guess:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(139, 122, 191, 0.4);
+}
+
+#survival-page #survival-submit-guess:active {
+    transform: translateY(0);
+}
+
+/* ===================================== */
+/* SURVIVAL QUIT BUTTON                  */
+/* ===================================== */
+
+#survival-page button#survival-quit-btn {
+    margin-top: 8px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+    flex-grow: 0;
+}
+
+/* ===================================== */
+/* SURVIVAL RESULT PAGE                  */
+/* ===================================== */
+/* Result page now uses inline styles like Time Attack */
+
+/* ===================================== */
+/* DARK MODE                             */
+/* ===================================== */
+
+body.dark-mode .survival-banner {
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+}
+
+body.dark-mode .survival-header h2 {
+    color: #ffffff;
+}
+
+body.dark-mode .survival-description {
+    color: #e0d8f0;
+}
+
+body.dark-mode .survival-badge {
+    color: #ffffff;
+    background: rgba(167, 139, 250, 0.3);
+}
+
+body.dark-mode .survival-diff-btn {
+    background: #a78bfa;
+    border-color: #a78bfa;
+}
+
+body.dark-mode .survival-diff-btn:hover {
+    background: #9333ea;
+    border-color: #9333ea;
+}
+
+body.dark-mode .survival-badge {
+    background: rgba(139, 122, 191, 0.2);
+    border-color: rgba(139, 122, 191, 0.3);
+}
+
+/* Survival Leaderboard Dark Mode */
+body.dark-mode #survival-leaderboard-content .leaderboard-header .lb-rank,
+body.dark-mode #survival-leaderboard-content .leaderboard-header .lb-username,
+body.dark-mode #survival-leaderboard-content .leaderboard-header .lb-rounds,
+body.dark-mode #survival-leaderboard-content .leaderboard-header .lb-attempts {
+    color: #ffffff !important;
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(167, 139, 250, 0.15);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(167, 139, 250, 0.3);
+    box-shadow: 0 4px 12px rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row.top-1 {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.08) 100%);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    border-left: 4px solid rgba(255, 215, 0, 0.6);
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row.top-2 {
+    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(192, 192, 192, 0.08) 100%);
+    border: 2px solid rgba(192, 192, 192, 0.3);
+    border-left: 4px solid rgba(192, 192, 192, 0.6);
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row.top-3 {
+    background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(205, 127, 50, 0.08) 100%);
+    border: 2px solid rgba(205, 127, 50, 0.3);
+    border-left: 4px solid rgba(205, 127, 50, 0.6);
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row.current-user {
+    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(167, 139, 250, 0.08) 100%) !important;
+    border: 2px solid rgba(167, 139, 250, 0.4) !important;
+    border-left: 4px solid rgba(167, 139, 250, 0.8) !important;
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row .lb-rank {
+    color: #b8a4e6;
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row .lb-username {
+    color: #e0d8f0;
+}
+
+body.dark-mode #survival-leaderboard-content .leaderboard-row .lb-rounds,
+body.dark-mode #survival-leaderboard-content .leaderboard-row .lb-attempts {
+    color: #a0a8c8;
+}
+
+/* ===================================== */
+/* RESPONSIVE                            */
+/* ===================================== */
+
+@media screen and (max-width: 768px) {
+    .survival-banner {
+        padding: 25px;
+    }
+
+    .survival-diff-btn {
+        padding: 12px 14px;
+    }
+
+    .survival-diff-name {
+        font-size: 0.9em;
+    }
+
+    #survival-input-container .digit-input {
+        width: 50px;
+        height: 65px;
+        font-size: 28px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .survival-banner {
+        padding: 20px;
+    }
+
+    .survival-difficulty-select {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .survival-diff-btn {
+        padding: 14px;
+    }
+
+    #survival-input-container {
+        gap: 8px;
+    }
+
+    #survival-input-container .digit-input {
+        width: 45px;
+        height: 60px;
+        font-size: 24px;
+    }
+}

@@ -82,6 +82,21 @@ window.GameState = {
         digitCount: 0
     },
 
+    // Survival Mode state
+    survival: {
+        sessionId: null,
+        difficulty: null,
+        digitCount: 0,
+        currentRound: 1,
+        totalRounds: 5,
+        maxAttemptsPerRound: 0,
+        coinsPerRound: 0,
+        completionBonus: 0,
+        currentRoundAttempts: 0,
+        totalCoinsEarned: 0,
+        guessHistory: []
+    },
+
     // Reset functions
     resetRegularGame: function() {
         this.attempts = 0;
@@ -128,6 +143,22 @@ window.GameState = {
             },
             gameHistory: [],
             digitCount: 0
+        };
+    },
+
+    resetSurvival: function() {
+        this.survival = {
+            sessionId: null,
+            difficulty: null,
+            digitCount: 0,
+            currentRound: 1,
+            totalRounds: 5,
+            maxAttemptsPerRound: 0,
+            coinsPerRound: 0,
+            completionBonus: 0,
+            currentRoundAttempts: 0,
+            totalCoinsEarned: 0,
+            guessHistory: []
         };
     }
 };

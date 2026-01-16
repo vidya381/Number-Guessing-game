@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NumVana - Number Guessing Game</title>
+    <title>Bulls & Cows - Number Guessing Game</title>
     <!-- Modular CSS Files - Load in dependency order -->
     <link rel="stylesheet" href="/css/variables.css">
     <link rel="stylesheet" href="/css/base.css">
@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/css/game-regular.css">
     <link rel="stylesheet" href="/css/game-timeattack.css">
     <link rel="stylesheet" href="/css/game-daily.css">
+    <link rel="stylesheet" href="/css/game-survival.css">
     <link rel="stylesheet" href="/css/modals.css">
     <link rel="stylesheet" href="/css/notifications.css">
     <link rel="stylesheet" href="/css/responsive.css">
@@ -32,7 +33,7 @@
 </head>
 <body>
     <div id="game-header">
-        <h1 class="game-title" id="game-title-header">NumVana 🎮</h1>
+        <h1 class="game-title" id="game-title-header">Bulls & Cows 🎮</h1>
         <div id="controls">
             <!-- Theme Toggle (Always visible) -->
             <button id="theme-toggle" class="header-icon-btn" aria-label="Toggle dark mode" title="Theme">
@@ -113,7 +114,7 @@
                     <div class="daily-challenge-badge">TODAY</div>
                 </div>
                 <p class="daily-challenge-description">
-                    Same number for all players! Compete on the global leaderboard.
+                    Daily quest posted! All players face the same challenge.
                 </p>
                 <div id="daily-challenge-info" class="daily-challenge-info">
                     <div class="challenge-stat">
@@ -149,7 +150,7 @@
                     <div class="time-attack-badge">5 MIN</div>
                 </div>
                 <p class="time-attack-description">
-                    Win as many games as possible in 5 minutes! Higher difficulty = more points.
+                    Race the clock! Win as many as you can in 5 minutes!
                 </p>
                 <div class="time-attack-difficulty-select">
                     <button class="ta-difficulty-btn" data-difficulty="0">
@@ -163,6 +164,31 @@
                     </button>
                 </div>
                 <button id="view-time-attack-leaderboard" class="ta-leaderboard-btn">
+                    <i class="fas fa-trophy"></i> LEADERBOARD
+                </button>
+            </section>
+
+            <!-- Survival Mode Banner -->
+            <section class="section survival-banner">
+                <div class="survival-header">
+                    <h2>💀 SURVIVAL MODE</h2>
+                    <div class="survival-badge">5 ROUNDS</div>
+                </div>
+                <p class="survival-description">
+                    FIVE ROUNDS! ONE LIFE! Lose a round and your run ends!
+                </p>
+                <div class="survival-difficulty-select">
+                    <button class="start-survival-btn survival-diff-btn" data-difficulty="0">
+                        <span class="survival-diff-name">EASY</span>
+                    </button>
+                    <button class="start-survival-btn survival-diff-btn" data-difficulty="1">
+                        <span class="survival-diff-name">MEDIUM</span>
+                    </button>
+                    <button class="start-survival-btn survival-diff-btn" data-difficulty="2">
+                        <span class="survival-diff-name">HARD</span>
+                    </button>
+                </div>
+                <button id="view-survival-leaderboard" class="survival-leaderboard-btn">
                     <i class="fas fa-trophy"></i> LEADERBOARD
                 </button>
             </section>
@@ -284,6 +310,48 @@
             <div class="ta-button-group">
                 <button id="ta-play-again">🔁 PLAY AGAIN</button>
                 <button id="ta-main-menu">🏠 MAIN MENU</button>
+            </div>
+        </div>
+
+        <!-- Survival Mode Game Page -->
+        <div id="survival-page" style="display: none;">
+            <section class="section">
+                <div class="game-header">
+                    <h2>💀 SURVIVAL MODE</h2>
+                    <div class="game-stats-inline">
+                        <div class="stat-badge">
+                            <span class="stat-icon">📍</span>
+                            <span id="survival-round-display">ROUND 1/5</span>
+                        </div>
+                        <div class="stat-badge">
+                            <i class="fas fa-coins stat-icon coin-icon"></i>
+                            <span id="survival-coins-display">0</span>
+                        </div>
+                        <div class="stat-badge">
+                            <span class="stat-icon">🎯</span>
+                            <span id="survival-attempts-display">7/7</span>
+                        </div>
+                    </div>
+                </div>
+                <div id="survival-input-container"></div>
+                <button id="survival-submit-guess">⚡ SUBMIT GUESS</button>
+                <div id="survival-feedback" class="fade-in"></div>
+            </section>
+
+            <section class="section">
+                <h2>📋 GUESS HISTORY</h2>
+                <div id="survival-guess-history"></div>
+            </section>
+
+            <button id="survival-quit-btn" class="quit-btn">❌ END SESSION</button>
+        </div>
+
+        <!-- Survival Mode Result Page -->
+        <div id="survival-result-page" class="card" style="display: none;">
+            <div id="survival-stats"></div>
+            <div class="ta-button-group">
+                <button id="survival-play-again">🔁 PLAY AGAIN</button>
+                <button id="survival-main-menu">🏠 MAIN MENU</button>
             </div>
         </div>
     </div>
@@ -635,6 +703,38 @@
         </div>
     </div>
 
+    <!-- Survival Mode Leaderboard Modal -->
+    <div id="survival-leaderboard-modal" class="modal" style="display: none;">
+        <div class="modal-content modal-content-wide">
+            <button class="modal-close-btn" id="survival-leaderboard-close">
+                <i class="fas fa-times"></i>
+            </button>
+
+            <!-- Enhanced Header -->
+            <div class="ta-leaderboard-modal-header">
+                <div class="ta-leaderboard-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <div class="ta-leaderboard-title-section">
+                    <h2 class="ta-leaderboard-title">Survival Mode Leaderboard</h2>
+                    <p class="ta-leaderboard-subtitle">Top survivors - best runs only</p>
+                </div>
+            </div>
+
+            <!-- Difficulty Tabs -->
+            <div class="leaderboard-tabs">
+                <button class="lb-tab active" data-difficulty="0">Easy</button>
+                <button class="lb-tab" data-difficulty="1">Medium</button>
+                <button class="lb-tab" data-difficulty="2">Hard</button>
+            </div>
+
+            <div id="survival-leaderboard-container">
+                <div id="survival-leaderboard-loading">Loading leaderboard...</div>
+                <div id="survival-leaderboard-content" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
     <!-- Achievement Notification Toast Container -->
     <div id="achievement-toast-container"></div>
 
@@ -648,6 +748,7 @@
     <script src="/js/game-regular.js"></script>
     <script src="/js/game-timeattack.js"></script>
     <script src="/js/game-daily.js"></script>
+    <script src="/js/game-survival.js"></script>
 
     <!-- Initialize all modules when DOM is ready -->
     <script>
@@ -683,6 +784,11 @@
             if (typeof DailyGame !== 'undefined') {
                 DailyGame.init();
                 console.log('✓ Daily Challenge initialized');
+            }
+
+            if (typeof SurvivalGame !== 'undefined') {
+                SurvivalGame.init();
+                console.log('✓ Survival Mode initialized');
             }
 
             if (typeof Achievements !== 'undefined') {

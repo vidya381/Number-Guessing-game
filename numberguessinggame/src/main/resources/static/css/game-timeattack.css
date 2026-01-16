@@ -8,12 +8,12 @@
 /* ===================================== */
 
 .time-attack-banner {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
     border-radius: 20px;
     padding: 30px;
-    color: white;
+    color: #2d2748;
     margin-bottom: 30px;
-    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 32px rgba(139, 122, 191, 0.3);
     position: relative;
     overflow: hidden;
 }
@@ -39,16 +39,17 @@
 }
 
 .time-attack-header h2 {
-    color: white;
+    color: #2d2748;
     margin: 0;
 }
 
 .time-attack-badge {
-    background: rgba(255, 255, 255, 0.3);
+    background: rgba(139, 122, 191, 0.2);
     padding: 8px 16px;
     border-radius: 20px;
     font-weight: bold;
     font-size: 0.9em;
+    color: #2d2748;
     backdrop-filter: blur(10px);
 }
 
@@ -58,6 +59,7 @@
     margin-bottom: 20px;
     position: relative;
     z-index: 1;
+    color: #2d2748;
 }
 
 .time-attack-difficulty-select {
@@ -70,8 +72,8 @@
 .ta-difficulty-btn {
     flex: 1;
     padding: 12px 16px;
-    border: 2px solid rgba(255, 255, 255, 0.4);
-    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid #8b7abf;
+    background: #8b7abf;
     border-radius: 10px;
     color: white;
     font-weight: 700;
@@ -84,10 +86,10 @@
 }
 
 .ta-difficulty-btn:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: #6b5a9f;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 4px 15px rgba(139, 122, 191, 0.4);
+    border-color: #6b5a9f;
 }
 
 .ta-difficulty-name {
@@ -99,8 +101,8 @@
     width: 100%;
     padding: 15px;
     margin-top: 15px;
-    background: rgba(255, 255, 255, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.5);
+    background: #8b7abf;
+    border: 2px solid #8b7abf;
     border-radius: 15px;
     color: white;
     font-weight: bold;
@@ -111,10 +113,10 @@
 }
 
 .ta-leaderboard-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: #6b5a9f;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 4px 15px rgba(139, 122, 191, 0.4);
+    border-color: #6b5a9f;
 }
 
 /* ===================================== */
@@ -269,15 +271,20 @@
 /* ===================================== */
 
 #time-attack-page {
-    flex: 1; /* Take remaining space in game-container */
-    min-height: 0; /* Allow flexbox to shrink below content size */
-    overflow: visible; /* Allow scrolling when zoomed */
+    flex: 1;
+    /* Take remaining space in game-container */
+    min-height: 0;
+    /* Allow flexbox to shrink below content size */
+    overflow: visible;
+    /* Allow scrolling when zoomed */
 }
 
 /* Game input section - fixed size */
 #time-attack-page .section:nth-child(1) {
-    flex-shrink: 0; /* Don't shrink input section */
-    flex-grow: 0; /* Don't grow */
+    flex-shrink: 0;
+    /* Don't shrink input section */
+    flex-grow: 0;
+    /* Don't grow */
 }
 
 /* Guess history section - fills remaining space and scrolls internally */
@@ -286,8 +293,10 @@
     flex-direction: column;
     background: linear-gradient(135deg, rgba(243, 156, 18, 0.03) 0%, rgba(230, 126, 34, 0.03) 100%);
     border: 1px solid rgba(167, 139, 250, 0.15);
-    flex: 1; /* Take all remaining space */
-    min-height: 150px; /* Reduced to ensure quit button fits */
+    flex: 1;
+    /* Take all remaining space */
+    min-height: 150px;
+    /* Reduced to ensure quit button fits */
     overflow: hidden;
 }
 
@@ -300,7 +309,8 @@
 
 #time-attack-page .section:nth-child(2) #ta-guess-history {
     flex: 1;
-    min-height: 0; /* IMPORTANT: Allow flex to constrain height */
+    min-height: 0;
+    /* IMPORTANT: Allow flex to constrain height */
     overflow-y: auto;
     overflow-x: hidden;
     background: rgba(255, 255, 255, 0.4);
@@ -355,8 +365,10 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
 #time-attack-page button#quit-time-attack {
     margin-top: 8px;
     margin-bottom: 0;
-    flex-shrink: 0; /* Don't let it shrink */
-    flex-grow: 0; /* Don't let it grow */
+    flex-shrink: 0;
+    /* Don't let it shrink */
+    flex-grow: 0;
+    /* Don't let it grow */
 }
 
 /* ===================================== */
@@ -480,9 +492,10 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
     margin-top: 10px;
 }
 
-.leaderboard-header, .leaderboard-row {
+.leaderboard-header,
+.leaderboard-row {
     display: grid;
-    grid-template-columns: 70px 200px 100px 80px 80px;
+    grid-template-columns: 70px 150px 90px 90px;
     gap: 15px;
     padding: 12px 20px;
     align-items: center;
@@ -506,7 +519,6 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
 /* Header text must be WHITE on purple gradient */
 .leaderboard-header .lb-rank,
 .leaderboard-header .lb-username,
-.leaderboard-header .lb-score,
 .leaderboard-header .lb-wins,
 .leaderboard-header .lb-avg {
     color: #ffffff !important;
@@ -520,10 +532,6 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
 
 .leaderboard-header .lb-username {
     text-align: left;
-}
-
-.leaderboard-header .lb-score {
-    text-align: center;
 }
 
 .leaderboard-header .lb-wins {
@@ -596,16 +604,6 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
     color: #2d2748;
 }
 
-.leaderboard-row .lb-score {
-    text-align: center;
-    font-weight: 700;
-    color: #e74c3c;
-    font-size: 1.05em;
-    background: rgba(231, 76, 60, 0.08);
-    padding: 4px 8px;
-    border-radius: 6px;
-}
-
 .leaderboard-row .lb-wins,
 .leaderboard-row .lb-avg {
     text-align: center;
@@ -625,12 +623,15 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
     overflow-y: auto;
     overflow-x: hidden;
     /* Hide scrollbar but keep functionality */
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
 }
 
 #ta-leaderboard-content::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
+    display: none;
+    /* Chrome, Safari, Opera */
 }
 
 /* Loading and Empty States */
@@ -878,17 +879,30 @@ body.dark-mode #time-attack-page .section:nth-child(2) {
 /* ===================================== */
 
 body.dark-mode .time-attack-banner {
-    background: linear-gradient(135deg, #5a67d8 0%, #6b48a2 100%);
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+}
+
+body.dark-mode .time-attack-header h2 {
+    color: #ffffff;
+}
+
+body.dark-mode .time-attack-description {
+    color: #e0d8f0;
+}
+
+body.dark-mode .time-attack-badge {
+    color: #ffffff;
+    background: rgba(167, 139, 250, 0.3);
 }
 
 body.dark-mode .ta-difficulty-btn {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: #a78bfa;
+    border-color: #a78bfa;
 }
 
 body.dark-mode .ta-difficulty-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: #8b5cf6;
+    border-color: #8b5cf6;
 }
 
 body.dark-mode .time-attack-leaderboard-table tbody tr {
@@ -918,7 +932,6 @@ body.dark-mode .leaderboard-header {
 /* Dark mode - Header text stays WHITE */
 body.dark-mode .leaderboard-header .lb-rank,
 body.dark-mode .leaderboard-header .lb-username,
-body.dark-mode .leaderboard-header .lb-score,
 body.dark-mode .leaderboard-header .lb-wins,
 body.dark-mode .leaderboard-header .lb-avg {
     color: #ffffff !important;
@@ -965,11 +978,6 @@ body.dark-mode .leaderboard-row .lb-rank {
 
 body.dark-mode .leaderboard-row .lb-username {
     color: #e4e7f0;
-}
-
-body.dark-mode .leaderboard-row .lb-score {
-    color: #ff8585;
-    background: rgba(255, 107, 107, 0.15);
 }
 
 body.dark-mode .leaderboard-row .lb-wins,
@@ -1076,7 +1084,8 @@ body.dark-mode .ta-leaderboard-icon {
         gap: 15px;
     }
 
-    .leaderboard-header, .leaderboard-row {
+    .leaderboard-header,
+    .leaderboard-row {
         grid-template-columns: 60px 160px 85px 70px;
         gap: 12px;
         font-size: 0.85em;
@@ -1144,14 +1153,16 @@ body.dark-mode .ta-leaderboard-icon {
         font-size: 18px;
     }
 
-    .leaderboard-header, .leaderboard-row {
+    .leaderboard-header,
+    .leaderboard-row {
         grid-template-columns: 50px 150px 80px;
         gap: 10px;
         font-size: 0.8em;
         padding: 10px 12px;
     }
 
-    .lb-wins, .lb-avg {
+    .lb-wins,
+    .lb-avg {
         display: none;
     }
 

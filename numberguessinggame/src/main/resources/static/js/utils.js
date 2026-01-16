@@ -147,6 +147,13 @@ window.Utils = {
             event.preventDefault();
             return;
         }
+
+        const survivalLeaderboardModal = document.getElementById('survival-leaderboard-modal');
+        if (survivalLeaderboardModal && survivalLeaderboardModal.style.display === 'flex') {
+            this.closeModalWithAnimation(survivalLeaderboardModal);
+            event.preventDefault();
+            return;
+        }
     },
 
     handleQuitShortcut: function(event) {
@@ -585,7 +592,8 @@ window.Utils = {
             document.getElementById('profile-modal'),
             document.getElementById('settings-modal'),
             document.getElementById('daily-leaderboard-modal'),
-            document.getElementById('time-attack-leaderboard-modal')
+            document.getElementById('time-attack-leaderboard-modal'),
+            document.getElementById('survival-leaderboard-modal')
         ];
 
         // Add click-outside-to-close functionality to each modal
