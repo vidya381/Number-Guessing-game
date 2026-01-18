@@ -596,12 +596,12 @@
         padding: 20px 15px;
     }
 
-    .ta-button-group {
+    .result-button-group {
         flex-direction: column;
         gap: 10px;
     }
 
-    .ta-button-group button {
+    .result-button-group button {
         width: 100%;
     }
 }
