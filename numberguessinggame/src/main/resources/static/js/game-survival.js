@@ -591,17 +591,8 @@ window.SurvivalGame = {
 
             const endData = await endResponse.json();
 
-            // Prepare result data
-            const resultData = {
-                roundsSurvived: 5,
-                totalAttemptsUsed: data.totalAttemptsUsed,
-                coinsEarned: data.totalCoinsEarned,
-                rank: endData.rank,
-                completed: true
-            };
-
-            // Display results
-            this.displaySurvivalResults(resultData);
+            // Use endData as single source of truth (it's what was saved to database)
+            this.displaySurvivalResults(endData);
 
             // Show result page
             const survivalPage = document.getElementById('survival-page');
@@ -744,17 +735,8 @@ window.SurvivalGame = {
 
             const endData = await endResponse.json();
 
-            // Prepare result data
-            const resultData = {
-                roundsSurvived: data.roundsSurvived,
-                totalAttemptsUsed: data.totalAttemptsUsed,
-                coinsEarned: data.totalCoinsEarned,
-                rank: endData.rank,
-                completed: false
-            };
-
-            // Display results
-            this.displaySurvivalResults(resultData);
+            // Use endData as single source of truth (it's what was saved to database)
+            this.displaySurvivalResults(endData);
 
             // Show result page
             const survivalPage = document.getElementById('survival-page');
