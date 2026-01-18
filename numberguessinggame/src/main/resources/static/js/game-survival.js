@@ -100,19 +100,15 @@ window.SurvivalGame = {
     // ==========================================
 
     startSurvival: async function(difficulty) {
-        if (!GameState.authToken) {
-            if (Achievements) {
-                Achievements.showToast('Please log in to play Survival Mode! 🔑', 'info');
-            }
-            return;
-        }
-
         try {
+            const headers = {};
+            if (GameState.authToken) {
+                headers['Authorization'] = `Bearer ${GameState.authToken}`;
+            }
+
             const response = await fetch(`/api/survival/start?difficulty=${difficulty}`, {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${GameState.authToken}`
-                }
+                headers: headers
             });
 
             console.log('Survival start response status:', response.status);
@@ -412,10 +408,18 @@ window.SurvivalGame = {
                         this.updateHUD();
                     }, 2000);
                 }
+            } else {
+                console.error('Round complete failed:', data);
+                if (Achievements) {
+                    Achievements.showToast(data.error || 'Failed to complete round', 'error');
+                }
             }
 
         } catch (error) {
             console.error('Error completing round:', error);
+            if (Achievements) {
+                Achievements.showToast('Connection error!', 'error');
+            }
         }
     },
 
@@ -436,10 +440,18 @@ window.SurvivalGame = {
 
             if (response.ok) {
                 this.showGameOverScreen(data);
+            } else {
+                console.error('Round complete failed:', data);
+                if (Achievements) {
+                    Achievements.showToast(data.error || 'Failed to complete round', 'error');
+                }
             }
 
         } catch (error) {
             console.error('Error completing round:', error);
+            if (Achievements) {
+                Achievements.showToast('Connection error!', 'error');
+            }
         }
     },
 
@@ -613,7 +625,9 @@ window.SurvivalGame = {
             if (endData.totalCoins && Auth) {
                 GameState.currentUser.coins = endData.totalCoins;
                 Auth.updateCoinDisplay();
-                Auth.showCoinAnimation(data.totalCoinsEarned);
+                if (endData.coinsEarned > 0) {
+                    Auth.showCoinAnimation(endData.coinsEarned);
+                }
             }
 
         } catch (error) {
@@ -757,8 +771,8 @@ window.SurvivalGame = {
             if (endData.totalCoins && Auth) {
                 GameState.currentUser.coins = endData.totalCoins;
                 Auth.updateCoinDisplay();
-                if (data.totalCoinsEarned > 0) {
-                    Auth.showCoinAnimation(data.totalCoinsEarned);
+                if (endData.coinsEarned > 0) {
+                    Auth.showCoinAnimation(endData.coinsEarned);
                 }
             }
 
