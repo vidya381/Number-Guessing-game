@@ -75,6 +75,24 @@ window.SurvivalGame = {
                 this.loadSurvivalLeaderboard(difficulty);
             });
         });
+
+        // Use event delegation for digit inputs (prevents memory leaks)
+        const inputContainer = document.getElementById('survival-input-container');
+        if (inputContainer) {
+            inputContainer.addEventListener('input', (e) => {
+                if (e.target.classList.contains('digit-input')) {
+                    const index = parseInt(e.target.dataset.index);
+                    this.handleDigitInput(e, index);
+                }
+            });
+
+            inputContainer.addEventListener('keydown', (e) => {
+                if (e.target.classList.contains('digit-input')) {
+                    const index = parseInt(e.target.dataset.index);
+                    this.handleKeyDown(e, index);
+                }
+            });
+        }
     },
 
     // ==========================================
@@ -180,14 +198,13 @@ window.SurvivalGame = {
         inputContainer.innerHTML = '';
 
         // Create input boxes for each digit
+        // Event listeners are handled by parent container via event delegation (see attachEventListeners)
         for (let i = 0; i < GameState.survival.digitCount; i++) {
             const input = document.createElement('input');
             input.type = 'text';
             input.maxLength = 1;
             input.className = 'digit-input';
             input.dataset.index = i;
-            input.addEventListener('input', (e) => this.handleDigitInput(e, i));
-            input.addEventListener('keydown', (e) => this.handleKeyDown(e, i));
             inputContainer.appendChild(input);
         }
 
