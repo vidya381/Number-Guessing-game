@@ -16,26 +16,13 @@ public interface SurvivalSessionRepository extends JpaRepository<SurvivalSession
 
     /**
      * Get leaderboard for a specific difficulty
-     * Shows only the BEST run per player
+     * Shows only the BEST run per player (using cached is_best_run flag)
      * Ranked by: completed DESC, roundsSurvived DESC, totalAttemptsUsed ASC
      * Only includes authenticated users (user IS NOT NULL)
      */
     @Query("SELECT s FROM SurvivalSession s " +
            "JOIN FETCH s.user u " +
-           "WHERE s.difficulty = :difficulty AND s.user IS NOT NULL " +
-           "AND (s.completed, s.roundsSurvived, -s.totalAttemptsUsed) = (" +
-           "  SELECT s2.completed, s2.roundsSurvived, -s2.totalAttemptsUsed FROM SurvivalSession s2 " +
-           "  WHERE s2.user = s.user AND s2.difficulty = :difficulty " +
-           "  ORDER BY s2.completed DESC, s2.roundsSurvived DESC, s2.totalAttemptsUsed ASC " +
-           "  LIMIT 1" +
-           ") " +
-           "AND s.id = (" +
-           "  SELECT MIN(s3.id) FROM SurvivalSession s3 " +
-           "  WHERE s3.user = s.user AND s3.difficulty = :difficulty " +
-           "  AND s3.completed = s.completed " +
-           "  AND s3.roundsSurvived = s.roundsSurvived " +
-           "  AND s3.totalAttemptsUsed = s.totalAttemptsUsed" +
-           ") " +
+           "WHERE s.difficulty = :difficulty AND s.isBestRun = true " +
            "ORDER BY s.completed DESC, s.roundsSurvived DESC, s.totalAttemptsUsed ASC")
     List<SurvivalSession> findLeaderboardByDifficulty(
         @Param("difficulty") Integer difficulty,
@@ -66,22 +53,24 @@ public interface SurvivalSessionRepository extends JpaRepository<SurvivalSession
     long countByUser(User user);
 
     /**
-     * Get all sessions for a user (for profile stats)
-     */
-    List<SurvivalSession> findByUserOrderByCompletedAtDesc(User user);
-
-    /**
-     * Get user's recent sessions
-     */
-    List<SurvivalSession> findTop10ByUserOrderByCompletedAtDesc(User user);
-
-    /**
-     * Get user's best completed session for a specific difficulty
+     * Find all sessions for a user-difficulty combination marked as best run
+     * Used to clear old best run flags when a new best is achieved
      */
     @Query("SELECT s FROM SurvivalSession s " +
-           "WHERE s.user = :user AND s.difficulty = :difficulty AND s.completed = true " +
-           "ORDER BY s.totalAttemptsUsed ASC")
-    List<SurvivalSession> findUserBestCompletedByDifficulty(
+           "WHERE s.user = :user AND s.difficulty = :difficulty AND s.isBestRun = true")
+    List<SurvivalSession> findBestRunsByUserAndDifficulty(
+        @Param("user") User user,
+        @Param("difficulty") Integer difficulty
+    );
+
+    /**
+     * Find user's actual best session for comparison
+     * Ordered by completed DESC, rounds DESC, attempts ASC to match leaderboard logic
+     */
+    @Query("SELECT s FROM SurvivalSession s " +
+           "WHERE s.user = :user AND s.difficulty = :difficulty " +
+           "ORDER BY s.completed DESC, s.roundsSurvived DESC, s.totalAttemptsUsed ASC, s.id ASC")
+    List<SurvivalSession> findUserSessionsByDifficulty(
         @Param("user") User user,
         @Param("difficulty") Integer difficulty,
         Pageable pageable

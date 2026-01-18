@@ -9,7 +9,6 @@ window.SurvivalGame = {
     // ==========================================
 
     init: function() {
-        console.log('Survival Game module initialized');
         this.attachEventListeners();
     },
 
@@ -75,6 +74,24 @@ window.SurvivalGame = {
                 this.loadSurvivalLeaderboard(difficulty);
             });
         });
+
+        // Use event delegation for digit inputs (prevents memory leaks)
+        const inputContainer = document.getElementById('survival-input-container');
+        if (inputContainer) {
+            inputContainer.addEventListener('input', (e) => {
+                if (e.target.classList.contains('digit-input')) {
+                    const index = parseInt(e.target.dataset.index);
+                    this.handleDigitInput(e, index);
+                }
+            });
+
+            inputContainer.addEventListener('keydown', (e) => {
+                if (e.target.classList.contains('digit-input')) {
+                    const index = parseInt(e.target.dataset.index);
+                    this.handleKeyDown(e, index);
+                }
+            });
+        }
     },
 
     // ==========================================
@@ -82,24 +99,18 @@ window.SurvivalGame = {
     // ==========================================
 
     startSurvival: async function(difficulty) {
-        if (!GameState.authToken) {
-            if (Achievements) {
-                Achievements.showToast('Please log in to play Survival Mode! 🔑', 'info');
-            }
-            return;
-        }
-
         try {
+            const headers = {};
+            if (GameState.authToken) {
+                headers['Authorization'] = `Bearer ${GameState.authToken}`;
+            }
+
             const response = await fetch(`/api/survival/start?difficulty=${difficulty}`, {
                 method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${GameState.authToken}`
-                }
+                headers: headers
             });
 
-            console.log('Survival start response status:', response.status);
             const data = await response.json();
-            console.log('Survival start response data:', data);
 
             if (response.ok) {
                 // Store session data
@@ -116,8 +127,6 @@ window.SurvivalGame = {
                     totalCoinsEarned: 0,
                     guessHistory: []
                 };
-
-                console.log('GameState.survival updated:', GameState.survival);
 
                 // Show survival game page
                 const homePage = document.getElementById('home-page');
@@ -180,14 +189,13 @@ window.SurvivalGame = {
         inputContainer.innerHTML = '';
 
         // Create input boxes for each digit
+        // Event listeners are handled by parent container via event delegation (see attachEventListeners)
         for (let i = 0; i < GameState.survival.digitCount; i++) {
             const input = document.createElement('input');
             input.type = 'text';
             input.maxLength = 1;
             input.className = 'digit-input';
             input.dataset.index = i;
-            input.addEventListener('input', (e) => this.handleDigitInput(e, i));
-            input.addEventListener('keydown', (e) => this.handleKeyDown(e, i));
             inputContainer.appendChild(input);
         }
 
@@ -395,10 +403,18 @@ window.SurvivalGame = {
                         this.updateHUD();
                     }, 2000);
                 }
+            } else {
+                console.error('Round complete failed:', data);
+                if (Achievements) {
+                    Achievements.showToast(data.error || 'Failed to complete round', 'error');
+                }
             }
 
         } catch (error) {
             console.error('Error completing round:', error);
+            if (Achievements) {
+                Achievements.showToast('Connection error!', 'error');
+            }
         }
     },
 
@@ -419,10 +435,18 @@ window.SurvivalGame = {
 
             if (response.ok) {
                 this.showGameOverScreen(data);
+            } else {
+                console.error('Round complete failed:', data);
+                if (Achievements) {
+                    Achievements.showToast(data.error || 'Failed to complete round', 'error');
+                }
             }
 
         } catch (error) {
             console.error('Error completing round:', error);
+            if (Achievements) {
+                Achievements.showToast('Connection error!', 'error');
+            }
         }
     },
 
@@ -574,17 +598,8 @@ window.SurvivalGame = {
 
             const endData = await endResponse.json();
 
-            // Prepare result data
-            const resultData = {
-                roundsSurvived: 5,
-                totalAttemptsUsed: data.totalAttemptsUsed,
-                coinsEarned: data.totalCoinsEarned,
-                rank: endData.rank,
-                completed: true
-            };
-
-            // Display results
-            this.displaySurvivalResults(resultData);
+            // Use endData as single source of truth (it's what was saved to database)
+            this.displaySurvivalResults(endData);
 
             // Show result page
             const survivalPage = document.getElementById('survival-page');
@@ -605,7 +620,9 @@ window.SurvivalGame = {
             if (endData.totalCoins && Auth) {
                 GameState.currentUser.coins = endData.totalCoins;
                 Auth.updateCoinDisplay();
-                Auth.showCoinAnimation(data.totalCoinsEarned);
+                if (endData.coinsEarned > 0) {
+                    Auth.showCoinAnimation(endData.coinsEarned);
+                }
             }
 
         } catch (error) {
@@ -727,17 +744,8 @@ window.SurvivalGame = {
 
             const endData = await endResponse.json();
 
-            // Prepare result data
-            const resultData = {
-                roundsSurvived: data.roundsSurvived,
-                totalAttemptsUsed: data.totalAttemptsUsed,
-                coinsEarned: data.totalCoinsEarned,
-                rank: endData.rank,
-                completed: false
-            };
-
-            // Display results
-            this.displaySurvivalResults(resultData);
+            // Use endData as single source of truth (it's what was saved to database)
+            this.displaySurvivalResults(endData);
 
             // Show result page
             const survivalPage = document.getElementById('survival-page');
@@ -758,8 +766,8 @@ window.SurvivalGame = {
             if (endData.totalCoins && Auth) {
                 GameState.currentUser.coins = endData.totalCoins;
                 Auth.updateCoinDisplay();
-                if (data.totalCoinsEarned > 0) {
-                    Auth.showCoinAnimation(data.totalCoinsEarned);
+                if (endData.coinsEarned > 0) {
+                    Auth.showCoinAnimation(endData.coinsEarned);
                 }
             }
 

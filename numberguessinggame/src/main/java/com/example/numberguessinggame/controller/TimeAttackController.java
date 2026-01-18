@@ -6,6 +6,7 @@ import com.example.numberguessinggame.repository.UserRepository;
 import com.example.numberguessinggame.service.JwtUtil;
 import com.example.numberguessinggame.service.TimeAttackService;
 import com.example.numberguessinggame.service.UserService;
+import com.example.numberguessinggame.util.GameUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -157,7 +158,7 @@ public class TimeAttackController {
 
         // Generate first game's target number
         int digitCount = 3 + difficulty;
-        int targetNumber = generateUniqueDigitNumber(digitCount);
+        int targetNumber = GameUtils.generateUniqueDigitNumber(digitCount);
         session.setCurrentTargetNumber(targetNumber);
         session.setCurrentGameStartTime(System.currentTimeMillis());
 
@@ -209,7 +210,7 @@ public class TimeAttackController {
 
         // Generate new target number
         int digitCount = 3 + session.getDifficulty();
-        int targetNumber = generateUniqueDigitNumber(digitCount);
+        int targetNumber = GameUtils.generateUniqueDigitNumber(digitCount);
         session.setCurrentTargetNumber(targetNumber);
         session.setCurrentGameStartTime(System.currentTimeMillis());
         session.setCurrentGameAttempts(0);
@@ -539,36 +540,6 @@ public class TimeAttackController {
         if (removed > 0) {
             logger.info("Cleaned up {} expired Time Attack sessions", removed);
         }
-    }
-
-    /**
-     * Generate a unique-digit number
-     */
-    private int generateUniqueDigitNumber(int digitCount) {
-        List<Integer> digits = new ArrayList<>();
-        for (int i = 0; i <= 9; i++) {
-            digits.add(i);
-        }
-        Collections.shuffle(digits);
-
-        // Ensure first digit is not 0
-        List<Integer> selectedDigits = new ArrayList<>();
-        for (int digit : digits) {
-            if (selectedDigits.isEmpty() && digit == 0) {
-                continue;
-            }
-            selectedDigits.add(digit);
-            if (selectedDigits.size() == digitCount) {
-                break;
-            }
-        }
-
-        int result = 0;
-        for (int digit : selectedDigits) {
-            result = result * 10 + digit;
-        }
-
-        return result;
     }
 
     /**

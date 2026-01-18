@@ -14,7 +14,7 @@ public class SurvivalSession {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
     @Column(nullable = false)
@@ -38,6 +38,9 @@ public class SurvivalSession {
     @CreationTimestamp
     @Column(name = "completed_at", nullable = false, updatable = false)
     private LocalDateTime completedAt;
+
+    @Column(name = "is_best_run", nullable = false)
+    private Boolean isBestRun = false;
 
     // Constructors
     public SurvivalSession() {
@@ -126,5 +129,13 @@ public class SurvivalSession {
 
     public void setCompletedAt(LocalDateTime completedAt) {
         this.completedAt = completedAt;
+    }
+
+    public Boolean getIsBestRun() {
+        return isBestRun;
+    }
+
+    public void setIsBestRun(Boolean isBestRun) {
+        this.isBestRun = isBestRun;
     }
 }

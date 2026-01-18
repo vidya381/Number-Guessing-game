@@ -16,22 +16,13 @@ public interface TimeAttackSessionRepository extends JpaRepository<TimeAttackSes
 
     /**
      * Get leaderboard for a specific difficulty level
-     * Shows only the BEST session per player
+     * Shows only the BEST session per player (using cached is_best_run flag)
      * Ranked by: totalScore DESC, gamesWon DESC, averageAttempts ASC
      * Only includes authenticated users (user IS NOT NULL)
      */
     @Query("SELECT t FROM TimeAttackSession t " +
            "JOIN FETCH t.user u " +
-           "WHERE t.difficulty = :difficulty AND t.user IS NOT NULL " +
-           "AND t.totalScore = (" +
-           "  SELECT MAX(t2.totalScore) FROM TimeAttackSession t2 " +
-           "  WHERE t2.user = t.user AND t2.difficulty = :difficulty" +
-           ") " +
-           "AND t.id = (" +
-           "  SELECT MIN(t3.id) FROM TimeAttackSession t3 " +
-           "  WHERE t3.user = t.user AND t3.difficulty = :difficulty " +
-           "  AND t3.totalScore = t.totalScore" +
-           ") " +
+           "WHERE t.difficulty = :difficulty AND t.isBestRun = true " +
            "ORDER BY t.totalScore DESC, t.gamesWon DESC, t.averageAttempts ASC")
     List<TimeAttackSession> findLeaderboardByDifficulty(
         @Param("difficulty") Integer difficulty,
@@ -88,4 +79,28 @@ public interface TimeAttackSessionRepository extends JpaRepository<TimeAttackSes
      */
     @Query("SELECT SUM(t.gamesPlayed) FROM TimeAttackSession t WHERE t.user = :user")
     Optional<Long> countTotalGamesPlayedByUser(@Param("user") User user);
+
+    /**
+     * Find all sessions for a user-difficulty combination marked as best run
+     * Used to clear old best run flags when a new best is achieved
+     */
+    @Query("SELECT t FROM TimeAttackSession t " +
+           "WHERE t.user = :user AND t.difficulty = :difficulty AND t.isBestRun = true")
+    List<TimeAttackSession> findBestRunsByUserAndDifficulty(
+        @Param("user") User user,
+        @Param("difficulty") Integer difficulty
+    );
+
+    /**
+     * Find user's actual best session for comparison
+     * Ordered by totalScore DESC, gamesWon DESC, averageAttempts ASC to match leaderboard logic
+     */
+    @Query("SELECT t FROM TimeAttackSession t " +
+           "WHERE t.user = :user AND t.difficulty = :difficulty " +
+           "ORDER BY t.totalScore DESC, t.gamesWon DESC, t.averageAttempts ASC, t.id ASC")
+    List<TimeAttackSession> findUserSessionsByDifficulty(
+        @Param("user") User user,
+        @Param("difficulty") Integer difficulty,
+        Pageable pageable
+    );
 }

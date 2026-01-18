@@ -84,7 +84,51 @@ public class TimeAttackService {
         logger.info("Time Attack session saved - User: {}, Difficulty: {}, Score: {}, Wins: {}/{} games",
                 user.getUsername(), difficulty, totalScore, gamesWon, gamesPlayed);
 
+        // Update best run flags for this user-difficulty combination
+        updateBestRunFlags(user, difficulty);
+
         return saved;
+    }
+
+    /**
+     * Update best run flags for a user-difficulty combination
+     * Ensures only the user's best session for this difficulty has isBestRun = true
+     */
+    @Transactional
+    public void updateBestRunFlags(User user, Integer difficulty) {
+        // Get user's actual best session for this difficulty
+        List<TimeAttackSession> bestSessions = repository.findUserSessionsByDifficulty(
+            user, difficulty, PageRequest.of(0, 1)
+        );
+
+        if (bestSessions.isEmpty()) {
+            return; // No sessions for this user-difficulty
+        }
+
+        TimeAttackSession actualBest = bestSessions.get(0);
+
+        // Get all sessions currently marked as best run
+        List<TimeAttackSession> currentBestRuns = repository.findBestRunsByUserAndDifficulty(
+            user, difficulty
+        );
+
+        // If the actual best is already marked as best run and no others are, we're done
+        if (currentBestRuns.size() == 1 && currentBestRuns.get(0).getId().equals(actualBest.getId())) {
+            return;
+        }
+
+        // Clear all best run flags for this user-difficulty
+        for (TimeAttackSession session : currentBestRuns) {
+            session.setIsBestRun(false);
+            repository.save(session);
+        }
+
+        // Set the actual best as best run
+        actualBest.setIsBestRun(true);
+        repository.save(actualBest);
+
+        logger.info("Updated best run flag for user {} difficulty {} - session {} is now best",
+                user.getId(), difficulty, actualBest.getId());
     }
 
     /**
@@ -103,18 +147,31 @@ public class TimeAttackService {
      *
      * @param sessionId The session ID to find rank for
      * @param difficulty Difficulty level
-     * @return Rank (1-based) or null if not found
+     * @return Rank (1-based) or null if outside top 1000 or not found
      */
     public Integer getUserRank(Long sessionId, int difficulty) {
-        List<TimeAttackSession> leaderboard = getLeaderboard(difficulty, 1000);
+        try {
+            List<TimeAttackSession> leaderboard = getLeaderboard(difficulty, 1000);
 
-        for (int i = 0; i < leaderboard.size(); i++) {
-            if (leaderboard.get(i).getId().equals(sessionId)) {
-                return i + 1;  // 1-based rank
+            for (int i = 0; i < leaderboard.size(); i++) {
+                if (leaderboard.get(i).getId().equals(sessionId)) {
+                    return i + 1;  // 1-based rank
+                }
             }
-        }
 
-        return null;
+            // Session not in top 1000 - check if it exists at all
+            boolean sessionExists = repository.existsById(sessionId);
+            if (!sessionExists) {
+                logger.warn("Session {} not found in database for difficulty {}", sessionId, difficulty);
+            } else {
+                logger.info("Session {} ranked outside top 1000 for difficulty {}", sessionId, difficulty);
+            }
+
+            return null;  // Outside top 1000 or not found
+        } catch (Exception e) {
+            logger.error("Failed to get rank for session {} difficulty {}: {}", sessionId, difficulty, e.getMessage());
+            return null;
+        }
     }
 
     /**

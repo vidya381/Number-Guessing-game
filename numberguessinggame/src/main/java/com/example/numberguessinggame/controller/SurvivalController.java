@@ -2,9 +2,11 @@ package com.example.numberguessinggame.controller;
 
 import com.example.numberguessinggame.entity.SurvivalSession;
 import com.example.numberguessinggame.entity.User;
+import com.example.numberguessinggame.repository.UserRepository;
 import com.example.numberguessinggame.service.JwtUtil;
 import com.example.numberguessinggame.service.SurvivalService;
 import com.example.numberguessinggame.service.UserService;
+import com.example.numberguessinggame.util.GameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +31,9 @@ public class SurvivalController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -116,17 +121,17 @@ public class SurvivalController {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             try {
                 String token = authHeader.substring(7);
-                userId = jwtUtil.extractUserId(token);
-                userService.findById(userId)
-                    .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                String username = jwtUtil.extractUsername(token);
+                Optional<User> userOpt = userRepository.findByUsername(username);
+                if (userOpt.isPresent()) {
+                    userId = userOpt.get().getId();
+                }
             } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .body(Map.of("error", "Please log in to play Survival Mode"));
+                logger.warn("Failed to extract user from token: {}", e.getMessage());
+                // Continue as guest if token extraction fails
             }
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("error", "Please log in to play Survival Mode"));
         }
+        // If userId is null, user plays as guest
 
         // Create session
         String sessionId = UUID.randomUUID().toString();
@@ -134,14 +139,21 @@ public class SurvivalController {
 
         // Generate first round target number
         int digitCount = 3 + difficulty;
-        session.setCurrentTargetNumber(generateUniqueDigitNumber(digitCount));
+        session.setCurrentTargetNumber(GameUtils.generateUniqueDigitNumber(digitCount));
 
         activeSessions.put(sessionId, session);
 
         // Log session start
         String difficultyName = survivalService.getDifficultyText(difficulty);
-        logger.info("[Survival Start] UserID: {} | Difficulty: {} | Target: {} | Session: {}",
-                userId, difficultyName, session.getCurrentTargetNumber(), sessionId);
+        if (userId != null) {
+            userRepository.findById(userId).ifPresent(user ->
+                logger.info("[Survival Start] User: {} | Difficulty: {} | Target: {} | Session: {}",
+                    user.getUsername(), difficultyName, session.getCurrentTargetNumber(), sessionId)
+            );
+        } else {
+            logger.info("[Survival Start] Guest | Difficulty: {} | Target: {} | Session: {}",
+                difficultyName, session.getCurrentTargetNumber(), sessionId);
+        }
 
         // Response
         int maxAttempts = survivalService.getMaxAttemptsForDifficulty(difficulty);
@@ -303,7 +315,7 @@ public class SurvivalController {
 
                     // Generate new target for next round
                     int digitCount = 3 + session.getDifficulty();
-                    session.setCurrentTargetNumber(generateUniqueDigitNumber(digitCount));
+                    session.setCurrentTargetNumber(GameUtils.generateUniqueDigitNumber(digitCount));
 
                     // Log new round start
                     String difficultyName = survivalService.getDifficultyText(session.getDifficulty());
@@ -382,29 +394,34 @@ public class SurvivalController {
 
             if (session.getUserId() != null) {
                 try {
-                    User user = userService.findById(session.getUserId())
-                        .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                    Optional<User> userOpt = userService.findById(session.getUserId());
+                    if (userOpt.isEmpty()) {
+                        logger.warn("User {} not found when saving survival session", session.getUserId());
+                        // Continue without saving - treat as guest
+                    } else {
+                        User user = userOpt.get();
 
-                    // Save session
-                    SurvivalSession savedSession = survivalService.saveSurvivalSession(
-                        user,
-                        session.getDifficulty(),
-                        roundsSurvived,
-                        session.getTotalAttemptsUsed(),
-                        completed,
-                        totalCoins,
-                        session.getStartedAt()
-                    );
+                        // Save session
+                        SurvivalSession savedSession = survivalService.saveSurvivalSession(
+                            user,
+                            session.getDifficulty(),
+                            roundsSurvived,
+                            session.getTotalAttemptsUsed(),
+                            completed,
+                            totalCoins,
+                            session.getStartedAt()
+                        );
 
-                    // Award coins
-                    if (totalCoins > 0) {
-                        userService.awardCoinsAmount(user.getId(), totalCoins);
-                        User updatedUser = userService.findById(user.getId()).orElse(user);
-                        totalCoinsAfter = updatedUser.getCoins() != null ? updatedUser.getCoins() : 0;
+                        // Award coins
+                        if (totalCoins > 0) {
+                            userService.awardCoinsAmount(user.getId(), totalCoins);
+                            User updatedUser = userService.findById(user.getId()).orElse(user);
+                            totalCoinsAfter = updatedUser.getCoins() != null ? updatedUser.getCoins() : 0;
+                        }
+
+                        // Get rank
+                        rank = survivalService.getUserRank(savedSession.getId(), session.getDifficulty());
                     }
-
-                    // Get rank
-                    rank = survivalService.getUserRank(savedSession.getId(), session.getDifficulty());
 
                 } catch (Exception e) {
                     logger.error("Error saving survival session", e);
@@ -516,24 +533,4 @@ public class SurvivalController {
         }
     }
 
-    // Helper method to generate unique digit number
-    private int generateUniqueDigitNumber(int digitCount) {
-        List<Integer> digits = new ArrayList<>();
-        for (int i = 0; i <= 9; i++) {
-            digits.add(i);
-        }
-        Collections.shuffle(digits);
-
-        // Ensure first digit is not 0
-        if (digits.get(0) == 0) {
-            Collections.swap(digits, 0, 1);
-        }
-
-        StringBuilder number = new StringBuilder();
-        for (int i = 0; i < digitCount; i++) {
-            number.append(digits.get(i));
-        }
-
-        return Integer.parseInt(number.toString());
-    }
 }
