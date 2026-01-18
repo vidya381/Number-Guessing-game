@@ -394,29 +394,34 @@ public class SurvivalController {
 
             if (session.getUserId() != null) {
                 try {
-                    User user = userService.findById(session.getUserId())
-                        .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                    Optional<User> userOpt = userService.findById(session.getUserId());
+                    if (userOpt.isEmpty()) {
+                        logger.warn("User {} not found when saving survival session", session.getUserId());
+                        // Continue without saving - treat as guest
+                    } else {
+                        User user = userOpt.get();
 
-                    // Save session
-                    SurvivalSession savedSession = survivalService.saveSurvivalSession(
-                        user,
-                        session.getDifficulty(),
-                        roundsSurvived,
-                        session.getTotalAttemptsUsed(),
-                        completed,
-                        totalCoins,
-                        session.getStartedAt()
-                    );
+                        // Save session
+                        SurvivalSession savedSession = survivalService.saveSurvivalSession(
+                            user,
+                            session.getDifficulty(),
+                            roundsSurvived,
+                            session.getTotalAttemptsUsed(),
+                            completed,
+                            totalCoins,
+                            session.getStartedAt()
+                        );
 
-                    // Award coins
-                    if (totalCoins > 0) {
-                        userService.awardCoinsAmount(user.getId(), totalCoins);
-                        User updatedUser = userService.findById(user.getId()).orElse(user);
-                        totalCoinsAfter = updatedUser.getCoins() != null ? updatedUser.getCoins() : 0;
+                        // Award coins
+                        if (totalCoins > 0) {
+                            userService.awardCoinsAmount(user.getId(), totalCoins);
+                            User updatedUser = userService.findById(user.getId()).orElse(user);
+                            totalCoinsAfter = updatedUser.getCoins() != null ? updatedUser.getCoins() : 0;
+                        }
+
+                        // Get rank
+                        rank = survivalService.getUserRank(savedSession.getId(), session.getDifficulty());
                     }
-
-                    // Get rank
-                    rank = survivalService.getUserRank(savedSession.getId(), session.getDifficulty());
 
                 } catch (Exception e) {
                     logger.error("Error saving survival session", e);

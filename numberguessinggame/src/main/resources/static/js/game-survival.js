@@ -9,7 +9,6 @@ window.SurvivalGame = {
     // ==========================================
 
     init: function() {
-        console.log('Survival Game module initialized');
         this.attachEventListeners();
     },
 
@@ -111,9 +110,7 @@ window.SurvivalGame = {
                 headers: headers
             });
 
-            console.log('Survival start response status:', response.status);
             const data = await response.json();
-            console.log('Survival start response data:', data);
 
             if (response.ok) {
                 // Store session data
@@ -130,8 +127,6 @@ window.SurvivalGame = {
                     totalCoinsEarned: 0,
                     guessHistory: []
                 };
-
-                console.log('GameState.survival updated:', GameState.survival);
 
                 // Show survival game page
                 const homePage = document.getElementById('home-page');
