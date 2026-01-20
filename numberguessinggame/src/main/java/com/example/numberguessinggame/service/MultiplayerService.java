@@ -223,7 +223,7 @@ public class MultiplayerService {
             throw new IllegalArgumentException("You are not a player in this game");
         }
 
-        PlayerState playerState = session.playerStates.get(user.getId());
+        ActiveGameSession.PlayerState playerState = session.playerStates.get(user.getId());
         if (playerState.solved) {
             throw new IllegalArgumentException("You have already solved the puzzle");
         }
@@ -321,8 +321,8 @@ public class MultiplayerService {
         }
 
         Long opponentId = user.getId().equals(session.player1Id) ? session.player2Id : session.player1Id;
-        PlayerState myState = session.playerStates.get(user.getId());
-        PlayerState opponentState = session.playerStates.get(opponentId);
+        ActiveGameSession.PlayerState myState = session.playerStates.get(user.getId());
+        ActiveGameSession.PlayerState opponentState = session.playerStates.get(opponentId);
 
         Map<String, Object> status = new HashMap<>();
         status.put("success", true);
