@@ -600,17 +600,18 @@ const MultiplayerGame = {
         }
 
         friendsList.innerHTML = GameState.multiplayer.friends.map(friend => {
+            const isOnline = friend.online || false;
             return '<div class="friend-card" data-friend-id="' + friend.id + '">' +
                 '<div class="friend-info">' +
+                    '<span class="online-indicator' + (isOnline ? '' : ' offline') + '"></span>' +
                     '<span class="friend-name">' + escapeHtml(friend.username) + '</span>' +
-                    '<span class="friend-stats">' + friend.totalWins + 'W / ' + friend.totalGames + 'G</span>' +
                 '</div>' +
                 '<div class="friend-actions">' +
                     '<button class="challenge-btn" onclick="MultiplayerGame.showChallengeModal(' + friend.id + ', \'' + escapeHtml(friend.username) + '\')">' +
-                        '<i class="fas fa-gamepad"></i> Challenge' +
+                        '🎮' +
                     '</button>' +
                     '<button class="remove-btn" onclick="MultiplayerGame.removeFriend(' + friend.id + ')">' +
-                        '<i class="fas fa-times"></i>' +
+                        '✕' +
                     '</button>' +
                 '</div>' +
             '</div>';
