@@ -44,28 +44,21 @@ public class WebSocketEventListener {
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
         String sessionId = headerAccessor.getSessionId();
 
-        // Extract JWT token from connection headers
+        // Extract userId from session attributes (set by handshake interceptor)
         Map<String, Object> sessionAttributes = headerAccessor.getSessionAttributes();
-        if (sessionAttributes != null) {
-            Object tokenObj = sessionAttributes.get("token");
-            if (tokenObj != null) {
-                String token = tokenObj.toString();
-                try {
-                    Long userId = jwtUtil.extractUserId(token);
-                    if (userId != null) {
-                        // Mark user as online
-                        onlineUsers.put(userId, sessionId);
-                        sessionToUser.put(sessionId, userId);
+        if (sessionAttributes != null && sessionAttributes.containsKey("userId")) {
+            Long userId = (Long) sessionAttributes.get("userId");
 
-                        logger.info("User {} connected with session {}", userId, sessionId);
+            // Mark user as online
+            onlineUsers.put(userId, sessionId);
+            sessionToUser.put(sessionId, userId);
 
-                        // Broadcast presence update to topic
-                        broadcastPresenceUpdate(userId, true);
-                    }
-                } catch (Exception e) {
-                    logger.error("Failed to extract user ID from token during connection: {}", e.getMessage());
-                }
-            }
+            logger.info("User {} connected with session {}", userId, sessionId);
+
+            // Broadcast presence update to topic
+            broadcastPresenceUpdate(userId, true);
+        } else {
+            logger.warn("No userId found in WebSocket session attributes for session {}", sessionId);
         }
     }
 

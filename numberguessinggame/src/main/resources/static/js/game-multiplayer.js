@@ -80,7 +80,8 @@ const MultiplayerGame = {
         }
 
         try {
-            const socket = new SockJS('/ws');
+            // Pass JWT token as query parameter in WebSocket URL
+            const socket = new SockJS('/ws?token=' + encodeURIComponent(GameState.authToken));
             const stompClient = Stomp.over(socket);
 
             stompClient.connect({}, (frame) => {
@@ -598,22 +599,22 @@ const MultiplayerGame = {
             return;
         }
 
-        friendsList.innerHTML = GameState.multiplayer.friends.map(friend => `
-            <div class="friend-card">
-                <div class="friend-info">
-                    <span class="friend-name">${escapeHtml(friend.username)}</span>
-                    <span class="friend-stats">${friend.totalWins}W / ${friend.totalGames}G</span>
-                </div>
-                <div class="friend-actions">
-                    <button class="challenge-btn" onclick="MultiplayerGame.showChallengeModal(${friend.id}, '${escapeHtml(friend.username)}')">
-                        <i class="fas fa-gamepad"></i> Challenge
-                    </button>
-                    <button class="remove-btn" onclick="MultiplayerGame.removeFriend(${friend.id})">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-        `).join('');
+        friendsList.innerHTML = GameState.multiplayer.friends.map(friend => {
+            return '<div class="friend-card" data-friend-id="' + friend.id + '">' +
+                '<div class="friend-info">' +
+                    '<span class="friend-name">' + escapeHtml(friend.username) + '</span>' +
+                    '<span class="friend-stats">' + friend.totalWins + 'W / ' + friend.totalGames + 'G</span>' +
+                '</div>' +
+                '<div class="friend-actions">' +
+                    '<button class="challenge-btn" onclick="MultiplayerGame.showChallengeModal(' + friend.id + ', \'' + escapeHtml(friend.username) + '\')">' +
+                        '<i class="fas fa-gamepad"></i> Challenge' +
+                    '</button>' +
+                    '<button class="remove-btn" onclick="MultiplayerGame.removeFriend(' + friend.id + ')">' +
+                        '<i class="fas fa-times"></i>' +
+                    '</button>' +
+                '</div>' +
+            '</div>';
+        }).join('');
     },
 
     renderSearchResults(users) {
@@ -838,12 +839,18 @@ const MultiplayerGame = {
     },
 
     updateFriendOnlineStatus(userId, online) {
+        // Update friend in state
+        const friend = GameState.multiplayer.friends.find(f => f.id === userId);
+        if (friend) {
+            friend.online = online;
+        }
+
         // Update friend card with online indicator
-        const friendCard = document.querySelector(`.friend-card[data-user-id="${userId}"]`);
+        const friendCard = document.querySelector(`.friend-card[data-friend-id="${userId}"]`);
         if (friendCard) {
             const indicator = friendCard.querySelector('.online-indicator');
             if (indicator) {
-                indicator.className = online ? 'online-indicator online' : 'online-indicator offline';
+                indicator.className = online ? 'online-indicator online' : 'online-indicator';
             }
         }
     },

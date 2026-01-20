@@ -1,5 +1,6 @@
 package com.example.numberguessinggame.service;
 
+import com.example.numberguessinggame.config.WebSocketEventListener;
 import com.example.numberguessinggame.entity.FriendRequest;
 import com.example.numberguessinggame.entity.Friendship;
 import com.example.numberguessinggame.entity.User;
@@ -24,6 +25,9 @@ public class FriendsService {
 
     @Autowired
     private FriendRequestRepository friendRequestRepository;
+
+    @Autowired
+    private WebSocketEventListener webSocketEventListener;
 
     /**
      * Search users by username (limit to 20 results)
@@ -218,6 +222,7 @@ public class FriendsService {
                     friendInfo.put("totalGames", friend.getTotalGames());
                     friendInfo.put("totalWins", friend.getTotalWins());
                     friendInfo.put("createdAt", friendship.getCreatedAt());
+                    friendInfo.put("online", webSocketEventListener.isUserOnline(friend.getId()));
                     return friendInfo;
                 })
                 .collect(Collectors.toList());
