@@ -61,6 +61,13 @@ public class FriendsService {
     }
 
     /**
+     * Check if two users are friends
+     */
+    public boolean areFriends(Long userId, Long otherUserId) {
+        return friendshipRepository.areFriends(userId, otherUserId);
+    }
+
+    /**
      * Get relationship status between two users
      */
     private String getRelationshipStatus(Long userId, Long otherUserId) {
