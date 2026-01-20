@@ -471,6 +471,7 @@ public class MultiplayerService {
     /**
      * Get pending challenges for a user (received)
      */
+    @Transactional(readOnly = true)
     public List<Map<String, Object>> getPendingChallenges(User user) {
         List<MultiplayerChallenge> challenges = challengeRepository.findByChallengedIdAndStatus(
                 user.getId(), MultiplayerChallenge.Status.PENDING);
@@ -495,6 +496,7 @@ public class MultiplayerService {
     /**
      * Get sent challenges (outgoing)
      */
+    @Transactional(readOnly = true)
     public List<Map<String, Object>> getSentChallenges(User user) {
         List<MultiplayerChallenge> challenges = challengeRepository.findByChallengerIdAndStatus(
                 user.getId(), MultiplayerChallenge.Status.PENDING);

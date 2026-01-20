@@ -115,17 +115,30 @@ public class MultiplayerController {
 
             // Send WebSocket notification to both players
             Long opponentId = ((Number) result.get("opponentId")).longValue();
+            String sessionId = (String) result.get("sessionId");
+            Integer digitCount = (Integer) result.get("digitCount");
+            Integer difficulty = (Integer) result.get("difficulty");
+            String opponentUsername = (String) result.get("opponentUsername");
 
-            // Notify challenger that challenge was accepted
+            // Notify challenger (user1) that game has started
             Map<String, Object> challengerNotification = new HashMap<>();
-            challengerNotification.put("type", "challenge_accepted");
-            challengerNotification.put("challengeId", id);
-            challengerNotification.put("acceptedBy", user.getUsername());
-            challengerNotification.put("acceptedById", user.getId());
+            challengerNotification.put("type", "game_started");
+            challengerNotification.put("sessionId", sessionId);
+            challengerNotification.put("digitCount", digitCount);
+            challengerNotification.put("difficulty", difficulty);
+            challengerNotification.put("opponentId", user.getId());
+            challengerNotification.put("opponentUsername", user.getUsername());
+            messagingTemplate.convertAndSend("/queue/game." + opponentId, challengerNotification);
 
-            messagingTemplate.convertAndSend("/queue/challenges." + opponentId, challengerNotification);
-
-            // TODO Phase 4: Notify both about game_started
+            // Notify accepter (user2) that game has started
+            Map<String, Object> accepterNotification = new HashMap<>();
+            accepterNotification.put("type", "game_started");
+            accepterNotification.put("sessionId", sessionId);
+            accepterNotification.put("digitCount", digitCount);
+            accepterNotification.put("difficulty", difficulty);
+            accepterNotification.put("opponentId", opponentId);
+            accepterNotification.put("opponentUsername", opponentUsername);
+            messagingTemplate.convertAndSend("/queue/game." + user.getId(), accepterNotification);
 
             return ResponseEntity.ok(result);
 

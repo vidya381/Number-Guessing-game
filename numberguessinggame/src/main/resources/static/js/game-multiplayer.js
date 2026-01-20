@@ -32,6 +32,7 @@ const MultiplayerGame = {
         this.loadFriends();
         this.loadPendingRequests();
         this.loadPendingChallenges();
+        this.loadSentChallenges();
         this.loadStats();
 
         // Set up event listeners
@@ -539,7 +540,10 @@ const MultiplayerGame = {
 
         switch (data.type) {
             case 'game_started':
-                // Game session created, UI will be shown when accepting challenge
+                console.log('Game started notification received:', data);
+                this.startGame(data.sessionId, data.digitCount, data.opponentUsername, data.opponentId);
+                this.loadSentChallenges(); // Refresh sent challenges list
+                this.loadPendingChallenges(); // Refresh pending challenges list
                 break;
             case 'opponent_guessed':
                 GameState.multiplayer.currentGame.opponentAttempts = data.opponentAttempts;
