@@ -614,14 +614,21 @@ const MultiplayerGame = {
 
     renderSearchResults(users) {
         const searchResults = document.getElementById('user-search-results');
-        if (!searchResults) return;
+        if (!searchResults) {
+            console.error('user-search-results container not found');
+            return;
+        }
 
-        if (users.length === 0) {
+        console.log('Rendering search results, users count:', users ? users.length : 0);
+
+        if (!users || users.length === 0) {
             searchResults.innerHTML = '<p class="no-results">No users found</p>';
             return;
         }
 
-        searchResults.innerHTML = users.map(user => {
+        const htmlParts = [];
+        for (let i = 0; i < users.length; i++) {
+            const user = users[i];
             let actionButton = '';
 
             switch (user.relationshipStatus) {
@@ -635,55 +642,74 @@ const MultiplayerGame = {
                     actionButton = '<span class="status-badge received">Request Received</span>';
                     break;
                 default:
-                    actionButton = `<button class="add-friend-btn" onclick="MultiplayerGame.sendFriendRequest(${user.id})">
-                        <i class="fas fa-user-plus"></i> Add Friend
-                    </button>`;
+                    actionButton = '<button class="add-friend-btn" onclick="MultiplayerGame.sendFriendRequest(' + user.id + ')"><i class="fas fa-user-plus"></i> Add Friend</button>';
             }
 
-            return `
-                <div class="user-search-result">
-                    <div class="user-info">
-                        <span class="user-name">${escapeHtml(user.username)}</span>
-                        <span class="user-stats">${user.totalWins}W / ${user.totalGames}G</span>
-                    </div>
-                    <div class="user-action">
-                        ${actionButton}
-                    </div>
-                </div>
-            `;
-        }).join('');
+            const username = escapeHtml(user.username || 'Unknown');
+            const wins = user.totalWins || 0;
+            const games = user.totalGames || 0;
+
+            htmlParts.push(
+                '<div class="user-search-result">' +
+                    '<div class="user-info">' +
+                        '<span class="user-name">' + username + '</span>' +
+                        '<span class="user-stats">' + wins + 'W / ' + games + 'G</span>' +
+                    '</div>' +
+                    '<div class="user-action">' +
+                        actionButton +
+                    '</div>' +
+                '</div>'
+            );
+        }
+
+        searchResults.innerHTML = htmlParts.join('');
+        console.log('Search results rendered successfully, items:', htmlParts.length);
     },
 
     renderPendingRequests() {
         const requestsContainer = document.getElementById('pending-requests');
-        if (!requestsContainer) return;
+        if (!requestsContainer) {
+            console.error('pending-requests container not found');
+            return;
+        }
+
+        console.log('Rendering pending requests, count:', GameState.multiplayer.pendingRequests.length);
 
         if (GameState.multiplayer.pendingRequests.length === 0) {
             requestsContainer.innerHTML = '';
             return;
         }
 
-        requestsContainer.innerHTML = `
-            <div class="section-header">Pending Friend Requests</div>
-            ${GameState.multiplayer.pendingRequests.map(request => `
-                <div class="friend-request-card">
-                    <span class="requester-name">${escapeHtml(request.fromUsername)}</span>
-                    <div class="request-actions">
-                        <button class="accept-btn" onclick="MultiplayerGame.acceptFriendRequest(${request.id})">
-                            <i class="fas fa-check"></i> Accept
-                        </button>
-                        <button class="decline-btn" onclick="MultiplayerGame.declineFriendRequest(${request.id})">
-                            <i class="fas fa-times"></i> Decline
-                        </button>
-                    </div>
-                </div>
-            `).join('')}
-        `;
+        const htmlParts = ['<div class="section-header">Pending Friend Requests</div>'];
+
+        for (let i = 0; i < GameState.multiplayer.pendingRequests.length; i++) {
+            const request = GameState.multiplayer.pendingRequests[i];
+            const username = escapeHtml(request.fromUsername || 'Unknown');
+
+            htmlParts.push(
+                '<div class="friend-request-card">' +
+                    '<span class="requester-name">' + username + '</span>' +
+                    '<div class="request-actions">' +
+                        '<button class="accept-btn" onclick="MultiplayerGame.acceptFriendRequest(' + request.id + ')">' +
+                            '<i class="fas fa-check"></i> Accept' +
+                        '</button>' +
+                        '<button class="decline-btn" onclick="MultiplayerGame.declineFriendRequest(' + request.id + ')">' +
+                            '<i class="fas fa-times"></i> Decline' +
+                        '</button>' +
+                    '</div>' +
+                '</div>'
+            );
+        }
+
+        requestsContainer.innerHTML = htmlParts.join('');
+        console.log('Pending requests rendered successfully, items:', GameState.multiplayer.pendingRequests.length);
     },
 
     renderPendingChallenges() {
         const challengesContainer = document.getElementById('pending-challenges');
         if (!challengesContainer) return;
+
+        console.log('Rendering pending challenges, count:', GameState.multiplayer.pendingChallenges.length);
 
         if (GameState.multiplayer.pendingChallenges.length === 0) {
             challengesContainer.innerHTML = '';
@@ -691,31 +717,39 @@ const MultiplayerGame = {
         }
 
         const difficultyNames = ['Easy', 'Medium', 'Hard'];
+        const htmlParts = ['<div class="section-header">Pending Challenges</div>'];
 
-        challengesContainer.innerHTML = `
-            <div class="section-header">Pending Challenges</div>
-            ${GameState.multiplayer.pendingChallenges.map(challenge => `
-                <div class="challenge-card">
-                    <div class="challenge-info">
-                        <span class="challenger-name">${escapeHtml(challenge.challengerUsername)}</span>
-                        <span class="challenge-difficulty">${difficultyNames[challenge.difficulty]}</span>
-                    </div>
-                    <div class="challenge-actions">
-                        <button class="accept-btn" onclick="MultiplayerGame.acceptChallenge(${challenge.id})">
-                            <i class="fas fa-check"></i> Accept
-                        </button>
-                        <button class="decline-btn" onclick="MultiplayerGame.declineChallenge(${challenge.id})">
-                            <i class="fas fa-times"></i> Decline
-                        </button>
-                    </div>
-                </div>
-            `).join('')}
-        `;
+        for (let i = 0; i < GameState.multiplayer.pendingChallenges.length; i++) {
+            const challenge = GameState.multiplayer.pendingChallenges[i];
+            const challengerName = escapeHtml(challenge.challengerUsername || 'Unknown');
+            const difficulty = difficultyNames[challenge.difficulty] || 'Unknown';
+
+            htmlParts.push(
+                '<div class="challenge-card">' +
+                    '<div class="challenge-info">' +
+                        '<span class="challenger-name">' + challengerName + '</span>' +
+                        '<span class="challenge-difficulty">' + difficulty + '</span>' +
+                    '</div>' +
+                    '<div class="challenge-actions">' +
+                        '<button class="accept-btn" onclick="MultiplayerGame.acceptChallenge(' + challenge.id + ')">' +
+                            '<i class="fas fa-check"></i> Accept' +
+                        '</button>' +
+                        '<button class="decline-btn" onclick="MultiplayerGame.declineChallenge(' + challenge.id + ')">' +
+                            '<i class="fas fa-times"></i> Decline' +
+                        '</button>' +
+                    '</div>' +
+                '</div>'
+            );
+        }
+
+        challengesContainer.innerHTML = htmlParts.join('');
     },
 
     renderSentChallenges() {
         const sentContainer = document.getElementById('sent-challenges');
         if (!sentContainer) return;
+
+        console.log('Rendering sent challenges, count:', GameState.multiplayer.sentChallenges.length);
 
         if (GameState.multiplayer.sentChallenges.length === 0) {
             sentContainer.innerHTML = '';
@@ -723,16 +757,22 @@ const MultiplayerGame = {
         }
 
         const difficultyNames = ['Easy', 'Medium', 'Hard'];
+        const htmlParts = ['<div class="section-header">Sent Challenges</div>'];
 
-        sentContainer.innerHTML = `
-            <div class="section-header">Sent Challenges</div>
-            ${GameState.multiplayer.sentChallenges.map(challenge => `
-                <div class="challenge-card sent">
-                    <span class="challenged-name">Waiting for ${escapeHtml(challenge.challengedUsername)}</span>
-                    <span class="challenge-difficulty">${difficultyNames[challenge.difficulty]}</span>
-                </div>
-            `).join('')}
-        `;
+        for (let i = 0; i < GameState.multiplayer.sentChallenges.length; i++) {
+            const challenge = GameState.multiplayer.sentChallenges[i];
+            const challengedName = escapeHtml(challenge.challengedUsername || 'Unknown');
+            const difficulty = difficultyNames[challenge.difficulty] || 'Unknown';
+
+            htmlParts.push(
+                '<div class="challenge-card sent">' +
+                    '<span class="challenged-name">Waiting for ' + challengedName + '</span>' +
+                    '<span class="challenge-difficulty">' + difficulty + '</span>' +
+                '</div>'
+            );
+        }
+
+        sentContainer.innerHTML = htmlParts.join('');
     },
 
     renderGuessHistory() {
