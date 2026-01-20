@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/game-timeattack.css">
     <link rel="stylesheet" href="/css/game-daily.css">
     <link rel="stylesheet" href="/css/game-survival.css">
+    <link rel="stylesheet" href="/css/game-multiplayer.css">
     <link rel="stylesheet" href="/css/modals.css">
     <link rel="stylesheet" href="/css/notifications.css">
     <link rel="stylesheet" href="/css/responsive.css">
@@ -193,6 +194,20 @@
                 </button>
             </section>
 
+            <!-- Multiplayer Mode Banner -->
+            <section class="section multiplayer-banner" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                <div class="multiplayer-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h2 style="margin: 0;">🎮 MULTIPLAYER MODE</h2>
+                    <div class="multiplayer-badge" style="background: rgba(255,255,255,0.3); padding: 5px 15px; border-radius: 20px; font-weight: bold;">1v1</div>
+                </div>
+                <p class="multiplayer-description" style="margin-bottom: 20px; opacity: 0.95;">
+                    Challenge your friends to a head-to-head race! First to solve wins!
+                </p>
+                <button id="play-multiplayer" class="multiplayer-btn" style="width: 100%; padding: 15px; background: white; color: #667eea; border: none; border-radius: 8px; font-weight: bold; font-size: 1.1rem; cursor: pointer;">
+                    <i class="fas fa-users"></i> PLAY MULTIPLAYER
+                </button>
+            </section>
+
             <section class="section">
                 <h2>⚡ SELECT DIFFICULTY</h2>
                 <div class="button-group">
@@ -353,6 +368,108 @@
                 <button id="survival-play-again">🔁 PLAY AGAIN</button>
                 <button id="survival-main-menu">🏠 MAIN MENU</button>
             </div>
+        </div>
+
+        <!-- Multiplayer Game Page -->
+        <div id="multiplayer-tab" class="tab-content" style="display: none;">
+            <div id="ws-connection-status" class="disconnected">Connecting...</div>
+
+            <!-- Friends View -->
+            <div id="mp-friends-view">
+                <!-- Friend Search -->
+                <div class="mp-section friend-search">
+                    <div class="section-header">Find Friends</div>
+                    <input type="text" id="friend-search-input" placeholder="Search users by username...">
+                    <div id="user-search-results"></div>
+                </div>
+
+                <!-- Pending Friend Requests -->
+                <div class="mp-section">
+                    <div id="pending-requests"></div>
+                </div>
+
+                <!-- Pending Challenges -->
+                <div class="mp-section">
+                    <div id="pending-challenges"></div>
+                </div>
+
+                <!-- Sent Challenges -->
+                <div class="mp-section">
+                    <div id="sent-challenges"></div>
+                </div>
+
+                <!-- Friends List -->
+                <div class="mp-section">
+                    <div class="section-header">Your Friends</div>
+                    <div id="friends-list"></div>
+                </div>
+
+                <!-- Stats -->
+                <div class="mp-section">
+                    <div class="section-header">Your Multiplayer Stats</div>
+                    <div id="mp-stats"></div>
+                </div>
+            </div>
+
+            <!-- Game View -->
+            <div id="mp-game-view" style="display: none;">
+                <div class="game-header">
+                    <div class="opponent-info">
+                        <i class="fas fa-user"></i>
+                        <span class="opponent-name" id="mp-opponent-name">Opponent</span>
+                    </div>
+
+                    <div class="attempts-display">
+                        <div class="attempt-counter">
+                            <div class="attempt-label">Your Attempts</div>
+                            <div class="attempt-value" id="mp-my-attempts">0</div>
+                        </div>
+                        <div class="attempt-counter">
+                            <div class="attempt-label">Opponent Attempts</div>
+                            <div class="attempt-value" id="mp-opponent-attempts">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="guess-input-section">
+                    <input type="text" id="mp-guess-input" placeholder="Enter your guess" maxlength="5" pattern="[0-9]*" inputmode="numeric">
+                    <button class="submit-guess-btn" onclick="MultiplayerGame.submitGuess()">
+                        <i class="fas fa-paper-plane"></i> SUBMIT GUESS
+                    </button>
+                </div>
+
+                <div class="guess-history-container">
+                    <div class="guess-history-title">Your Guess History</div>
+                    <div id="mp-guess-history"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Challenge Modal -->
+    <div id="challenge-modal" class="challenge-modal">
+        <div class="challenge-modal-content">
+            <h3 class="modal-title">Challenge Friend</h3>
+            <div class="difficulty-selection">
+                <button class="difficulty-btn easy" data-difficulty="0">
+                    Easy (3 digits)
+                </button>
+                <button class="difficulty-btn medium" data-difficulty="1">
+                    Medium (4 digits)
+                </button>
+                <button class="difficulty-btn hard" data-difficulty="2">
+                    Hard (5 digits)
+                </button>
+            </div>
+            <button class="cancel-modal-btn" onclick="MultiplayerGame.closeChallengeModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Game Result Modal -->
+    <div id="game-result-modal" class="game-result-modal">
+        <div class="game-result-content">
+            <h2 class="result-title">Result</h2>
+            <p class="result-message">Message</p>
         </div>
     </div>
 
@@ -750,6 +867,12 @@
     <script src="/js/game-daily.js"></script>
     <script src="/js/game-survival.js"></script>
 
+    <!-- SockJS and STOMP for WebSocket -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <!-- Multiplayer Game -->
+    <script src="/js/game-multiplayer.js"></script>
+
     <!-- Initialize all modules when DOM is ready -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -791,6 +914,11 @@
                 console.log('✓ Survival Mode initialized');
             }
 
+            if (typeof MultiplayerGame !== 'undefined') {
+                // Note: MultiplayerGame.init() will be called when user clicks play button
+                console.log('✓ Multiplayer Mode loaded');
+            }
+
             if (typeof Achievements !== 'undefined') {
                 Achievements.init();
                 console.log('✓ Achievements initialized');
@@ -799,6 +927,30 @@
             // Set initial game status to home
             if (typeof Utils !== 'undefined') {
                 Utils.updateGameStatus('home');
+            }
+
+            // Multiplayer button handler
+            const playMultiplayerBtn = document.getElementById('play-multiplayer');
+            if (playMultiplayerBtn) {
+                playMultiplayerBtn.addEventListener('click', () => {
+                    const homePage = document.getElementById('home-page');
+                    const multiplayerTab = document.getElementById('multiplayer-tab');
+
+                    if (Utils && homePage && multiplayerTab) {
+                        Utils.fadeOutElement(homePage, () => {
+                            multiplayerTab.style.display = 'block';
+                            Utils.fadeInElement(multiplayerTab);
+                        });
+                    }
+
+                    if (typeof MultiplayerGame !== 'undefined') {
+                        MultiplayerGame.init();
+                    }
+
+                    if (typeof Utils !== 'undefined') {
+                        Utils.updateGameStatus('multiplayer');
+                    }
+                });
             }
 
             console.log('🎮 NumVana - All modules initialized successfully!');
