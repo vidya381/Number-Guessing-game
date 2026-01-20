@@ -3,6 +3,15 @@
  * Handles friends system, challenges, and real-time 1v1 games
  */
 
+// Helper function for notifications
+function showNotification(message, type) {
+    if (typeof Achievements !== 'undefined' && Achievements.showToast) {
+        Achievements.showToast(message, type);
+    } else {
+        console.log(`[${type}] ${message}`);
+    }
+}
+
 const MultiplayerGame = {
     /**
      * Initialize multiplayer mode
@@ -40,9 +49,23 @@ const MultiplayerGame = {
                     <i class="fas fa-lock"></i>
                     <h3>Login Required</h3>
                     <p>You need to be logged in to play multiplayer mode.</p>
-                    <button class="primary-btn" onclick="showAuthModal()">Log In</button>
+                    <button class="primary-btn" id="mp-login-btn">Log In</button>
                 </div>
             `;
+
+            // Attach event listener to the login button
+            const loginBtn = document.getElementById('mp-login-btn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', () => {
+                    const authModal = document.getElementById('auth-modal');
+                    if (authModal && Utils) {
+                        Utils.openModalWithAnimation(authModal);
+                    }
+                    if (typeof Auth !== 'undefined' && Auth.showLoginForm) {
+                        Auth.showLoginForm();
+                    }
+                });
+            }
         }
     },
 
