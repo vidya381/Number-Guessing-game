@@ -971,6 +971,23 @@
                 Utils.updateGameStatus('home');
             }
 
+            // Prevent accidental page refresh/close during active games
+            window.addEventListener('beforeunload', (e) => {
+                const isGameActive =
+                    document.getElementById('game-page')?.style.display !== 'none' ||
+                    document.getElementById('daily-challenge-page')?.style.display !== 'none' ||
+                    document.getElementById('time-attack-page')?.style.display !== 'none' ||
+                    document.getElementById('survival-page')?.style.display !== 'none' ||
+                    (GameState.timeAttack?.sessionId && GameState.timeAttack?.timerInterval) ||
+                    (GameState.survival?.sessionId && !GameState.survival?.gameEnded);
+
+                if (isGameActive) {
+                    e.preventDefault();
+                    e.returnValue = 'You have a game in progress. Are you sure you want to leave? Your progress will be lost.';
+                    return e.returnValue;
+                }
+            });
+
             // Multiplayer button handler
             const playMultiplayerBtn = document.getElementById('play-multiplayer');
             if (playMultiplayerBtn) {
