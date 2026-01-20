@@ -285,4 +285,122 @@ public class MultiplayerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    /**
+     * Submit a guess in a multiplayer game
+     */
+    @PostMapping("/guess")
+    public ResponseEntity<Map<String, Object>> submitGuess(
+            @RequestBody Map<String, String> requestBody,
+            @RequestHeader("Authorization") String authHeader) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                response.put("error", "Your session expired. Please log in again!");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            String token = authHeader.substring(7);
+            Long userId = jwtUtil.extractUserId(token);
+
+            Optional<User> userOptional = userService.findById(userId);
+            if (userOptional.isEmpty()) {
+                response.put("error", "Couldn't find your account. Try logging in again!");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            User user = userOptional.get();
+            String sessionId = requestBody.get("sessionId");
+            String guess = requestBody.get("guess");
+
+            if (sessionId == null || guess == null) {
+                response.put("error", "Session ID and guess are required");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+
+            Map<String, Object> result = multiplayerService.submitGuess(user, sessionId, guess);
+            return ResponseEntity.ok(result);
+
+        } catch (IllegalArgumentException e) {
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            response.put("error", "Failed to submit guess: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    /**
+     * Get status of a multiplayer game session
+     */
+    @GetMapping("/status/{sessionId}")
+    public ResponseEntity<Map<String, Object>> getSessionStatus(
+            @PathVariable String sessionId,
+            @RequestHeader("Authorization") String authHeader) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                response.put("error", "Your session expired. Please log in again!");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            String token = authHeader.substring(7);
+            Long userId = jwtUtil.extractUserId(token);
+
+            Optional<User> userOptional = userService.findById(userId);
+            if (userOptional.isEmpty()) {
+                response.put("error", "Couldn't find your account. Try logging in again!");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            User user = userOptional.get();
+            Map<String, Object> status = multiplayerService.getSessionStatus(user, sessionId);
+            return ResponseEntity.ok(status);
+
+        } catch (IllegalArgumentException e) {
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            response.put("error", "Failed to get session status: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    /**
+     * Get multiplayer statistics for current user
+     */
+    @GetMapping("/stats")
+    public ResponseEntity<Map<String, Object>> getMultiplayerStats(
+            @RequestHeader("Authorization") String authHeader) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                response.put("error", "Your session expired. Please log in again!");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            String token = authHeader.substring(7);
+            Long userId = jwtUtil.extractUserId(token);
+
+            Optional<User> userOptional = userService.findById(userId);
+            if (userOptional.isEmpty()) {
+                response.put("error", "Couldn't find your account. Try logging in again!");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            User user = userOptional.get();
+            Map<String, Object> stats = multiplayerService.getMultiplayerStats(user);
+
+            response.put("success", true);
+            response.put("stats", stats);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("error", "Failed to get multiplayer stats: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }
