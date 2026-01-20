@@ -955,15 +955,15 @@ window.RegularGame = {
             });
         });
 
-        // Cancel buttons
-        document.querySelectorAll('.cancel-modal-btn').forEach(btn => {
+        // Close buttons
+        document.querySelectorAll('.modal-close-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 if (timeAttackModal) timeAttackModal.style.display = 'none';
                 if (survivalModal) survivalModal.style.display = 'none';
             });
         });
 
-        // Close on outside click
+        // Close on outside click (backdrop)
         [timeAttackModal, survivalModal].forEach(modal => {
             if (modal) {
                 modal.addEventListener('click', (e) => {
@@ -971,6 +971,18 @@ window.RegularGame = {
                         modal.style.display = 'none';
                     }
                 });
+            }
+        });
+
+        // Close on ESC key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (timeAttackModal && timeAttackModal.style.display === 'flex') {
+                    timeAttackModal.style.display = 'none';
+                }
+                if (survivalModal && survivalModal.style.display === 'flex') {
+                    survivalModal.style.display = 'none';
+                }
             }
         });
 
