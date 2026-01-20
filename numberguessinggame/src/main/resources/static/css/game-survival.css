@@ -58,11 +58,24 @@
 .survival-description {
     font-size: 1em;
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     position: relative;
     z-index: 1;
     color: #2d2748;
     opacity: 0.85;
+}
+
+.survival-banner .banner-actions {
+    position: relative;
+    z-index: 1;
+}
+
+.survival-btn {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.survival-btn:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
 }
 
 .survival-difficulty-select {
@@ -360,6 +373,16 @@ body.dark-mode .survival-diff-btn {
 body.dark-mode .survival-diff-btn:hover {
     background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
     box-shadow: 0 6px 16px rgba(220, 38, 38, 0.5);
+}
+
+body.dark-mode .survival-btn {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+}
+
+body.dark-mode .survival-btn:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
 }
 
 body.dark-mode .survival-badge {

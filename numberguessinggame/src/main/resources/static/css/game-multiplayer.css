@@ -77,32 +77,10 @@
 
 .multiplayer-btn {
     background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
-    color: white;
-    padding: 15px 30px;
-    border: none;
-    border-radius: 25px;
-    font-weight: bold;
-    font-size: 1.1em;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
-    position: relative;
-    z-index: 1;
-    box-shadow: 0 4px 15px rgba(20, 184, 166, 0.3);
 }
 
 .multiplayer-btn:hover {
     background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(20, 184, 166, 0.4);
-}
-
-.multiplayer-btn i {
-    font-size: 1.2em;
 }
 
 /* Connection Status */

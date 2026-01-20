@@ -903,5 +903,91 @@ window.RegularGame = {
         } else {
             console.error('❌ Hint button not found in DOM');
         }
+
+        // Difficulty modal handlers
+        this.initDifficultyModals();
+    },
+
+    // ==========================================
+    // DIFFICULTY MODAL MANAGEMENT
+    // ==========================================
+
+    initDifficultyModals: function() {
+        // Time Attack modal
+        const playTimeAttack = document.getElementById('play-time-attack');
+        const timeAttackModal = document.getElementById('time-attack-modal');
+
+        if (playTimeAttack && timeAttackModal) {
+            playTimeAttack.addEventListener('click', () => {
+                timeAttackModal.style.display = 'flex';
+            });
+        }
+
+        // Survival modal
+        const playSurvival = document.getElementById('play-survival');
+        const survivalModal = document.getElementById('survival-modal');
+
+        if (playSurvival && survivalModal) {
+            playSurvival.addEventListener('click', () => {
+                survivalModal.style.display = 'flex';
+            });
+        }
+
+        // Handle difficulty selection in modals
+        document.querySelectorAll('.modal-difficulty-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const mode = btn.dataset.mode;
+                const difficulty = parseInt(btn.dataset.difficulty);
+
+                // Close the modal
+                if (mode === 'time-attack' && timeAttackModal) {
+                    timeAttackModal.style.display = 'none';
+                } else if (mode === 'survival' && survivalModal) {
+                    survivalModal.style.display = 'none';
+                }
+
+                // Start the respective game mode
+                if (mode === 'time-attack' && window.TimeAttackGame) {
+                    TimeAttackGame.startTimeAttackSession(difficulty);
+                } else if (mode === 'survival' && window.SurvivalGame) {
+                    SurvivalGame.startSurvival(difficulty);
+                }
+            });
+        });
+
+        // Cancel buttons
+        document.querySelectorAll('.cancel-modal-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (timeAttackModal) timeAttackModal.style.display = 'none';
+                if (survivalModal) survivalModal.style.display = 'none';
+            });
+        });
+
+        // Close on outside click
+        [timeAttackModal, survivalModal].forEach(modal => {
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.style.display = 'none';
+                    }
+                });
+            }
+        });
+
+        // Multiplayer stats button (if implemented)
+        const multiplayerStatsBtn = document.getElementById('view-multiplayer-stats');
+        if (multiplayerStatsBtn) {
+            multiplayerStatsBtn.addEventListener('click', () => {
+                // TODO: Show multiplayer stats modal when implemented
+                console.log('Multiplayer stats clicked');
+                if (window.MultiplayerGame && MultiplayerGame.loadStats) {
+                    // For now, just navigate to multiplayer tab
+                    const playMultiplayerBtn = document.getElementById('play-multiplayer');
+                    if (playMultiplayerBtn) {
+                        playMultiplayerBtn.click();
+                    }
+                }
+            });
+        }
     }
 };

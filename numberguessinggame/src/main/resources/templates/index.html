@@ -131,12 +131,12 @@
                         <span id="challenge-players">0 players</span>
                     </div>
                 </div>
-                <div class="daily-challenge-buttons">
-                    <button id="play-daily-challenge" class="daily-challenge-btn">
+                <div class="banner-actions">
+                    <button id="play-daily-challenge" class="mode-play-btn daily-challenge-btn">
                         <i class="fas fa-play"></i> PLAY NOW
                     </button>
-                    <button id="view-daily-leaderboard" class="daily-leaderboard-btn">
-                        <i class="fas fa-trophy"></i> LEADERBOARD
+                    <button id="view-daily-leaderboard" class="mode-leaderboard-link">
+                        <i class="fas fa-trophy"></i> Leaderboard
                     </button>
                 </div>
                 <div id="daily-challenge-status" style="display: none;" class="daily-challenge-status">
@@ -153,9 +153,14 @@
                 <p class="multiplayer-description">
                     Challenge your friends to a head-to-head race! First to solve wins!
                 </p>
-                <button id="play-multiplayer" class="multiplayer-btn">
-                    <i class="fas fa-users"></i> PLAY MULTIPLAYER
-                </button>
+                <div class="banner-actions">
+                    <button id="play-multiplayer" class="mode-play-btn multiplayer-btn">
+                        <i class="fas fa-users"></i> PLAY NOW
+                    </button>
+                    <button id="view-multiplayer-stats" class="mode-leaderboard-link">
+                        <i class="fas fa-chart-bar"></i> Stats
+                    </button>
+                </div>
             </section>
 
             <!-- Time Attack Banner -->
@@ -167,20 +172,14 @@
                 <p class="time-attack-description">
                     Race the clock! Win as many as you can in 5 minutes!
                 </p>
-                <div class="time-attack-difficulty-select">
-                    <button class="ta-difficulty-btn" data-difficulty="0">
-                        <span class="ta-difficulty-name">EASY</span>
+                <div class="banner-actions">
+                    <button id="play-time-attack" class="mode-play-btn time-attack-btn">
+                        <i class="fas fa-play"></i> PLAY NOW
                     </button>
-                    <button class="ta-difficulty-btn" data-difficulty="1">
-                        <span class="ta-difficulty-name">MEDIUM</span>
-                    </button>
-                    <button class="ta-difficulty-btn" data-difficulty="2">
-                        <span class="ta-difficulty-name">HARD</span>
+                    <button id="view-time-attack-leaderboard" class="mode-leaderboard-link">
+                        <i class="fas fa-trophy"></i> Leaderboard
                     </button>
                 </div>
-                <button id="view-time-attack-leaderboard" class="ta-leaderboard-btn">
-                    <i class="fas fa-trophy"></i> LEADERBOARD
-                </button>
             </section>
 
             <!-- Survival Mode Banner -->
@@ -192,24 +191,21 @@
                 <p class="survival-description">
                     FIVE ROUNDS! ONE LIFE! Lose a round and your run ends!
                 </p>
-                <div class="survival-difficulty-select">
-                    <button class="start-survival-btn survival-diff-btn" data-difficulty="0">
-                        <span class="survival-diff-name">EASY</span>
+                <div class="banner-actions">
+                    <button id="play-survival" class="mode-play-btn survival-btn">
+                        <i class="fas fa-play"></i> PLAY NOW
                     </button>
-                    <button class="start-survival-btn survival-diff-btn" data-difficulty="1">
-                        <span class="survival-diff-name">MEDIUM</span>
-                    </button>
-                    <button class="start-survival-btn survival-diff-btn" data-difficulty="2">
-                        <span class="survival-diff-name">HARD</span>
+                    <button id="view-survival-leaderboard" class="mode-leaderboard-link">
+                        <i class="fas fa-trophy"></i> Leaderboard
                     </button>
                 </div>
-                <button id="view-survival-leaderboard" class="survival-leaderboard-btn">
-                    <i class="fas fa-trophy"></i> LEADERBOARD
-                </button>
             </section>
 
             <section class="section">
-                <h2>⚡ SELECT DIFFICULTY</h2>
+                <h2>⚡ PRACTICE MODE</h2>
+                <p style="text-align: center; color: var(--text-secondary); margin-bottom: 20px;">
+                    Play at your own pace. No timers, no pressure!
+                </p>
                 <div class="button-group">
                     <button id="play-easy" class="difficulty-btn">EASY</button>
                     <button id="play-medium" class="difficulty-btn">MEDIUM</button>
@@ -217,6 +213,52 @@
                 </div>
             </section>
 
+        </div>
+
+        <!-- Time Attack Difficulty Modal -->
+        <div id="time-attack-modal" class="difficulty-modal" style="display: none;">
+            <div class="difficulty-modal-content">
+                <h2>Select Difficulty</h2>
+                <p>Choose your challenge level for Time Attack mode</p>
+                <div class="modal-difficulty-buttons">
+                    <button class="modal-difficulty-btn" data-mode="time-attack" data-difficulty="0">
+                        <span class="diff-name">EASY</span>
+                        <span class="diff-desc">4 digits</span>
+                    </button>
+                    <button class="modal-difficulty-btn" data-mode="time-attack" data-difficulty="1">
+                        <span class="diff-name">MEDIUM</span>
+                        <span class="diff-desc">5 digits</span>
+                    </button>
+                    <button class="modal-difficulty-btn" data-mode="time-attack" data-difficulty="2">
+                        <span class="diff-name">HARD</span>
+                        <span class="diff-desc">6 digits</span>
+                    </button>
+                </div>
+                <button class="cancel-modal-btn">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Survival Difficulty Modal -->
+        <div id="survival-modal" class="difficulty-modal" style="display: none;">
+            <div class="difficulty-modal-content">
+                <h2>Select Difficulty</h2>
+                <p>Choose your challenge level for Survival mode</p>
+                <div class="modal-difficulty-buttons">
+                    <button class="modal-difficulty-btn" data-mode="survival" data-difficulty="0">
+                        <span class="diff-name">EASY</span>
+                        <span class="diff-desc">4 digits</span>
+                    </button>
+                    <button class="modal-difficulty-btn" data-mode="survival" data-difficulty="1">
+                        <span class="diff-name">MEDIUM</span>
+                        <span class="diff-desc">5 digits</span>
+                    </button>
+                    <button class="modal-difficulty-btn" data-mode="survival" data-difficulty="2">
+                        <span class="diff-name">HARD</span>
+                        <span class="diff-desc">6 digits</span>
+                    </button>
+                </div>
+                <button class="cancel-modal-btn">Cancel</button>
+            </div>
         </div>
 
         <div id="game-page" style="display: none;">
