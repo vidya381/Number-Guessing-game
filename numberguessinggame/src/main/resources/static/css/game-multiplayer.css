@@ -1,0 +1,640 @@
+/**
+ * Multiplayer Mode Styles
+ */
+
+/* Connection Status */
+#ws-connection-status {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    z-index: 1000;
+}
+
+#ws-connection-status.connected {
+    background: #4caf50;
+    color: white;
+}
+
+#ws-connection-status.disconnected {
+    background: #f44336;
+    color: white;
+}
+
+/* Login Required */
+.login-required {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.login-required i {
+    font-size: 4rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.login-required h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.login-required p {
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Friends View */
+#mp-friends-view {
+    padding: 20px;
+}
+
+.mp-section {
+    margin-bottom: 30px;
+}
+
+.section-header {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+}
+
+/* Friend Search */
+.friend-search {
+    margin-bottom: 30px;
+}
+
+#friend-search-input {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+#friend-search-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+#user-search-results {
+    margin-top: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.user-search-result {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background: white;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.user-stats {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.add-friend-btn {
+    padding: 8px 15px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.add-friend-btn:hover {
+    background: var(--hover-color);
+}
+
+.status-badge {
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: bold;
+}
+
+.status-badge.friends {
+    background: #4caf50;
+    color: white;
+}
+
+.status-badge.pending {
+    background: #ff9800;
+    color: white;
+}
+
+.status-badge.received {
+    background: #2196f3;
+    color: white;
+}
+
+/* Friends List */
+#friends-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+}
+
+.friend-card {
+    background: white;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.friend-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.friend-name {
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.friend-stats {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.friend-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.challenge-btn {
+    flex: 1;
+    padding: 10px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.challenge-btn:hover {
+    background: var(--hover-color);
+}
+
+.remove-btn {
+    padding: 10px 15px;
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background: #d32f2f;
+}
+
+.no-friends {
+    text-align: center;
+    color: #666;
+    padding: 40px 20px;
+}
+
+/* Friend Requests */
+.friend-request-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #e3f2fd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.requester-name {
+    font-weight: bold;
+}
+
+.request-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.accept-btn {
+    padding: 8px 15px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.accept-btn:hover {
+    background: #45a049;
+}
+
+.decline-btn {
+    padding: 8px 15px;
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.decline-btn:hover {
+    background: #d32f2f;
+}
+
+/* Challenges */
+.challenge-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: #fff3e0;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid #ff9800;
+}
+
+.challenge-card.sent {
+    background: #f3e5f5;
+    border-left-color: #9c27b0;
+}
+
+.challenge-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.challenger-name,
+.challenged-name {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.challenge-difficulty {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.challenge-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Game View */
+#mp-game-view {
+    display: none;
+    padding: 20px;
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.opponent-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.opponent-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.attempts-display {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.attempt-counter {
+    text-align: center;
+}
+
+.attempt-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.attempt-value {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.guess-input-section {
+    max-width: 400px;
+    margin: 0 auto 30px;
+}
+
+#mp-guess-input {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.5rem;
+    text-align: center;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+#mp-guess-input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+.submit-guess-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.submit-guess-btn:hover {
+    background: var(--hover-color);
+}
+
+/* Guess History */
+.guess-history-container {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.guess-history-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#mp-guess-history {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.guess-entry {
+    display: grid;
+    grid-template-columns: 50px 1fr 80px 80px;
+    gap: 10px;
+    padding: 12px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.guess-number {
+    font-weight: bold;
+    color: #666;
+}
+
+.guess-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.bulls,
+.cows {
+    text-align: center;
+    font-weight: bold;
+}
+
+.no-guesses {
+    text-align: center;
+    color: #666;
+    padding: 40px 20px;
+}
+
+/* Challenge Modal */
+.challenge-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+}
+
+.challenge-modal-content {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+}
+
+.modal-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.difficulty-selection {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.difficulty-btn {
+    padding: 15px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.difficulty-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.difficulty-btn.easy:hover {
+    background: #4caf50;
+    border-color: #4caf50;
+}
+
+.difficulty-btn.medium:hover {
+    background: #ff9800;
+    border-color: #ff9800;
+}
+
+.difficulty-btn.hard:hover {
+    background: #f44336;
+    border-color: #f44336;
+}
+
+.cancel-modal-btn {
+    width: 100%;
+    padding: 12px;
+    background: #757575;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.cancel-modal-btn:hover {
+    background: #616161;
+}
+
+/* Game Result Modal */
+.game-result-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 3000;
+}
+
+.game-result-content {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+
+.game-result-modal.win .result-title {
+    color: #4caf50;
+}
+
+.game-result-modal.loss .result-title {
+    color: #f44336;
+}
+
+.result-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.result-message {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+/* Stats */
+#mp-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+/* Notification Badge */
+#mp-notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #f44336;
+    color: white;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #friends-list {
+        grid-template-columns: 1fr;
+    }
+
+    .opponent-info {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .attempts-display {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .guess-entry {
+        grid-template-columns: 40px 1fr 60px 60px;
+        font-size: 0.9rem;
+    }
+}
