@@ -205,6 +205,7 @@ public class FriendsService {
     /**
      * Get list of friends for a user
      */
+    @Transactional(readOnly = true)
     public List<Map<String, Object>> getFriends(User user) {
         List<Friendship> friendships = friendshipRepository.findByUserId(user.getId());
 
@@ -225,6 +226,7 @@ public class FriendsService {
     /**
      * Get pending friend requests for a user
      */
+    @Transactional(readOnly = true)
     public List<Map<String, Object>> getPendingRequests(User user) {
         List<FriendRequest> requests = friendRequestRepository.findByToUserIdAndStatus(
                 user.getId(), FriendRequest.Status.PENDING);
