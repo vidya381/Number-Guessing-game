@@ -68,11 +68,16 @@
 
 .multiplayer-description {
     font-size: 1.1em;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     opacity: 0.85;
     position: relative;
     z-index: 1;
     color: #2d2748;
+}
+
+.multiplayer-banner .banner-actions {
+    position: relative;
+    z-index: 1;
 }
 
 .multiplayer-btn {
