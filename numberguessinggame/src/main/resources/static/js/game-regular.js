@@ -985,21 +985,5 @@ window.RegularGame = {
                 }
             }
         });
-
-        // Multiplayer stats button (if implemented)
-        const multiplayerStatsBtn = document.getElementById('view-multiplayer-stats');
-        if (multiplayerStatsBtn) {
-            multiplayerStatsBtn.addEventListener('click', () => {
-                // TODO: Show multiplayer stats modal when implemented
-                console.log('Multiplayer stats clicked');
-                if (window.MultiplayerGame && MultiplayerGame.loadStats) {
-                    // For now, just navigate to multiplayer tab
-                    const playMultiplayerBtn = document.getElementById('play-multiplayer');
-                    if (playMultiplayerBtn) {
-                        playMultiplayerBtn.click();
-                    }
-                }
-            });
-        }
     }
 };
