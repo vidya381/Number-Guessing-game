@@ -530,6 +530,10 @@ window.Utils = {
                 statusIcon.innerHTML = '<i class="fas fa-bolt"></i>';
                 statusText.textContent = 'Time Attack Mode';
                 break;
+            case 'multiplayer':
+                statusIcon.innerHTML = '<i class="fas fa-users"></i>';
+                statusText.textContent = 'Multiplayer Mode';
+                break;
             case 'result':
                 statusIcon.innerHTML = '<i class="fas fa-flag-checkered"></i>';
                 statusText.textContent = 'Game Complete';
