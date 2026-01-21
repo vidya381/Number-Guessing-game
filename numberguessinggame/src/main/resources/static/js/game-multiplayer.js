@@ -692,19 +692,20 @@ const MultiplayerGame = {
             const challenge = GameState.multiplayer.pendingChallenges[i];
             const challengerName = escapeHtml(challenge.challengerUsername || 'Unknown');
             const difficulty = difficultyNames[challenge.difficulty] || 'Unknown';
+            const diffClass = difficulty.toLowerCase();
 
             htmlParts.push(
                 '<div class="challenge-card">' +
                     '<div class="challenge-info">' +
                         '<span class="challenger-name">' + challengerName + '</span>' +
-                        '<span class="challenge-difficulty">' + difficulty + '</span>' +
+                        '<span class="difficulty-badge ' + diffClass + '">' + difficulty + '</span>' +
                     '</div>' +
                     '<div class="challenge-actions">' +
-                        '<button class="accept-btn" onclick="MultiplayerGame.acceptChallenge(' + challenge.id + ')">' +
-                            '<i class="fas fa-check"></i> Accept' +
+                        '<button class="challenge-accept-btn" onclick="MultiplayerGame.acceptChallenge(' + challenge.id + ')" title="Accept">' +
+                            '<i class="fas fa-check"></i>' +
                         '</button>' +
-                        '<button class="decline-btn" onclick="MultiplayerGame.declineChallenge(' + challenge.id + ')">' +
-                            '<i class="fas fa-times"></i> Decline' +
+                        '<button class="challenge-decline-btn" onclick="MultiplayerGame.declineChallenge(' + challenge.id + ')" title="Decline">' +
+                            '<i class="fas fa-times"></i>' +
                         '</button>' +
                     '</div>' +
                 '</div>'
@@ -732,11 +733,14 @@ const MultiplayerGame = {
             const challenge = GameState.multiplayer.sentChallenges[i];
             const challengedName = escapeHtml(challenge.challengedUsername || 'Unknown');
             const difficulty = difficultyNames[challenge.difficulty] || 'Unknown';
+            const diffClass = difficulty.toLowerCase();
 
             htmlParts.push(
                 '<div class="challenge-card sent">' +
-                    '<span class="challenged-name">Waiting for ' + challengedName + '</span>' +
-                    '<span class="challenge-difficulty">' + difficulty + '</span>' +
+                    '<div class="challenge-info">' +
+                        '<span class="challenged-name">Waiting for ' + challengedName + '</span>' +
+                        '<span class="difficulty-badge ' + diffClass + '">' + difficulty + '</span>' +
+                    '</div>' +
                 '</div>'
             );
         }
