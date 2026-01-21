@@ -648,7 +648,7 @@ const MultiplayerGame = {
                     actionButton = '<span class="status-badge received">Request Received</span>';
                     break;
                 default:
-                    actionButton = '<button class="add-friend-btn" onclick="MultiplayerGame.sendFriendRequest(' + user.id + ')"><i class="fas fa-user-plus"></i> Add Friend</button>';
+                    actionButton = '<button class="add-friend-btn" onclick="MultiplayerGame.sendFriendRequest(' + user.id + ')">+</button>';
             }
 
             const username = escapeHtml(user.username || 'Unknown');
