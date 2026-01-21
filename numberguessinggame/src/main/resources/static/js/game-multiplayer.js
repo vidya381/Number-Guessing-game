@@ -408,6 +408,13 @@ const MultiplayerGame = {
             return;
         }
 
+        // Check if max attempts reached
+        if (GameState.multiplayer.maxAttempts > 0 &&
+            GameState.multiplayer.currentGame.myAttempts >= GameState.multiplayer.maxAttempts) {
+            showNotification('You have used all your attempts!', 'error');
+            return;
+        }
+
         try {
             const response = await fetch('/api/multiplayer/guess', {
                 method: 'POST',
@@ -856,6 +863,7 @@ const MultiplayerGame = {
         const myAttemptsEl = document.getElementById('mp-my-attempts');
         const oppAttemptsEl = document.getElementById('mp-opponent-attempts');
         const maxAttempts = GameState.multiplayer.maxAttempts;
+        const submitBtn = document.getElementById('mp-submit-guess');
 
         if (myAttemptsEl) {
             myAttemptsEl.textContent = maxAttempts > 0 ?
@@ -866,6 +874,13 @@ const MultiplayerGame = {
             oppAttemptsEl.textContent = maxAttempts > 0 ?
                 `${GameState.multiplayer.currentGame.opponentAttempts}/${maxAttempts}` :
                 GameState.multiplayer.currentGame.opponentAttempts;
+        }
+
+        // Disable submit button if max attempts reached
+        if (submitBtn && maxAttempts > 0 && GameState.multiplayer.currentGame.myAttempts >= maxAttempts) {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.5';
+            submitBtn.style.cursor = 'not-allowed';
         }
     },
 

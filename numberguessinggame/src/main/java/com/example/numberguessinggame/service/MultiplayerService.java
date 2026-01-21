@@ -245,6 +245,11 @@ public class MultiplayerService {
             throw new IllegalArgumentException("You have already solved the puzzle");
         }
 
+        // Check if player has reached max attempts
+        if (playerState.attempts >= session.maxAttempts) {
+            throw new IllegalArgumentException("You have used all your attempts");
+        }
+
         // Validate guess
         if (guess == null || guess.isEmpty()) {
             throw new IllegalArgumentException("Please enter your guess");
