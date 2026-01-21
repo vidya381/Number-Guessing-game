@@ -1237,12 +1237,12 @@
     transform: translateY(-3px);
 }
 
-.stat-icon {
+.stat-card .stat-icon {
     font-size: 2em;
     margin-bottom: 12px;
 }
 
-.stat-label {
+.stat-card .stat-label {
     display: block;
     font-size: 0.85em;
     color: var(--text-secondary);
@@ -1252,7 +1252,7 @@
     font-weight: 600;
 }
 
-.stat-value {
+.stat-card .stat-value {
     display: block;
     font-size: 2.2em;
     font-weight: 700;
@@ -1262,7 +1262,7 @@
     background-clip: text;
 }
 
-.stat-description {
+.stat-card .stat-description {
     font-size: 0.8em;
     color: var(--text-secondary);
     margin-top: 8px;
