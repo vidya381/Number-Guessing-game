@@ -543,7 +543,7 @@
                 <h2>Multiplayer Stats</h2>
                 <p>Your 1v1 performance</p>
             </div>
-            <div class="mp-stats-grid" id="mp-stats-modal-content">
+            <div id="mp-stats-modal-content">
                 <!-- Stats will be populated by JavaScript -->
             </div>
         </div>
@@ -1090,6 +1090,21 @@
 
             if (multiplayerStatsBtn && multiplayerStatsModal) {
                 multiplayerStatsBtn.addEventListener('click', () => {
+                    // Check if user is logged in
+                    if (!GameState.currentUser) {
+                        if (Achievements) {
+                            Achievements.showToast('Please log in to view multiplayer stats! 🔑', 'info');
+                        }
+                        const authModal = document.getElementById('auth-modal');
+                        if (authModal && Utils) {
+                            Utils.openModalWithAnimation(authModal);
+                        }
+                        if (Auth && Auth.showLoginForm) {
+                            Auth.showLoginForm();
+                        }
+                        return;
+                    }
+
                     multiplayerStatsModal.style.display = 'flex';
                     // Load stats if MultiplayerGame is available
                     if (typeof MultiplayerGame !== 'undefined' && MultiplayerGame.loadStats) {

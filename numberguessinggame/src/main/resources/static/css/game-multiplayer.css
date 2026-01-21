@@ -1030,8 +1030,9 @@
     max-width: 600px;
 }
 
-#multiplayer-stats-modal .mp-stats-grid {
-    margin-bottom: 0;
+#mp-stats-modal-content {
+    width: 100%;
+    display: block;
 }
 
 /* Empty State */

@@ -835,28 +835,90 @@ const MultiplayerGame = {
     },
 
     renderStats() {
-        const statsContainer = document.getElementById('mp-stats');
-        if (!statsContainer) return;
-
         const stats = GameState.multiplayer.stats;
-        statsContainer.innerHTML = `
-            <div class="stat-item">
-                <span class="stat-label">Total Games</span>
-                <span class="stat-value">${stats.totalGames}</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Wins</span>
-                <span class="stat-value">${stats.wins}</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Losses</span>
-                <span class="stat-value">${stats.losses}</span>
-            </div>
-            <div class="stat-item">
-                <span class="stat-label">Win Rate</span>
-                <span class="stat-value">${stats.winRate}</span>
+
+        // Determine hero status based on win rate
+        const winRateNum = parseFloat(stats.winRate);
+        let heroGradient, heroEmoji, heroTitle, heroSubtitle;
+
+        if (stats.totalGames === 0) {
+            heroGradient = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+            heroEmoji = '🎮';
+            heroTitle = 'READY TO PLAY';
+            heroSubtitle = 'Start your first match!';
+        } else if (winRateNum >= 60) {
+            heroGradient = 'linear-gradient(135deg, #52c98c 0%, #4ea8de 100%)';
+            heroEmoji = '🏆';
+            heroTitle = 'CHAMPION';
+            heroSubtitle = `${stats.winRate} Win Rate`;
+        } else if (winRateNum >= 40) {
+            heroGradient = 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)';
+            heroEmoji = '⚔️';
+            heroTitle = 'COMPETITOR';
+            heroSubtitle = `${stats.winRate} Win Rate`;
+        } else {
+            heroGradient = 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)';
+            heroEmoji = '💪';
+            heroTitle = 'IMPROVING';
+            heroSubtitle = `${stats.winRate} Win Rate`;
+        }
+
+        const statsHTML = `
+            <div style="display: flex; flex-direction: column; width: 100%;">
+                <!-- Hero Section -->
+                <div style="text-align: center; margin-bottom: 20px; width: 100%;">
+                    <div style="background: ${heroGradient}; padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);">
+                        <div style="font-size: 2.5em; margin-bottom: 10px;">${heroEmoji}</div>
+                        <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">${heroTitle}</div>
+                        <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">${heroSubtitle}</div>
+                        <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">Multiplayer 1v1</div>
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%;">
+                <!-- Total Games -->
+                <div style="background: rgba(167, 139, 250, 0.1); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);">
+                    <i class="fas fa-gamepad" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>
+                    <div style="font-size: 1.8em; font-weight: 700; color: var(--text-color); line-height: 1.2;">${stats.totalGames}</div>
+                    <div style="font-size: 0.75em; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Total Games</div>
+                </div>
+
+                <!-- Wins -->
+                <div style="background: rgba(167, 139, 250, 0.1); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);">
+                    <i class="fas fa-trophy" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>
+                    <div style="font-size: 1.8em; font-weight: 700; color: var(--text-color); line-height: 1.2;">${stats.wins}</div>
+                    <div style="font-size: 0.75em; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Wins</div>
+                </div>
+
+                <!-- Losses -->
+                <div style="background: rgba(167, 139, 250, 0.1); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);">
+                    <i class="fas fa-times-circle" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>
+                    <div style="font-size: 1.8em; font-weight: 700; color: var(--text-color); line-height: 1.2;">${stats.losses}</div>
+                    <div style="font-size: 0.75em; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Losses</div>
+                </div>
+
+                <!-- Win Rate -->
+                <div style="background: rgba(167, 139, 250, 0.1); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);">
+                    <i class="fas fa-chart-line" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>
+                    <div style="font-size: 1.8em; font-weight: 700; color: var(--text-color); line-height: 1.2;">${stats.winRate}</div>
+                    <div style="font-size: 0.75em; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Win Rate</div>
+                </div>
+                </div>
             </div>
         `;
+
+        // Update stats in multiplayer page (if exists)
+        const statsContainer = document.getElementById('mp-stats');
+        if (statsContainer) {
+            statsContainer.innerHTML = statsHTML;
+        }
+
+        // Update stats in modal (for homepage banner button)
+        const modalStatsContainer = document.getElementById('mp-stats-modal-content');
+        if (modalStatsContainer) {
+            modalStatsContainer.innerHTML = statsHTML;
+        }
     },
 
     updateAttemptsDisplay() {
