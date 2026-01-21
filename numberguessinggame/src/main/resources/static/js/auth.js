@@ -293,6 +293,18 @@ window.Auth = {
                     DailyGame.loadDailyChallengeInfo();
                 }
 
+                // If user is on multiplayer tab, reinitialize it to show the actual interface
+                const multiplayerTab = document.getElementById('multiplayer-tab');
+                if (multiplayerTab && multiplayerTab.style.display !== 'none') {
+                    console.log('[AUTH] User logged in while on multiplayer tab, reinitializing...');
+                    if (MultiplayerGame && MultiplayerGame.hideLoginRequired) {
+                        MultiplayerGame.hideLoginRequired();
+                    }
+                    if (MultiplayerGame && MultiplayerGame.init) {
+                        MultiplayerGame.init();
+                    }
+                }
+
                 if (Achievements) {
                     Achievements.showToast('Welcome back, ' + GameState.currentUser.username + '!', 'success');
                 }
@@ -357,6 +369,18 @@ window.Auth = {
                     DailyGame.loadDailyChallengeInfo();
                 }
 
+                // If user is on multiplayer tab, reinitialize it to show the actual interface
+                const multiplayerTab = document.getElementById('multiplayer-tab');
+                if (multiplayerTab && multiplayerTab.style.display !== 'none') {
+                    console.log('[AUTH] User signed up while on multiplayer tab, reinitializing...');
+                    if (MultiplayerGame && MultiplayerGame.hideLoginRequired) {
+                        MultiplayerGame.hideLoginRequired();
+                    }
+                    if (MultiplayerGame && MultiplayerGame.init) {
+                        MultiplayerGame.init();
+                    }
+                }
+
                 if (Achievements) {
                     Achievements.showToast('Welcome to NumVana, ' + GameState.currentUser.username + '!', 'success');
                 }
@@ -368,10 +392,49 @@ window.Auth = {
     },
 
     logout: function() {
+        console.log('[AUTH] Logout function called');
+
+        // Stop all active games and clear timers
+        if (TimeAttackGame && TimeAttackGame.stopGame) {
+            console.log('[AUTH] Stopping Time Attack game');
+            TimeAttackGame.stopGame();
+        }
+        if (SurvivalGame && SurvivalGame.endGame) {
+            SurvivalGame.endGame();
+        }
+        if (MultiplayerGame && GameState.multiplayer && GameState.multiplayer.stompClient) {
+            if (GameState.multiplayer.stompClient.connected) {
+                GameState.multiplayer.stompClient.disconnect();
+            }
+        }
+
+        // Clear all game states
         GameState.currentUser = null;
         GameState.authToken = null;
         localStorage.removeItem('authToken');
         localStorage.removeItem('currentUser');
+
+        // Clear regular game state
+        GameState.attempts = 0;
+        GameState.guessHistory = [];
+        GameState.tabId = null;
+        GameState.hintsUsed = 0;
+        GameState.revealedHints = new Map();
+        GameState.isSubmitting = false;
+
+        // Clear any running timers
+        if (GameState.timerInterval) {
+            clearInterval(GameState.timerInterval);
+            GameState.timerInterval = null;
+        }
+        if (GameState.floatingNumbersInterval) {
+            clearInterval(GameState.floatingNumbersInterval);
+            GameState.floatingNumbersInterval = null;
+        }
+        if (GameState.confettiTimeout) {
+            clearTimeout(GameState.confettiTimeout);
+            GameState.confettiTimeout = null;
+        }
 
         // Clear daily challenge state to prevent showing previous user's status
         GameState.dailyChallenge = {
@@ -384,7 +447,80 @@ window.Auth = {
             digitCount: 0
         };
 
+        // Clear survival state
+        GameState.survival = {
+            lives: 3,
+            score: 0,
+            streak: 0,
+            currentRound: 0,
+            isPlaying: false,
+            difficulty: 1,
+            digitCount: 4,
+            secretNumber: null,
+            guessHistory: [],
+            startTime: null,
+            bestScore: 0
+        };
+
+        // Clear multiplayer state
+        if (GameState.multiplayer) {
+            GameState.multiplayer.sessionId = null;
+            GameState.multiplayer.currentGame = {
+                myAttempts: 0,
+                opponentAttempts: 0,
+                guessHistory: [],
+                opponentUsername: null,
+                opponentId: null
+            };
+        }
+
         this.updateAuthUI();
+
+        // Close any open modals
+        const modals = document.querySelectorAll('.difficulty-modal, .game-result-modal');
+        modals.forEach(modal => {
+            modal.style.display = 'none';
+        });
+
+        // Hide all game screens and show home page
+        console.log('[AUTH] Showing home page and hiding game screens');
+        const homePage = document.getElementById('home-page');
+        const gameStatusDisplay = document.getElementById('game-status-display');
+
+        // Hide all game pages
+        const gamePages = [
+            'game-page',
+            'daily-challenge-page',
+            'daily-result-page',
+            'result-page',
+            'time-attack-page',
+            'time-attack-result-page',
+            'survival-page',
+            'survival-result-page',
+            'multiplayer-tab'
+        ];
+
+        gamePages.forEach(pageId => {
+            const page = document.getElementById(pageId);
+            if (page) {
+                console.log('[AUTH] Hiding ' + pageId);
+                page.style.display = 'none';
+            }
+        });
+
+        // Hide game status
+        if (gameStatusDisplay) {
+            console.log('[AUTH] Hiding game status display');
+            gameStatusDisplay.style.display = 'none';
+        }
+
+        // Show home page
+        if (homePage) {
+            console.log('[AUTH] Showing home page');
+            homePage.style.display = 'block';
+        } else {
+            console.warn('[AUTH] home-page element not found!');
+        }
 
         // Reload daily challenge info for guest view
         if (DailyGame && DailyGame.loadDailyChallengeInfo) {
