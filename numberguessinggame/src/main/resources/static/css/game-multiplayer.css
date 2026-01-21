@@ -740,235 +740,56 @@
     transform: translateY(9px) !important;
 }
 
-/* Game View */
+/* Game View - Using standard layout */
 #mp-game-view {
     display: none;
-    padding: 0;
-    max-width: 900px;
-    margin: 0 auto;
 }
 
-.game-header {
-    text-align: center;
-    margin-bottom: 30px;
-}
-
-.opponent-info {
+/* Multiplayer input container - center and add spacing */
+#mp-input-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    gap: 20px;
-    padding: 25px;
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
-    border-radius: 20px;
-    color: white;
-    margin-bottom: 30px;
-    box-shadow: 0 8px 24px rgba(20, 184, 166, 0.3);
+    flex-wrap: nowrap;
+    gap: 8px;
+    margin: 20px 0;
+    padding: 15px;
+    min-height: 75px;
 }
 
-.opponent-name {
-    font-size: 1.5em;
-    font-weight: 700;
+#mp-input-container.digits-5 .digit-input {
+    width: 52px;
+    height: 52px;
+    font-size: 24px;
 }
 
-.attempts-display {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
-    margin-bottom: 30px;
+#mp-input-container.digits-6 .digit-input {
+    width: 48px;
+    height: 48px;
+    font-size: 22px;
 }
 
-.attempt-counter {
-    background: var(--card-background);
-    border: 2px solid rgba(20, 184, 166, 0.2);
-    border-radius: 16px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 12px var(--shadow-color);
-    transition: all 0.3s ease;
+/* Submit button spacing */
+#mp-submit-guess {
+    margin-top: 10px;
 }
 
-.attempt-counter:hover {
-    border-color: #14b8a6;
-    transform: translateY(-2px);
+/* Multiplayer-specific stat badges */
+.mp-opponent-badge {
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
+    border-color: rgba(20, 184, 166, 0.3);
 }
 
-.attempt-label {
-    font-size: 0.9em;
-    color: var(--text-secondary);
-    margin-bottom: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+.mp-attempts-badge {
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(22, 163, 74, 0.15) 100%);
+    border-color: rgba(34, 197, 94, 0.3);
 }
 
-.attempt-value {
-    font-size: 2.5em;
-    font-weight: 700;
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+.mp-opponent-attempts-badge {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%);
+    border-color: rgba(239, 68, 68, 0.3);
 }
 
-.guess-input-section {
-    max-width: 500px;
-    margin: 0 auto 30px;
-    background: var(--card-background);
-    border: 2px solid rgba(20, 184, 166, 0.2);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-#mp-guess-input {
-    width: 100%;
-    padding: 18px;
-    font-size: 1.8em;
-    text-align: center;
-    border: 2px solid rgba(20, 184, 166, 0.2);
-    border-radius: 14px;
-    margin-bottom: 18px;
-    background: var(--input-background);
-    color: var(--text-color);
-    font-weight: 700;
-    letter-spacing: 8px;
-    transition: all 0.3s ease;
-}
-
-#mp-guess-input:focus {
-    outline: none;
-    border-color: #14b8a6;
-    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
-}
-
-.submit-guess-btn {
-    width: 100%;
-    padding: 16px;
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
-    color: white;
-    border: none;
-    border-radius: 14px;
-    font-size: 1.1em;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
-}
-
-.submit-guess-btn:hover {
-    background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(20, 184, 166, 0.4);
-}
-
-.submit-guess-btn:disabled {
-    background: linear-gradient(135deg, #94a3b8 0%, #64748b 100%);
-    cursor: not-allowed;
-    opacity: 0.6;
-    transform: none;
-}
-
-/* Guess History */
-.guess-history-container {
-    max-width: 700px;
-    margin: 0 auto;
-    background: var(--card-background);
-    border: 2px solid rgba(20, 184, 166, 0.2);
-    border-radius: 20px;
-    padding: 25px;
-    box-shadow: 0 4px 12px var(--shadow-color);
-}
-
-.guess-history-title {
-    font-size: 1.3em;
-    font-weight: 700;
-    margin-bottom: 20px;
-    color: var(--text-color);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.guess-history-title::before {
-    content: '';
-    width: 4px;
-    height: 24px;
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
-    border-radius: 2px;
-}
-
-#mp-guess-history {
-    max-height: 500px;
-    overflow-y: auto;
-    padding-right: 5px;
-}
-
-#mp-guess-history::-webkit-scrollbar {
-    width: 8px;
-}
-
-#mp-guess-history::-webkit-scrollbar-track {
-    background: rgba(20, 184, 166, 0.1);
-    border-radius: 10px;
-}
-
-#mp-guess-history::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
-    border-radius: 10px;
-}
-
-.guess-entry {
-    display: grid;
-    grid-template-columns: 50px 1fr 90px 90px;
-    gap: 12px;
-    padding: 16px;
-    background: var(--input-background);
-    border: 2px solid rgba(20, 184, 166, 0.1);
-    border-radius: 12px;
-    margin-bottom: 10px;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.guess-entry:hover {
-    border-color: #14b8a6;
-    transform: translateX(5px);
-}
-
-.guess-number {
-    font-weight: 700;
-    color: var(--text-secondary);
-    font-size: 0.9em;
-}
-
-.guess-value {
-    font-size: 1.3em;
-    font-weight: 700;
-    text-align: center;
-    letter-spacing: 4px;
-    color: var(--text-color);
-}
-
-.bulls,
-.cows {
-    text-align: center;
-    font-weight: 700;
-    font-size: 1.1em;
-    padding: 8px;
-    border-radius: 8px;
-}
-
-.bulls {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-    color: white;
-}
-
-.cows {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-    color: white;
-}
-
+/* Multiplayer guess history - uses standard history-item styling from components.css */
 .no-guesses {
     text-align: center;
     color: var(--text-secondary);

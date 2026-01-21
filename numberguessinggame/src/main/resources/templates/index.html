@@ -471,35 +471,34 @@
 
             <!-- Game View -->
             <div id="mp-game-view" style="display: none;">
-                <div class="game-header">
-                    <div class="opponent-info">
-                        <i class="fas fa-user"></i>
-                        <span class="opponent-name" id="mp-opponent-name">Opponent</span>
-                    </div>
-
-                    <div class="attempts-display">
-                        <div class="attempt-counter">
-                            <div class="attempt-label">Your Attempts</div>
-                            <div class="attempt-value" id="mp-my-attempts">0</div>
+                <section class="section">
+                    <div class="game-header">
+                        <h2>🎮 1v1 RACE</h2>
+                        <div class="game-stats-inline">
+                            <div class="stat-badge mp-opponent-badge">
+                                <span class="stat-icon">👤</span>
+                                <span id="mp-opponent-name">Opponent</span>
+                            </div>
+                            <div class="stat-badge mp-attempts-badge">
+                                <span class="stat-icon">🎯</span>
+                                <span id="mp-my-attempts">0</span>
+                            </div>
+                            <div class="stat-badge mp-opponent-attempts-badge">
+                                <span class="stat-icon">⚔️</span>
+                                <span id="mp-opponent-attempts">0</span>
+                            </div>
                         </div>
-                        <div class="attempt-counter">
-                            <div class="attempt-label">Opponent Attempts</div>
-                            <div class="attempt-value" id="mp-opponent-attempts">0</div>
-                        </div>
                     </div>
-                </div>
+                    <div id="mp-input-container"></div>
+                    <button id="mp-submit-guess">⚡ SUBMIT GUESS</button>
+                </section>
 
-                <div class="guess-input-section">
-                    <input type="text" id="mp-guess-input" placeholder="Enter your guess" maxlength="5" pattern="[0-9]*" inputmode="numeric">
-                    <button class="submit-guess-btn" onclick="MultiplayerGame.submitGuess()">
-                        <i class="fas fa-paper-plane"></i> SUBMIT GUESS
-                    </button>
-                </div>
-
-                <div class="guess-history-container">
-                    <div class="guess-history-title">Your Guess History</div>
+                <section class="section">
+                    <h2>📋 GUESS HISTORY</h2>
                     <div id="mp-guess-history"></div>
-                </div>
+                </section>
+
+                <button id="mp-quit-game">❌ LEAVE GAME</button>
             </div>
         </div>
     </div>

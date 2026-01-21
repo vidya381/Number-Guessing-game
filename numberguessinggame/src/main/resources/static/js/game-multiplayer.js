@@ -388,11 +388,22 @@ const MultiplayerGame = {
     },
 
     async submitGuess() {
-        const guessInput = document.getElementById('mp-guess-input');
-        const guess = guessInput.value.trim();
+        const inputContainer = document.getElementById('mp-input-container');
+        const inputs = inputContainer ? inputContainer.querySelectorAll('.digit-input') : [];
+        let guess = '';
+        for (let input of inputs) {
+            guess += input.value;
+        }
 
-        if (!guess) {
-            showNotification('Please enter your guess', 'error');
+        if (guess.length !== GameState.multiplayer.digitCount) {
+            showNotification(`Please enter ${GameState.multiplayer.digitCount} digits`, 'error');
+            return;
+        }
+
+        // Check for unique digits
+        const uniqueDigits = new Set(guess);
+        if (uniqueDigits.size !== guess.length) {
+            showNotification('All digits must be unique!', 'error');
             return;
         }
 
@@ -423,8 +434,9 @@ const MultiplayerGame = {
                 this.renderGuessHistory();
                 this.updateAttemptsDisplay();
 
-                // Clear input
-                guessInput.value = '';
+                // Clear inputs and focus on first
+                inputs.forEach(input => input.value = '');
+                if (inputs[0]) inputs[0].focus();
 
                 // Check if won
                 if (data.isCorrect) {
@@ -759,14 +771,39 @@ const MultiplayerGame = {
             return;
         }
 
-        historyContainer.innerHTML = history.map((entry, index) => `
-            <div class="guess-entry">
-                <span class="guess-number">${index + 1}</span>
-                <span class="guess-value">${entry.guess}</span>
-                <span class="bulls">${entry.bulls} 🐂</span>
-                <span class="cows">${entry.cows} 🐄</span>
-            </div>
-        `).reverse().join('');
+        historyContainer.innerHTML = '';
+
+        // Render in reverse order (newest first)
+        for (let i = history.length - 1; i >= 0; i--) {
+            const entry = history[i];
+            const historyItem = document.createElement('div');
+            historyItem.className = 'history-item';
+
+            // Add animation class to the newest item
+            if (i === history.length - 1) {
+                historyItem.classList.add('new-item');
+            }
+
+            const guessSpan = document.createElement('span');
+            guessSpan.className = 'guess';
+            guessSpan.textContent = entry.guess;
+
+            const correctSpan = document.createElement('span');
+            correctSpan.className = 'correct';
+            correctSpan.textContent = `🐂 Correct: ${entry.bulls}`;
+
+            const misplacedSpan = document.createElement('span');
+            misplacedSpan.className = 'misplaced';
+            misplacedSpan.textContent = `🐄 Misplaced: ${entry.cows}`;
+
+            historyItem.appendChild(guessSpan);
+            historyItem.appendChild(correctSpan);
+            historyItem.appendChild(misplacedSpan);
+            historyContainer.appendChild(historyItem);
+        }
+
+        // Scroll to top to show the newest guess
+        historyContainer.scrollTop = 0;
     },
 
     renderStats() {
@@ -860,8 +897,86 @@ const MultiplayerGame = {
         // Clear guess history
         this.renderGuessHistory();
 
-        // Focus on input
-        document.getElementById('mp-guess-input').focus();
+        // Create input boxes
+        this.updateInputFields(GameState.multiplayer.digitCount);
+
+        // Focus on first input
+        const firstInput = document.querySelector('#mp-input-container .digit-input');
+        if (firstInput) {
+            firstInput.focus();
+        }
+
+        // Setup quit button
+        const quitBtn = document.getElementById('mp-quit-game');
+        if (quitBtn) {
+            quitBtn.onclick = () => this.quitGame();
+        }
+
+        // Setup submit button
+        const submitBtn = document.getElementById('mp-submit-guess');
+        if (submitBtn) {
+            submitBtn.onclick = () => this.submitGuess();
+        }
+    },
+
+    updateInputFields(digitCount) {
+        const inputContainer = document.getElementById('mp-input-container');
+        if (!inputContainer) return;
+
+        inputContainer.innerHTML = '';
+
+        // Add class for dynamic sizing
+        inputContainer.className = '';
+        if (digitCount === 5) {
+            inputContainer.classList.add('digits-5');
+        } else if (digitCount === 6) {
+            inputContainer.classList.add('digits-6');
+        }
+
+        for (let i = 0; i < digitCount; i++) {
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.inputMode = 'numeric';
+            input.pattern = '[0-9]*';
+            input.maxLength = 1;
+            input.className = 'digit-input';
+
+            input.addEventListener('input', function (e) {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (this.value) {
+                    if (this.nextElementSibling) {
+                        this.nextElementSibling.focus();
+                    } else {
+                        document.getElementById('mp-submit-guess').focus();
+                    }
+                }
+            });
+
+            input.addEventListener('keydown', function (e) {
+                if (e.key === 'Backspace' && !this.value && this.previousElementSibling) {
+                    this.previousElementSibling.focus();
+                }
+                // Submit on Enter key
+                if (e.key === 'Enter') {
+                    document.getElementById('mp-submit-guess').click();
+                }
+            });
+
+            inputContainer.appendChild(input);
+        }
+    },
+
+    quitGame() {
+        if (confirm('Are you sure you want to leave the game?')) {
+            // Reset game state
+            GameState.resetMultiplayer();
+
+            // Go back to friends view
+            this.showFriendsUI();
+
+            // Show notification
+            showNotification('You left the game', 'info');
+        }
     },
 
     showChallengeModal(friendId, friendUsername) {
