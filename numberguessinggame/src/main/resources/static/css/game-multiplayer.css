@@ -910,6 +910,15 @@
     font-size: 1.1em;
 }
 
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-secondary);
+    font-size: 0.95em;
+    font-style: italic;
+}
+
 /* Multiplayer theme for challenge modal */
 .multiplayer-theme .modal-icon {
     background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);

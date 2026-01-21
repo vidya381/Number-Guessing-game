@@ -645,11 +645,11 @@ const MultiplayerGame = {
         console.log('Rendering pending requests, count:', GameState.multiplayer.pendingRequests.length);
 
         if (GameState.multiplayer.pendingRequests.length === 0) {
-            requestsContainer.innerHTML = '';
+            requestsContainer.innerHTML = '<div class="empty-state">No pending friend requests</div>';
             return;
         }
 
-        const htmlParts = ['<div class="section-header">Pending Friend Requests</div>'];
+        const htmlParts = [];
 
         for (let i = 0; i < GameState.multiplayer.pendingRequests.length; i++) {
             const request = GameState.multiplayer.pendingRequests[i];
@@ -681,12 +681,12 @@ const MultiplayerGame = {
         console.log('Rendering pending challenges, count:', GameState.multiplayer.pendingChallenges.length);
 
         if (GameState.multiplayer.pendingChallenges.length === 0) {
-            challengesContainer.innerHTML = '';
+            challengesContainer.innerHTML = '<div class="empty-state">No incoming challenges</div>';
             return;
         }
 
         const difficultyNames = ['Easy', 'Medium', 'Hard'];
-        const htmlParts = ['<div class="section-header">Pending Challenges</div>'];
+        const htmlParts = [];
 
         for (let i = 0; i < GameState.multiplayer.pendingChallenges.length; i++) {
             const challenge = GameState.multiplayer.pendingChallenges[i];
@@ -721,12 +721,12 @@ const MultiplayerGame = {
         console.log('Rendering sent challenges, count:', GameState.multiplayer.sentChallenges.length);
 
         if (GameState.multiplayer.sentChallenges.length === 0) {
-            sentContainer.innerHTML = '';
+            sentContainer.innerHTML = '<div class="empty-state">No sent challenges</div>';
             return;
         }
 
         const difficultyNames = ['Easy', 'Medium', 'Hard'];
-        const htmlParts = ['<div class="section-header">Sent Challenges</div>'];
+        const htmlParts = [];
 
         for (let i = 0; i < GameState.multiplayer.sentChallenges.length; i++) {
             const challenge = GameState.multiplayer.sentChallenges[i];
