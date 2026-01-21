@@ -688,6 +688,71 @@ public class MultiplayerService {
     }
 
     /**
+     * Leave/forfeit an active game
+     */
+    @Transactional
+    public void leaveGame(User user, String sessionId) {
+        // Get active session
+        ActiveGameSession session = activeSessions.get(sessionId);
+        if (session == null) {
+            throw new IllegalArgumentException("Game session not found or already completed");
+        }
+
+        // Verify user is in this game
+        if (!user.getId().equals(session.player1Id) && !user.getId().equals(session.player2Id)) {
+            throw new IllegalArgumentException("You are not a player in this game");
+        }
+
+        // Determine opponent
+        Long opponentId = user.getId().equals(session.player1Id) ? session.player2Id : session.player1Id;
+
+        // Update database session
+        MultiplayerGameSession dbSession = sessionRepository.findBySessionId(sessionId)
+                .orElseThrow(() -> new IllegalArgumentException("Database session not found"));
+
+        dbSession.setStatus(MultiplayerGameSession.Status.COMPLETED);
+        dbSession.setWinner(userRepository.findById(opponentId).orElse(null));
+        dbSession.setCompletedAt(LocalDateTime.now());
+        sessionRepository.save(dbSession);
+
+        // Update stats (no coins awarded for forfeit)
+        User winner = userRepository.findById(opponentId).orElse(null);
+        User loser = user;
+
+        if (winner != null) {
+            winner.setTotalGames((winner.getTotalGames() != null ? winner.getTotalGames() : 0) + 1);
+            winner.setTotalWins((winner.getTotalWins() != null ? winner.getTotalWins() : 0) + 1);
+            userRepository.save(winner);
+        }
+
+        if (loser != null) {
+            loser.setTotalGames((loser.getTotalGames() != null ? loser.getTotalGames() : 0) + 1);
+            userRepository.save(loser);
+        }
+
+        // Send WebSocket notification to opponent (winner)
+        Map<String, Object> winnerNotification = new HashMap<>();
+        winnerNotification.put("type", "game_completed");
+        winnerNotification.put("result", "won");
+        winnerNotification.put("coinsAwarded", 0); // No coins for forfeit win
+        winnerNotification.put("secretNumber", session.secretNumber);
+        winnerNotification.put("reason", "opponent_left");
+        messagingTemplate.convertAndSend("/queue/game." + opponentId, winnerNotification);
+
+        // Send WebSocket notification to player who left (forfeit)
+        Map<String, Object> forfeitNotification = new HashMap<>();
+        forfeitNotification.put("type", "game_completed");
+        forfeitNotification.put("result", "forfeit");
+        forfeitNotification.put("secretNumber", session.secretNumber);
+        messagingTemplate.convertAndSend("/queue/game." + user.getId(), forfeitNotification);
+
+        // Remove from active sessions
+        activeSessions.remove(sessionId);
+
+        logger.info("Player {} left game session {}, opponent {} wins by forfeit", user.getId(), sessionId, opponentId);
+    }
+
+    /**
      * Helper: Convert number to digit array
      */
     private int[] getDigits(int number) {

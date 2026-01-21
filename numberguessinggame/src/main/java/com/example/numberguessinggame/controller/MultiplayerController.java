@@ -416,4 +416,47 @@ public class MultiplayerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    /**
+     * Leave/forfeit an active game
+     */
+    @PostMapping("/leave")
+    public ResponseEntity<Map<String, Object>> leaveGame(
+            @RequestBody Map<String, Object> requestBody,
+            @RequestHeader("Authorization") String authHeader) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                response.put("error", "Your session expired. Please log in again!");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            String token = authHeader.substring(7);
+            Long userId = jwtUtil.extractUserId(token);
+
+            Optional<User> userOptional = userService.findById(userId);
+            if (userOptional.isEmpty()) {
+                response.put("error", "Couldn't find your account. Try logging in again!");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            User user = userOptional.get();
+            String sessionId = (String) requestBody.get("sessionId");
+
+            // Handle player leaving/forfeiting the game
+            multiplayerService.leaveGame(user, sessionId);
+
+            response.put("success", true);
+            response.put("message", "Left game successfully");
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        } catch (Exception e) {
+            response.put("error", "Failed to leave game: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }

@@ -460,7 +460,7 @@ const MultiplayerGame = {
     /**
      * Show multiplayer result page
      */
-    showMultiplayerResult(result, myAttempts, opponentAttempts, coinsAwarded, secretNumber) {
+    showMultiplayerResult(result, myAttempts, opponentAttempts, coinsAwarded, secretNumber, reason = null) {
         const gameView = document.getElementById('mp-game-view');
         const resultPage = document.getElementById('mp-result-page');
         const statsContainer = document.getElementById('mp-game-stats');
@@ -483,12 +483,21 @@ const MultiplayerGame = {
                 heroSection.style.cssText = 'text-align: center; margin-bottom: 25px;';
 
                 if (result === 'won') {
-                    const coinsText = coinsAwarded > 0 ? `+${coinsAwarded} coins earned!` : 'You won the race!';
+                    // Determine win message based on reason
+                    let statusMessage;
+                    if (reason === 'opponent_left') {
+                        statusMessage = 'Opponent forfeited!';
+                    } else if (coinsAwarded > 0) {
+                        statusMessage = `+${coinsAwarded} coins earned!`;
+                    } else {
+                        statusMessage = 'You solved it first!';
+                    }
+
                     heroSection.innerHTML = `
                         <div style="background: linear-gradient(135deg, #52c98c 0%, #4ea8de 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(82, 201, 140, 0.3);">
                             <div style="font-size: 2.5em; margin-bottom: 10px;">🏆</div>
                             <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">VICTORY!</div>
-                            <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">${coinsText}</div>
+                            <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">${statusMessage}</div>
                             <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">1v1 Multiplayer</div>
                         </div>
                     `;
@@ -496,20 +505,41 @@ const MultiplayerGame = {
                         Utils.createConfetti();
                     }
                 } else if (result === 'draw') {
+                    // Determine draw message based on attempts
+                    const maxAttempts = GameState.multiplayer.maxAttempts;
+                    let drawMessage;
+                    if (myAttempts >= maxAttempts && opponentAttempts >= maxAttempts) {
+                        drawMessage = 'Both ran out of attempts!';
+                    } else {
+                        drawMessage = 'Both solved with same attempts!';
+                    }
+
                     heroSection.innerHTML = `
                         <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(240, 147, 251, 0.3);">
                             <div style="font-size: 2.5em; margin-bottom: 10px;">🤝</div>
                             <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">DRAW!</div>
-                            <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">Evenly matched!</div>
+                            <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">${drawMessage}</div>
+                            <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">1v1 Multiplayer</div>
+                        </div>
+                    `;
+                } else if (result === 'forfeit') {
+                    heroSection.innerHTML = `
+                        <div style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(231, 76, 60, 0.3);">
+                            <div style="font-size: 2.5em; margin-bottom: 10px;">🏳️</div>
+                            <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">FORFEITED</div>
+                            <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">You left the game!</div>
                             <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">1v1 Multiplayer</div>
                         </div>
                     `;
                 } else {
+                    // Determine loss message
+                    let lossMessage = 'Opponent solved it first!';
+
                     heroSection.innerHTML = `
                         <div style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(231, 76, 60, 0.3);">
                             <div style="font-size: 2.5em; margin-bottom: 10px;">😔</div>
                             <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">DEFEAT</div>
-                            <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">Better luck next time!</div>
+                            <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">${lossMessage}</div>
                             <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">1v1 Multiplayer</div>
                         </div>
                     `;
@@ -566,7 +596,8 @@ const MultiplayerGame = {
             GameState.multiplayer.currentGame.myAttempts,
             GameState.multiplayer.currentGame.opponentAttempts,
             data.coinsAwarded || 0,
-            data.secretNumber || ''
+            data.secretNumber || '',
+            data.reason || null
         );
 
         // Refresh stats (before reset so we can display updated win rate)
@@ -584,7 +615,8 @@ const MultiplayerGame = {
             GameState.multiplayer.currentGame.myAttempts,
             GameState.multiplayer.currentGame.opponentAttempts,
             0,
-            secretNumber
+            secretNumber,
+            null
         );
 
         // Refresh stats
@@ -602,7 +634,27 @@ const MultiplayerGame = {
             GameState.multiplayer.currentGame.myAttempts,
             GameState.multiplayer.currentGame.opponentAttempts,
             0,
-            secretNumber
+            secretNumber,
+            null
+        );
+
+        // Refresh stats
+        this.loadStats();
+
+        // Don't auto-navigate - user clicks back to lobby button
+    },
+
+    handleGameForfeit(secretNumber) {
+        showNotification('You forfeited the game', 'warning');
+
+        // Show result page
+        this.showMultiplayerResult(
+            'forfeit',
+            GameState.multiplayer.currentGame.myAttempts,
+            GameState.multiplayer.currentGame.opponentAttempts,
+            0,
+            secretNumber,
+            null
         );
 
         // Refresh stats
@@ -651,9 +703,19 @@ const MultiplayerGame = {
                 break;
             case 'game_completed':
                 if (data.result === 'won') {
-                    this.handleGameWin({ coinsAwarded: data.coinsAwarded, secretNumber: data.secretNumber });
+                    // Check if win was because opponent left
+                    if (data.reason === 'opponent_left') {
+                        showNotification('Your opponent left the game. You win by forfeit!', 'success');
+                    }
+                    this.handleGameWin({
+                        coinsAwarded: data.coinsAwarded,
+                        secretNumber: data.secretNumber,
+                        reason: data.reason
+                    });
                 } else if (data.result === 'draw') {
                     this.handleGameDraw(data.secretNumber);
+                } else if (data.result === 'forfeit') {
+                    this.handleGameForfeit(data.secretNumber);
                 } else {
                     this.handleGameLoss(data.secretNumber);
                 }
@@ -1082,6 +1144,7 @@ const MultiplayerGame = {
     showFriendsView() {
         document.getElementById('mp-friends-view').style.display = 'block';
         document.getElementById('mp-game-view').style.display = 'none';
+        document.getElementById('mp-result-page').style.display = 'none';
     },
 
     showGameUI() {
@@ -1167,16 +1230,41 @@ const MultiplayerGame = {
         }
     },
 
-    quitGame() {
-        if (confirm('Are you sure you want to leave the game?')) {
-            // Reset game state
+    async quitGame() {
+        if (!confirm('Are you sure you want to leave the game? This will count as a forfeit.')) {
+            return;
+        }
+
+        const sessionId = GameState.multiplayer.sessionId;
+
+        try {
+            // Notify backend that player is leaving
+            if (sessionId) {
+                const response = await fetch('/api/multiplayer/leave', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${GameState.authToken}`
+                    },
+                    body: JSON.stringify({ sessionId })
+                });
+
+                if (response.ok) {
+                    // WebSocket will send forfeit notification
+                    // Don't reset state or show friends view yet - wait for WebSocket
+                } else {
+                    showNotification('Failed to leave game', 'error');
+                    // If backend fails, reset locally
+                    GameState.resetMultiplayer();
+                    this.showFriendsView();
+                }
+            }
+        } catch (error) {
+            console.error('Failed to notify server of game leave:', error);
+            showNotification('Failed to leave game', 'error');
+            // If request fails, reset locally
             GameState.resetMultiplayer();
-
-            // Go back to friends view
-            this.showFriendsUI();
-
-            // Show notification
-            showNotification('You left the game', 'info');
+            this.showFriendsView();
         }
     },
 
