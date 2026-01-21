@@ -1023,6 +1023,23 @@
             const playMultiplayerBtn = document.getElementById('play-multiplayer');
             if (playMultiplayerBtn) {
                 playMultiplayerBtn.addEventListener('click', () => {
+                    // Check if user is logged in first
+                    if (!GameState.currentUser) {
+                        // Show toast and open auth modal
+                        if (Achievements) {
+                            Achievements.showToast('Please log in to play multiplayer mode! 🔑', 'info');
+                        }
+                        const authModal = document.getElementById('auth-modal');
+                        if (authModal && Utils) {
+                            Utils.openModalWithAnimation(authModal);
+                        }
+                        if (Auth && Auth.showLoginForm) {
+                            Auth.showLoginForm();
+                        }
+                        return;
+                    }
+
+                    // User is logged in, proceed to multiplayer tab
                     const homePage = document.getElementById('home-page');
                     const multiplayerTab = document.getElementById('multiplayer-tab');
 

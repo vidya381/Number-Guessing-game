@@ -19,12 +19,6 @@ const MultiplayerGame = {
     init() {
         console.log('Initializing multiplayer mode...');
 
-        // Check if user is logged in
-        if (!GameState.currentUser) {
-            this.showLoginRequired();
-            return;
-        }
-
         // Initialize WebSocket connection
         this.connectWebSocket();
 
@@ -37,66 +31,6 @@ const MultiplayerGame = {
 
         // Set up event listeners
         this.setupEventListeners();
-    },
-
-    /**
-     * Show login required message
-     */
-    showLoginRequired() {
-        const multiplayerTab = document.getElementById('multiplayer-tab');
-        const mpFriendsView = document.getElementById('mp-friends-view');
-        const mpGameView = document.getElementById('mp-game-view');
-
-        if (multiplayerTab) {
-            // Hide existing content instead of destroying it
-            if (mpFriendsView) mpFriendsView.style.display = 'none';
-            if (mpGameView) mpGameView.style.display = 'none';
-
-            // Check if login required message already exists
-            let loginRequiredDiv = document.getElementById('mp-login-required');
-            if (!loginRequiredDiv) {
-                // Create and insert login required message
-                loginRequiredDiv = document.createElement('div');
-                loginRequiredDiv.id = 'mp-login-required';
-                loginRequiredDiv.className = 'login-required';
-                loginRequiredDiv.innerHTML = `
-                    <i class="fas fa-lock"></i>
-                    <h3>Login Required</h3>
-                    <p>You need to be logged in to play multiplayer mode.</p>
-                    <button class="primary-btn" id="mp-login-btn">Log In</button>
-                `;
-                multiplayerTab.appendChild(loginRequiredDiv);
-
-                // Attach event listener to the login button
-                const loginBtn = document.getElementById('mp-login-btn');
-                if (loginBtn) {
-                    loginBtn.addEventListener('click', () => {
-                        const authModal = document.getElementById('auth-modal');
-                        if (authModal && Utils) {
-                            Utils.openModalWithAnimation(authModal);
-                        }
-                        if (typeof Auth !== 'undefined' && Auth.showLoginForm) {
-                            Auth.showLoginForm();
-                        }
-                    });
-                }
-            } else {
-                // Show existing login required message
-                loginRequiredDiv.style.display = 'block';
-            }
-        }
-    },
-
-    hideLoginRequired() {
-        const loginRequiredDiv = document.getElementById('mp-login-required');
-        const mpFriendsView = document.getElementById('mp-friends-view');
-
-        if (loginRequiredDiv) {
-            loginRequiredDiv.style.display = 'none';
-        }
-        if (mpFriendsView) {
-            mpFriendsView.style.display = 'block';
-        }
     },
 
     /**

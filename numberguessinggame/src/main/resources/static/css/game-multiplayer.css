@@ -113,28 +113,6 @@
     color: white;
 }
 
-/* Login Required */
-.login-required {
-    text-align: center;
-    padding: 60px 20px;
-}
-
-.login-required i {
-    font-size: 4rem;
-    color: var(--primary-color);
-    margin-bottom: 20px;
-}
-
-.login-required h3 {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-}
-
-.login-required p {
-    color: #666;
-    margin-bottom: 30px;
-}
-
 /* Friends View */
 #mp-friends-view {
     padding: 0;

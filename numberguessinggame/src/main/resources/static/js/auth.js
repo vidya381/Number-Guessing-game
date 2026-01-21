@@ -293,17 +293,6 @@ window.Auth = {
                     DailyGame.loadDailyChallengeInfo();
                 }
 
-                // If user is on multiplayer tab, reinitialize it to show the actual interface
-                const multiplayerTab = document.getElementById('multiplayer-tab');
-                if (multiplayerTab && multiplayerTab.style.display !== 'none') {
-                    console.log('[AUTH] User logged in while on multiplayer tab, reinitializing...');
-                    if (MultiplayerGame && MultiplayerGame.hideLoginRequired) {
-                        MultiplayerGame.hideLoginRequired();
-                    }
-                    if (MultiplayerGame && MultiplayerGame.init) {
-                        MultiplayerGame.init();
-                    }
-                }
 
                 if (Achievements) {
                     Achievements.showToast('Welcome back, ' + GameState.currentUser.username + '!', 'success');
@@ -369,17 +358,6 @@ window.Auth = {
                     DailyGame.loadDailyChallengeInfo();
                 }
 
-                // If user is on multiplayer tab, reinitialize it to show the actual interface
-                const multiplayerTab = document.getElementById('multiplayer-tab');
-                if (multiplayerTab && multiplayerTab.style.display !== 'none') {
-                    console.log('[AUTH] User signed up while on multiplayer tab, reinitializing...');
-                    if (MultiplayerGame && MultiplayerGame.hideLoginRequired) {
-                        MultiplayerGame.hideLoginRequired();
-                    }
-                    if (MultiplayerGame && MultiplayerGame.init) {
-                        MultiplayerGame.init();
-                    }
-                }
 
                 if (Achievements) {
                     Achievements.showToast('Welcome to NumVana, ' + GameState.currentUser.username + '!', 'success');
