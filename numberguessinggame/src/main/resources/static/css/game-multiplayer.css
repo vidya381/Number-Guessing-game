@@ -215,7 +215,10 @@
     font-size: 1.2em;
     font-weight: 700;
     margin-bottom: 16px;
-    color: #14b8a6;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     display: flex;
     align-items: center;
     gap: 8px;
