@@ -505,21 +505,25 @@
     </div>
 
     <!-- Challenge Modal -->
-    <div id="challenge-modal" class="challenge-modal">
-        <div class="challenge-modal-content">
-            <h3 class="modal-title">Challenge Friend</h3>
-            <div class="difficulty-selection">
-                <button class="difficulty-btn easy" data-difficulty="0">
-                    Easy (3 digits)
+    <div id="challenge-modal" class="difficulty-modal multiplayer-theme" style="display: none;">
+        <div class="difficulty-modal-content">
+            <button class="modal-close-btn" aria-label="Close" onclick="MultiplayerGame.closeChallengeModal()">&times;</button>
+            <div class="modal-header">
+                <div class="modal-icon">🎮</div>
+                <h2 id="challenge-modal-title">Challenge Friend</h2>
+                <p>Choose difficulty for your 1v1 race!</p>
+            </div>
+            <div class="modal-difficulty-buttons">
+                <button class="modal-difficulty-btn easy-diff" data-difficulty="0">
+                    <span class="diff-name">EASY</span>
                 </button>
-                <button class="difficulty-btn medium" data-difficulty="1">
-                    Medium (4 digits)
+                <button class="modal-difficulty-btn medium-diff" data-difficulty="1">
+                    <span class="diff-name">MEDIUM</span>
                 </button>
-                <button class="difficulty-btn hard" data-difficulty="2">
-                    Hard (5 digits)
+                <button class="modal-difficulty-btn hard-diff" data-difficulty="2">
+                    <span class="diff-name">HARD</span>
                 </button>
             </div>
-            <button class="cancel-modal-btn" onclick="MultiplayerGame.closeChallengeModal()">Cancel</button>
         </div>
     </div>
 

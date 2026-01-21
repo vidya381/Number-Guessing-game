@@ -864,7 +864,10 @@ const MultiplayerGame = {
         const modal = document.getElementById('challenge-modal');
         if (!modal) return;
 
-        modal.querySelector('.modal-title').textContent = `Challenge ${friendUsername}`;
+        const title = document.getElementById('challenge-modal-title');
+        if (title) {
+            title.textContent = `Challenge ${friendUsername}`;
+        }
         modal.dataset.friendId = friendId;
         modal.style.display = 'flex';
     },
@@ -934,9 +937,9 @@ const MultiplayerGame = {
         }
 
         // Challenge modal difficulty buttons
-        document.querySelectorAll('.difficulty-btn').forEach(btn => {
+        document.querySelectorAll('#challenge-modal .modal-difficulty-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const difficulty = parseInt(e.target.dataset.difficulty);
+                const difficulty = parseInt(e.currentTarget.dataset.difficulty);
                 this.sendChallengeFromModal(difficulty);
             });
         });
