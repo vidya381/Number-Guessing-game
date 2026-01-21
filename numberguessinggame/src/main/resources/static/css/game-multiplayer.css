@@ -774,19 +774,22 @@
 }
 
 /* Multiplayer-specific stat badges */
-.mp-opponent-badge {
-    background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(6, 182, 212, 0.15) 100%);
-    border-color: rgba(20, 184, 166, 0.3);
+.mp-vs-badge {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+    border-color: rgba(139, 92, 246, 0.3);
+    font-weight: 600;
 }
 
 .mp-attempts-badge {
     background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(22, 163, 74, 0.15) 100%);
     border-color: rgba(34, 197, 94, 0.3);
+    font-weight: 600;
 }
 
 .mp-opponent-attempts-badge {
     background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%);
     border-color: rgba(239, 68, 68, 0.3);
+    font-weight: 600;
 }
 
 /* Multiplayer guess history - uses standard history-item styling from components.css */

@@ -455,18 +455,26 @@ public class MultiplayerService {
             userRepository.save(loser);
         }
 
+        // Get attempt counts from session
+        ActiveGameSession.PlayerState winnerState = session.playerStates.get(winnerId);
+        ActiveGameSession.PlayerState loserState = session.playerStates.get(loserId);
+
         // Send WebSocket notifications
         Map<String, Object> winnerNotification = new HashMap<>();
         winnerNotification.put("type", "game_completed");
         winnerNotification.put("result", "won");
         winnerNotification.put("coinsAwarded", coinsAwarded);
         winnerNotification.put("secretNumber", session.secretNumber);
+        winnerNotification.put("myAttempts", winnerState.attempts);
+        winnerNotification.put("opponentAttempts", loserState.attempts);
         messagingTemplate.convertAndSend("/queue/game." + winnerId, winnerNotification);
 
         Map<String, Object> loserNotification = new HashMap<>();
         loserNotification.put("type", "game_completed");
         loserNotification.put("result", "lost");
         loserNotification.put("secretNumber", session.secretNumber);
+        loserNotification.put("myAttempts", loserState.attempts);
+        loserNotification.put("opponentAttempts", winnerState.attempts);
         messagingTemplate.convertAndSend("/queue/game." + loserId, loserNotification);
 
         // Remove from active sessions
@@ -519,17 +527,25 @@ public class MultiplayerService {
             userRepository.save(player2);
         }
 
+        // Get attempt counts from session
+        ActiveGameSession.PlayerState player1State = session.playerStates.get(session.player1Id);
+        ActiveGameSession.PlayerState player2State = session.playerStates.get(session.player2Id);
+
         // Send WebSocket notifications to both players
         Map<String, Object> drawNotification1 = new HashMap<>();
         drawNotification1.put("type", "game_completed");
         drawNotification1.put("result", "draw");
         drawNotification1.put("secretNumber", session.secretNumber);
+        drawNotification1.put("myAttempts", player1State.attempts);
+        drawNotification1.put("opponentAttempts", player2State.attempts);
         messagingTemplate.convertAndSend("/queue/game." + session.player1Id, drawNotification1);
 
         Map<String, Object> drawNotification2 = new HashMap<>();
         drawNotification2.put("type", "game_completed");
         drawNotification2.put("result", "draw");
         drawNotification2.put("secretNumber", session.secretNumber);
+        drawNotification2.put("myAttempts", player2State.attempts);
+        drawNotification2.put("opponentAttempts", player1State.attempts);
         messagingTemplate.convertAndSend("/queue/game." + session.player2Id, drawNotification2);
 
         // Remove from active sessions
@@ -730,6 +746,10 @@ public class MultiplayerService {
             userRepository.save(loser);
         }
 
+        // Get attempt counts from session
+        ActiveGameSession.PlayerState winnerState = session.playerStates.get(opponentId);
+        ActiveGameSession.PlayerState loserState = session.playerStates.get(user.getId());
+
         // Send WebSocket notification to opponent (winner)
         Map<String, Object> winnerNotification = new HashMap<>();
         winnerNotification.put("type", "game_completed");
@@ -737,6 +757,8 @@ public class MultiplayerService {
         winnerNotification.put("coinsAwarded", 0); // No coins for forfeit win
         winnerNotification.put("secretNumber", session.secretNumber);
         winnerNotification.put("reason", "opponent_left");
+        winnerNotification.put("myAttempts", winnerState.attempts);
+        winnerNotification.put("opponentAttempts", loserState.attempts);
         messagingTemplate.convertAndSend("/queue/game." + opponentId, winnerNotification);
 
         // Send WebSocket notification to player who left (forfeit)
@@ -744,6 +766,8 @@ public class MultiplayerService {
         forfeitNotification.put("type", "game_completed");
         forfeitNotification.put("result", "forfeit");
         forfeitNotification.put("secretNumber", session.secretNumber);
+        forfeitNotification.put("myAttempts", loserState.attempts);
+        forfeitNotification.put("opponentAttempts", winnerState.attempts);
         messagingTemplate.convertAndSend("/queue/game." + user.getId(), forfeitNotification);
 
         // Remove from active sessions

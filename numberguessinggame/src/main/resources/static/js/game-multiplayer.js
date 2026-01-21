@@ -568,10 +568,8 @@ const MultiplayerGame = {
                 };
 
                 // Add 4 stat cards
-                const maxAttempts = GameState.multiplayer.maxAttempts;
-                const myAttemptsDisplay = maxAttempts > 0 ? `${myAttempts}/${maxAttempts}` : myAttempts;
-                const oppAttemptsDisplay = opponentAttempts === -1 ? 'DNF' :
-                    (maxAttempts > 0 ? `${opponentAttempts}/${maxAttempts}` : opponentAttempts);
+                const myAttemptsDisplay = myAttempts;
+                const oppAttemptsDisplay = opponentAttempts === -1 ? 'DNF' : opponentAttempts;
 
                 statsGrid.appendChild(createStatCard('fas fa-bullseye', myAttemptsDisplay, 'Your Attempts'));
                 statsGrid.appendChild(createStatCard('fas fa-crosshairs', oppAttemptsDisplay, 'Opponent Attempts'));
@@ -590,11 +588,11 @@ const MultiplayerGame = {
     handleGameWin(data) {
         showNotification(data.message || 'You won!', 'success');
 
-        // Show result page
+        // Show result page - use attempt counts from WebSocket data
         this.showMultiplayerResult(
             'won',
-            GameState.multiplayer.currentGame.myAttempts,
-            GameState.multiplayer.currentGame.opponentAttempts,
+            data.myAttempts || GameState.multiplayer.currentGame.myAttempts,
+            data.opponentAttempts || GameState.multiplayer.currentGame.opponentAttempts,
             data.coinsAwarded || 0,
             data.secretNumber || '',
             data.reason || null
@@ -606,16 +604,16 @@ const MultiplayerGame = {
         // Don't auto-navigate - user clicks back to lobby button
     },
 
-    handleGameLoss(secretNumber) {
+    handleGameLoss(data) {
         showNotification('Your opponent won!', 'info');
 
-        // Show result page
+        // Show result page - use attempt counts from WebSocket data
         this.showMultiplayerResult(
             'lost',
-            GameState.multiplayer.currentGame.myAttempts,
-            GameState.multiplayer.currentGame.opponentAttempts,
+            data.myAttempts || GameState.multiplayer.currentGame.myAttempts,
+            data.opponentAttempts || GameState.multiplayer.currentGame.opponentAttempts,
             0,
-            secretNumber,
+            data.secretNumber || data,
             null
         );
 
@@ -625,16 +623,16 @@ const MultiplayerGame = {
         // Don't auto-navigate - user clicks back to lobby button
     },
 
-    handleGameDraw(secretNumber) {
+    handleGameDraw(data) {
         showNotification("It's a draw!", 'info');
 
-        // Show result page
+        // Show result page - use attempt counts from WebSocket data
         this.showMultiplayerResult(
             'draw',
-            GameState.multiplayer.currentGame.myAttempts,
-            GameState.multiplayer.currentGame.opponentAttempts,
+            data.myAttempts || GameState.multiplayer.currentGame.myAttempts,
+            data.opponentAttempts || GameState.multiplayer.currentGame.opponentAttempts,
             0,
-            secretNumber,
+            data.secretNumber || data,
             null
         );
 
@@ -644,16 +642,16 @@ const MultiplayerGame = {
         // Don't auto-navigate - user clicks back to lobby button
     },
 
-    handleGameForfeit(secretNumber) {
+    handleGameForfeit(data) {
         showNotification('You forfeited the game', 'warning');
 
-        // Show result page
+        // Show result page - use attempt counts from WebSocket data
         this.showMultiplayerResult(
             'forfeit',
-            GameState.multiplayer.currentGame.myAttempts,
-            GameState.multiplayer.currentGame.opponentAttempts,
+            data.myAttempts || GameState.multiplayer.currentGame.myAttempts,
+            data.opponentAttempts || GameState.multiplayer.currentGame.opponentAttempts,
             0,
-            secretNumber,
+            data.secretNumber || data,
             null
         );
 
@@ -707,17 +705,13 @@ const MultiplayerGame = {
                     if (data.reason === 'opponent_left') {
                         showNotification('Your opponent left the game. You win by forfeit!', 'success');
                     }
-                    this.handleGameWin({
-                        coinsAwarded: data.coinsAwarded,
-                        secretNumber: data.secretNumber,
-                        reason: data.reason
-                    });
+                    this.handleGameWin(data);
                 } else if (data.result === 'draw') {
-                    this.handleGameDraw(data.secretNumber);
+                    this.handleGameDraw(data);
                 } else if (data.result === 'forfeit') {
-                    this.handleGameForfeit(data.secretNumber);
+                    this.handleGameForfeit(data);
                 } else {
-                    this.handleGameLoss(data.secretNumber);
+                    this.handleGameLoss(data);
                 }
                 break;
         }

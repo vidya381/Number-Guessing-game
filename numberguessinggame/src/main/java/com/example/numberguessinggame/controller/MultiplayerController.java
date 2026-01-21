@@ -118,6 +118,7 @@ public class MultiplayerController {
             String sessionId = (String) result.get("sessionId");
             Integer digitCount = (Integer) result.get("digitCount");
             Integer difficulty = (Integer) result.get("difficulty");
+            Integer maxAttempts = (Integer) result.get("maxAttempts");
             String opponentUsername = (String) result.get("opponentUsername");
 
             // Notify challenger (user1) that game has started
@@ -126,6 +127,7 @@ public class MultiplayerController {
             challengerNotification.put("sessionId", sessionId);
             challengerNotification.put("digitCount", digitCount);
             challengerNotification.put("difficulty", difficulty);
+            challengerNotification.put("maxAttempts", maxAttempts);
             challengerNotification.put("opponentId", user.getId());
             challengerNotification.put("opponentUsername", user.getUsername());
             messagingTemplate.convertAndSend("/queue/game." + opponentId, challengerNotification);
@@ -136,6 +138,7 @@ public class MultiplayerController {
             accepterNotification.put("sessionId", sessionId);
             accepterNotification.put("digitCount", digitCount);
             accepterNotification.put("difficulty", difficulty);
+            accepterNotification.put("maxAttempts", maxAttempts);
             accepterNotification.put("opponentId", opponentId);
             accepterNotification.put("opponentUsername", opponentUsername);
             messagingTemplate.convertAndSend("/queue/game." + user.getId(), accepterNotification);
