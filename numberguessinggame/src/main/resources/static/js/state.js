@@ -105,6 +105,7 @@ window.GameState = {
         sessionId: null,
         difficulty: null,
         digitCount: 0,
+        maxAttempts: 0,
         currentGame: {
             myAttempts: 0,
             opponentAttempts: 0,
@@ -195,6 +196,7 @@ window.GameState = {
         this.multiplayer.sessionId = null;
         this.multiplayer.difficulty = null;
         this.multiplayer.digitCount = 0;
+        this.multiplayer.maxAttempts = 0;
         this.multiplayer.currentGame = {
             myAttempts: 0,
             opponentAttempts: 0,

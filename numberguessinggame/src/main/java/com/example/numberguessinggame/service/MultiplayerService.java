@@ -55,6 +55,7 @@ public class MultiplayerService {
         Integer secretNumber;
         Integer digitCount;
         Integer difficulty;
+        Integer maxAttempts;
         LocalDateTime startedAt;
         Map<Long, PlayerState> playerStates;
 
@@ -66,13 +67,14 @@ public class MultiplayerService {
         }
 
         ActiveGameSession(String sessionId, Long player1Id, Long player2Id,
-                          Integer secretNumber, Integer digitCount, Integer difficulty) {
+                          Integer secretNumber, Integer digitCount, Integer difficulty, Integer maxAttempts) {
             this.sessionId = sessionId;
             this.player1Id = player1Id;
             this.player2Id = player2Id;
             this.secretNumber = secretNumber;
             this.digitCount = digitCount;
             this.difficulty = difficulty;
+            this.maxAttempts = maxAttempts;
             this.startedAt = LocalDateTime.now();
             this.playerStates = new ConcurrentHashMap<>();
 
@@ -85,6 +87,18 @@ public class MultiplayerService {
             playerStates.put(player1Id, state1);
             playerStates.put(player2Id, state2);
         }
+    }
+
+    /**
+     * Get max attempts for a difficulty level
+     */
+    private Integer getMaxAttemptsForDifficulty(Integer difficulty) {
+        return switch(difficulty) {
+            case 0 -> 7;   // Easy: 3 digits, 7 attempts
+            case 1 -> 10;  // Medium: 4 digits, 10 attempts
+            case 2 -> 13;  // Hard: 5 digits, 13 attempts
+            default -> 7;
+        };
     }
 
     /**
@@ -182,18 +196,20 @@ public class MultiplayerService {
         progressRepository.save(progress2);
 
         // Add to in-memory tracking
+        Integer maxAttempts = getMaxAttemptsForDifficulty(difficulty);
         ActiveGameSession activeSession = new ActiveGameSession(
             sessionId,
             challenge.getChallenger().getId(),
             user.getId(),
             secretNumber,
             digitCount,
-            difficulty
+            difficulty,
+            maxAttempts
         );
         activeSessions.put(sessionId, activeSession);
 
-        logger.info("Game session created: {} vs {} (session: {})",
-                    challenge.getChallenger().getUsername(), user.getUsername(), sessionId);
+        logger.info("Game session created: {} vs {} (session: {}, max attempts: {})",
+                    challenge.getChallenger().getUsername(), user.getUsername(), sessionId, maxAttempts);
 
         Map<String, Object> result = new HashMap<>();
         result.put("success", true);
@@ -201,6 +217,7 @@ public class MultiplayerService {
         result.put("sessionId", sessionId);
         result.put("digitCount", digitCount);
         result.put("difficulty", difficulty);
+        result.put("maxAttempts", maxAttempts);
         result.put("opponentId", challenge.getChallenger().getId());
         result.put("opponentUsername", challenge.getChallenger().getUsername());
 
@@ -285,6 +302,7 @@ public class MultiplayerService {
 
         // Get opponent ID
         Long opponentId = user.getId().equals(session.player1Id) ? session.player2Id : session.player1Id;
+        ActiveGameSession.PlayerState opponentState = session.playerStates.get(opponentId);
 
         // Notify opponent of guess
         Map<String, Object> opponentNotification = new HashMap<>();
@@ -293,14 +311,44 @@ public class MultiplayerService {
         opponentNotification.put("opponentAttempts", playerState.attempts);
         messagingTemplate.convertAndSend("/queue/game." + opponentId, opponentNotification);
 
-        // If correct, complete the game
+        // Check game completion scenarios
         if (isCorrect) {
             playerState.solved = true;
             playerState.solvedAt = LocalDateTime.now();
 
-            completeGame(sessionId, user.getId(), session);
+            // If opponent also solved, determine winner by fewest attempts
+            if (opponentState.solved) {
+                Long winnerId = playerState.attempts < opponentState.attempts ? user.getId() :
+                               playerState.attempts > opponentState.attempts ? opponentId : null;
 
-            response.put("message", "Congratulations! You won!");
+                if (winnerId == null) {
+                    // Draw - both solved with same attempts (shouldn't happen since one solved first)
+                    completeGameWithDraw(sessionId, session);
+                    response.put("message", "It's a draw! Both solved with same attempts!");
+                } else {
+                    completeGame(sessionId, winnerId, session);
+                    response.put("message", winnerId.equals(user.getId()) ?
+                        "Congratulations! You won with fewer attempts!" :
+                        "Opponent won with fewer attempts!");
+                }
+            } else {
+                // Only this player solved - they win
+                completeGame(sessionId, user.getId(), session);
+                response.put("message", "Congratulations! You won!");
+            }
+        } else if (playerState.attempts >= session.maxAttempts) {
+            // Player reached max attempts without solving
+            // Check if opponent also reached max (or already solved)
+            if (opponentState.solved) {
+                // Opponent already won
+                completeGame(sessionId, opponentId, session);
+                response.put("message", "Out of attempts! Opponent wins!");
+            } else if (opponentState.attempts >= session.maxAttempts) {
+                // Both reached max without solving - draw
+                completeGameWithDraw(sessionId, session);
+                response.put("message", "Out of attempts! It's a draw!");
+            }
+            // else: wait for opponent to finish their attempts
         }
 
         return response;
@@ -418,6 +466,69 @@ public class MultiplayerService {
         activeSessions.remove(sessionId);
 
         logger.info("Game completed: Winner {} in session {}", winnerId, sessionId);
+    }
+
+    /**
+     * Complete a game session with a draw (no winner)
+     */
+    @Transactional
+    protected void completeGameWithDraw(String sessionId, ActiveGameSession session) {
+        // Update database session
+        MultiplayerGameSession dbSession = sessionRepository.findBySessionId(sessionId)
+                .orElseThrow(() -> new IllegalArgumentException("Database session not found"));
+
+        dbSession.setStatus(MultiplayerGameSession.Status.COMPLETED);
+        dbSession.setWinner(null); // No winner in a draw
+        dbSession.setCompletedAt(LocalDateTime.now());
+        sessionRepository.save(dbSession);
+
+        // Update player progress in database
+        for (Map.Entry<Long, ActiveGameSession.PlayerState> entry : session.playerStates.entrySet()) {
+            Long userId = entry.getKey();
+            ActiveGameSession.PlayerState state = entry.getValue();
+
+            MultiplayerPlayerProgress progress = progressRepository
+                    .findBySessionIdAndUserId(dbSession.getId(), userId)
+                    .orElseThrow(() -> new IllegalArgumentException("Progress not found"));
+
+            progress.setAttemptsCount(state.attempts);
+            progress.setSolved(state.solved);
+            progress.setSolvedAt(state.solvedAt);
+            progress.setLastActivity(state.lastActivity);
+            progressRepository.save(progress);
+        }
+
+        // Update user stats (totalGames for both, no wins)
+        User player1 = userRepository.findById(session.player1Id).orElse(null);
+        User player2 = userRepository.findById(session.player2Id).orElse(null);
+
+        if (player1 != null) {
+            player1.setTotalGames((player1.getTotalGames() != null ? player1.getTotalGames() : 0) + 1);
+            userRepository.save(player1);
+        }
+
+        if (player2 != null) {
+            player2.setTotalGames((player2.getTotalGames() != null ? player2.getTotalGames() : 0) + 1);
+            userRepository.save(player2);
+        }
+
+        // Send WebSocket notifications to both players
+        Map<String, Object> drawNotification1 = new HashMap<>();
+        drawNotification1.put("type", "game_completed");
+        drawNotification1.put("result", "draw");
+        drawNotification1.put("secretNumber", session.secretNumber);
+        messagingTemplate.convertAndSend("/queue/game." + session.player1Id, drawNotification1);
+
+        Map<String, Object> drawNotification2 = new HashMap<>();
+        drawNotification2.put("type", "game_completed");
+        drawNotification2.put("result", "draw");
+        drawNotification2.put("secretNumber", session.secretNumber);
+        messagingTemplate.convertAndSend("/queue/game." + session.player2Id, drawNotification2);
+
+        // Remove from active sessions
+        activeSessions.remove(sessionId);
+
+        logger.info("Game completed with draw in session {}", sessionId);
     }
 
     /**

@@ -338,7 +338,7 @@ const MultiplayerGame = {
             const data = await response.json();
             if (data.success) {
                 // Game started!
-                this.startGame(data.sessionId, data.digitCount, data.opponentUsername, data.opponentId);
+                this.startGame(data.sessionId, data.digitCount, data.opponentUsername, data.opponentId, data.maxAttempts);
                 this.loadPendingChallenges();
             } else {
                 showNotification(data.error || 'Failed to accept challenge', 'error');
@@ -371,11 +371,12 @@ const MultiplayerGame = {
     /**
      * Game Logic
      */
-    startGame(sessionId, digitCount, opponentUsername, opponentId) {
-        console.log('Starting multiplayer game:', sessionId);
+    startGame(sessionId, digitCount, opponentUsername, opponentId, maxAttempts) {
+        console.log('Starting multiplayer game:', sessionId, 'max attempts:', maxAttempts);
 
         GameState.multiplayer.sessionId = sessionId;
         GameState.multiplayer.digitCount = digitCount;
+        GameState.multiplayer.maxAttempts = maxAttempts || 0;
         GameState.multiplayer.currentGame.opponentUsername = opponentUsername;
         GameState.multiplayer.currentGame.opponentId = opponentId;
         GameState.multiplayer.currentGame.myAttempts = 0;
@@ -487,6 +488,24 @@ const MultiplayerGame = {
         }, 3000);
     },
 
+    handleGameDraw(secretNumber) {
+        showNotification("It's a draw!", 'info');
+
+        // Show draw modal
+        this.showGameResultModal('draw', 0, secretNumber);
+
+        // Reset game state
+        GameState.resetMultiplayer();
+
+        // Refresh stats
+        this.loadStats();
+
+        // Show friends list again
+        setTimeout(() => {
+            this.showFriendsView();
+        }, 3000);
+    },
+
     /**
      * WebSocket Event Handlers
      */
@@ -517,7 +536,7 @@ const MultiplayerGame = {
         switch (data.type) {
             case 'game_started':
                 console.log('Game started notification received:', data);
-                this.startGame(data.sessionId, data.digitCount, data.opponentUsername, data.opponentId);
+                this.startGame(data.sessionId, data.digitCount, data.opponentUsername, data.opponentId, data.maxAttempts);
                 this.loadSentChallenges(); // Refresh sent challenges list
                 this.loadPendingChallenges(); // Refresh pending challenges list
                 break;
@@ -528,6 +547,8 @@ const MultiplayerGame = {
             case 'game_completed':
                 if (data.result === 'won') {
                     this.handleGameWin({ coinsAwarded: data.coinsAwarded });
+                } else if (data.result === 'draw') {
+                    this.handleGameDraw(data.secretNumber);
                 } else {
                     this.handleGameLoss(data.secretNumber);
                 }
@@ -834,12 +855,17 @@ const MultiplayerGame = {
     updateAttemptsDisplay() {
         const myAttemptsEl = document.getElementById('mp-my-attempts');
         const oppAttemptsEl = document.getElementById('mp-opponent-attempts');
+        const maxAttempts = GameState.multiplayer.maxAttempts;
 
         if (myAttemptsEl) {
-            myAttemptsEl.textContent = GameState.multiplayer.currentGame.myAttempts;
+            myAttemptsEl.textContent = maxAttempts > 0 ?
+                `${GameState.multiplayer.currentGame.myAttempts}/${maxAttempts}` :
+                GameState.multiplayer.currentGame.myAttempts;
         }
         if (oppAttemptsEl) {
-            oppAttemptsEl.textContent = GameState.multiplayer.currentGame.opponentAttempts;
+            oppAttemptsEl.textContent = maxAttempts > 0 ?
+                `${GameState.multiplayer.currentGame.opponentAttempts}/${maxAttempts}` :
+                GameState.multiplayer.currentGame.opponentAttempts;
         }
     },
 
@@ -1015,6 +1041,10 @@ const MultiplayerGame = {
             title.textContent = '🎉 You Won!';
             message.textContent = `Congratulations! You earned ${coinsAwarded} coins!`;
             modal.className = 'game-result-modal win';
+        } else if (result === 'draw') {
+            title.textContent = '🤝 Draw!';
+            message.textContent = `Both players ran out of attempts! The answer was: ${secretNumber}`;
+            modal.className = 'game-result-modal draw';
         } else {
             title.textContent = '😔 You Lost';
             message.textContent = `Better luck next time! The answer was: ${secretNumber}`;
