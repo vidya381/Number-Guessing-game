@@ -659,11 +659,11 @@ const MultiplayerGame = {
                 '<div class="friend-request-card">' +
                     '<span class="requester-name">' + username + '</span>' +
                     '<div class="request-actions">' +
-                        '<button class="accept-btn" onclick="MultiplayerGame.acceptFriendRequest(' + request.id + ')">' +
-                            '<i class="fas fa-check"></i> Accept' +
+                        '<button class="accept-btn" onclick="MultiplayerGame.acceptFriendRequest(' + request.id + ')" title="Accept">' +
+                            '<i class="fas fa-check"></i>' +
                         '</button>' +
-                        '<button class="decline-btn" onclick="MultiplayerGame.declineFriendRequest(' + request.id + ')">' +
-                            '<i class="fas fa-times"></i> Decline' +
+                        '<button class="decline-btn" onclick="MultiplayerGame.declineFriendRequest(' + request.id + ')" title="Decline">' +
+                            '<i class="fas fa-times"></i>' +
                         '</button>' +
                     '</div>' +
                 '</div>'
