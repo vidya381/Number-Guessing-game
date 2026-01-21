@@ -446,10 +446,8 @@ const MultiplayerGame = {
                 inputs.forEach(input => input.value = '');
                 if (inputs[0]) inputs[0].focus();
 
-                // Check if won
-                if (data.isCorrect) {
-                    this.handleGameWin(data);
-                }
+                // Don't handle game completion here - wait for WebSocket notification
+                // which will have all the correct data (secretNumber, coinsAwarded, etc.)
             } else {
                 showNotification(data.error || 'Invalid guess', 'error');
             }
@@ -459,58 +457,158 @@ const MultiplayerGame = {
         }
     },
 
+    /**
+     * Show multiplayer result page
+     */
+    showMultiplayerResult(result, myAttempts, opponentAttempts, coinsAwarded, secretNumber) {
+        const gameView = document.getElementById('mp-game-view');
+        const resultPage = document.getElementById('mp-result-page');
+        const statsContainer = document.getElementById('mp-game-stats');
+
+        if (!statsContainer) return;
+
+        // Calculate match time
+        const matchTime = GameState.multiplayer.currentGame.startTime ?
+            Math.floor((Date.now() - GameState.multiplayer.currentGame.startTime) / 1000) : 0;
+        const minutes = Math.floor(matchTime / 60);
+        const seconds = matchTime % 60;
+        const timeDisplay = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+        if (Utils) {
+            Utils.fadeOutElement(gameView, () => {
+                statsContainer.textContent = '';
+
+                // Hero Section - Win/Loss/Draw Status
+                const heroSection = document.createElement('div');
+                heroSection.style.cssText = 'text-align: center; margin-bottom: 25px;';
+
+                if (result === 'won') {
+                    const coinsText = coinsAwarded > 0 ? `+${coinsAwarded} coins earned!` : 'You won the race!';
+                    heroSection.innerHTML = `
+                        <div style="background: linear-gradient(135deg, #52c98c 0%, #4ea8de 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(82, 201, 140, 0.3);">
+                            <div style="font-size: 2.5em; margin-bottom: 10px;">🏆</div>
+                            <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">VICTORY!</div>
+                            <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">${coinsText}</div>
+                            <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">1v1 Multiplayer</div>
+                        </div>
+                    `;
+                    if (Utils) {
+                        Utils.createConfetti();
+                    }
+                } else if (result === 'draw') {
+                    heroSection.innerHTML = `
+                        <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(240, 147, 251, 0.3);">
+                            <div style="font-size: 2.5em; margin-bottom: 10px;">🤝</div>
+                            <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">DRAW!</div>
+                            <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">Evenly matched!</div>
+                            <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">1v1 Multiplayer</div>
+                        </div>
+                    `;
+                } else {
+                    heroSection.innerHTML = `
+                        <div style="background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(231, 76, 60, 0.3);">
+                            <div style="font-size: 2.5em; margin-bottom: 10px;">😔</div>
+                            <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">DEFEAT</div>
+                            <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">Better luck next time!</div>
+                            <div style="font-size: 0.85em; color: rgba(255,255,255,0.8); margin-top: 5px;">1v1 Multiplayer</div>
+                        </div>
+                    `;
+                }
+                statsContainer.appendChild(heroSection);
+
+                // Stats Grid - 2x2 Cards (4 tiles)
+                const statsGrid = document.createElement('div');
+                statsGrid.style.cssText = 'display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px;';
+
+                const createStatCard = (icon, value, label) => {
+                    const card = document.createElement('div');
+                    card.style.cssText = `
+                        background: rgba(167, 139, 250, 0.1);
+                        padding: 18px;
+                        border-radius: 12px;
+                        text-align: center;
+                        border: 1px solid rgba(167, 139, 250, 0.2);
+                    `;
+                    card.innerHTML = `
+                        <i class="${icon}" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>
+                        <div style="font-size: 1.8em; font-weight: 700; color: var(--text-color); line-height: 1.2;">${value}</div>
+                        <div style="font-size: 0.75em; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">${label}</div>
+                    `;
+                    return card;
+                };
+
+                // Add 4 stat cards
+                const maxAttempts = GameState.multiplayer.maxAttempts;
+                const myAttemptsDisplay = maxAttempts > 0 ? `${myAttempts}/${maxAttempts}` : myAttempts;
+                const oppAttemptsDisplay = opponentAttempts === -1 ? 'DNF' :
+                    (maxAttempts > 0 ? `${opponentAttempts}/${maxAttempts}` : opponentAttempts);
+
+                statsGrid.appendChild(createStatCard('fas fa-bullseye', myAttemptsDisplay, 'Your Attempts'));
+                statsGrid.appendChild(createStatCard('fas fa-crosshairs', oppAttemptsDisplay, 'Opponent Attempts'));
+                statsGrid.appendChild(createStatCard('fas fa-stopwatch', timeDisplay, 'Match Time'));
+                statsGrid.appendChild(createStatCard('fas fa-key', secretNumber, 'Secret Number'));
+
+                statsContainer.appendChild(statsGrid);
+
+                if (Utils) {
+                    Utils.fadeInElement(resultPage);
+                }
+            });
+        }
+    },
+
     handleGameWin(data) {
         showNotification(data.message || 'You won!', 'success');
 
-        // Show win modal
-        this.showGameResultModal('won', data.coinsAwarded);
+        // Show result page
+        this.showMultiplayerResult(
+            'won',
+            GameState.multiplayer.currentGame.myAttempts,
+            GameState.multiplayer.currentGame.opponentAttempts,
+            data.coinsAwarded || 0,
+            data.secretNumber || ''
+        );
 
-        // Reset game state
-        GameState.resetMultiplayer();
-
-        // Refresh stats
+        // Refresh stats (before reset so we can display updated win rate)
         this.loadStats();
 
-        // Show friends list again
-        setTimeout(() => {
-            this.showFriendsView();
-        }, 3000);
+        // Don't auto-navigate - user clicks back to lobby button
     },
 
     handleGameLoss(secretNumber) {
         showNotification('Your opponent won!', 'info');
 
-        // Show loss modal
-        this.showGameResultModal('lost', 0, secretNumber);
-
-        // Reset game state
-        GameState.resetMultiplayer();
+        // Show result page
+        this.showMultiplayerResult(
+            'lost',
+            GameState.multiplayer.currentGame.myAttempts,
+            GameState.multiplayer.currentGame.opponentAttempts,
+            0,
+            secretNumber
+        );
 
         // Refresh stats
         this.loadStats();
 
-        // Show friends list again
-        setTimeout(() => {
-            this.showFriendsView();
-        }, 3000);
+        // Don't auto-navigate - user clicks back to lobby button
     },
 
     handleGameDraw(secretNumber) {
         showNotification("It's a draw!", 'info');
 
-        // Show draw modal
-        this.showGameResultModal('draw', 0, secretNumber);
-
-        // Reset game state
-        GameState.resetMultiplayer();
+        // Show result page
+        this.showMultiplayerResult(
+            'draw',
+            GameState.multiplayer.currentGame.myAttempts,
+            GameState.multiplayer.currentGame.opponentAttempts,
+            0,
+            secretNumber
+        );
 
         // Refresh stats
         this.loadStats();
 
-        // Show friends list again
-        setTimeout(() => {
-            this.showFriendsView();
-        }, 3000);
+        // Don't auto-navigate - user clicks back to lobby button
     },
 
     /**
@@ -553,7 +651,7 @@ const MultiplayerGame = {
                 break;
             case 'game_completed':
                 if (data.result === 'won') {
-                    this.handleGameWin({ coinsAwarded: data.coinsAwarded });
+                    this.handleGameWin({ coinsAwarded: data.coinsAwarded, secretNumber: data.secretNumber });
                 } else if (data.result === 'draw') {
                     this.handleGameDraw(data.secretNumber);
                 } else {
@@ -1169,6 +1267,25 @@ const MultiplayerGame = {
                 this.sendChallengeFromModal(difficulty);
             });
         });
+
+        // Back to lobby button
+        const backToLobbyBtn = document.getElementById('mp-back-to-lobby');
+        if (backToLobbyBtn) {
+            backToLobbyBtn.addEventListener('click', () => {
+                const resultPage = document.getElementById('mp-result-page');
+                if (Utils) {
+                    Utils.fadeOutElement(resultPage, () => {
+                        // Reset game state
+                        GameState.resetMultiplayer();
+                        // Show friends view
+                        this.showFriendsView();
+                    });
+                } else {
+                    GameState.resetMultiplayer();
+                    this.showFriendsView();
+                }
+            });
+        }
     },
 
     /**

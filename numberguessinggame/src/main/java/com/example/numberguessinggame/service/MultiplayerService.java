@@ -210,6 +210,7 @@ public class MultiplayerService {
 
         logger.info("Game session created: {} vs {} (session: {}, max attempts: {})",
                     challenge.getChallenger().getUsername(), user.getUsername(), sessionId, maxAttempts);
+        logger.info("DEBUG - Secret number for session {}: {}", sessionId, secretNumber);
 
         Map<String, Object> result = new HashMap<>();
         result.put("success", true);
@@ -459,6 +460,7 @@ public class MultiplayerService {
         winnerNotification.put("type", "game_completed");
         winnerNotification.put("result", "won");
         winnerNotification.put("coinsAwarded", coinsAwarded);
+        winnerNotification.put("secretNumber", session.secretNumber);
         messagingTemplate.convertAndSend("/queue/game." + winnerId, winnerNotification);
 
         Map<String, Object> loserNotification = new HashMap<>();
