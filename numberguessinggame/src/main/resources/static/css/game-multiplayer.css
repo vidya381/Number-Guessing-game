@@ -142,49 +142,45 @@
 /* Tab Navigation */
 .mp-tabs-nav {
     display: flex;
-    gap: 10px;
-    margin-bottom: 25px;
-    background: var(--card-background);
-    padding: 10px;
-    border-radius: 16px;
-    box-shadow: 0 2px 8px var(--shadow-color);
-    border: 2px solid rgba(20, 184, 166, 0.1);
-    max-width: 500px;
-    margin-left: auto;
-    margin-right: auto;
+    gap: 8px;
+    margin-bottom: 12px;
+    justify-content: center;
 }
 
 .mp-tab-btn {
-    flex: 1;
-    padding: 14px 24px;
+    padding: 0;
     background: transparent;
     border: none;
-    border-radius: 12px;
-    font-size: 1.05em;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    font-size: 0.75em;
     font-weight: 600;
+    line-height: 1;
     color: var(--text-secondary);
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 2px;
+    width: auto !important;
+    min-width: 0;
+    white-space: nowrap;
+    flex: 0 0 auto;
 }
 
 .mp-tab-btn:hover {
     color: var(--text-color);
-    background: rgba(20, 184, 166, 0.1);
 }
 
 .mp-tab-btn.active {
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
-    color: white;
-    box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+    color: #14b8a6;
+    border-bottom-color: #14b8a6;
 }
 
 .mp-tab-btn .tab-icon {
-    font-size: 1.1em;
+    font-size: 0.85em;
 }
 
 .mp-tab-badge {
@@ -226,35 +222,21 @@
 
 .mp-section {
     background: var(--card-background);
-    border-radius: 20px;
-    padding: 25px;
+    border-radius: 16px;
+    padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 12px var(--shadow-color);
-    border: 2px solid rgba(20, 184, 166, 0.1);
-    transition: all 0.3s ease;
-}
-
-.mp-section:hover {
-    box-shadow: 0 6px 20px var(--shadow-color);
-    transform: translateY(-2px);
+    box-shadow: 0 2px 8px var(--shadow-color);
+    border: 1px solid rgba(20, 184, 166, 0.1);
 }
 
 .section-header {
-    font-size: 1.3em;
+    font-size: 1.2em;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     color: #14b8a6;
     display: flex;
     align-items: center;
-    gap: 10px;
-}
-
-.section-header::before {
-    content: '';
-    width: 4px;
-    height: 24px;
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
-    border-radius: 2px;
+    gap: 8px;
 }
 
 /* Friend Search */
@@ -1367,15 +1349,21 @@ body.dark-mode .multiplayer-btn:hover {
     .mp-tabs-nav {
         max-width: 100%;
         padding: 8px;
+        gap: 8px;
     }
 
     .mp-tab-btn {
-        font-size: 0.95em;
-        padding: 12px 16px;
+        font-size: 0.75em;
+        padding: 0;
+        gap: 2px;
+        line-height: 1;
+        width: auto !important;
+        min-width: 0;
+        flex: 0 0 auto;
     }
 
     .mp-tab-btn .tab-icon {
-        font-size: 1em;
+        font-size: 0.85em;
     }
 
     .mp-stats-grid {
@@ -1432,9 +1420,13 @@ body.dark-mode .multiplayer-btn:hover {
     }
 
     .mp-tab-btn {
-        font-size: 0.9em;
-        padding: 10px 12px;
-        gap: 6px;
+        font-size: 0.75em;
+        padding: 0;
+        gap: 2px;
+        line-height: 1;
+        width: auto !important;
+        min-width: 0;
+        flex: 0 0 auto;
     }
 
     .mp-stats-grid {
