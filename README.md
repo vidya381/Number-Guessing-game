@@ -1,6 +1,6 @@
 # NumVana: The Ultimate Bulls & Cows Game 🎮
 
-NumVana is a modern, full-stack web implementation of the classic **Bulls and Cows** code-breaking game. Challenge yourself to guess a secret code of unique digits within 10 attempts, track your progress with achievements, compete on global leaderboards, and enjoy a beautifully crafted gaming experience with both light and dark themes.
+NumVana is a modern, full-stack web implementation of the classic **Bulls and Cows** code-breaking game. Featuring **5 unique game modes**, real-time multiplayer battles, a friends system, daily challenges, and survival mode, NumVana offers endless ways to test your code-breaking skills. Track your progress with achievements, compete on global leaderboards, earn coins, unlock hints, and enjoy a beautifully crafted gaming experience with both light and dark themes.
 
 ![Number-Guessing-Game](https://github.com/user-attachments/assets/d1dbb0c7-9b11-4a60-9fea-8471eafd2764)
 
@@ -8,37 +8,67 @@ NumVana is a modern, full-stack web implementation of the classic **Bulls and Co
 
 ## 🌟 Key Features
 
+### 🎮 **Five Game Modes**
+1. **Practice Mode** - Classic gameplay with three difficulty levels (Easy: 3-digit, Medium: 4-digit, Hard: 5-digit), perfect for honing your skills
+2. **Daily Challenge** - New puzzle every 24 hours, compete globally for the best score, earn bonus coins and exclusive achievements
+3. **Time Attack** - Race against the clock! 60 seconds on Easy, 90 on Medium, 120 on Hard. Quick thinking required!
+4. **Survival Mode** - Endless progression with escalating difficulty. Start with Easy 3-digit codes, advance through Medium and Hard. One life - how far can you go?
+5. **Multiplayer 1v1 Race** - Challenge friends to real-time battles! First to solve wins, with attempt limits (7/10/13 per difficulty). Draws and forfeit handling included!
+
 ### 🎯 **Game Mechanics**
-- **Three Difficulty Levels**: Easy (3-digit), Medium (4-digit), Hard (5-digit)
-- **10 Attempts Per Game**: Strategic guessing with limited tries
+- **Three Difficulty Levels**: Easy (3-digit, 7 attempts), Medium (4-digit, 10 attempts), Hard (5-digit, 13 attempts)
 - **Bulls & Cows Feedback**:
   - 🐂 **Bulls**: Correct digit in correct position
   - 🐄 **Cows**: Correct digit in wrong position
-- **Real-time Timer**: Track how fast you solve the puzzle
+- **Real-time Timer**: Track how fast you solve the puzzle (crucial for Time Attack!)
 - **Visual Progress Indicators**: Animated attempt counter and timer
 - **Unique Digit Validation**: No repeating numbers allowed
 - **Confetti Celebration**: Epic win animations
+- **Coin Economy**: Earn coins for wins, spend on hints
+- **Hint System**: Reveal digits when stuck (costs coins)
 
 ### 👤 **User System**
 - **Secure Authentication**: JWT-based login/registration
-- **Guest Mode**: Play without signing up (local stats only)
+- **Guest Mode**: Play without signing up (local stats only, no multiplayer/friends)
 - **User Profiles**: Comprehensive dashboard with:
   - Total games & win rate
   - Best score tracking
   - Win streak counter
   - Consecutive play days
   - Difficulty breakdown with stats
+  - Mode-specific stats (Practice, Daily, Time Attack, Survival, Multiplayer)
   - Recent game history
+  - Coin balance and achievements unlocked
+
+### 👥 **Friends & Multiplayer**
+- **Friends System**:
+  - Search and add friends by username
+  - Real-time online/offline presence indicators
+  - Friend request management (send, accept, decline)
+  - Friends list with activity status
+- **1v1 Multiplayer Racing**:
+  - Challenge friends to real-time code-breaking battles
+  - Same secret number for both players - first to solve wins!
+  - Attempt limits per difficulty (7/10/13)
+  - Draw scenarios if no one solves or both solve in same attempts
+  - Fewest-attempts-wins tiebreaker
+  - Forfeit handling with proper notifications
+  - Live opponent progress tracking
+  - WebSocket-powered real-time updates
+  - Winner earns coins, stats update for both players
+  - Dedicated result pages for wins, losses, draws, and forfeits
 
 ### 🏆 **Achievement System**
-- **19 Unique Achievements** across 5 categories:
+- **25+ Unique Achievements** across multiple categories:
   - **First Steps**: First Win, Perfect Game, Speed Demon
   - **Winning Streaks**: Hot Streak, On Fire, Unstoppable
   - **Mastery**: Easy Master, Medium Master, Hard Master
   - **Dedication**: Marathon Runner, Century Club, Legendary
   - **Special**: Lucky Number, Comeback Kid, Early Bird, Night Owl, Weekend Warrior, Perfectionist
-- **Achievement Notifications**: Beautiful toast popups on unlock
-- **Progress Tracking**: Filter by unlocked/locked achievements
+  - **Mode-Specific**: Daily Challenge Champion, Time Attack Master, Survival achievements
+  - **Multiplayer**: First multiplayer win, winning streaks, rival achievements
+- **Achievement Notifications**: Beautiful toast popups on unlock with coin rewards
+- **Progress Tracking**: Filter by unlocked/locked achievements, view completion dates
 
 ### 📊 **Leaderboard**
 - **Global Rankings**: Top 10 players by score and win rate
@@ -77,6 +107,14 @@ NumVana is a modern, full-stack web implementation of the classic **Bulls and Co
 - **Arrow Keys** - Navigate between input boxes
 - **Number Keys** - Auto-advance to next input
 
+### 🔄 **Real-time Features (WebSocket)**
+- **Live Multiplayer Updates**: See opponent's progress in real-time
+- **Friend Presence**: Know when friends are online/offline
+- **Instant Notifications**: Challenge invites, game results, friend requests
+- **Automatic Reconnection**: SockJS fallback for reliability
+- **Event-Driven Architecture**: Efficient push-based updates
+- **Session Management**: Thread-safe concurrent game handling
+
 ### 💬 **Smart Error Handling**
 - **User-Friendly Messages**: Clear, conversational error feedback
 - **Non-blocking Toasts**: Errors don't interrupt your flow
@@ -90,23 +128,31 @@ NumVana is a modern, full-stack web implementation of the classic **Bulls and Co
 ### **Backend**
 - **Framework**: Spring Boot 3.1.0
 - **Language**: Java 22
-- **Database**: PostgreSQL
-- **ORM**: Hibernate/JPA
-- **Security**: JWT Authentication
+- **Database**: PostgreSQL (Supabase hosted)
+- **ORM**: Hibernate/JPA with HikariCP connection pooling
+- **Security**: JWT Authentication with BCrypt password hashing
+- **Real-time**: WebSocket with STOMP protocol over SockJS
 - **Build Tool**: Maven
+- **Scheduled Tasks**: Spring @Scheduled for cleanups and daily challenges
 
 ### **Frontend**
 - **Core**: HTML5, CSS3, Vanilla JavaScript (ES6+)
+- **Real-time**: STOMP.js client for WebSocket communication
 - **Icons**: Font Awesome 6
 - **Fonts**: Google Fonts (Fredoka One, Quicksand)
+- **Audio**: HTML5 Audio API for sound effects
 - **No Framework**: Pure, lightweight implementation
+- **State Management**: Centralized state.js module
 
 ### **Architecture**
-- RESTful API design
+- RESTful API design (50+ endpoints)
 - MVC Pattern (Model-View-Controller)
-- Repository Pattern for data access
-- Service Layer for business logic
+- Repository Pattern for data access with custom JPQL queries
+- Service Layer with @Transactional business logic
 - JWT stateless authentication
+- WebSocket event-driven architecture for real-time features
+- ConcurrentHashMap for thread-safe session management
+- Modular frontend with separated game mode files
 
 ---
 
@@ -114,16 +160,22 @@ NumVana is a modern, full-stack web implementation of the classic **Bulls and Co
 
 ### **Getting Started**
 1. Visit **[NumVana](https://numvana.onrender.com)** or run locally
-2. Optional: Sign up for achievements and leaderboard access
-3. Choose your difficulty level
-4. Start guessing!
+2. Optional: Sign up for achievements, leaderboard access, and multiplayer features
+3. Choose from 5 game modes:
+   - **Practice**: Learn the ropes with classic gameplay
+   - **Daily Challenge**: Compete globally on the same daily puzzle
+   - **Time Attack**: Race against the clock
+   - **Survival**: Endless progression with escalating difficulty
+   - **Multiplayer**: Challenge friends to 1v1 battles
+4. Select your difficulty level and start guessing!
 
 ### **Game Rules**
 - The secret code contains **unique digits only** (no repeating numbers)
-- You have **10 attempts** to crack the code
+- Attempt limits vary by difficulty: Easy (7), Medium (10), Hard (13)
 - After each guess, you'll receive feedback:
   - **Bulls (🐂)**: Correct digit in the correct position
   - **Cows (🐄)**: Correct digit but in the wrong position
+- Earn coins for wins, unlock achievements, and climb leaderboards
 
 ### **Example**
 ```
@@ -132,10 +184,17 @@ Your Guess:   1 3 2
 Feedback:     1 Bull (the "1") + 2 Cows (the "2" and "3")
 ```
 
-### **Scoring**
-- **Lower is better**: Fewer attempts = better score
-- **Compete globally**: Climb the leaderboard
-- **Build streaks**: Win consecutive games for achievements
+### **Multiplayer Rules**
+- Both players solve the same secret number
+- First to solve wins the match
+- If no one solves, it's a draw
+- If both solve, fewest attempts wins
+- Winner earns coins and stats update for both players
+
+### **Coin Economy**
+- **Earn Coins**: Win games in any mode
+- **Spend Coins**: Purchase hints to reveal digits
+- **Achievements**: Some achievements award bonus coins
 
 ---
 
@@ -150,7 +209,7 @@ Feedback:     1 Bull (the "1") + 2 Cows (the "2" and "3")
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/vidyasagarpogiri/Number-Guessing-game.git
+   git clone https://github.com/vidya381/Number-Guessing-game.git
    cd Number-Guessing-game/numberguessinggame
    ```
 
@@ -199,15 +258,56 @@ numberguessinggame/
 │   ├── main/
 │   │   ├── java/com/example/numberguessinggame/
 │   │   │   ├── controller/      # REST API endpoints
-│   │   │   ├── entity/          # JPA entities
-│   │   │   ├── repository/      # Data access layer
+│   │   │   │   ├── AuthController.java
+│   │   │   │   ├── GameController.java
+│   │   │   │   ├── DailyChallengeController.java
+│   │   │   │   ├── SurvivalController.java
+│   │   │   │   ├── FriendsController.java
+│   │   │   │   └── MultiplayerController.java
+│   │   │   ├── entity/          # JPA entities (14+)
+│   │   │   │   ├── User.java
+│   │   │   │   ├── Game.java
+│   │   │   │   ├── Achievement.java
+│   │   │   │   ├── DailyChallenge.java
+│   │   │   │   ├── SurvivalSession.java
+│   │   │   │   ├── Friendship.java
+│   │   │   │   ├── FriendRequest.java
+│   │   │   │   ├── MultiplayerChallenge.java
+│   │   │   │   ├── MultiplayerGameSession.java
+│   │   │   │   └── ... (and more)
+│   │   │   ├── repository/      # Data access layer with JPQL
 │   │   │   ├── service/         # Business logic
-│   │   │   ├── config/          # Security & app config
+│   │   │   │   ├── UserService.java
+│   │   │   │   ├── GameService.java
+│   │   │   │   ├── DailyChallengeService.java
+│   │   │   │   ├── SurvivalService.java
+│   │   │   │   ├── FriendsService.java
+│   │   │   │   ├── MultiplayerService.java
+│   │   │   │   └── PresenceService.java
+│   │   │   ├── config/          # Security & WebSocket config
+│   │   │   │   ├── SecurityConfig.java
+│   │   │   │   ├── WebSocketConfig.java
+│   │   │   │   └── WebSocketEventListener.java
+│   │   │   ├── util/            # Helper utilities
 │   │   │   └── GlobalExceptionHandler.java
 │   │   └── resources/
 │   │       ├── static/
 │   │       │   ├── css/         # Stylesheets
-│   │       │   ├── js/          # Frontend logic
+│   │       │   │   ├── styles.css
+│   │       │   │   ├── game-daily.css
+│   │       │   │   ├── game-timeattack.css
+│   │       │   │   ├── game-survival.css
+│   │       │   │   ├── game-multiplayer.css
+│   │       │   │   └── components.css
+│   │       │   ├── js/          # Modular frontend logic
+│   │       │   │   ├── state.js
+│   │       │   │   ├── auth.js
+│   │       │   │   ├── game.js
+│   │       │   │   ├── game-daily.js
+│   │       │   │   ├── game-timeattack.js
+│   │       │   │   ├── game-survival.js
+│   │       │   │   ├── game-multiplayer.js
+│   │       │   │   └── main.js
 │   │       │   ├── audio/       # Sound effects
 │   │       │   └── favicon/     # Icons
 │   │       └── templates/
@@ -231,16 +331,43 @@ numberguessinggame/
 
 ## 📊 Database Schema
 
-### **Core Tables**
-- **users**: Player accounts and statistics
-- **games**: Game history and results
-- **achievements**: Achievement definitions
-- **user_achievements**: Unlocked achievements per user
+### **14+ Database Entities**
+
+**Core Tables:**
+- **users**: Player accounts, statistics, coin balance, preferences
+- **games**: Game history and results across all modes
+- **achievements**: Achievement definitions with coin rewards
+- **user_achievements**: Unlocked achievements per user with timestamps
+
+**Daily Challenge:**
+- **daily_challenges**: Daily puzzle configuration and metadata
+- **daily_challenge_attempts**: User attempts on daily challenges
+
+**Survival Mode:**
+- **survival_sessions**: Active survival game sessions with current level
+- **survival_games**: Individual survival game records
+
+**Friends System:**
+- **friendships**: Bidirectional friend relationships
+- **friend_requests**: Pending, accepted, and declined friend requests
+
+**Multiplayer System:**
+- **multiplayer_challenges**: Challenge requests with expiration (10 min)
+- **multiplayer_game_sessions**: Active/completed 1v1 game sessions
+- **multiplayer_player_progress**: Per-player state in multiplayer games
+
+**Additional:**
+- **hints**: Hint definitions and costs
+- **user_hints**: User hint purchase and usage tracking
 
 ### **Key Relationships**
 - User → Games (One-to-Many)
 - User → Achievements (Many-to-Many)
-- Achievement categories and tracking
+- User → Friends (Many-to-Many bidirectional)
+- User → Multiplayer Sessions (Many-to-Many)
+- User → Daily Challenge Attempts (One-to-Many)
+- User → Survival Sessions (One-to-Many)
+- Proper foreign keys with CASCADE delete for data integrity
 
 ---
 
@@ -275,28 +402,33 @@ numberguessinggame/
 
 ## 📈 Project Stats
 
-- **Lines of Code**: 3000+ (Java + JavaScript + CSS)
-- **Achievements**: 19 unique achievements
-- **Error Messages**: 37 user-friendly messages
-- **API Endpoints**: 15+ RESTful endpoints
-- **Database Tables**: 4 core entities
+- **Lines of Code**: 8000+ (Java + JavaScript + CSS)
+- **Game Modes**: 5 unique game modes
+- **Achievements**: 25+ unique achievements
+- **API Endpoints**: 50+ RESTful endpoints
+- **Database Tables**: 14+ entities with complex relationships
+- **WebSocket Events**: 10+ real-time event types
 - **Sound Effects**: 4 audio files
+- **JavaScript Modules**: 8 modular game mode files
 - **Responsive Breakpoints**: 3 (mobile, tablet, desktop)
+- **Concurrent Session Support**: Thread-safe game session management
 
 ---
 
 ## 🎯 Future Enhancements
 
-- [ ] Multiplayer mode (real-time competition)
-- [ ] Daily challenges with special rewards
-- [ ] Social features (friend challenges)
-- [ ] Statistics graphs and charts
-- [ ] Mobile native app (React Native)
-- [ ] Internationalization (i18n support)
-- [ ] Custom difficulty settings
-- [ ] Hint system with penalties
-- [ ] Tournament mode
+- [ ] Tournament mode with brackets and prizes
+- [ ] Statistics graphs and charts (visual analytics)
+- [ ] Mobile native app (React Native/Flutter)
+- [ ] Internationalization (i18n support for multiple languages)
+- [ ] Custom difficulty settings (user-defined digit ranges)
 - [ ] Achievement sharing to social media
+- [ ] Multiplayer lobbies (more than 2 players)
+- [ ] Spectator mode for ongoing multiplayer matches
+- [ ] Replay system to review past games
+- [ ] Voice chat for multiplayer games
+- [ ] Seasonal events and limited-time challenges
+- [ ] Player profiles with customizable avatars
 
 ---
 
@@ -318,15 +450,6 @@ This project is open source and available for educational and portfolio purposes
 
 ---
 
-## 👨‍💻 Author
-
-**Vidya Sagar Pogiri**
-
-- GitHub: [@vidyasagarpogiri](https://github.com/vidyasagarpogiri)
-- LinkedIn: [Vidya Sagar Pogiri](https://www.linkedin.com/in/vidyasagarpogiri/)
-
----
-
 ## 🙏 Acknowledgments
 
 - Inspired by the classic Bulls and Cows code-breaking game
@@ -338,9 +461,9 @@ This project is open source and available for educational and portfolio purposes
 ## 📞 Support
 
 If you encounter any issues or have questions:
-- Open an [Issue](https://github.com/vidyasagarpogiri/Number-Guessing-game/issues)
+- Open an [Issue](https://github.com/vidya381/Number-Guessing-game/issues)
 - Check the **"How to Play"** guide in Settings
-- Review the [Project Description](./PROJECT_DESCRIPTION.md) for technical details
+- Review this README for feature details and technical information
 
 ---
 
