@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/css/game-timeattack.css">
     <link rel="stylesheet" href="/css/game-daily.css">
     <link rel="stylesheet" href="/css/game-survival.css">
+    <link rel="stylesheet" href="/css/game-multiplayer.css">
     <link rel="stylesheet" href="/css/modals.css">
     <link rel="stylesheet" href="/css/notifications.css">
     <link rel="stylesheet" href="/css/responsive.css">
@@ -130,16 +131,35 @@
                         <span id="challenge-players">0 players</span>
                     </div>
                 </div>
-                <div class="daily-challenge-buttons">
-                    <button id="play-daily-challenge" class="daily-challenge-btn">
+                <div class="banner-actions">
+                    <button id="play-daily-challenge" class="mode-play-btn daily-challenge-btn">
                         <i class="fas fa-play"></i> PLAY NOW
                     </button>
-                    <button id="view-daily-leaderboard" class="daily-leaderboard-btn">
-                        <i class="fas fa-trophy"></i> LEADERBOARD
+                    <button id="view-daily-leaderboard" class="mode-leaderboard-link">
+                        <i class="fas fa-trophy"></i> Leaderboard
                     </button>
                 </div>
                 <div id="daily-challenge-status" style="display: none;" class="daily-challenge-status">
                     <!-- Will show user's result if already attempted -->
+                </div>
+            </section>
+
+            <!-- Multiplayer Mode Banner -->
+            <section class="section multiplayer-banner">
+                <div class="multiplayer-header">
+                    <h2>🎮 MULTIPLAYER MODE</h2>
+                    <div class="multiplayer-badge">1v1</div>
+                </div>
+                <p class="multiplayer-description">
+                    Challenge your friends to a head-to-head race! First to solve wins!
+                </p>
+                <div class="banner-actions">
+                    <button id="play-multiplayer" class="mode-play-btn multiplayer-btn">
+                        <i class="fas fa-users"></i> PLAY NOW
+                    </button>
+                    <button id="multiplayer-stats-btn" class="mode-leaderboard-link">
+                        <i class="fas fa-chart-bar"></i> STATS
+                    </button>
                 </div>
             </section>
 
@@ -152,20 +172,14 @@
                 <p class="time-attack-description">
                     Race the clock! Win as many as you can in 5 minutes!
                 </p>
-                <div class="time-attack-difficulty-select">
-                    <button class="ta-difficulty-btn" data-difficulty="0">
-                        <span class="ta-difficulty-name">EASY</span>
+                <div class="banner-actions">
+                    <button id="play-time-attack" class="mode-play-btn time-attack-btn">
+                        <i class="fas fa-play"></i> PLAY NOW
                     </button>
-                    <button class="ta-difficulty-btn" data-difficulty="1">
-                        <span class="ta-difficulty-name">MEDIUM</span>
-                    </button>
-                    <button class="ta-difficulty-btn" data-difficulty="2">
-                        <span class="ta-difficulty-name">HARD</span>
+                    <button id="view-time-attack-leaderboard" class="mode-leaderboard-link">
+                        <i class="fas fa-trophy"></i> Leaderboard
                     </button>
                 </div>
-                <button id="view-time-attack-leaderboard" class="ta-leaderboard-btn">
-                    <i class="fas fa-trophy"></i> LEADERBOARD
-                </button>
             </section>
 
             <!-- Survival Mode Banner -->
@@ -177,24 +191,21 @@
                 <p class="survival-description">
                     FIVE ROUNDS! ONE LIFE! Lose a round and your run ends!
                 </p>
-                <div class="survival-difficulty-select">
-                    <button class="start-survival-btn survival-diff-btn" data-difficulty="0">
-                        <span class="survival-diff-name">EASY</span>
+                <div class="banner-actions">
+                    <button id="play-survival" class="mode-play-btn survival-btn">
+                        <i class="fas fa-play"></i> PLAY NOW
                     </button>
-                    <button class="start-survival-btn survival-diff-btn" data-difficulty="1">
-                        <span class="survival-diff-name">MEDIUM</span>
-                    </button>
-                    <button class="start-survival-btn survival-diff-btn" data-difficulty="2">
-                        <span class="survival-diff-name">HARD</span>
+                    <button id="view-survival-leaderboard" class="mode-leaderboard-link">
+                        <i class="fas fa-trophy"></i> Leaderboard
                     </button>
                 </div>
-                <button id="view-survival-leaderboard" class="survival-leaderboard-btn">
-                    <i class="fas fa-trophy"></i> LEADERBOARD
-                </button>
             </section>
 
             <section class="section">
-                <h2>⚡ SELECT DIFFICULTY</h2>
+                <h2>⚡ PRACTICE MODE</h2>
+                <p style="text-align: center; color: var(--text-secondary); margin-bottom: 20px;">
+                    Play at your own pace. No timers, no pressure!
+                </p>
                 <div class="button-group">
                     <button id="play-easy" class="difficulty-btn">EASY</button>
                     <button id="play-medium" class="difficulty-btn">MEDIUM</button>
@@ -202,6 +213,52 @@
                 </div>
             </section>
 
+        </div>
+
+        <!-- Time Attack Difficulty Modal -->
+        <div id="time-attack-modal" class="difficulty-modal time-attack-theme" style="display: none;">
+            <div class="difficulty-modal-content">
+                <button class="modal-close-btn" aria-label="Close">&times;</button>
+                <div class="modal-header">
+                    <div class="modal-icon">⚡</div>
+                    <h2>Time Attack</h2>
+                    <p>Race against the clock! Choose your challenge level</p>
+                </div>
+                <div class="modal-difficulty-buttons">
+                    <button class="modal-difficulty-btn easy-diff" data-mode="time-attack" data-difficulty="0">
+                        <span class="diff-name">EASY</span>
+                    </button>
+                    <button class="modal-difficulty-btn medium-diff" data-mode="time-attack" data-difficulty="1">
+                        <span class="diff-name">MEDIUM</span>
+                    </button>
+                    <button class="modal-difficulty-btn hard-diff" data-mode="time-attack" data-difficulty="2">
+                        <span class="diff-name">HARD</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Survival Difficulty Modal -->
+        <div id="survival-modal" class="difficulty-modal survival-theme" style="display: none;">
+            <div class="difficulty-modal-content">
+                <button class="modal-close-btn" aria-label="Close">&times;</button>
+                <div class="modal-header">
+                    <div class="modal-icon">💀</div>
+                    <h2>Survival Mode</h2>
+                    <p>Five rounds, one life! Choose your challenge level</p>
+                </div>
+                <div class="modal-difficulty-buttons">
+                    <button class="modal-difficulty-btn easy-diff" data-mode="survival" data-difficulty="0">
+                        <span class="diff-name">EASY</span>
+                    </button>
+                    <button class="modal-difficulty-btn medium-diff" data-mode="survival" data-difficulty="1">
+                        <span class="diff-name">MEDIUM</span>
+                    </button>
+                    <button class="modal-difficulty-btn hard-diff" data-mode="survival" data-difficulty="2">
+                        <span class="diff-name">HARD</span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div id="game-page" style="display: none;">
@@ -352,6 +409,147 @@
             <div class="result-button-group">
                 <button id="survival-play-again">🔁 PLAY AGAIN</button>
                 <button id="survival-main-menu">🏠 MAIN MENU</button>
+            </div>
+        </div>
+
+        <!-- Multiplayer Game Page -->
+        <div id="multiplayer-tab" class="tab-content" style="display: none;">
+            <div id="ws-connection-status" class="disconnected" style="display: none;">Connecting...</div>
+
+            <!-- Friends View -->
+            <div id="mp-friends-view">
+                <!-- Tab Navigation -->
+                <div class="mp-tabs-nav">
+                    <button class="mp-tab-btn active" data-tab="friends">
+                        <span class="tab-icon">👥</span>
+                        <span>Friends</span>
+                    </button>
+                    <button class="mp-tab-btn" data-tab="activity">
+                        <span class="tab-icon">🔔</span>
+                        <span>Activity</span>
+                        <span class="mp-tab-badge" id="activity-badge" style="display: none;">0</span>
+                    </button>
+                </div>
+
+                <!-- Friends Tab -->
+                <div class="mp-tab-content active" id="tab-friends">
+                    <!-- Friend Search -->
+                    <div class="mp-section friend-search">
+                        <div class="section-header">Find Friends</div>
+                        <input type="text" id="friend-search-input" placeholder="Search users by username...">
+                        <div id="user-search-results"></div>
+                    </div>
+
+                    <!-- Friends List -->
+                    <div class="mp-section">
+                        <div class="section-header">Your Friends</div>
+                        <div id="friends-list"></div>
+                    </div>
+                </div>
+
+                <!-- Activity Tab -->
+                <div class="mp-tab-content" id="tab-activity">
+                    <!-- Friend Requests -->
+                    <div class="mp-section">
+                        <div class="section-header">Friend Requests</div>
+                        <div id="pending-requests"></div>
+                    </div>
+
+                    <!-- Incoming Challenges -->
+                    <div class="mp-section">
+                        <div class="section-header">Incoming Challenges</div>
+                        <div id="pending-challenges"></div>
+                    </div>
+
+                    <!-- Sent Challenges -->
+                    <div class="mp-section">
+                        <div class="section-header">Sent Challenges</div>
+                        <div id="sent-challenges"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game View -->
+            <div id="mp-game-view" style="display: none;">
+                <section class="section">
+                    <div class="game-header">
+                        <h2>🎮 1v1 RACE</h2>
+                        <div class="game-stats-inline">
+                            <div class="stat-badge mp-vs-badge">
+                                <span>🎮 VS <span id="mp-opponent-name">Opponent</span></span>
+                            </div>
+                            <div class="stat-badge mp-attempts-badge">
+                                <span>YOU: <span id="mp-my-attempts">0</span> 🎯</span>
+                            </div>
+                            <div class="stat-badge mp-opponent-attempts-badge">
+                                <span>OPP: <span id="mp-opponent-attempts">0</span> ⚔️</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="mp-input-container"></div>
+                    <button id="mp-submit-guess">⚡ SUBMIT GUESS</button>
+                </section>
+
+                <section class="section">
+                    <h2>📋 GUESS HISTORY</h2>
+                    <div id="mp-guess-history"></div>
+                </section>
+
+                <button id="mp-quit-game">❌ LEAVE GAME</button>
+            </div>
+
+            <!-- Multiplayer Result Page -->
+            <div id="mp-result-page" class="card" style="display: none;">
+                <div id="mp-game-stats"></div>
+                <div class="result-button-group">
+                    <button id="mp-back-to-lobby">🏠 BACK TO LOBBY</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Challenge Modal -->
+    <div id="challenge-modal" class="difficulty-modal multiplayer-theme" style="display: none;">
+        <div class="difficulty-modal-content">
+            <button class="modal-close-btn" aria-label="Close" onclick="MultiplayerGame.closeChallengeModal()">&times;</button>
+            <div class="modal-header">
+                <div class="modal-icon">🎮</div>
+                <h2 id="challenge-modal-title">Challenge Friend</h2>
+                <p>Choose difficulty for your 1v1 race!</p>
+            </div>
+            <div class="modal-difficulty-buttons">
+                <button class="modal-difficulty-btn easy-diff" data-difficulty="0">
+                    <span class="diff-name">EASY</span>
+                </button>
+                <button class="modal-difficulty-btn medium-diff" data-difficulty="1">
+                    <span class="diff-name">MEDIUM</span>
+                </button>
+                <button class="modal-difficulty-btn hard-diff" data-difficulty="2">
+                    <span class="diff-name">HARD</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Result Modal -->
+    <div id="game-result-modal" class="game-result-modal">
+        <div class="game-result-content">
+            <h2 class="result-title">Result</h2>
+            <p class="result-message">Message</p>
+        </div>
+    </div>
+
+    <!-- Multiplayer Stats Modal -->
+    <div id="multiplayer-stats-modal" class="difficulty-modal" style="display: none;">
+        <div class="difficulty-modal-content">
+            <button class="modal-close-btn" aria-label="Close">&times;</button>
+            <div class="modal-header">
+                <div class="modal-icon">📊</div>
+                <h2>Multiplayer Stats</h2>
+                <p>Your 1v1 performance</p>
+            </div>
+            <div id="mp-stats-modal-content">
+                <!-- Stats will be populated by JavaScript -->
             </div>
         </div>
     </div>
@@ -750,6 +948,12 @@
     <script src="/js/game-daily.js"></script>
     <script src="/js/game-survival.js"></script>
 
+    <!-- SockJS and STOMP for WebSocket -->
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <!-- Multiplayer Game -->
+    <script src="/js/game-multiplayer.js"></script>
+
     <!-- Initialize all modules when DOM is ready -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -791,6 +995,11 @@
                 console.log('✓ Survival Mode initialized');
             }
 
+            if (typeof MultiplayerGame !== 'undefined') {
+                // Note: MultiplayerGame.init() will be called when user clicks play button
+                console.log('✓ Multiplayer Mode loaded');
+            }
+
             if (typeof Achievements !== 'undefined') {
                 Achievements.init();
                 console.log('✓ Achievements initialized');
@@ -799,6 +1008,136 @@
             // Set initial game status to home
             if (typeof Utils !== 'undefined') {
                 Utils.updateGameStatus('home');
+            }
+
+            // Prevent accidental page refresh/close during active games
+            window.addEventListener('beforeunload', (e) => {
+                const isGameActive =
+                    document.getElementById('game-page')?.style.display !== 'none' ||
+                    document.getElementById('daily-challenge-page')?.style.display !== 'none' ||
+                    document.getElementById('time-attack-page')?.style.display !== 'none' ||
+                    document.getElementById('survival-page')?.style.display !== 'none' ||
+                    (GameState.timeAttack?.sessionId && GameState.timeAttack?.timerInterval) ||
+                    (GameState.survival?.sessionId && !GameState.survival?.gameEnded);
+
+                if (isGameActive) {
+                    e.preventDefault();
+                    e.returnValue = 'You have a game in progress. Are you sure you want to leave? Your progress will be lost.';
+                    return e.returnValue;
+                }
+            });
+
+            // Multiplayer button handler
+            const playMultiplayerBtn = document.getElementById('play-multiplayer');
+            if (playMultiplayerBtn) {
+                playMultiplayerBtn.addEventListener('click', () => {
+                    // Check if user is logged in first
+                    if (!GameState.currentUser) {
+                        // Show toast and open auth modal
+                        if (Achievements) {
+                            Achievements.showToast('Please log in to play multiplayer mode! 🔑', 'info');
+                        }
+                        const authModal = document.getElementById('auth-modal');
+                        if (authModal && Utils) {
+                            Utils.openModalWithAnimation(authModal);
+                        }
+                        if (Auth && Auth.showLoginForm) {
+                            Auth.showLoginForm();
+                        }
+                        return;
+                    }
+
+                    // User is logged in, proceed to multiplayer tab
+                    const homePage = document.getElementById('home-page');
+                    const multiplayerTab = document.getElementById('multiplayer-tab');
+
+                    if (Utils && homePage && multiplayerTab) {
+                        Utils.fadeOutElement(homePage, () => {
+                            multiplayerTab.style.display = 'block';
+                            Utils.fadeInElement(multiplayerTab);
+                        });
+                    }
+
+                    if (typeof MultiplayerGame !== 'undefined') {
+                        MultiplayerGame.init();
+                    }
+
+                    if (typeof Utils !== 'undefined') {
+                        Utils.updateGameStatus('multiplayer');
+                    }
+                });
+            }
+
+            // Multiplayer tab switching
+            const mpTabButtons = document.querySelectorAll('.mp-tab-btn');
+            mpTabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabName = button.dataset.tab;
+
+                    // Remove active class from all buttons and contents
+                    mpTabButtons.forEach(btn => btn.classList.remove('active'));
+                    document.querySelectorAll('.mp-tab-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    const tabContent = document.getElementById(`tab-${tabName}`);
+                    if (tabContent) {
+                        tabContent.classList.add('active');
+                    }
+                });
+            });
+
+            // Multiplayer stats button handler
+            const multiplayerStatsBtn = document.getElementById('multiplayer-stats-btn');
+            const multiplayerStatsModal = document.getElementById('multiplayer-stats-modal');
+
+            if (multiplayerStatsBtn && multiplayerStatsModal) {
+                multiplayerStatsBtn.addEventListener('click', () => {
+                    // Check if user is logged in
+                    if (!GameState.currentUser) {
+                        if (Achievements) {
+                            Achievements.showToast('Please log in to view multiplayer stats! 🔑', 'info');
+                        }
+                        const authModal = document.getElementById('auth-modal');
+                        if (authModal && Utils) {
+                            Utils.openModalWithAnimation(authModal);
+                        }
+                        if (Auth && Auth.showLoginForm) {
+                            Auth.showLoginForm();
+                        }
+                        return;
+                    }
+
+                    multiplayerStatsModal.style.display = 'flex';
+                    // Load stats if MultiplayerGame is available
+                    if (typeof MultiplayerGame !== 'undefined' && MultiplayerGame.loadStats) {
+                        MultiplayerGame.loadStats();
+                    }
+                });
+
+                // Close modal on X button
+                const closeBtn = multiplayerStatsModal.querySelector('.modal-close-btn');
+                if (closeBtn) {
+                    closeBtn.addEventListener('click', () => {
+                        multiplayerStatsModal.style.display = 'none';
+                    });
+                }
+
+                // Close on outside click
+                multiplayerStatsModal.addEventListener('click', (e) => {
+                    if (e.target === multiplayerStatsModal) {
+                        multiplayerStatsModal.style.display = 'none';
+                    }
+                });
+
+                // Close on ESC key
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && multiplayerStatsModal.style.display === 'flex') {
+                        multiplayerStatsModal.style.display = 'none';
+                    }
+                });
             }
 
             console.log('🎮 NumVana - All modules initialized successfully!');

@@ -592,7 +592,8 @@
 @media screen and (max-width: 600px) {
     #result-page,
     #time-attack-result-page,
-    #daily-result-page {
+    #daily-result-page,
+    #mp-result-page {
         padding: 20px 15px;
     }
 
@@ -609,7 +610,8 @@
 @media screen and (max-height: 700px) {
     #result-page,
     #time-attack-result-page,
-    #daily-result-page {
+    #daily-result-page,
+    #mp-result-page {
         padding: 15px;
     }
 }
