@@ -40,3 +40,6 @@ target/
 *.iml
 .vscode/
 .DS_Store
+
+# Local documentation (keep local, don't commit)
+PROJECT_DESCRIPTION.md

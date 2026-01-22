@@ -97,6 +97,35 @@ window.GameState = {
         guessHistory: []
     },
 
+    // Multiplayer state
+    multiplayer: {
+        websocket: null,
+        stompClient: null,
+        connected: false,
+        sessionId: null,
+        difficulty: null,
+        digitCount: 0,
+        maxAttempts: 0,
+        currentGame: {
+            myAttempts: 0,
+            opponentAttempts: 0,
+            guessHistory: [],
+            opponentUsername: null,
+            opponentId: null,
+            startTime: null
+        },
+        friends: [],
+        pendingRequests: [],
+        pendingChallenges: [],
+        sentChallenges: [],
+        stats: {
+            totalGames: 0,
+            wins: 0,
+            losses: 0,
+            winRate: '0.0%'
+        }
+    },
+
     // Reset functions
     resetRegularGame: function() {
         this.attempts = 0;
@@ -159,6 +188,22 @@ window.GameState = {
             currentRoundAttempts: 0,
             totalCoinsEarned: 0,
             guessHistory: []
+        };
+    },
+
+    resetMultiplayer: function() {
+        // Don't reset WebSocket connection or friends list
+        this.multiplayer.sessionId = null;
+        this.multiplayer.difficulty = null;
+        this.multiplayer.digitCount = 0;
+        this.multiplayer.maxAttempts = 0;
+        this.multiplayer.currentGame = {
+            myAttempts: 0,
+            opponentAttempts: 0,
+            guessHistory: [],
+            opponentUsername: null,
+            opponentId: null,
+            startTime: null
         };
     }
 };

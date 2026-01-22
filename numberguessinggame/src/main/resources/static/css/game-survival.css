@@ -8,14 +8,15 @@
 /* ===================================== */
 
 .survival-banner {
-    background: linear-gradient(135deg, #ddd6fe 0%, #c4b5fd 100%);
+    background: linear-gradient(135deg, rgba(254, 226, 226, 0.5) 0%, rgba(254, 202, 202, 0.5) 100%);
     border-radius: 20px;
     padding: 30px;
     color: #2d2748;
     margin-bottom: 30px;
-    box-shadow: 0 8px 32px rgba(139, 122, 191, 0.3);
+    box-shadow: 0 8px 32px rgba(220, 38, 38, 0.2);
     position: relative;
     overflow: hidden;
+    border: 2px solid rgba(220, 38, 38, 0.3);
 }
 
 .survival-banner::before {
@@ -44,22 +45,37 @@
 }
 
 .survival-badge {
-    background: rgba(139, 122, 191, 0.2);
-    padding: 8px 16px;
+    background: rgba(220, 38, 38, 0.15);
+    border: 2px solid rgba(220, 38, 38, 0.5);
+    padding: 6px 14px;
     border-radius: 20px;
     font-weight: bold;
-    font-size: 0.9em;
-    color: #2d2748;
+    font-size: 0.85em;
+    color: #dc2626;
     backdrop-filter: blur(10px);
 }
 
 .survival-description {
     font-size: 1em;
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: 0;
     position: relative;
     z-index: 1;
     color: #2d2748;
+    opacity: 0.85;
+}
+
+.survival-banner .banner-actions {
+    position: relative;
+    z-index: 1;
+}
+
+.survival-btn {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.survival-btn:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
 }
 
 .survival-difficulty-select {
@@ -72,8 +88,8 @@
 .survival-diff-btn {
     flex: 1;
     padding: 12px 16px;
-    border: 2px solid #8b7abf;
-    background: #8b7abf;
+    border: none;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
     border-radius: 10px;
     color: white;
     font-weight: 700;
@@ -83,13 +99,13 @@
     flex-direction: column;
     align-items: center;
     gap: 4px;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
 }
 
 .survival-diff-btn:hover {
-    background: #6b5a9f;
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(139, 122, 191, 0.4);
-    border-color: #6b5a9f;
+    box-shadow: 0 6px 16px rgba(220, 38, 38, 0.4);
 }
 
 .survival-diff-name {
@@ -101,8 +117,8 @@
     width: 100%;
     padding: 15px;
     margin-top: 15px;
-    background: #8b7abf;
-    border: 2px solid #8b7abf;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    border: none;
     border-radius: 15px;
     color: white;
     font-weight: bold;
@@ -110,13 +126,13 @@
     transition: all 0.3s ease;
     position: relative;
     z-index: 1;
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
 }
 
 .survival-leaderboard-btn:hover {
-    background: #6b5a9f;
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(139, 122, 191, 0.4);
-    border-color: #6b5a9f;
+    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
 }
 
 /* ===================================== */
@@ -330,7 +346,8 @@
 /* ===================================== */
 
 body.dark-mode .survival-banner {
-    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    background: linear-gradient(135deg, rgba(220, 38, 38, 0.2) 0%, rgba(185, 28, 28, 0.2) 100%);
+    border-color: rgba(220, 38, 38, 0.4);
 }
 
 body.dark-mode .survival-header h2 {
@@ -339,21 +356,33 @@ body.dark-mode .survival-header h2 {
 
 body.dark-mode .survival-description {
     color: #e0d8f0;
+    opacity: 0.85;
 }
 
 body.dark-mode .survival-badge {
-    color: #ffffff;
-    background: rgba(167, 139, 250, 0.3);
+    color: #fca5a5;
+    background: rgba(220, 38, 38, 0.2);
+    border-color: rgba(220, 38, 38, 0.6);
 }
 
 body.dark-mode .survival-diff-btn {
-    background: #a78bfa;
-    border-color: #a78bfa;
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
 }
 
 body.dark-mode .survival-diff-btn:hover {
-    background: #9333ea;
-    border-color: #9333ea;
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+    box-shadow: 0 6px 16px rgba(220, 38, 38, 0.5);
+}
+
+body.dark-mode .survival-btn {
+    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3);
+}
+
+body.dark-mode .survival-btn:hover {
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
 }
 
 body.dark-mode .survival-badge {

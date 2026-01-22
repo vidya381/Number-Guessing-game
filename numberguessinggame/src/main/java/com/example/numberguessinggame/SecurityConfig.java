@@ -17,6 +17,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             // Allow all requests without authentication (since this is a simple game)
+            // This includes WebSocket endpoints (/ws/**) for multiplayer functionality
             .authorizeHttpRequests(authorize -> authorize
                 .anyRequest().permitAll()
             )
