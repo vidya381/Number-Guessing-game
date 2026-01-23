@@ -419,16 +419,7 @@ bulls-cows-game/                 # Git repository root
 ## 🎯 Future Enhancements
 
 - [ ] Tournament mode with brackets and prizes
-- [ ] Statistics graphs and charts (visual analytics)
 - [ ] Mobile native app (React Native/Flutter)
-- [ ] Internationalization (i18n support for multiple languages)
-- [ ] Custom difficulty settings (user-defined digit ranges)
-- [ ] Achievement sharing to social media
-- [ ] Multiplayer lobbies (more than 2 players)
-- [ ] Spectator mode for ongoing multiplayer matches
-- [ ] Replay system to review past games
-- [ ] Voice chat for multiplayer games
-- [ ] Seasonal events and limited-time challenges
 - [ ] Player profiles with customizable avatars
 
 ---
