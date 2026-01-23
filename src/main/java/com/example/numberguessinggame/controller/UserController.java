@@ -83,6 +83,10 @@ public class UserController {
             profile.put("consecutivePlayDays", playDays);
             profile.put("bestPlayDayStreak", bestDays);
 
+            // Coins
+            Integer coins = user.getCoins() != null ? user.getCoins() : 0;
+            profile.put("coins", coins);
+
             // Achievement summary
             Map<String, Object> achievementSummary = achievementService.getUserAchievementSummary(user);
             profile.put("achievementSummary", achievementSummary);

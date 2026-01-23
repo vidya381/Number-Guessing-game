@@ -19,10 +19,58 @@ window.Auth = {
             if (UI) {
                 UI.updateStreakStats();
             }
+
+            // Fetch fresh user data from server to prevent stale localStorage data
+            this.refreshUserData();
         }
 
         // Always call updateAuthUI to show correct controls (guest or user)
         this.updateAuthUI();
+    },
+
+    refreshUserData: async function() {
+        if (!GameState.authToken) return;
+
+        try {
+            const response = await fetch('/api/user/profile', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + GameState.authToken,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                // Update current user with fresh data from server
+                if (GameState.currentUser) {
+                    GameState.currentUser.coins = data.coins || 0;
+                    GameState.currentUser.currentWinStreak = data.currentWinStreak || 0;
+                    GameState.currentUser.bestWinStreak = data.bestWinStreak || 0;
+                    GameState.currentUser.totalGames = data.totalGames || 0;
+                    GameState.currentUser.totalWins = data.totalWins || 0;
+
+                    // Update localStorage with fresh data
+                    localStorage.setItem('currentUser', JSON.stringify(GameState.currentUser));
+
+                    // Update UI
+                    this.updateAuthUI();
+                    if (UI) {
+                        UI.updateStreakStats();
+                    }
+
+                    debug.log('User data refreshed from server');
+                }
+            } else if (response.status === 401) {
+                // Token expired, log out
+                debug.log('Token expired, logging out');
+                this.logout();
+            }
+        } catch (error) {
+            debug.error('Error refreshing user data:', error);
+            // Don't log out on error, just use cached data
+        }
     },
 
     updateAuthUI: function() {
