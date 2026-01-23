@@ -547,6 +547,57 @@ window.Utils = {
         });
     },
 
+    setupNotifications: function() {
+        // Main notifications toggle
+        const notificationsToggle = document.getElementById('notifications-toggle');
+        const notificationsContent = document.getElementById('notifications-content');
+
+        if (notificationsToggle && notificationsContent) {
+            notificationsToggle.addEventListener('click', function () {
+                const isVisible = notificationsContent.style.display !== 'none';
+
+                if (isVisible) {
+                    notificationsContent.style.display = 'none';
+                    notificationsToggle.classList.remove('active');
+                } else {
+                    notificationsContent.style.display = 'block';
+                    notificationsToggle.classList.add('active');
+
+                    // Load friend requests when opening notifications
+                    if (typeof Notifications !== 'undefined') {
+                        Notifications.loadFriendRequests();
+                    }
+                }
+            });
+        }
+
+        // Setup collapsible notification items
+        const notificationItems = document.querySelectorAll('.notification-item');
+        notificationItems.forEach(item => {
+            const header = item.querySelector('.notification-header');
+            const container = item.querySelector('.notification-list-container');
+            const arrow = item.querySelector('.notification-arrow');
+
+            if (header && container && arrow) {
+                header.addEventListener('click', function() {
+                    const isVisible = container.style.display !== 'none';
+
+                    if (isVisible) {
+                        container.style.display = 'none';
+                        arrow.classList.remove('fa-chevron-up');
+                        arrow.classList.add('fa-chevron-down');
+                        item.classList.remove('active');
+                    } else {
+                        container.style.display = 'block';
+                        arrow.classList.remove('fa-chevron-down');
+                        arrow.classList.add('fa-chevron-up');
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
+    },
+
     updateGameStatus: function(status) {
         const statusIcon = document.getElementById('game-status-icon');
         const statusText = document.getElementById('game-status-text');
@@ -815,6 +866,7 @@ window.Utils = {
         this.setupKeyboardShortcuts();
         this.createFloatingNumbers();
         this.setupHowToPlay();
+        this.setupNotifications();
         this.setupModalClickOutside();
 
         // Attach theme toggle button event listener
