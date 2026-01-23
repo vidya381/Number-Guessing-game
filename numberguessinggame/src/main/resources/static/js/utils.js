@@ -516,7 +516,7 @@ window.Utils = {
         switch (status) {
             case 'home':
                 statusIcon.innerHTML = '<i class="fas fa-dice"></i>';
-                statusText.textContent = 'Welcome to NumVana!';
+                statusText.textContent = 'Welcome to Bulls & Cows!';
                 break;
             case 'regular-game':
                 statusIcon.innerHTML = '<i class="fas fa-brain"></i>';
@@ -549,7 +549,7 @@ window.Utils = {
             // Legacy support
             case 'welcome':
                 statusIcon.innerHTML = '<i class="fas fa-dice"></i>';
-                statusText.textContent = 'Welcome to NumVana!';
+                statusText.textContent = 'Welcome to Bulls & Cows!';
                 break;
             case 'playing':
                 statusIcon.innerHTML = '<i class="fas fa-brain"></i>';

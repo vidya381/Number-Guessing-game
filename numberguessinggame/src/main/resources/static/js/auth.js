@@ -360,7 +360,7 @@ window.Auth = {
 
 
                 if (Achievements) {
-                    Achievements.showToast('Welcome to NumVana, ' + GameState.currentUser.username + '!', 'success');
+                    Achievements.showToast('Welcome, ' + GameState.currentUser.username + '!', 'success');
                 }
             }
         } catch (error) {

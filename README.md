@@ -1,6 +1,6 @@
-# NumVana: The Ultimate Bulls & Cows Game 🎮
+# Bulls & Cows Game 🎮
 
-NumVana is a modern, full-stack web implementation of the classic **Bulls and Cows** code-breaking game. Featuring **5 unique game modes**, real-time multiplayer battles, a friends system, daily challenges, and survival mode, NumVana offers endless ways to test your code-breaking skills. Track your progress with achievements, compete on global leaderboards, earn coins, unlock hints, and enjoy a beautifully crafted gaming experience with both light and dark themes.
+A modern, full-stack web implementation of the classic **Bulls and Cows** code-breaking game. Featuring **5 unique game modes**, real-time multiplayer battles, a friends system, daily challenges, and survival mode, this game offers endless ways to test your code-breaking skills. Track your progress with achievements, compete on global leaderboards, earn coins, unlock hints, and enjoy a beautifully crafted gaming experience with both light and dark themes.
 
 ![Number-Guessing-Game](https://github.com/user-attachments/assets/d1dbb0c7-9b11-4a60-9fea-8471eafd2764)
 
@@ -145,7 +145,7 @@ NumVana is a modern, full-stack web implementation of the classic **Bulls and Co
 - **State Management**: Centralized state.js module
 
 ### **Architecture**
-- RESTful API design (50+ endpoints)
+- RESTful API design (40+ endpoints)
 - MVC Pattern (Model-View-Controller)
 - Repository Pattern for data access with custom JPQL queries
 - Service Layer with @Transactional business logic
@@ -159,7 +159,7 @@ NumVana is a modern, full-stack web implementation of the classic **Bulls and Co
 ## 🎮 How to Play
 
 ### **Getting Started**
-1. Visit **[NumVana](https://numvana.onrender.com)** or run locally
+1. Visit **[Bulls & Cows Game](https://bulls-cows-game.onrender.com)** or run locally
 2. Optional: Sign up for achievements, leaderboard access, and multiplayer features
 3. Choose from 5 game modes:
    - **Practice**: Learn the ropes with classic gameplay
@@ -209,15 +209,15 @@ Feedback:     1 Bull (the "1") + 2 Cows (the "2" and "3")
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/vidya381/Number-Guessing-game.git
-   cd Number-Guessing-game/numberguessinggame
+   git clone https://github.com/vidya381/bulls-cows-game.git
+   cd bulls-cows-game/numberguessinggame
    ```
 
 2. **Configure Database**
 
    Create `src/main/resources/application-local.properties`:
    ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/numvana
+   spring.datasource.url=jdbc:postgresql://localhost:5432/bulls_cows_db
    spring.datasource.username=your_username
    spring.datasource.password=your_password
 
@@ -264,7 +264,7 @@ numberguessinggame/
 │   │   │   │   ├── SurvivalController.java
 │   │   │   │   ├── FriendsController.java
 │   │   │   │   └── MultiplayerController.java
-│   │   │   ├── entity/          # JPA entities (14+)
+│   │   │   ├── entity/          # JPA entities (13)
 │   │   │   │   ├── User.java
 │   │   │   │   ├── Game.java
 │   │   │   │   ├── Achievement.java
@@ -331,7 +331,7 @@ numberguessinggame/
 
 ## 📊 Database Schema
 
-### **14+ Database Entities**
+### **13 Database Entities**
 
 **Core Tables:**
 - **users**: Player accounts, statistics, coin balance, preferences
@@ -343,9 +343,11 @@ numberguessinggame/
 - **daily_challenges**: Daily puzzle configuration and metadata
 - **daily_challenge_attempts**: User attempts on daily challenges
 
+**Time Attack Mode:**
+- **time_attack_sessions**: Active time attack game sessions with timer state
+
 **Survival Mode:**
-- **survival_sessions**: Active survival game sessions with current level
-- **survival_games**: Individual survival game records
+- **survival_sessions**: Active survival game sessions with current level and progression
 
 **Friends System:**
 - **friendships**: Bidirectional friend relationships
@@ -355,10 +357,6 @@ numberguessinggame/
 - **multiplayer_challenges**: Challenge requests with expiration (10 min)
 - **multiplayer_game_sessions**: Active/completed 1v1 game sessions
 - **multiplayer_player_progress**: Per-player state in multiplayer games
-
-**Additional:**
-- **hints**: Hint definitions and costs
-- **user_hints**: User hint purchase and usage tracking
 
 ### **Key Relationships**
 - User → Games (One-to-Many)
@@ -394,7 +392,7 @@ numberguessinggame/
 
 ## 🌐 Live Demo
 
-**Play Now**: [https://numvana.onrender.com](https://numvana.onrender.com)
+**Play Now**: [https://bulls-cows-game.onrender.com](https://bulls-cows-game.onrender.com)
 
 > Note: Hosted on Render free tier - initial load may take 30-60 seconds if the instance is sleeping.
 
@@ -402,14 +400,14 @@ numberguessinggame/
 
 ## 📈 Project Stats
 
-- **Lines of Code**: 8000+ (Java + JavaScript + CSS)
+- **Lines of Code**: 26,000+ (Java + JavaScript + CSS)
 - **Game Modes**: 5 unique game modes
 - **Achievements**: 25+ unique achievements
-- **API Endpoints**: 50+ RESTful endpoints
-- **Database Tables**: 14+ entities with complex relationships
+- **API Endpoints**: 40+ RESTful endpoints
+- **Database Tables**: 13 entities with complex relationships
 - **WebSocket Events**: 10+ real-time event types
 - **Sound Effects**: 4 audio files
-- **JavaScript Modules**: 8 modular game mode files
+- **JavaScript Modules**: 11+ modular files (game modes, auth, UI, state, utils, achievements)
 - **Responsive Breakpoints**: 3 (mobile, tablet, desktop)
 - **Concurrent Session Support**: Thread-safe game session management
 
@@ -461,10 +459,10 @@ This project is open source and available for educational and portfolio purposes
 ## 📞 Support
 
 If you encounter any issues or have questions:
-- Open an [Issue](https://github.com/vidya381/Number-Guessing-game/issues)
+- Open an [Issue](https://github.com/vidya381/bulls-cows-game/issues)
 - Check the **"How to Play"** guide in Settings
 - Review this README for feature details and technical information
 
 ---
 
-**Enjoy NumVana and may your guesses be ever in your favor!** 🎲🔢✨
+**Enjoy the game and may your guesses be ever in your favor!** 🎲🔢✨
