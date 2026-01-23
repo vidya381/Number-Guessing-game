@@ -127,7 +127,7 @@ A modern, full-stack web implementation of the classic **Bulls and Cows** code-b
 
 ### **Backend**
 - **Framework**: Spring Boot 3.1.0
-- **Language**: Java 22
+- **Language**: Java 17
 - **Database**: PostgreSQL (Supabase hosted)
 - **ORM**: Hibernate/JPA with HikariCP connection pooling
 - **Security**: JWT Authentication with BCrypt password hashing
@@ -201,7 +201,7 @@ Feedback:     1 Bull (the "1") + 2 Cows (the "2" and "3")
 ## 🚀 Local Development
 
 ### **Prerequisites**
-- Java 22 or higher
+- Java 17 or higher
 - Maven 3.6+
 - PostgreSQL 12+
 
