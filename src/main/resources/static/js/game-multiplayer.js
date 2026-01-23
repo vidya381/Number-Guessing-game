@@ -8,7 +8,7 @@ function showNotification(message, type) {
     if (typeof Achievements !== 'undefined' && Achievements.showToast) {
         Achievements.showToast(message, type);
     } else {
-        console.log(`[${type}] ${message}`);
+        debug.log(`[${type}] ${message}`);
     }
 }
 
@@ -17,7 +17,7 @@ const MultiplayerGame = {
      * Initialize multiplayer mode
      */
     init() {
-        console.log('Initializing multiplayer mode...');
+        debug.log('Initializing multiplayer mode...');
 
         // Initialize WebSocket connection
         this.connectWebSocket();
@@ -38,7 +38,7 @@ const MultiplayerGame = {
      */
     connectWebSocket() {
         if (GameState.multiplayer.connected) {
-            console.log('WebSocket already connected');
+            debug.log('WebSocket already connected');
             return;
         }
 
@@ -48,7 +48,7 @@ const MultiplayerGame = {
             const stompClient = Stomp.over(socket);
 
             stompClient.connect({}, (frame) => {
-                console.log('WebSocket connected:', frame);
+                debug.log('WebSocket connected:', frame);
                 GameState.multiplayer.websocket = socket;
                 GameState.multiplayer.stompClient = stompClient;
                 GameState.multiplayer.connected = true;
@@ -78,7 +78,7 @@ const MultiplayerGame = {
 
                 this.updateConnectionStatus(true);
             }, (error) => {
-                console.error('WebSocket error:', error);
+                debug.error('WebSocket error:', error);
                 GameState.multiplayer.connected = false;
                 this.updateConnectionStatus(false);
 
@@ -86,7 +86,7 @@ const MultiplayerGame = {
                 setTimeout(() => this.connectWebSocket(), 5000);
             });
         } catch (error) {
-            console.error('Failed to create WebSocket connection:', error);
+            debug.error('Failed to create WebSocket connection:', error);
         }
     },
 
@@ -123,7 +123,7 @@ const MultiplayerGame = {
                 this.renderFriendsList();
             }
         } catch (error) {
-            console.error('Failed to load friends:', error);
+            debug.error('Failed to load friends:', error);
         }
     },
 
@@ -145,7 +145,7 @@ const MultiplayerGame = {
                 this.renderSearchResults(data.users);
             }
         } catch (error) {
-            console.error('Failed to search users:', error);
+            debug.error('Failed to search users:', error);
         }
     },
 
@@ -172,7 +172,7 @@ const MultiplayerGame = {
                 showNotification(data.error || 'Failed to send request', 'error');
             }
         } catch (error) {
-            console.error('Failed to send friend request:', error);
+            debug.error('Failed to send friend request:', error);
             showNotification('Failed to send friend request', 'error');
         }
     },
@@ -195,7 +195,7 @@ const MultiplayerGame = {
                 showNotification(data.error || 'Failed to accept request', 'error');
             }
         } catch (error) {
-            console.error('Failed to accept friend request:', error);
+            debug.error('Failed to accept friend request:', error);
             showNotification('Failed to accept friend request', 'error');
         }
     },
@@ -215,7 +215,7 @@ const MultiplayerGame = {
                 this.loadPendingRequests();
             }
         } catch (error) {
-            console.error('Failed to decline friend request:', error);
+            debug.error('Failed to decline friend request:', error);
         }
     },
 
@@ -238,7 +238,7 @@ const MultiplayerGame = {
                 this.loadFriends();
             }
         } catch (error) {
-            console.error('Failed to remove friend:', error);
+            debug.error('Failed to remove friend:', error);
         }
     },
 
@@ -257,7 +257,7 @@ const MultiplayerGame = {
                 this.updateNotificationBadge();
             }
         } catch (error) {
-            console.error('Failed to load pending requests:', error);
+            debug.error('Failed to load pending requests:', error);
         }
     },
 
@@ -284,7 +284,7 @@ const MultiplayerGame = {
                 showNotification(data.error || 'Failed to send challenge', 'error');
             }
         } catch (error) {
-            console.error('Failed to send challenge:', error);
+            debug.error('Failed to send challenge:', error);
             showNotification('Failed to send challenge', 'error');
         }
     },
@@ -304,7 +304,7 @@ const MultiplayerGame = {
                 this.updateNotificationBadge();
             }
         } catch (error) {
-            console.error('Failed to load pending challenges:', error);
+            debug.error('Failed to load pending challenges:', error);
         }
     },
 
@@ -322,7 +322,7 @@ const MultiplayerGame = {
                 this.renderSentChallenges();
             }
         } catch (error) {
-            console.error('Failed to load sent challenges:', error);
+            debug.error('Failed to load sent challenges:', error);
         }
     },
 
@@ -344,7 +344,7 @@ const MultiplayerGame = {
                 showNotification(data.error || 'Failed to accept challenge', 'error');
             }
         } catch (error) {
-            console.error('Failed to accept challenge:', error);
+            debug.error('Failed to accept challenge:', error);
             showNotification('Failed to accept challenge', 'error');
         }
     },
@@ -364,7 +364,7 @@ const MultiplayerGame = {
                 this.loadPendingChallenges();
             }
         } catch (error) {
-            console.error('Failed to decline challenge:', error);
+            debug.error('Failed to decline challenge:', error);
         }
     },
 
@@ -372,7 +372,7 @@ const MultiplayerGame = {
      * Game Logic
      */
     startGame(sessionId, digitCount, opponentUsername, opponentId, maxAttempts) {
-        console.log('Starting multiplayer game:', sessionId, 'max attempts:', maxAttempts);
+        debug.log('Starting multiplayer game:', sessionId, 'max attempts:', maxAttempts);
 
         GameState.multiplayer.sessionId = sessionId;
         GameState.multiplayer.digitCount = digitCount;
@@ -452,7 +452,7 @@ const MultiplayerGame = {
                 showNotification(data.error || 'Invalid guess', 'error');
             }
         } catch (error) {
-            console.error('Failed to submit guess:', error);
+            debug.error('Failed to submit guess:', error);
             showNotification('Failed to submit guess', 'error');
         }
     },
@@ -665,13 +665,13 @@ const MultiplayerGame = {
      * WebSocket Event Handlers
      */
     handleFriendRequestNotification(data) {
-        console.log('Friend request notification:', data);
+        debug.log('Friend request notification:', data);
         showNotification(`${data.fromUsername} sent you a friend request`, 'info');
         this.loadPendingRequests();
     },
 
     handleChallengeNotification(data) {
-        console.log('Challenge notification:', data);
+        debug.log('Challenge notification:', data);
 
         switch (data.type) {
             case 'challenge_received':
@@ -686,11 +686,11 @@ const MultiplayerGame = {
     },
 
     handleGameNotification(data) {
-        console.log('Game notification:', data);
+        debug.log('Game notification:', data);
 
         switch (data.type) {
             case 'game_started':
-                console.log('Game started notification received:', data);
+                debug.log('Game started notification received:', data);
                 this.startGame(data.sessionId, data.digitCount, data.opponentUsername, data.opponentId, data.maxAttempts);
                 this.loadSentChallenges(); // Refresh sent challenges list
                 this.loadPendingChallenges(); // Refresh pending challenges list
@@ -718,7 +718,7 @@ const MultiplayerGame = {
     },
 
     handlePresenceUpdate(data) {
-        console.log('Presence update:', data);
+        debug.log('Presence update:', data);
         // Update friend online status
         this.updateFriendOnlineStatus(data.userId, data.online);
     },
@@ -740,7 +740,7 @@ const MultiplayerGame = {
                 this.renderStats();
             }
         } catch (error) {
-            console.error('Failed to load stats:', error);
+            debug.error('Failed to load stats:', error);
         }
     },
 
@@ -778,11 +778,11 @@ const MultiplayerGame = {
     renderSearchResults(users) {
         const searchResults = document.getElementById('user-search-results');
         if (!searchResults) {
-            console.error('user-search-results container not found');
+            debug.error('user-search-results container not found');
             return;
         }
 
-        console.log('Rendering search results, users count:', users ? users.length : 0);
+        debug.log('Rendering search results, users count:', users ? users.length : 0);
 
         if (!users || users.length === 0) {
             searchResults.innerHTML = '<p class="no-results">No users found</p>';
@@ -826,17 +826,17 @@ const MultiplayerGame = {
         }
 
         searchResults.innerHTML = htmlParts.join('');
-        console.log('Search results rendered successfully, items:', htmlParts.length);
+        debug.log('Search results rendered successfully, items:', htmlParts.length);
     },
 
     renderPendingRequests() {
         const requestsContainer = document.getElementById('pending-requests');
         if (!requestsContainer) {
-            console.error('pending-requests container not found');
+            debug.error('pending-requests container not found');
             return;
         }
 
-        console.log('Rendering pending requests, count:', GameState.multiplayer.pendingRequests.length);
+        debug.log('Rendering pending requests, count:', GameState.multiplayer.pendingRequests.length);
 
         if (GameState.multiplayer.pendingRequests.length === 0) {
             requestsContainer.innerHTML = '<div class="empty-state">No pending friend requests</div>';
@@ -865,14 +865,14 @@ const MultiplayerGame = {
         }
 
         requestsContainer.innerHTML = htmlParts.join('');
-        console.log('Pending requests rendered successfully, items:', GameState.multiplayer.pendingRequests.length);
+        debug.log('Pending requests rendered successfully, items:', GameState.multiplayer.pendingRequests.length);
     },
 
     renderPendingChallenges() {
         const challengesContainer = document.getElementById('pending-challenges');
         if (!challengesContainer) return;
 
-        console.log('Rendering pending challenges, count:', GameState.multiplayer.pendingChallenges.length);
+        debug.log('Rendering pending challenges, count:', GameState.multiplayer.pendingChallenges.length);
 
         if (GameState.multiplayer.pendingChallenges.length === 0) {
             challengesContainer.innerHTML = '<div class="empty-state">No incoming challenges</div>';
@@ -913,7 +913,7 @@ const MultiplayerGame = {
         const sentContainer = document.getElementById('sent-challenges');
         if (!sentContainer) return;
 
-        console.log('Rendering sent challenges, count:', GameState.multiplayer.sentChallenges.length);
+        debug.log('Rendering sent challenges, count:', GameState.multiplayer.sentChallenges.length);
 
         if (GameState.multiplayer.sentChallenges.length === 0) {
             sentContainer.innerHTML = '<div class="empty-state">No sent challenges</div>';
@@ -1254,7 +1254,7 @@ const MultiplayerGame = {
                 }
             }
         } catch (error) {
-            console.error('Failed to notify server of game leave:', error);
+            debug.error('Failed to notify server of game leave:', error);
             showNotification('Failed to leave game', 'error');
             // If request fails, reset locally
             GameState.resetMultiplayer();

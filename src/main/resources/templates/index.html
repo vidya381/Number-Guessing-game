@@ -957,52 +957,52 @@
     <!-- Initialize all modules when DOM is ready -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            console.log('🎮 Bulls & Cows - Initializing game modules...');
+            debug.log('🎮 Bulls & Cows - Initializing game modules...');
 
             // Initialize modules in order
             if (typeof Utils !== 'undefined') {
                 Utils.init();
-                console.log('✓ Utils initialized');
+                debug.log('✓ Utils initialized');
             }
 
             if (typeof Auth !== 'undefined') {
                 Auth.init();
-                console.log('✓ Auth initialized');
+                debug.log('✓ Auth initialized');
             }
 
             if (typeof UI !== 'undefined') {
                 UI.init();
-                console.log('✓ UI initialized');
+                debug.log('✓ UI initialized');
             }
 
             if (typeof RegularGame !== 'undefined') {
                 RegularGame.init();
-                console.log('✓ Regular Game initialized');
+                debug.log('✓ Regular Game initialized');
             }
 
             if (typeof TimeAttackGame !== 'undefined') {
                 TimeAttackGame.init();
-                console.log('✓ Time Attack initialized');
+                debug.log('✓ Time Attack initialized');
             }
 
             if (typeof DailyGame !== 'undefined') {
                 DailyGame.init();
-                console.log('✓ Daily Challenge initialized');
+                debug.log('✓ Daily Challenge initialized');
             }
 
             if (typeof SurvivalGame !== 'undefined') {
                 SurvivalGame.init();
-                console.log('✓ Survival Mode initialized');
+                debug.log('✓ Survival Mode initialized');
             }
 
             if (typeof MultiplayerGame !== 'undefined') {
                 // Note: MultiplayerGame.init() will be called when user clicks play button
-                console.log('✓ Multiplayer Mode loaded');
+                debug.log('✓ Multiplayer Mode loaded');
             }
 
             if (typeof Achievements !== 'undefined') {
                 Achievements.init();
-                console.log('✓ Achievements initialized');
+                debug.log('✓ Achievements initialized');
             }
 
             // Set initial game status to home
@@ -1140,7 +1140,7 @@
                 });
             }
 
-            console.log('🎮 Bulls & Cows - All modules initialized successfully!');
+            debug.log('🎮 Bulls & Cows - All modules initialized successfully!');
 
             // Cleanup on page unload
             window.addEventListener('beforeunload', () => {

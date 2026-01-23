@@ -392,7 +392,7 @@ window.RegularGame = {
             }
 
         } catch (error) {
-            console.error('Hint request failed:', error);
+            debug.error('Hint request failed:', error);
             const errorInfo = Utils.handleFetchError(error);
             if (Achievements) {
                 Achievements.showToast(errorInfo.userMessage, 'error');
@@ -901,7 +901,7 @@ window.RegularGame = {
         if (hintBtn) {
             hintBtn.addEventListener('click', () => this.requestHint());
         } else {
-            console.error('❌ Hint button not found in DOM');
+            debug.error('❌ Hint button not found in DOM');
         }
 
         // Difficulty modal handlers

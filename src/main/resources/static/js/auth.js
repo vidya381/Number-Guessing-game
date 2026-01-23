@@ -370,11 +370,11 @@ window.Auth = {
     },
 
     logout: function() {
-        console.log('[AUTH] Logout function called');
+        debug.log('[AUTH] Logout function called');
 
         // Stop all active games and clear timers
         if (TimeAttackGame && TimeAttackGame.stopGame) {
-            console.log('[AUTH] Stopping Time Attack game');
+            debug.log('[AUTH] Stopping Time Attack game');
             TimeAttackGame.stopGame();
         }
         if (SurvivalGame && SurvivalGame.endGame) {
@@ -461,7 +461,7 @@ window.Auth = {
         });
 
         // Hide all game screens and show home page
-        console.log('[AUTH] Showing home page and hiding game screens');
+        debug.log('[AUTH] Showing home page and hiding game screens');
         const homePage = document.getElementById('home-page');
         const gameStatusDisplay = document.getElementById('game-status-display');
 
@@ -481,23 +481,23 @@ window.Auth = {
         gamePages.forEach(pageId => {
             const page = document.getElementById(pageId);
             if (page) {
-                console.log('[AUTH] Hiding ' + pageId);
+                debug.log('[AUTH] Hiding ' + pageId);
                 page.style.display = 'none';
             }
         });
 
         // Hide game status
         if (gameStatusDisplay) {
-            console.log('[AUTH] Hiding game status display');
+            debug.log('[AUTH] Hiding game status display');
             gameStatusDisplay.style.display = 'none';
         }
 
         // Show home page
         if (homePage) {
-            console.log('[AUTH] Showing home page');
+            debug.log('[AUTH] Showing home page');
             homePage.style.display = 'block';
         } else {
-            console.warn('[AUTH] home-page element not found!');
+            debug.warn('[AUTH] home-page element not found!');
         }
 
         // Reload daily challenge info for guest view

@@ -164,14 +164,14 @@ window.SurvivalGame = {
                 this.updateHUD();
 
             } else {
-                console.error('Survival start failed:', data);
+                debug.error('Survival start failed:', data);
                 if (Achievements) {
                     Achievements.showToast(data.error || 'Could not start survival mode', 'error');
                 }
             }
 
         } catch (error) {
-            console.error('Error starting survival:', error);
+            debug.error('Error starting survival:', error);
             if (Achievements) {
                 Achievements.showToast('Connection error. Please try again!', 'error');
             }
@@ -324,7 +324,7 @@ window.SurvivalGame = {
             }
 
         } catch (error) {
-            console.error('Error submitting guess:', error);
+            debug.error('Error submitting guess:', error);
             if (Achievements) {
                 Achievements.showToast('Connection error!', 'error');
             }
@@ -404,14 +404,14 @@ window.SurvivalGame = {
                     }, 2000);
                 }
             } else {
-                console.error('Round complete failed:', data);
+                debug.error('Round complete failed:', data);
                 if (Achievements) {
                     Achievements.showToast(data.error || 'Failed to complete round', 'error');
                 }
             }
 
         } catch (error) {
-            console.error('Error completing round:', error);
+            debug.error('Error completing round:', error);
             if (Achievements) {
                 Achievements.showToast('Connection error!', 'error');
             }
@@ -436,14 +436,14 @@ window.SurvivalGame = {
             if (response.ok) {
                 this.showGameOverScreen(data);
             } else {
-                console.error('Round complete failed:', data);
+                debug.error('Round complete failed:', data);
                 if (Achievements) {
                     Achievements.showToast(data.error || 'Failed to complete round', 'error');
                 }
             }
 
         } catch (error) {
-            console.error('Error completing round:', error);
+            debug.error('Error completing round:', error);
             if (Achievements) {
                 Achievements.showToast('Connection error!', 'error');
             }
@@ -578,7 +578,7 @@ window.SurvivalGame = {
             }
 
         } catch (error) {
-            console.error('Error ending session:', error);
+            debug.error('Error ending session:', error);
         }
     },
 
@@ -626,7 +626,7 @@ window.SurvivalGame = {
             }
 
         } catch (error) {
-            console.error('Error ending session:', error);
+            debug.error('Error ending session:', error);
         }
     },
 
@@ -715,7 +715,7 @@ window.SurvivalGame = {
             }
 
         } catch (error) {
-            console.error('Failed to load leaderboard:', error);
+            debug.error('Failed to load leaderboard:', error);
             loadingDiv.style.display = 'none';
             contentDiv.style.display = 'block';
             contentDiv.innerHTML = '<div class="error-message">Couldn\'t load the leaderboard. Try again in a moment! 🏆</div>';
@@ -772,7 +772,7 @@ window.SurvivalGame = {
             }
 
         } catch (error) {
-            console.error('Error ending session:', error);
+            debug.error('Error ending session:', error);
         }
     }
 };

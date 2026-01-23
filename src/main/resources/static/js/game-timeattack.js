@@ -94,7 +94,7 @@ window.TimeAttackGame = {
                 document.querySelector('#ta-input-container .digit-input')?.focus();
             }
         } catch (error) {
-            console.error('Failed to start Time Attack:', error);
+            debug.error('Failed to start Time Attack:', error);
             if (Achievements) {
                 Achievements.showToast('Failed to start Time Attack. Try again!', 'error');
             }
@@ -183,7 +183,7 @@ window.TimeAttackGame = {
             if (inputs[0]) inputs[0].focus();
 
         } catch (error) {
-            console.error('Failed to start new game:', error);
+            debug.error('Failed to start new game:', error);
             if (Achievements) {
                 Achievements.showToast('Failed to start new game', 'error');
             }
@@ -296,7 +296,7 @@ window.TimeAttackGame = {
             }
 
         } catch (error) {
-            console.error('Failed to submit guess:', error);
+            debug.error('Failed to submit guess:', error);
             if (Achievements) {
                 Achievements.showToast('Failed to submit guess. Try again!', 'error');
             }
@@ -397,7 +397,7 @@ window.TimeAttackGame = {
             }
 
         } catch (error) {
-            console.error('Failed to end session:', error);
+            debug.error('Failed to end session:', error);
             if (Achievements) {
                 Achievements.showToast('Failed to save session', 'error');
             }
@@ -613,7 +613,7 @@ window.TimeAttackGame = {
             }
 
         } catch (error) {
-            console.error('Failed to load leaderboard:', error);
+            debug.error('Failed to load leaderboard:', error);
             loadingDiv.style.display = 'none';
             contentDiv.style.display = 'block';
             contentDiv.innerHTML = '<div class="error-message">Couldn\'t load the leaderboard. Try again in a moment! 🏆</div>';

@@ -274,7 +274,7 @@ window.UI = {
                 throw new Error('Invalid profile data received');
             }
         } catch (error) {
-            console.error('Failed to load profile:', error);
+            debug.error('Failed to load profile:', error);
             const errorInfo = Utils.handleFetchError(error);
             if (Achievements) {
                 Achievements.showToast(errorInfo.userMessage, 'error');
@@ -447,7 +447,7 @@ window.UI = {
                 this.setupProfileAchievementTabs();
             }
         } catch (error) {
-            console.error('Failed to load achievements in profile:', error);
+            debug.error('Failed to load achievements in profile:', error);
         }
     },
 

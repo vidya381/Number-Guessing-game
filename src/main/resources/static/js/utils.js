@@ -3,6 +3,18 @@
  * Contains animations, modals, keyboard shortcuts, theme management, and formatting utilities
  */
 
+// Debug Configuration
+// Set to false in production to disable all console logs
+const DEBUG = false;
+
+// Debug utility - all console logs go through this
+window.debug = {
+    log: (...args) => DEBUG && console.log(...args),
+    error: (...args) => DEBUG && console.error(...args),
+    warn: (...args) => DEBUG && console.warn(...args),
+    info: (...args) => DEBUG && console.info(...args)
+};
+
 window.Utils = {
     // ==========================================
     // ANIMATION UTILITIES
@@ -760,7 +772,7 @@ window.Utils = {
         if (!isFontAwesomeLoaded) {
             // Font Awesome didn't load - add fallback class
             document.body.classList.add('fa-fallback');
-            console.warn('Font Awesome failed to load. Using emoji fallbacks.');
+            debug.warn('Font Awesome failed to load. Using emoji fallbacks.');
         }
 
         // Clean up test element

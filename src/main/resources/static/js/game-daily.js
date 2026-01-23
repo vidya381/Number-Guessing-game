@@ -92,10 +92,10 @@ window.DailyGame = {
                     }
                 }
             } else {
-                console.error('Failed to load daily challenge info:', data.error);
+                debug.error('Failed to load daily challenge info:', data.error);
             }
         } catch (error) {
-            console.error('Error loading daily challenge info:', error);
+            debug.error('Error loading daily challenge info:', error);
         }
     },
 
@@ -137,13 +137,13 @@ window.DailyGame = {
                 GameState.dailyChallenge.attempts = data.currentAttempts || 0; // Set cumulative attempts
                 this.startDailyChallengeGame();
             } else {
-                console.error('Failed to start:', data.error);
+                debug.error('Failed to start:', data.error);
                 if (Achievements) {
                     Achievements.showToast(data.error || 'Couldn\'t start the daily challenge. Try again! 🎮', 'error');
                 }
             }
         } catch (error) {
-            console.error('Start error:', error);
+            debug.error('Start error:', error);
             if (Achievements) {
                 Achievements.showToast('Couldn\'t start the daily challenge. Check your connection! 🔄', 'error');
             }
@@ -325,13 +325,13 @@ window.DailyGame = {
                     }
                 }
             } else {
-                console.error('Server error:', data.error);
+                debug.error('Server error:', data.error);
                 if (Achievements) {
                     Achievements.showToast(data.error || 'Hmm, couldn\'t submit that guess. Try again! 🔄', 'error');
                 }
             }
         } catch (error) {
-            console.error('Fetch error:', error);
+            debug.error('Fetch error:', error);
             if (Achievements) {
                 Achievements.showToast('Hmm, couldn\'t submit that guess. Check your connection and try again! 🔄', 'error');
             }
