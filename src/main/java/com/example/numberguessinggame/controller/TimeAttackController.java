@@ -286,23 +286,33 @@ public class TimeAttackController {
         session.incrementCurrentGameAttempts();
 
         // Calculate bulls and cows
-        String target = String.valueOf(session.getCurrentTargetNumber());
-        int bulls = 0;
-        int cows = 0;
+        final String target = String.valueOf(session.getCurrentTargetNumber());
+        int bullsCount = 0;
+        int cowsCount = 0;
 
         for (int i = 0; i < guess.length(); i++) {
             char guessChar = guess.charAt(i);
             if (target.charAt(i) == guessChar) {
-                bulls++;
+                bullsCount++;
             } else if (target.contains(String.valueOf(guessChar))) {
-                cows++;
+                cowsCount++;
             }
         }
 
-        boolean won = (bulls == digitCount);
+        final int bulls = bullsCount;
+        final int cows = cowsCount;
+        final boolean won = (bulls == digitCount);
 
-        logger.info("Time Attack guess processed - SessionID: {}, Guess: {}, Target: {}, Bulls: {}, Cows: {}, Won: {}",
-                sessionId, guess, target, bulls, cows, won);
+        // Log with username if available
+        if (session.getUserId() != null) {
+            userRepository.findById(session.getUserId()).ifPresent(user ->
+                logger.info("[ADMIN] Time Attack Target | User: {} | Session: {} | Target: {} | Guess: {} | Bulls: {} | Cows: {} | Won: {}",
+                        user.getUsername(), sessionId, target, guess, bulls, cows, won)
+            );
+        } else {
+            logger.info("[ADMIN] Time Attack Target | Guest | Session: {} | Target: {} | Guess: {} | Bulls: {} | Cows: {} | Won: {}",
+                    sessionId, target, guess, bulls, cows, won);
+        }
 
         if (won) {
             // Calculate game time

@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,8 @@ import jakarta.servlet.http.HttpSession;
 
 @RestController
 public class GameController {
+
+    private static final Logger logger = LoggerFactory.getLogger(GameController.class);
 
     // Game configuration constants
     private static final int DIFFICULTY_EASY = 0;
@@ -76,10 +80,12 @@ public class GameController {
         String difficultyName = difficulty == DIFFICULTY_EASY ? "Easy" : difficulty == DIFFICULTY_MEDIUM ? "Medium" : "Hard";
         if (userId != null) {
             userRepository.findById(userId).ifPresent(user ->
-                System.out.println("[Game Start] Mode: Regular | User: " + user.getUsername() + " | Difficulty: " + difficultyName + " | Target: " + targetNumber + " | Session: " + compositeKey)
+                logger.info("[ADMIN] Practice Mode Start | User: {} | Difficulty: {} | Target: {} | Session: {}",
+                        user.getUsername(), difficultyName, targetNumber, compositeKey)
             );
         } else {
-            System.out.println("[Game Start] Mode: Regular | Guest | Difficulty: " + difficultyName + " | Target: " + targetNumber + " | Session: " + compositeKey);
+            logger.info("[ADMIN] Practice Mode Start | Guest | Difficulty: {} | Target: {} | Session: {}",
+                    difficultyName, targetNumber, compositeKey);
         }
 
         Map<String, Object> response = new HashMap<>();

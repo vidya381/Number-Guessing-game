@@ -210,7 +210,8 @@ public class MultiplayerService {
 
         logger.info("Game session created: {} vs {} (session: {}, max attempts: {})",
                     challenge.getChallenger().getUsername(), user.getUsername(), sessionId, maxAttempts);
-        logger.info("DEBUG - Secret number for session {}: {}", sessionId, secretNumber);
+        logger.info("[ADMIN] Multiplayer Target | Session: {} | Players: {} vs {} | Target: {}",
+                    sessionId, challenge.getChallenger().getUsername(), user.getUsername(), secretNumber);
 
         Map<String, Object> result = new HashMap<>();
         result.put("success", true);

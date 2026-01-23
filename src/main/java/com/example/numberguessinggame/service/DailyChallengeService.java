@@ -65,7 +65,7 @@ public class DailyChallengeService {
         int targetNumber = generateUniqueDigitNumber(date, difficulty);
 
         // Log daily challenge creation (once per day)
-        logger.info("Daily Challenge Created - Date: {}, Difficulty: {} ({}), Target Number: {}",
+        logger.info("[ADMIN] Daily Challenge Created | Date: {} | Difficulty: {} ({}) | Target: {}",
                 date, difficulty, getDifficultyText(difficulty), targetNumber);
 
         DailyChallenge challenge = new DailyChallenge(date, targetNumber, difficulty);

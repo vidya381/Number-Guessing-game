@@ -147,11 +147,11 @@ public class SurvivalController {
         String difficultyName = survivalService.getDifficultyText(difficulty);
         if (userId != null) {
             userRepository.findById(userId).ifPresent(user ->
-                logger.info("[Survival Start] User: {} | Difficulty: {} | Target: {} | Session: {}",
+                logger.info("[ADMIN] Survival Start | User: {} | Difficulty: {} | Target: {} | Session: {}",
                     user.getUsername(), difficultyName, session.getCurrentTargetNumber(), sessionId)
             );
         } else {
-            logger.info("[Survival Start] Guest | Difficulty: {} | Target: {} | Session: {}",
+            logger.info("[ADMIN] Survival Start | Guest | Difficulty: {} | Target: {} | Session: {}",
                 difficultyName, session.getCurrentTargetNumber(), sessionId);
         }
 
@@ -319,9 +319,17 @@ public class SurvivalController {
 
                     // Log new round start
                     String difficultyName = survivalService.getDifficultyText(session.getDifficulty());
-                    logger.info("[Survival Round {}] UserID: {} | Difficulty: {} | Target: {} | Session: {}",
-                            session.getCurrentRound(), session.getUserId(), difficultyName,
-                            session.getCurrentTargetNumber(), sessionId);
+                    if (session.getUserId() != null) {
+                        userRepository.findById(session.getUserId()).ifPresent(user ->
+                            logger.info("[ADMIN] Survival Round {} | User: {} | Difficulty: {} | Target: {} | Session: {}",
+                                    session.getCurrentRound(), user.getUsername(), difficultyName,
+                                    session.getCurrentTargetNumber(), sessionId)
+                        );
+                    } else {
+                        logger.info("[ADMIN] Survival Round {} | Guest | Difficulty: {} | Target: {} | Session: {}",
+                                session.getCurrentRound(), difficultyName,
+                                session.getCurrentTargetNumber(), sessionId);
+                    }
 
                     response.put("completed", false);
                     response.put("nextRound", session.getCurrentRound());
