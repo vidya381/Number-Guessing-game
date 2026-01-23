@@ -222,15 +222,20 @@ window.Utils = {
     },
 
     updateThemeToggleButton: function(isDarkMode) {
-        const themeToggleButton = document.getElementById('theme-toggle');
-        if (themeToggleButton) {
-            const icon = themeToggleButton.querySelector('i');
+        const themeCheckbox = document.getElementById('theme-toggle-checkbox');
+        const themeIcon = document.getElementById('theme-icon');
+
+        if (themeCheckbox) {
+            themeCheckbox.checked = isDarkMode;
+        }
+
+        if (themeIcon) {
             if (isDarkMode) {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun');
             } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon');
             }
         }
     },
@@ -547,33 +552,33 @@ window.Utils = {
         });
     },
 
-    setupNotifications: function() {
-        // Main notifications toggle
-        const notificationsToggle = document.getElementById('notifications-toggle');
-        const notificationsContent = document.getElementById('notifications-content');
+    setupNotificationsModal: function() {
+        // Notification bell button
+        const notificationsBell = document.getElementById('notifications-bell');
+        const notificationsModal = document.getElementById('notifications-modal');
 
-        if (notificationsToggle && notificationsContent) {
-            notificationsToggle.addEventListener('click', function () {
-                const isVisible = notificationsContent.style.display !== 'none';
+        if (notificationsBell && notificationsModal) {
+            notificationsBell.addEventListener('click', () => {
+                this.openModalWithAnimation(notificationsModal);
 
-                if (isVisible) {
-                    notificationsContent.style.display = 'none';
-                    notificationsToggle.classList.remove('active');
-                } else {
-                    notificationsContent.style.display = 'block';
-                    notificationsToggle.classList.add('active');
-
-                    // Load notifications when opening
-                    if (typeof Notifications !== 'undefined') {
-                        Notifications.loadFriendRequests();
-                        Notifications.loadChallengeNotifications();
-                    }
+                // Load notifications when opening
+                if (typeof Notifications !== 'undefined') {
+                    Notifications.loadFriendRequests();
+                    Notifications.loadChallengeNotifications();
                 }
             });
         }
 
+        // Close notification modal button
+        const closeNotificationsModal = document.getElementById('close-notifications-modal');
+        if (closeNotificationsModal && notificationsModal) {
+            closeNotificationsModal.addEventListener('click', () => {
+                this.closeModalWithAnimation(notificationsModal);
+            });
+        }
+
         // Setup collapsible notification items
-        const notificationItems = document.querySelectorAll('.notification-item');
+        const notificationItems = document.querySelectorAll('#notifications-modal .notification-item');
         notificationItems.forEach(item => {
             const header = item.querySelector('.notification-header');
             const container = item.querySelector('.notification-list-container');
@@ -867,13 +872,13 @@ window.Utils = {
         this.setupKeyboardShortcuts();
         this.createFloatingNumbers();
         this.setupHowToPlay();
-        this.setupNotifications();
+        this.setupNotificationsModal();
         this.setupModalClickOutside();
 
-        // Attach theme toggle button event listener
-        const themeToggleButton = document.getElementById('theme-toggle');
-        if (themeToggleButton) {
-            themeToggleButton.addEventListener('click', () => {
+        // Attach theme toggle checkbox event listener (in Settings)
+        const themeToggleCheckbox = document.getElementById('theme-toggle-checkbox');
+        if (themeToggleCheckbox) {
+            themeToggleCheckbox.addEventListener('change', () => {
                 this.toggleDarkMode();
             });
         }

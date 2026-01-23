@@ -60,6 +60,12 @@ window.Auth = {
                         UI.updateStreakStats();
                     }
 
+                    // Load notifications to update badge counts
+                    if (typeof Notifications !== 'undefined') {
+                        Notifications.loadFriendRequests();
+                        Notifications.loadChallengeNotifications();
+                    }
+
                     debug.log('User data refreshed from server');
                 }
             } else if (response.status === 401) {
@@ -341,6 +347,11 @@ window.Auth = {
                     DailyGame.loadDailyChallengeInfo();
                 }
 
+                // Load notifications to update badge counts
+                if (typeof Notifications !== 'undefined') {
+                    Notifications.loadFriendRequests();
+                    Notifications.loadChallengeNotifications();
+                }
 
                 if (Achievements) {
                     Achievements.showToast('Welcome back, ' + GameState.currentUser.username + '!', 'success');
@@ -552,6 +563,15 @@ window.Auth = {
         if (DailyGame && DailyGame.loadDailyChallengeInfo) {
             DailyGame.loadDailyChallengeInfo();
         }
+
+        // Clear notification badges
+        const friendBadge = document.getElementById('friend-requests-badge');
+        const challengeBadge = document.getElementById('challenge-notifications-badge');
+        const bellBadge = document.getElementById('notifications-bell-badge');
+
+        if (friendBadge) friendBadge.style.display = 'none';
+        if (challengeBadge) challengeBadge.style.display = 'none';
+        if (bellBadge) bellBadge.style.display = 'none';
 
         if (Achievements) {
             Achievements.showToast('Logged out successfully!', 'success');

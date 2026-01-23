@@ -1794,8 +1794,8 @@ body.dark-mode .how-to-play-content {
     background: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(var(--primary-color-rgb), 0.15);
     border-radius: 8px;
-    padding: 10px 12px;
-    margin-bottom: 8px;
+    padding: 8px 10px;
+    margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1816,30 +1816,30 @@ body.dark-mode .how-to-play-content {
 .friend-request-info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
 }
 
 .friend-request-username {
     font-weight: 600;
     color: var(--text-color);
-    font-size: 0.95em;
+    font-size: 0.9em;
 }
 
 .friend-request-time {
-    font-size: 0.75em;
+    font-size: 0.7em;
     color: var(--text-secondary);
 }
 
 .friend-request-actions {
     display: flex;
-    gap: 8px;
+    gap: 6px;
 }
 
 .friend-request-btn {
-    padding: 6px 12px;
+    padding: 5px 10px;
     border: none;
-    border-radius: 6px;
-    font-size: 0.85em;
+    border-radius: 5px;
+    font-size: 0.8em;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1873,8 +1873,8 @@ body.dark-mode .how-to-play-content {
     background: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(var(--primary-color-rgb), 0.15);
     border-radius: 8px;
-    padding: 10px 12px;
-    margin-bottom: 8px;
+    padding: 8px 10px;
+    margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1895,28 +1895,28 @@ body.dark-mode .how-to-play-content {
 .challenge-notification-info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 2px;
 }
 
 .challenge-notification-username {
     font-weight: 600;
     color: var(--text-color);
-    font-size: 0.95em;
+    font-size: 0.9em;
 }
 
 .challenge-notification-details {
-    font-size: 0.8em;
+    font-size: 0.75em;
     color: var(--text-secondary);
     display: flex;
-    gap: 8px;
+    gap: 6px;
     align-items: center;
 }
 
 .challenge-difficulty-badge {
     display: inline-block;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-size: 0.85em;
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-size: 0.8em;
     font-weight: 600;
     text-transform: uppercase;
 }
@@ -1937,20 +1937,20 @@ body.dark-mode .how-to-play-content {
 }
 
 .challenge-notification-time {
-    font-size: 0.75em;
+    font-size: 0.7em;
     color: var(--text-secondary);
 }
 
 .challenge-notification-actions {
     display: flex;
-    gap: 8px;
+    gap: 6px;
 }
 
 .challenge-notification-btn {
-    padding: 6px 12px;
+    padding: 5px 10px;
     border: none;
-    border-radius: 6px;
-    font-size: 0.85em;
+    border-radius: 5px;
+    font-size: 0.8em;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -2065,4 +2065,126 @@ body.dark-mode .challenge-difficulty-badge.medium {
 body.dark-mode .challenge-difficulty-badge.hard {
     background: rgba(231, 76, 60, 0.25);
     color: #ef5350;
+}
+
+/* ==========================================
+   THEME TOGGLE IN SETTINGS (iOS-style Pill Slider)
+   ========================================== */
+
+.theme-toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 30px;
+    flex-shrink: 0;
+}
+
+.theme-toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.theme-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 30px;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 24px;
+    width: 24px;
+    left: 3px;
+    bottom: 3px;
+    background: white;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.theme-toggle-slider:after {
+    content: '☀️';
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.theme-toggle-switch input:checked + .theme-toggle-slider {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 8px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.theme-toggle-switch input:checked + .theme-toggle-slider:before {
+    transform: translateX(30px);
+    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.4);
+}
+
+.theme-toggle-switch input:checked + .theme-toggle-slider:after {
+    content: '🌙';
+    left: auto;
+    right: 8px;
+    opacity: 1;
+}
+
+.theme-toggle-switch input:focus + .theme-toggle-slider {
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 0 3px rgba(var(--primary-color-rgb), 0.2);
+}
+
+/* Hover effect */
+.theme-toggle-slider:hover {
+    opacity: 0.9;
+}
+
+/* Dark mode adjustments */
+body.dark-mode .theme-toggle-slider {
+    background: linear-gradient(135deg, #424242 0%, #303030 100%);
+}
+
+body.dark-mode .theme-toggle-switch input:checked + .theme-toggle-slider {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+}
+
+/* ==========================================
+   NOTIFICATIONS MODAL
+   ========================================== */
+
+.notifications-modal-content {
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+}
+
+.notifications-modal-title {
+    font-size: 28px;
+    font-weight: 800;
+    text-align: center;
+    margin: 0 0 25px 0;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.notifications-modal-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Dark mode for notifications modal */
+body.dark-mode .notifications-modal-title {
+    color: var(--primary-color);
 }

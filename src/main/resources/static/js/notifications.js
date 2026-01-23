@@ -5,6 +5,38 @@
 
 window.Notifications = {
     // ==========================================
+    // BADGE UPDATE
+    // ==========================================
+
+    updateBellBadge: function() {
+        // Count total notifications
+        let totalCount = 0;
+
+        // Friend requests count
+        const friendBadge = document.getElementById('friend-requests-badge');
+        if (friendBadge && friendBadge.style.display !== 'none') {
+            totalCount += parseInt(friendBadge.textContent) || 0;
+        }
+
+        // Challenge notifications count
+        const challengeBadge = document.getElementById('challenge-notifications-badge');
+        if (challengeBadge && challengeBadge.style.display !== 'none') {
+            totalCount += parseInt(challengeBadge.textContent) || 0;
+        }
+
+        // Update bell badge
+        const bellBadge = document.getElementById('notifications-bell-badge');
+        if (bellBadge) {
+            if (totalCount > 0) {
+                bellBadge.textContent = totalCount;
+                bellBadge.style.display = 'inline-block';
+            } else {
+                bellBadge.style.display = 'none';
+            }
+        }
+    },
+
+    // ==========================================
     // FRIEND REQUESTS
     // ==========================================
 
@@ -45,18 +77,22 @@ window.Notifications = {
                         badge.style.display = 'inline-block';
                     }
                 }
+                this.updateBellBadge();
             } else if (response.status === 401) {
                 this.showEmptyState('friend-requests-list', 'Session expired. Please log in again');
                 if (badge) badge.style.display = 'none';
+                this.updateBellBadge();
             } else {
                 this.showEmptyState('friend-requests-list', 'Failed to load friend requests');
                 if (badge) badge.style.display = 'none';
+                this.updateBellBadge();
             }
         } catch (error) {
             debug.error('Error loading friend requests:', error);
             this.showEmptyState('friend-requests-list', 'Failed to load friend requests');
             const badge = document.getElementById('friend-requests-badge');
             if (badge) badge.style.display = 'none';
+            this.updateBellBadge();
         }
     },
 
@@ -261,18 +297,22 @@ window.Notifications = {
                         badge.style.display = 'inline-block';
                     }
                 }
+                this.updateBellBadge();
             } else if (response.status === 401) {
                 this.showEmptyState('challenge-notifications-list', 'Session expired. Please log in again');
                 if (badge) badge.style.display = 'none';
+                this.updateBellBadge();
             } else {
                 this.showEmptyState('challenge-notifications-list', 'Failed to load challenge invites');
                 if (badge) badge.style.display = 'none';
+                this.updateBellBadge();
             }
         } catch (error) {
             debug.error('Error loading challenge notifications:', error);
             this.showEmptyState('challenge-notifications-list', 'Failed to load challenge invites');
             const badge = document.getElementById('challenge-notifications-badge');
             if (badge) badge.style.display = 'none';
+            this.updateBellBadge();
         }
     },
 
