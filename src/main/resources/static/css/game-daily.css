@@ -176,6 +176,7 @@
 
 .daily-challenge-btn {
     background: linear-gradient(135deg, var(--warning-color) 0%, var(--accent-color) 100%);
+    min-width: 180px; /* Ensure button is wide enough for completed state */
 }
 
 .daily-challenge-btn:hover {

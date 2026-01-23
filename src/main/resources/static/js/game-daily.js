@@ -47,7 +47,7 @@ window.DailyGame = {
                     // User already completed today's challenge
                     if (playBtn) {
                         playBtn.disabled = false; // Make it clickable for toggle
-                        playBtn.innerHTML = '<i class="fas fa-check"></i> COMPLETED TODAY <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i>';
+                        playBtn.innerHTML = '<i class="fas fa-check"></i> COMPLETED <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i>';
                         playBtn.style.cursor = 'pointer';
 
                         // Add toggle functionality
