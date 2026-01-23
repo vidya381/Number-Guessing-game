@@ -778,7 +778,7 @@
                 <div id="how-to-play-content" class="how-to-play-content" style="display: none;">
                     <div class="rules-section">
                         <h4>🎯 Game Objective</h4>
-                        <p>Guess the secret code within 10 attempts. The code contains unique digits only (no repeating numbers).</p>
+                        <p>Guess the secret code before running out of attempts. The code contains unique digits only (no repeating numbers). Most modes have attempt limits, but Daily Challenge offers unlimited attempts (ranked by performance).</p>
                     </div>
 
                     <div class="rules-section">
@@ -821,6 +821,129 @@
                             <li>Keep track of digits you've already tested</li>
                             <li>Remember: each digit can only appear once!</li>
                         </ul>
+                    </div>
+
+                    <!-- Game Modes Section -->
+                    <div class="rules-section">
+                        <h4>🎮 Game Modes</h4>
+                        <p class="mode-description">Choose from 5 exciting game modes, each with unique rules and challenges:</p>
+
+                        <!-- Practice Mode -->
+                        <div class="game-mode-item clickable" data-mode="practice">
+                            <div class="mode-header">
+                                <div class="mode-info">
+                                    <span class="mode-icon">⚡</span>
+                                    <span class="mode-name">Practice Mode</span>
+                                </div>
+                                <i class="fas fa-chevron-down mode-arrow"></i>
+                            </div>
+                            <div class="mode-content" style="display: none;">
+                                <p><strong>Play at your own pace</strong> - No timers, no pressure! Perfect for learning and improving your skills.</p>
+                                <ul>
+                                    <li><strong>Attempts:</strong> 10 attempts per game (all difficulties)</li>
+                                    <li><strong>Goal:</strong> Solve the code before running out of attempts</li>
+                                    <li><strong>Scoring:</strong> Track your best scores and win streaks</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Daily Challenge -->
+                        <div class="game-mode-item clickable" data-mode="daily">
+                            <div class="mode-header">
+                                <div class="mode-info">
+                                    <span class="mode-icon">🗓️</span>
+                                    <span class="mode-name">Daily Challenge</span>
+                                </div>
+                                <i class="fas fa-chevron-down mode-arrow"></i>
+                            </div>
+                            <div class="mode-content" style="display: none;">
+                                <p><strong>One challenge per day</strong> - Same puzzle for everyone! Compete on the global leaderboard.</p>
+                                <ul>
+                                    <li><strong>Attempts:</strong> Unlimited! Keep trying until you solve it</li>
+                                    <li><strong>Frequency:</strong> New challenge every 24 hours (difficulty rotates daily)</li>
+                                    <li><strong>Leaderboard:</strong> Shows all your attempted guesses - ranked by fewest attempts and fastest time</li>
+                                    <li><strong>Special:</strong> Everyone plays the same code - compare your performance!</li>
+                                    <li><strong>Strategy:</strong> You can complete it, but fewer attempts = higher rank!</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Time Attack -->
+                        <div class="game-mode-item clickable" data-mode="timeattack">
+                            <div class="mode-header">
+                                <div class="mode-info">
+                                    <span class="mode-icon">⏱️</span>
+                                    <span class="mode-name">Time Attack</span>
+                                </div>
+                                <i class="fas fa-chevron-down mode-arrow"></i>
+                            </div>
+                            <div class="mode-content" style="display: none;">
+                                <p><strong>Race against the clock!</strong> Win as many games as possible in 5 minutes.</p>
+                                <ul>
+                                    <li><strong>Time Limit:</strong> 5 minutes total</li>
+                                    <li><strong>Attempts:</strong> Unlimited attempts (but watch the clock!)</li>
+                                    <li><strong>Scoring:</strong> Points based on difficulty, attempts, and speed</li>
+                                    <li><strong>Goal:</strong> Maximize your score by solving multiple puzzles quickly</li>
+                                    <li><strong>Strategy:</strong> Balance speed vs accuracy - fewer attempts = more points!</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Survival Mode -->
+                        <div class="game-mode-item clickable" data-mode="survival">
+                            <div class="mode-header">
+                                <div class="mode-info">
+                                    <span class="mode-icon">💀</span>
+                                    <span class="mode-name">Survival Mode</span>
+                                </div>
+                                <i class="fas fa-chevron-down mode-arrow"></i>
+                            </div>
+                            <div class="mode-content" style="display: none;">
+                                <p><strong>FIVE ROUNDS. ONE LIFE.</strong> Lose a single round and your run ends!</p>
+                                <ul>
+                                    <li><strong>Rounds:</strong> Must complete all 5 rounds</li>
+                                    <li><strong>Attempts per Round:</strong>
+                                        <ul class="nested-list">
+                                            <li>Easy: 7 attempts</li>
+                                            <li>Medium: 8 attempts</li>
+                                            <li>Hard: 10 attempts</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>Win Condition:</strong> Solve the code in each round</li>
+                                    <li><strong>Lose Condition:</strong> Fail ANY round = Game Over</li>
+                                    <li><strong>Rewards:</strong> Coins per round + completion bonus</li>
+                                    <li><strong>Difficulty:</strong> Gets progressively harder as rounds increase</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Multiplayer Mode -->
+                        <div class="game-mode-item clickable" data-mode="multiplayer">
+                            <div class="mode-header">
+                                <div class="mode-info">
+                                    <span class="mode-icon">🎮</span>
+                                    <span class="mode-name">Multiplayer Mode</span>
+                                </div>
+                                <i class="fas fa-chevron-down mode-arrow"></i>
+                            </div>
+                            <div class="mode-content" style="display: none;">
+                                <p><strong>Head-to-head competition!</strong> Challenge your friends to a race. First to solve wins!</p>
+                                <ul>
+                                    <li><strong>Players:</strong> 1v1 competitive match</li>
+                                    <li><strong>Attempts per Player:</strong>
+                                        <ul class="nested-list">
+                                            <li>Easy: 7 attempts</li>
+                                            <li>Medium: 8 attempts</li>
+                                            <li>Hard: 10 attempts</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>Win Condition:</strong> Solve before your opponent</li>
+                                    <li><strong>Draw:</strong> Both reach max attempts without solving = Draw</li>
+                                    <li><strong>Real-time:</strong> See opponent's guess count live</li>
+                                    <li><strong>Login Required:</strong> Must be logged in to play</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
