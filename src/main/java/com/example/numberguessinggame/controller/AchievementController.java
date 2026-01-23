@@ -5,6 +5,8 @@ import com.example.numberguessinggame.entity.User;
 import com.example.numberguessinggame.repository.UserRepository;
 import com.example.numberguessinggame.service.AchievementService;
 import com.example.numberguessinggame.service.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/achievements")
 public class AchievementController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AchievementController.class);
 
     @Autowired
     private AchievementService achievementService;
@@ -48,7 +52,7 @@ public class AchievementController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            System.err.println("Error getting achievement summary: " + e.getMessage());
+            logger.error("Error getting achievement summary: {}", e.getMessage());
             return ResponseEntity.status(500).body(createErrorResponse("Couldn't load achievements right now. Try refreshing!"));
         }
     }
@@ -75,7 +79,7 @@ public class AchievementController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            System.err.println("Error getting achievements: " + e.getMessage());
+            logger.error("Error getting achievements: {}", e.getMessage());
             return ResponseEntity.status(500).body(createErrorResponse("Couldn't load achievements right now. Try refreshing!"));
         }
     }
@@ -103,7 +107,7 @@ public class AchievementController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            System.err.println("Error awarding retroactive achievements: " + e.getMessage());
+            logger.error("Error awarding retroactive achievements: {}", e.getMessage());
             return ResponseEntity.status(500).body(createErrorResponse("Couldn't award achievements right now. They'll appear next time!"));
         }
     }
@@ -123,7 +127,7 @@ public class AchievementController {
             return userRepository.findById(userId).orElse(null);
 
         } catch (Exception e) {
-            System.err.println("Error extracting user from token: " + e.getMessage());
+            logger.error("Error extracting user from token: {}", e.getMessage());
             return null;
         }
     }

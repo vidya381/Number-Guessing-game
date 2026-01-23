@@ -169,14 +169,12 @@ public class TimeAttackController {
         String difficultyName = difficulty == 0 ? "Easy" : difficulty == 1 ? "Medium" : "Hard";
         if (userId != null) {
             userRepository.findById(userId).ifPresent(user ->
-                System.out.println("[Game Start] Mode: Time Attack | User: " + user.getUsername() +
-                    " | Difficulty: " + difficultyName + " | Target: " + targetNumber +
-                    " | Session: " + sessionId + " | Game: 1")
+                logger.info("[ADMIN] Time Attack Start | User: {} | Difficulty: {} | Target: {} | Session: {} | Game: 1",
+                    user.getUsername(), difficultyName, targetNumber, sessionId)
             );
         } else {
-            System.out.println("[Game Start] Mode: Time Attack | Guest" +
-                " | Difficulty: " + difficultyName + " | Target: " + targetNumber +
-                " | Session: " + sessionId + " | Game: 1");
+            logger.info("[ADMIN] Time Attack Start | Guest | Difficulty: {} | Target: {} | Session: {} | Game: 1",
+                difficultyName, targetNumber, sessionId);
         }
 
         return ResponseEntity.ok(Map.of(
@@ -220,14 +218,12 @@ public class TimeAttackController {
         int gameNumber = session.getGamesPlayed() + 1;
         if (session.getUserId() != null) {
             userRepository.findById(session.getUserId()).ifPresent(user ->
-                System.out.println("[Game Start] Mode: Time Attack | User: " + user.getUsername() +
-                    " | Difficulty: " + difficultyName + " | Target: " + targetNumber +
-                    " | Session: " + sessionId + " | Game: " + gameNumber)
+                logger.info("[ADMIN] Time Attack New Game | User: {} | Difficulty: {} | Target: {} | Session: {} | Game: {}",
+                    user.getUsername(), difficultyName, targetNumber, sessionId, gameNumber)
             );
         } else {
-            System.out.println("[Game Start] Mode: Time Attack | Guest" +
-                " | Difficulty: " + difficultyName + " | Target: " + targetNumber +
-                " | Session: " + sessionId + " | Game: " + gameNumber);
+            logger.info("[ADMIN] Time Attack New Game | Guest | Difficulty: {} | Target: {} | Session: {} | Game: {}",
+                difficultyName, targetNumber, sessionId, gameNumber);
         }
 
         return ResponseEntity.ok(Map.of(

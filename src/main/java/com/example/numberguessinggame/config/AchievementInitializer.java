@@ -4,6 +4,8 @@ import com.example.numberguessinggame.entity.Achievement;
 import com.example.numberguessinggame.entity.Achievement.AchievementCategory;
 import com.example.numberguessinggame.entity.Achievement.AchievementType;
 import com.example.numberguessinggame.repository.AchievementRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AchievementInitializer implements ApplicationRunner {
+
+    private static final Logger logger = LoggerFactory.getLogger(AchievementInitializer.class);
 
     @Autowired
     private AchievementRepository achievementRepository;
@@ -21,7 +25,7 @@ public class AchievementInitializer implements ApplicationRunner {
     }
 
     private void initializeAchievements() {
-        System.out.println("Checking and updating achievements...");
+        logger.info("Checking and updating achievements...");
 
         long initialCount = achievementRepository.count();
 
@@ -39,9 +43,9 @@ public class AchievementInitializer implements ApplicationRunner {
         long newAchievements = finalCount - initialCount;
 
         if (newAchievements > 0) {
-            System.out.println("Added " + newAchievements + " new achievements!");
+            logger.info("Added {} new achievements!", newAchievements);
         }
-        System.out.println("Achievement check complete! Total: " + finalCount);
+        logger.info("Achievement check complete! Total: {}", finalCount);
     }
 
     private void saveIfNotExists(Achievement achievement) {

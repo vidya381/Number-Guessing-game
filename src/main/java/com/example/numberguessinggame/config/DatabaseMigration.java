@@ -1,6 +1,8 @@
 package com.example.numberguessinggame.config;
 
 import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class DatabaseMigration {
+
+    private static final Logger logger = LoggerFactory.getLogger(DatabaseMigration.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -23,9 +27,9 @@ public class DatabaseMigration {
             jdbcTemplate.execute("UPDATE users SET consecutive_play_days = 0 WHERE consecutive_play_days IS NULL");
             jdbcTemplate.execute("UPDATE users SET best_play_day_streak = 0 WHERE best_play_day_streak IS NULL");
 
-            System.out.println("✓ Database migration completed: NULL streak values set to 0");
+            logger.info("✓ Database migration completed: NULL streak values set to 0");
         } catch (Exception e) {
-            System.err.println("Database migration warning: " + e.getMessage());
+            logger.error("Database migration warning: {}", e.getMessage());
             // Don't fail startup if migration fails
         }
     }
