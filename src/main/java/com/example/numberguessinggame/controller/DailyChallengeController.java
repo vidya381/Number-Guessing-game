@@ -153,7 +153,6 @@ public class DailyChallengeController {
             response.put("sessionId", sessionId);
             response.put("difficulty", challenge.getDifficulty());
             response.put("digitCount", 3 + challenge.getDifficulty());
-            response.put("maxAttempts", 10);
             response.put("currentAttempts", cumulativeAttempts);
 
             return ResponseEntity.ok(response);

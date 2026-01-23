@@ -319,10 +319,7 @@ window.DailyGame = {
                     inputs.forEach(input => input.value = '');
                     if (inputs[0]) inputs[0].focus();
 
-                    // Check if lost (out of attempts)
-                    if (GameState.dailyChallenge.attempts >= GameConfig.MAX_ATTEMPTS) {
-                        this.endDailyChallenge(false);
-                    }
+                    // Unlimited attempts - no automatic loss
                 }
             } else {
                 debug.error('Server error:', data.error);
