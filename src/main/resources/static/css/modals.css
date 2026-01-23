@@ -1676,12 +1676,12 @@ body.dark-mode .how-to-play-content {
 
 /* Notifications Content Container */
 .notifications-content {
-    background: rgba(255, 255, 255, 0.4);
+    background: linear-gradient(135deg, rgba(78, 168, 222, 0.08) 0%, rgba(93, 211, 179, 0.05) 100%);
     border-radius: 0 0 12px 12px;
-    padding: 15px;
+    padding: 20px;
     margin-top: 0;
-    border: 1px solid rgba(var(--primary-color-rgb), 0.1);
-    border-top: 2px solid rgba(var(--primary-color-rgb), 0.2);
+    border-top: 1px solid rgba(var(--primary-color-rgb), 0.15);
+    animation: slideDown 0.3s ease-out;
 }
 
 /* Notification Item (Collapsible) */
@@ -1713,7 +1713,7 @@ body.dark-mode .how-to-play-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px;
+    padding: 12px 15px;
     cursor: pointer;
     user-select: none;
 }
@@ -1726,14 +1726,14 @@ body.dark-mode .how-to-play-content {
 }
 
 .notification-icon {
-    font-size: 1.5em;
+    font-size: 20px;
     flex-shrink: 0;
 }
 
 .notification-name {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-color);
-    font-size: 1em;
+    font-size: 15px;
 }
 
 .notification-badge {
@@ -1750,7 +1750,7 @@ body.dark-mode .how-to-play-content {
 .notification-arrow {
     color: var(--primary-color);
     transition: transform 0.3s ease;
-    font-size: 0.9em;
+    font-size: 14px;
 }
 
 .notification-item.active .notification-arrow {
@@ -1761,12 +1761,13 @@ body.dark-mode .how-to-play-content {
 .notification-list-container {
     border-top: 1px solid rgba(var(--primary-color-rgb), 0.1);
     background: rgba(255, 255, 255, 0.3);
+    padding: 0 15px 15px 15px;
+    animation: slideDown 0.3s ease-out;
 }
 
 .notification-list {
     max-height: 300px;
     overflow-y: auto;
-    padding: 10px;
 }
 
 /* Custom Scrollbar for Notification List */
@@ -1790,10 +1791,10 @@ body.dark-mode .how-to-play-content {
 
 /* Friend Request Item */
 .friend-request-item {
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(var(--primary-color-rgb), 0.15);
     border-radius: 8px;
-    padding: 12px;
+    padding: 10px 12px;
     margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
@@ -1806,10 +1807,10 @@ body.dark-mode .how-to-play-content {
 }
 
 .friend-request-item:hover {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.8);
     border-color: rgba(var(--primary-color-rgb), 0.3);
     transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 6px rgba(var(--primary-color-rgb), 0.1);
 }
 
 .friend-request-info {
@@ -1867,6 +1868,117 @@ body.dark-mode .how-to-play-content {
     box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
 }
 
+/* Challenge Notification Item */
+.challenge-notification-item {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(var(--primary-color-rgb), 0.15);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.challenge-notification-item:last-child {
+    margin-bottom: 0;
+}
+
+.challenge-notification-item:hover {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(var(--primary-color-rgb), 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.challenge-notification-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.challenge-notification-username {
+    font-weight: 600;
+    color: var(--text-color);
+    font-size: 0.95em;
+}
+
+.challenge-notification-details {
+    font-size: 0.8em;
+    color: var(--text-secondary);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.challenge-difficulty-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.85em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.challenge-difficulty-badge.easy {
+    background: rgba(76, 175, 80, 0.2);
+    color: #2e7d32;
+}
+
+.challenge-difficulty-badge.medium {
+    background: rgba(255, 193, 7, 0.2);
+    color: #f57c00;
+}
+
+.challenge-difficulty-badge.hard {
+    background: rgba(231, 76, 60, 0.2);
+    color: #c62828;
+}
+
+.challenge-notification-time {
+    font-size: 0.75em;
+    color: var(--text-secondary);
+}
+
+.challenge-notification-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.challenge-notification-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.challenge-notification-btn.accept {
+    background: var(--success-color);
+    color: white;
+}
+
+.challenge-notification-btn.accept:hover {
+    background: #45a049;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
+}
+
+.challenge-notification-btn.decline {
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--text-color);
+}
+
+.challenge-notification-btn.decline:hover {
+    background: var(--danger-color);
+    color: white;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
+}
+
 /* Empty State */
 .notification-empty {
     text-align: center;
@@ -1883,8 +1995,7 @@ body.dark-mode .how-to-play-content {
 
 /* Dark Mode Support */
 body.dark-mode .notifications-content {
-    background: rgba(255, 255, 255, 0.02);
-    border-color: rgba(167, 139, 250, 0.15);
+    background: linear-gradient(135deg, rgba(96, 197, 242, 0.1) 0%, rgba(110, 231, 192, 0.08) 100%);
 }
 
 body.dark-mode .notification-item {
@@ -1904,7 +2015,7 @@ body.dark-mode .notification-item.active {
 
 body.dark-mode .notification-list-container {
     border-top-color: rgba(167, 139, 250, 0.15);
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.03);
 }
 
 body.dark-mode .notification-list::-webkit-scrollbar-track {
@@ -1924,4 +2035,34 @@ body.dark-mode .friend-request-item:hover {
 
 body.dark-mode .friend-request-btn.decline {
     background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .challenge-notification-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode .challenge-notification-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(167, 139, 250, 0.4);
+    box-shadow: 0 2px 6px rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode .challenge-notification-btn.decline {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .challenge-difficulty-badge.easy {
+    background: rgba(76, 175, 80, 0.25);
+    color: #66bb6a;
+}
+
+body.dark-mode .challenge-difficulty-badge.medium {
+    background: rgba(255, 193, 7, 0.25);
+    color: #ffb74d;
+}
+
+body.dark-mode .challenge-difficulty-badge.hard {
+    background: rgba(231, 76, 60, 0.25);
+    color: #ef5350;
 }

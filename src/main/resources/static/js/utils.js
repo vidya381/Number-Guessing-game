@@ -563,9 +563,10 @@ window.Utils = {
                     notificationsContent.style.display = 'block';
                     notificationsToggle.classList.add('active');
 
-                    // Load friend requests when opening notifications
+                    // Load notifications when opening
                     if (typeof Notifications !== 'undefined') {
                         Notifications.loadFriendRequests();
+                        Notifications.loadChallengeNotifications();
                     }
                 }
             });

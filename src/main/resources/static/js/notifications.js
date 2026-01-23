@@ -218,5 +218,222 @@ window.Notifications = {
         } else {
             return 'Just now';
         }
+    },
+
+    // ==========================================
+    // CHALLENGE NOTIFICATIONS
+    // ==========================================
+
+    loadChallengeNotifications: async function() {
+        if (!GameState.authToken) {
+            this.showEmptyState('challenge-notifications-list', 'Please log in to see challenge invites');
+            return;
+        }
+
+        const listContainer = document.getElementById('challenge-notifications-list');
+        const badge = document.getElementById('challenge-notifications-badge');
+
+        if (!listContainer) return;
+
+        // Show loading state
+        listContainer.innerHTML = '<div class="notification-empty"><i class="fas fa-spinner fa-spin"></i><div>Loading...</div></div>';
+
+        try {
+            const response = await fetch('/api/multiplayer/challenges/pending', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + GameState.authToken,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                const challenges = data.challenges || [];
+
+                if (challenges.length === 0) {
+                    this.showEmptyState('challenge-notifications-list', 'No pending challenge invites');
+                    if (badge) badge.style.display = 'none';
+                } else {
+                    this.displayChallengeNotifications(challenges);
+                    if (badge) {
+                        badge.textContent = challenges.length;
+                        badge.style.display = 'inline-block';
+                    }
+                }
+            } else if (response.status === 401) {
+                this.showEmptyState('challenge-notifications-list', 'Session expired. Please log in again');
+                if (badge) badge.style.display = 'none';
+            } else {
+                this.showEmptyState('challenge-notifications-list', 'Failed to load challenge invites');
+                if (badge) badge.style.display = 'none';
+            }
+        } catch (error) {
+            debug.error('Error loading challenge notifications:', error);
+            this.showEmptyState('challenge-notifications-list', 'Failed to load challenge invites');
+            const badge = document.getElementById('challenge-notifications-badge');
+            if (badge) badge.style.display = 'none';
+        }
+    },
+
+    displayChallengeNotifications: function(challenges) {
+        const listContainer = document.getElementById('challenge-notifications-list');
+        if (!listContainer) return;
+
+        listContainer.innerHTML = '';
+
+        challenges.forEach(challenge => {
+            const item = document.createElement('div');
+            item.className = 'challenge-notification-item';
+            item.dataset.challengeId = challenge.id;
+
+            const info = document.createElement('div');
+            info.className = 'challenge-notification-info';
+
+            const username = document.createElement('div');
+            username.className = 'challenge-notification-username';
+            username.textContent = challenge.challengerUsername || 'Unknown Player';
+
+            const details = document.createElement('div');
+            details.className = 'challenge-notification-details';
+
+            const difficultyBadge = document.createElement('span');
+            difficultyBadge.className = 'challenge-difficulty-badge';
+            const difficultyText = this.getDifficultyText(challenge.difficulty);
+            difficultyBadge.textContent = difficultyText;
+            difficultyBadge.classList.add(difficultyText.toLowerCase());
+
+            const time = document.createElement('span');
+            time.className = 'challenge-notification-time';
+            time.textContent = this.formatTimeAgo(challenge.createdAt);
+
+            details.appendChild(difficultyBadge);
+            details.appendChild(document.createTextNode('•'));
+            details.appendChild(time);
+
+            info.appendChild(username);
+            info.appendChild(details);
+
+            const actions = document.createElement('div');
+            actions.className = 'challenge-notification-actions';
+
+            const acceptBtn = document.createElement('button');
+            acceptBtn.className = 'challenge-notification-btn accept';
+            acceptBtn.textContent = 'Accept';
+            acceptBtn.onclick = () => this.acceptChallenge(challenge.id);
+
+            const declineBtn = document.createElement('button');
+            declineBtn.className = 'challenge-notification-btn decline';
+            declineBtn.textContent = 'Decline';
+            declineBtn.onclick = () => this.declineChallenge(challenge.id);
+
+            actions.appendChild(acceptBtn);
+            actions.appendChild(declineBtn);
+
+            item.appendChild(info);
+            item.appendChild(actions);
+
+            listContainer.appendChild(item);
+        });
+    },
+
+    acceptChallenge: async function(challengeId) {
+        if (!GameState.authToken) {
+            if (Achievements) {
+                Achievements.showToast('Please log in to accept challenges', 'error');
+            }
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/multiplayer/challenge/${challengeId}/accept`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + GameState.authToken,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (Achievements) {
+                    Achievements.showToast(data.message || 'Challenge accepted! Starting game...', 'success');
+                }
+                // Reload challenge notifications to update the list
+                this.loadChallengeNotifications();
+
+                // Navigate to multiplayer page if available
+                if (typeof MultiplayerGame !== 'undefined' && MultiplayerGame.loadChallenges) {
+                    setTimeout(() => {
+                        // Switch to multiplayer page
+                        const homePage = document.getElementById('home-page');
+                        const multiplayerPage = document.getElementById('multiplayer-page');
+
+                        if (homePage && multiplayerPage && Utils) {
+                            Utils.fadeOutElement(homePage, () => {
+                                Utils.fadeInElement(multiplayerPage, 'flex');
+                            });
+                        }
+                    }, 1000);
+                }
+            } else {
+                const data = await response.json();
+                if (Achievements) {
+                    Achievements.showToast(data.error || 'Failed to accept challenge', 'error');
+                }
+            }
+        } catch (error) {
+            debug.error('Error accepting challenge:', error);
+            if (Achievements) {
+                Achievements.showToast('Failed to accept challenge', 'error');
+            }
+        }
+    },
+
+    declineChallenge: async function(challengeId) {
+        if (!GameState.authToken) {
+            if (Achievements) {
+                Achievements.showToast('Please log in to decline challenges', 'error');
+            }
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/multiplayer/challenge/${challengeId}/decline`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + GameState.authToken,
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (Achievements) {
+                    Achievements.showToast(data.message || 'Challenge declined', 'info');
+                }
+                // Reload challenge notifications to update the list
+                this.loadChallengeNotifications();
+            } else {
+                const data = await response.json();
+                if (Achievements) {
+                    Achievements.showToast(data.error || 'Failed to decline challenge', 'error');
+                }
+            }
+        } catch (error) {
+            debug.error('Error declining challenge:', error);
+            if (Achievements) {
+                Achievements.showToast('Failed to decline challenge', 'error');
+            }
+        }
+    },
+
+    getDifficultyText: function(difficulty) {
+        switch (difficulty) {
+            case 0: return 'Easy';
+            case 1: return 'Medium';
+            case 2: return 'Hard';
+            default: return 'Unknown';
+        }
     }
 };
