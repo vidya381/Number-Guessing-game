@@ -519,6 +519,32 @@ window.Utils = {
                 }
             });
         }
+
+        // Setup collapsible game mode items
+        const gameModeItems = document.querySelectorAll('.game-mode-item');
+        gameModeItems.forEach(item => {
+            const header = item.querySelector('.mode-header');
+            const content = item.querySelector('.mode-content');
+            const arrow = item.querySelector('.mode-arrow');
+
+            if (header && content && arrow) {
+                header.addEventListener('click', function() {
+                    const isVisible = content.style.display !== 'none';
+
+                    if (isVisible) {
+                        content.style.display = 'none';
+                        arrow.classList.remove('fa-chevron-up');
+                        arrow.classList.add('fa-chevron-down');
+                        item.classList.remove('active');
+                    } else {
+                        content.style.display = 'block';
+                        arrow.classList.remove('fa-chevron-down');
+                        arrow.classList.add('fa-chevron-up');
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
     },
 
     updateGameStatus: function(status) {

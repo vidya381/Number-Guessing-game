@@ -1213,6 +1213,105 @@
 }
 
 /* ===================================== */
+/* GAME MODE ITEMS (Collapsible)        */
+/* ===================================== */
+
+.mode-description {
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+.game-mode-item {
+    background: rgba(255, 255, 255, 0.6);
+    border: 2px solid rgba(var(--primary-color-rgb), 0.15);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.game-mode-item:hover {
+    border-color: rgba(var(--primary-color-rgb), 0.3);
+    box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.game-mode-item.active {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.05);
+}
+
+.mode-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.mode-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.mode-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.mode-name {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--text-color);
+}
+
+.mode-arrow {
+    color: var(--primary-color);
+    font-size: 14px;
+    transition: transform 0.3s ease;
+}
+
+.game-mode-item.active .mode-arrow {
+    transform: rotate(180deg);
+}
+
+.mode-content {
+    padding: 0 15px 15px 15px;
+    animation: slideDown 0.3s ease-out;
+}
+
+.mode-content p {
+    margin: 0 0 10px 0;
+    color: var(--text-color);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.mode-content ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-color);
+}
+
+.mode-content li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+.mode-content .nested-list {
+    margin-top: 5px;
+    padding-left: 20px;
+}
+
+.mode-content .nested-list li {
+    margin-bottom: 4px;
+    font-size: 13px;
+}
+
+/* ===================================== */
 /* DARK MODE                             */
 /* ===================================== */
 
@@ -1386,6 +1485,29 @@ body.dark-mode .example-box {
 
 body.dark-mode .example-box code {
     background: rgba(96, 197, 242, 0.2);
+    color: var(--secondary-color);
+}
+
+body.dark-mode .game-mode-item {
+    background: rgba(255, 255, 255, 0.03);
+    border-color: rgba(167, 139, 250, 0.2);
+}
+
+body.dark-mode .game-mode-item:hover {
+    border-color: rgba(167, 139, 250, 0.4);
+    box-shadow: 0 2px 8px rgba(167, 139, 250, 0.15);
+}
+
+body.dark-mode .game-mode-item.active {
+    border-color: var(--secondary-color);
+    background: rgba(96, 197, 242, 0.08);
+}
+
+body.dark-mode .mode-name {
+    color: var(--text-color);
+}
+
+body.dark-mode .mode-arrow {
     color: var(--secondary-color);
 }
 
