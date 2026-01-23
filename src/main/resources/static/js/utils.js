@@ -659,6 +659,283 @@ window.Utils = {
         }
     },
 
+    setupAccountManagement: function() {
+        // Main account management toggle
+        const accountManagementToggle = document.getElementById('account-management-toggle');
+        const accountManagementContent = document.getElementById('account-management-content');
+
+        if (accountManagementToggle && accountManagementContent) {
+            accountManagementToggle.addEventListener('click', function () {
+                const isVisible = accountManagementContent.style.display !== 'none';
+
+                if (isVisible) {
+                    accountManagementContent.style.display = 'none';
+                    accountManagementToggle.classList.remove('active');
+                } else {
+                    accountManagementContent.style.display = 'block';
+                    accountManagementToggle.classList.add('active');
+                }
+            });
+        }
+
+        // Change Password Toggle
+        const changePasswordToggle = document.getElementById('change-password-toggle');
+        const changePasswordForm = document.getElementById('change-password-form');
+
+        if (changePasswordToggle && changePasswordForm) {
+            changePasswordToggle.addEventListener('click', function () {
+                const isVisible = changePasswordForm.style.display !== 'none';
+
+                if (isVisible) {
+                    changePasswordForm.style.display = 'none';
+                    changePasswordToggle.classList.remove('active');
+                } else {
+                    changePasswordForm.style.display = 'block';
+                    changePasswordToggle.classList.add('active');
+                }
+            });
+        }
+
+        // Change Email Toggle
+        const changeEmailToggle = document.getElementById('change-email-toggle');
+        const changeEmailForm = document.getElementById('change-email-form');
+
+        if (changeEmailToggle && changeEmailForm) {
+            changeEmailToggle.addEventListener('click', function () {
+                const isVisible = changeEmailForm.style.display !== 'none';
+
+                if (isVisible) {
+                    changeEmailForm.style.display = 'none';
+                    changeEmailToggle.classList.remove('active');
+                } else {
+                    changeEmailForm.style.display = 'block';
+                    changeEmailToggle.classList.add('active');
+                }
+            });
+        }
+
+        // Delete Account Toggle
+        const deleteAccountToggle = document.getElementById('delete-account-toggle');
+        const deleteAccountForm = document.getElementById('delete-account-form');
+
+        if (deleteAccountToggle && deleteAccountForm) {
+            deleteAccountToggle.addEventListener('click', function () {
+                const isVisible = deleteAccountForm.style.display !== 'none';
+
+                if (isVisible) {
+                    deleteAccountForm.style.display = 'none';
+                    deleteAccountToggle.classList.remove('active');
+                } else {
+                    deleteAccountForm.style.display = 'block';
+                    deleteAccountToggle.classList.add('active');
+                }
+            });
+        }
+
+        // Change Password Button
+        const changePasswordBtn = document.getElementById('change-password-btn');
+        if (changePasswordBtn) {
+            changePasswordBtn.addEventListener('click', () => this.handleChangePassword());
+        }
+
+        // Change Email Button
+        const changeEmailBtn = document.getElementById('change-email-btn');
+        if (changeEmailBtn) {
+            changeEmailBtn.addEventListener('click', () => this.handleChangeEmail());
+        }
+
+        // Delete Account Button
+        const deleteAccountBtn = document.getElementById('delete-account-btn');
+        if (deleteAccountBtn) {
+            deleteAccountBtn.addEventListener('click', () => this.handleDeleteAccount());
+        }
+    },
+
+    handleChangePassword: async function() {
+        const currentPassword = document.getElementById('current-password').value;
+        const newPassword = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-new-password').value;
+        const errorDiv = document.getElementById('change-password-error');
+
+        errorDiv.textContent = '';
+
+        // Validation
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            errorDiv.textContent = 'All fields are required';
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            errorDiv.textContent = 'New password must be at least 6 characters';
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            errorDiv.textContent = 'New passwords do not match';
+            return;
+        }
+
+        if (!GameState.authToken) {
+            errorDiv.textContent = 'Please log in first';
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/user/change-password', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + GameState.authToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    currentPassword: currentPassword,
+                    newPassword: newPassword
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                if (Achievements) {
+                    Achievements.showToast('Password updated successfully!', 'success');
+                }
+                // Clear inputs
+                document.getElementById('current-password').value = '';
+                document.getElementById('new-password').value = '';
+                document.getElementById('confirm-new-password').value = '';
+            } else {
+                errorDiv.textContent = data.error || 'Failed to update password';
+            }
+        } catch (error) {
+            debug.error('Error changing password:', error);
+            errorDiv.textContent = 'Failed to update password. Try again!';
+        }
+    },
+
+    handleChangeEmail: async function() {
+        const newEmail = document.getElementById('new-email').value;
+        const password = document.getElementById('email-confirm-password').value;
+        const errorDiv = document.getElementById('change-email-error');
+
+        errorDiv.textContent = '';
+
+        // Validation
+        if (!newEmail || !password) {
+            errorDiv.textContent = 'All fields are required';
+            return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+            errorDiv.textContent = 'Invalid email format';
+            return;
+        }
+
+        if (!GameState.authToken) {
+            errorDiv.textContent = 'Please log in first';
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/user/change-email', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + GameState.authToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    newEmail: newEmail,
+                    password: password
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                if (Achievements) {
+                    Achievements.showToast('Email updated successfully!', 'success');
+                }
+                // Update current user email
+                if (GameState.currentUser) {
+                    GameState.currentUser.email = newEmail;
+                    localStorage.setItem('currentUser', JSON.stringify(GameState.currentUser));
+                }
+                // Clear inputs
+                document.getElementById('new-email').value = '';
+                document.getElementById('email-confirm-password').value = '';
+            } else {
+                errorDiv.textContent = data.error || 'Failed to update email';
+            }
+        } catch (error) {
+            debug.error('Error changing email:', error);
+            errorDiv.textContent = 'Failed to update email. Try again!';
+        }
+    },
+
+    handleDeleteAccount: async function() {
+        const password = document.getElementById('delete-confirm-password').value;
+        const errorDiv = document.getElementById('delete-account-error');
+
+        errorDiv.textContent = '';
+
+        if (!password) {
+            errorDiv.textContent = 'Password is required';
+            return;
+        }
+
+        if (!GameState.authToken) {
+            errorDiv.textContent = 'Please log in first';
+            return;
+        }
+
+        // Double confirmation
+        const confirmed = confirm(
+            '⚠️ FINAL WARNING ⚠️\n\n' +
+            'This will permanently delete your account and all your data:\n' +
+            '• All game statistics\n' +
+            '• All achievements\n' +
+            '• All coins\n' +
+            '• Friend connections\n\n' +
+            'This action CANNOT be undone!\n\n' +
+            'Are you absolutely sure?'
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/user/delete-account', {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + GameState.authToken,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    password: password
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+                if (Achievements) {
+                    Achievements.showToast('Account deleted. Goodbye! 👋', 'info');
+                }
+                // Log out and clear all data
+                setTimeout(() => {
+                    if (Auth && Auth.logout) {
+                        Auth.logout();
+                    }
+                }, 1500);
+            } else {
+                errorDiv.textContent = data.error || 'Failed to delete account';
+            }
+        } catch (error) {
+            debug.error('Error deleting account:', error);
+            errorDiv.textContent = 'Failed to delete account. Try again!';
+        }
+    },
+
     setupNotificationsModal: function() {
         // Notification bell button
         const notificationsBell = document.getElementById('notifications-bell');
@@ -980,6 +1257,7 @@ window.Utils = {
         this.createFloatingNumbers();
         this.setupHowToPlay();
         this.setupGameplayPreferences();
+        this.setupAccountManagement();
         this.setupNotificationsModal();
         this.setupModalClickOutside();
 

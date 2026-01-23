@@ -1010,6 +1010,87 @@
                     </div>
                 </div>
 
+                <!-- Account Management Section -->
+                <div class="setting-item clickable" id="account-management-toggle">
+                    <div class="setting-info">
+                        <div class="setting-label">
+                            <i class="fas fa-user-cog"></i>
+                            <span>Account Management</span>
+                        </div>
+                        <div class="setting-description">Update password, email, or delete account</div>
+                    </div>
+                    <i class="fas fa-chevron-down toggle-arrow"></i>
+                </div>
+
+                <!-- Account Management Content (Collapsible) -->
+                <div id="account-management-content" class="how-to-play-content" style="display: none;">
+
+                    <!-- Change Password (Collapsible) -->
+                    <div class="account-setting-item clickable" id="change-password-toggle">
+                        <div class="account-setting-header">
+                            <div class="account-setting-title">
+                                <i class="fas fa-lock"></i>
+                                <span>Change Password</span>
+                            </div>
+                            <i class="fas fa-chevron-down toggle-arrow"></i>
+                        </div>
+                    </div>
+                    <div id="change-password-form" class="account-form-content" style="display: none;">
+                        <div class="account-form">
+                            <input type="password" id="current-password" placeholder="Current Password" class="account-input">
+                            <input type="password" id="new-password" placeholder="New Password" class="account-input">
+                            <input type="password" id="confirm-new-password" placeholder="Confirm New Password" class="account-input">
+                            <div id="change-password-error" class="account-error"></div>
+                            <button id="change-password-btn" class="account-btn">
+                                <i class="fas fa-check"></i> Update Password
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Change Email (Collapsible) -->
+                    <div class="account-setting-item clickable" id="change-email-toggle">
+                        <div class="account-setting-header">
+                            <div class="account-setting-title">
+                                <i class="fas fa-envelope"></i>
+                                <span>Change Email</span>
+                            </div>
+                            <i class="fas fa-chevron-down toggle-arrow"></i>
+                        </div>
+                    </div>
+                    <div id="change-email-form" class="account-form-content" style="display: none;">
+                        <div class="account-form">
+                            <input type="email" id="new-email" placeholder="New Email Address" class="account-input">
+                            <input type="password" id="email-confirm-password" placeholder="Confirm Password" class="account-input">
+                            <div id="change-email-error" class="account-error"></div>
+                            <button id="change-email-btn" class="account-btn">
+                                <i class="fas fa-check"></i> Update Email
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Delete Account (Collapsible) -->
+                    <div class="account-setting-item danger-zone clickable" id="delete-account-toggle">
+                        <div class="account-setting-header">
+                            <div class="account-setting-title">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Danger Zone</span>
+                            </div>
+                            <i class="fas fa-chevron-down toggle-arrow"></i>
+                        </div>
+                    </div>
+                    <div id="delete-account-form" class="account-form-content danger-zone-content" style="display: none;">
+                        <div class="account-form">
+                            <p class="danger-warning">⚠️ This action cannot be undone. All your data will be permanently deleted.</p>
+                            <input type="password" id="delete-confirm-password" placeholder="Enter Password to Confirm" class="account-input">
+                            <div id="delete-account-error" class="account-error"></div>
+                            <button id="delete-account-btn" class="account-btn danger-btn">
+                                <i class="fas fa-trash-alt"></i> Delete My Account
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
             </div>
         </div>
     </div>

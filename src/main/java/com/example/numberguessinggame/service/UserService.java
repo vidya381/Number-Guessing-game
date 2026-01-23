@@ -180,4 +180,47 @@ public class UserService {
         user.addCoins(amount);
         userRepository.save(user);
     }
+
+    /**
+     * Verify if the provided password matches the user's password
+     */
+    public boolean verifyPassword(User user, String password) {
+        return passwordEncoder.matches(password, user.getPassword());
+    }
+
+    /**
+     * Update user's password
+     */
+    @Transactional
+    public void updatePassword(User user, String newPassword) {
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
+
+    /**
+     * Update user's email
+     */
+    @Transactional
+    public void updateEmail(User user, String newEmail) {
+        user.setEmail(newEmail);
+        userRepository.save(user);
+    }
+
+    /**
+     * Check if email exists
+     */
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    /**
+     * Delete user account and all related data
+     */
+    @Transactional
+    public void deleteAccount(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        userRepository.delete(user);
+    }
 }

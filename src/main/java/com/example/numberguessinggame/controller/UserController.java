@@ -163,6 +163,167 @@ public class UserController {
         }
     }
 
+    /**
+     * Change user password
+     */
+    @PostMapping("/change-password")
+    public ResponseEntity<Map<String, Object>> changePassword(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody Map<String, String> request) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                response.put("error", "Your session expired. Please log in again!");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            String token = authHeader.substring(7);
+            Long userId = jwtUtil.extractUserId(token);
+
+            Optional<User> userOptional = userService.findById(userId);
+            if (userOptional.isEmpty()) {
+                response.put("error", "Couldn't find your account. Try logging in again!");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            User user = userOptional.get();
+            String currentPassword = request.get("currentPassword");
+            String newPassword = request.get("newPassword");
+
+            if (currentPassword == null || newPassword == null) {
+                response.put("error", "All fields are required");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+
+            // Verify current password
+            if (!userService.verifyPassword(user, currentPassword)) {
+                response.put("error", "Current password is incorrect");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+
+            // Update password
+            userService.updatePassword(user, newPassword);
+
+            response.put("success", true);
+            response.put("message", "Password updated successfully");
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("error", "Failed to update password: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    /**
+     * Change user email
+     */
+    @PostMapping("/change-email")
+    public ResponseEntity<Map<String, Object>> changeEmail(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody Map<String, String> request) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                response.put("error", "Your session expired. Please log in again!");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            String token = authHeader.substring(7);
+            Long userId = jwtUtil.extractUserId(token);
+
+            Optional<User> userOptional = userService.findById(userId);
+            if (userOptional.isEmpty()) {
+                response.put("error", "Couldn't find your account. Try logging in again!");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            User user = userOptional.get();
+            String newEmail = request.get("newEmail");
+            String password = request.get("password");
+
+            if (newEmail == null || password == null) {
+                response.put("error", "All fields are required");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+
+            // Verify password
+            if (!userService.verifyPassword(user, password)) {
+                response.put("error", "Password is incorrect");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+
+            // Check if email is already taken
+            if (userService.existsByEmail(newEmail) && !newEmail.equals(user.getEmail())) {
+                response.put("error", "Email is already in use");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+
+            // Update email
+            userService.updateEmail(user, newEmail);
+
+            response.put("success", true);
+            response.put("message", "Email updated successfully");
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("error", "Failed to update email: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    /**
+     * Delete user account
+     */
+    @DeleteMapping("/delete-account")
+    public ResponseEntity<Map<String, Object>> deleteAccount(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestBody Map<String, String> request) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+                response.put("error", "Your session expired. Please log in again!");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            }
+
+            String token = authHeader.substring(7);
+            Long userId = jwtUtil.extractUserId(token);
+
+            Optional<User> userOptional = userService.findById(userId);
+            if (userOptional.isEmpty()) {
+                response.put("error", "Couldn't find your account. Try logging in again!");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+
+            User user = userOptional.get();
+            String password = request.get("password");
+
+            if (password == null) {
+                response.put("error", "Password is required");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+
+            // Verify password
+            if (!userService.verifyPassword(user, password)) {
+                response.put("error", "Password is incorrect");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            }
+
+            // Delete account
+            userService.deleteAccount(userId);
+
+            response.put("success", true);
+            response.put("message", "Account deleted successfully");
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            response.put("error", "Failed to delete account: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
     private String getDifficultyName(int difficulty) {
         switch (difficulty) {
             case 0: return "EASY";
