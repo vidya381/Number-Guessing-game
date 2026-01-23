@@ -778,6 +778,53 @@
                     </label>
                 </div>
 
+                <!-- Gameplay Preferences Section -->
+                <div class="setting-item clickable" id="gameplay-preferences-toggle">
+                    <div class="setting-info">
+                        <div class="setting-label">
+                            <i class="fas fa-gamepad"></i>
+                            <span>Gameplay Preferences</span>
+                        </div>
+                        <div class="setting-description">Customize your gaming experience</div>
+                    </div>
+                    <i class="fas fa-chevron-down toggle-arrow"></i>
+                </div>
+
+                <!-- Gameplay Preferences Content (Collapsible) -->
+                <div id="gameplay-preferences-content" class="how-to-play-content" style="display: none;">
+
+                    <!-- Auto-Submit Toggle -->
+                    <div class="gameplay-setting-item">
+                        <div class="gameplay-setting-info">
+                            <div class="gameplay-setting-label">
+                                <i class="fas fa-bolt"></i>
+                                <span>Auto-Submit</span>
+                            </div>
+                            <div class="gameplay-setting-description">Automatically submit when all digits are filled</div>
+                        </div>
+                        <label class="gameplay-toggle-switch">
+                            <input type="checkbox" id="auto-submit-toggle" aria-label="Toggle auto-submit">
+                            <span class="gameplay-toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Animations Toggle -->
+                    <div class="gameplay-setting-item">
+                        <div class="gameplay-setting-info">
+                            <div class="gameplay-setting-label">
+                                <i class="fas fa-magic"></i>
+                                <span>Animations</span>
+                            </div>
+                            <div class="gameplay-setting-description">Show confetti and floating numbers effects</div>
+                        </div>
+                        <label class="gameplay-toggle-switch">
+                            <input type="checkbox" id="animations-toggle" aria-label="Toggle animations" checked>
+                            <span class="gameplay-toggle-slider"></span>
+                        </label>
+                    </div>
+
+                </div>
+
                 <!-- How to Play Section -->
                 <div class="setting-item clickable" id="how-to-play-toggle">
                     <div class="setting-info">

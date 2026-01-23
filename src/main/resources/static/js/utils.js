@@ -297,6 +297,11 @@ window.Utils = {
     // ==========================================
 
     createConfetti: function() {
+        // Check if animations are enabled
+        if (!this.getGameplayPreference('animations')) {
+            return;
+        }
+
         const confettiContainer = document.getElementById('confetti-container');
         if (!confettiContainer) return;
 
@@ -342,6 +347,11 @@ window.Utils = {
     },
 
     createAchievementConfetti: function() {
+        // Check if animations are enabled
+        if (!this.getGameplayPreference('animations')) {
+            return;
+        }
+
         const container = document.getElementById('confetti-container');
         if (!container) return;
 
@@ -391,6 +401,11 @@ window.Utils = {
     // ==========================================
 
     createFloatingNumbers: function() {
+        // Check if animations are enabled
+        if (!this.getGameplayPreference('animations')) {
+            return;
+        }
+
         const container = document.body;
         const numberCount = GameConfig.FLOATING_NUMBERS.COUNT;
         const numbers = [];
@@ -550,6 +565,98 @@ window.Utils = {
                 });
             }
         });
+    },
+
+    setupGameplayPreferences: function() {
+        // Main gameplay preferences toggle
+        const gameplayPreferencesToggle = document.getElementById('gameplay-preferences-toggle');
+        const gameplayPreferencesContent = document.getElementById('gameplay-preferences-content');
+
+        if (gameplayPreferencesToggle && gameplayPreferencesContent) {
+            gameplayPreferencesToggle.addEventListener('click', function () {
+                const isVisible = gameplayPreferencesContent.style.display !== 'none';
+
+                if (isVisible) {
+                    gameplayPreferencesContent.style.display = 'none';
+                    gameplayPreferencesToggle.classList.remove('active');
+                } else {
+                    gameplayPreferencesContent.style.display = 'block';
+                    gameplayPreferencesToggle.classList.add('active');
+                }
+            });
+        }
+
+        // Load saved preferences
+        this.loadGameplayPreferences();
+
+        // Auto-Submit toggle
+        const autoSubmitToggle = document.getElementById('auto-submit-toggle');
+        if (autoSubmitToggle) {
+            autoSubmitToggle.addEventListener('change', () => {
+                const enabled = autoSubmitToggle.checked;
+                localStorage.setItem('autoSubmitEnabled', enabled);
+                debug.log('Auto-submit:', enabled ? 'enabled' : 'disabled');
+            });
+        }
+
+        // Animations toggle
+        const animationsToggle = document.getElementById('animations-toggle');
+        if (animationsToggle) {
+            animationsToggle.addEventListener('change', () => {
+                const enabled = animationsToggle.checked;
+                localStorage.setItem('animationsEnabled', enabled);
+                debug.log('Animations:', enabled ? 'enabled' : 'disabled');
+
+                // Apply immediately - stop/start floating numbers
+                if (enabled) {
+                    this.createFloatingNumbers();
+                } else {
+                    if (GameState.floatingNumbersInterval) {
+                        clearInterval(GameState.floatingNumbersInterval);
+                        GameState.floatingNumbersInterval = null;
+                    }
+                    // Clear existing floating numbers
+                    const floatingNumbers = document.querySelectorAll('.floating-number');
+                    floatingNumbers.forEach(num => num.remove());
+                }
+            });
+        }
+    },
+
+    loadGameplayPreferences: function() {
+        // Auto-Submit (default: false)
+        const autoSubmitEnabled = localStorage.getItem('autoSubmitEnabled') === 'true';
+        const autoSubmitToggle = document.getElementById('auto-submit-toggle');
+        if (autoSubmitToggle) {
+            autoSubmitToggle.checked = autoSubmitEnabled;
+        }
+
+        // Animations (default: true)
+        const animationsEnabled = localStorage.getItem('animationsEnabled');
+        const animationsToggle = document.getElementById('animations-toggle');
+        if (animationsToggle) {
+            animationsToggle.checked = animationsEnabled === null ? true : animationsEnabled === 'true';
+        }
+
+        // If animations disabled, don't create floating numbers
+        if (animationsEnabled === 'false') {
+            if (GameState.floatingNumbersInterval) {
+                clearInterval(GameState.floatingNumbersInterval);
+                GameState.floatingNumbersInterval = null;
+            }
+        }
+    },
+
+    getGameplayPreference: function(key) {
+        switch (key) {
+            case 'autoSubmit':
+                return localStorage.getItem('autoSubmitEnabled') === 'true';
+            case 'animations':
+                const value = localStorage.getItem('animationsEnabled');
+                return value === null ? true : value === 'true';
+            default:
+                return null;
+        }
     },
 
     setupNotificationsModal: function() {
@@ -872,6 +979,7 @@ window.Utils = {
         this.setupKeyboardShortcuts();
         this.createFloatingNumbers();
         this.setupHowToPlay();
+        this.setupGameplayPreferences();
         this.setupNotificationsModal();
         this.setupModalClickOutside();
 
