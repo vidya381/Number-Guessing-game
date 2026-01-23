@@ -210,7 +210,7 @@ Feedback:     1 Bull (the "1") + 2 Cows (the "2" and "3")
 1. **Clone the repository**
    ```bash
    git clone https://github.com/vidya381/bulls-cows-game.git
-   cd bulls-cows-game/numberguessinggame
+   cd bulls-cows-game
    ```
 
 2. **Configure Database**
@@ -253,7 +253,7 @@ Feedback:     1 Bull (the "1") + 2 Cows (the "2" and "3")
 ## 📁 Project Structure
 
 ```
-numberguessinggame/
+bulls-cows-game/                 # Git repository root
 ├── src/
 │   ├── main/
 │   │   ├── java/com/example/numberguessinggame/
@@ -313,7 +313,10 @@ numberguessinggame/
 │   │       └── templates/
 │   │           └── index.html   # Main SPA page
 │   └── test/                    # Unit & integration tests
-└── pom.xml                      # Maven dependencies
+├── pom.xml                      # Maven dependencies
+├── Dockerfile                   # Container configuration
+├── README.md                    # This file
+└── .gitignore                   # Git ignore rules
 ```
 
 ---
