@@ -2,7 +2,7 @@
 
 A modern, full-stack web implementation of the classic **Bulls and Cows** code-breaking game. Featuring **5 unique game modes**, real-time multiplayer battles, a friends system, daily challenges, and survival mode, this game offers endless ways to test your code-breaking skills. Track your progress with achievements, compete on global leaderboards, earn coins, unlock hints, and enjoy a beautifully crafted gaming experience with both light and dark themes.
 
-![Number-Guessing-Game](https://github.com/user-attachments/assets/d1dbb0c7-9b11-4a60-9fea-8471eafd2764)
+![Home Page](https://github.com/user-attachments/assets/c45093f9-49da-43b9-a8cc-0dca1789d9b2)
 
 ---
 
@@ -14,6 +14,16 @@ A modern, full-stack web implementation of the classic **Bulls and Cows** code-b
 3. **Time Attack** - Race against the clock! 60 seconds on Easy, 90 on Medium, 120 on Hard. Quick thinking required!
 4. **Survival Mode** - Endless progression with escalating difficulty. Start with Easy 3-digit codes, advance through Medium and Hard. One life - how far can you go?
 5. **Multiplayer 1v1 Race** - Challenge friends to real-time battles! First to solve wins, with attempt limits (7/10/13 per difficulty). Draws and forfeit handling included!
+
+#### Game Mode Screenshots
+
+**Survival Mode**
+
+![Survival Mode](https://github.com/user-attachments/assets/fa715c25-51ea-4df9-b559-3e560a421980)
+
+**Multiplayer 1v1 Mode**
+
+![Multiplayer Mode](https://github.com/user-attachments/assets/ee622417-484d-4670-9092-40a0f12c1ce6)
 
 ### 🎯 **Game Mechanics**
 - **Three Difficulty Levels**: Easy (3-digit, 7 attempts), Medium (4-digit, 10 attempts), Hard (5-digit, 13 attempts)
@@ -40,6 +50,8 @@ A modern, full-stack web implementation of the classic **Bulls and Cows** code-b
   - Recent game history
   - Coin balance and achievements unlocked
 
+![User Profile](https://github.com/user-attachments/assets/6ff3c9a4-8a4a-4209-8187-af3b77661d7d)
+
 ### 👥 **Friends & Multiplayer**
 - **Friends System**:
   - Search and add friends by username
@@ -58,6 +70,8 @@ A modern, full-stack web implementation of the classic **Bulls and Cows** code-b
   - Winner earns coins, stats update for both players
   - Dedicated result pages for wins, losses, draws, and forfeits
 
+![Notifications](https://github.com/user-attachments/assets/90bbeca8-a71c-4cb0-af75-0a48245b6df6)
+
 ### 🏆 **Achievement System**
 - **25+ Unique Achievements** across multiple categories:
   - **First Steps**: First Win, Perfect Game, Speed Demon
@@ -69,6 +83,8 @@ A modern, full-stack web implementation of the classic **Bulls and Cows** code-b
   - **Multiplayer**: First multiplayer win, winning streaks, rival achievements
 - **Achievement Notifications**: Beautiful toast popups on unlock with coin rewards
 - **Progress Tracking**: Filter by unlocked/locked achievements, view completion dates
+
+![Achievements](https://github.com/user-attachments/assets/b99ace30-f90e-45e1-8802-ef88139a46c8)
 
 ### 📊 **Leaderboard**
 - **Global Rankings**: Top 10 players by score and win rate
@@ -85,13 +101,24 @@ A modern, full-stack web implementation of the classic **Bulls and Cows** code-b
 
 ### ⚙️ **Settings & Customization**
 - **Sound Volume Control**: Adjust or mute game sounds
+- **Theme Toggle**: Switch between light and dark mode
 - **Theme Persistence**: Your preferences are saved
+- **Gameplay Preferences**:
+  - Auto-Submit: Automatically submit when all digits are filled
+  - Animations: Toggle confetti and floating numbers effects
+- **Account Management**:
+  - Change Password: Secure password updates
+  - Change Email: Update email address
+  - Delete Account: Permanent account deletion with confirmation
 - **"How to Play" Guide**: Comprehensive in-app tutorial with:
   - Game objective and rules
   - Difficulty explanations
   - Bulls & Cows mechanics with examples
   - Scoring system details
   - Pro tips for players
+- **Notifications**: Friend requests and challenge notifications in header
+
+![Settings Modal](https://github.com/user-attachments/assets/36c0422d-e541-4d89-b36f-86b23eb8ff2b)
 
 ### 🎵 **Sound Effects**
 - Correct guess feedback
@@ -257,13 +284,16 @@ bulls-cows-game/                 # Git repository root
 ├── src/
 │   ├── main/
 │   │   ├── java/com/example/numberguessinggame/
-│   │   │   ├── controller/      # REST API endpoints
+│   │   │   ├── controller/      # REST API endpoints (9 controllers)
 │   │   │   │   ├── AuthController.java
-│   │   │   │   ├── GameController.java
+│   │   │   │   ├── UserController.java
 │   │   │   │   ├── DailyChallengeController.java
+│   │   │   │   ├── TimeAttackController.java
 │   │   │   │   ├── SurvivalController.java
+│   │   │   │   ├── MultiplayerController.java
 │   │   │   │   ├── FriendsController.java
-│   │   │   │   └── MultiplayerController.java
+│   │   │   │   ├── AchievementController.java
+│   │   │   │   └── LeaderboardController.java
 │   │   │   ├── entity/          # JPA entities (13)
 │   │   │   │   ├── User.java
 │   │   │   │   ├── Game.java
@@ -276,14 +306,16 @@ bulls-cows-game/                 # Git repository root
 │   │   │   │   ├── MultiplayerGameSession.java
 │   │   │   │   └── ... (and more)
 │   │   │   ├── repository/      # Data access layer with JPQL
-│   │   │   ├── service/         # Business logic
+│   │   │   ├── service/         # Business logic (9 services)
 │   │   │   │   ├── UserService.java
-│   │   │   │   ├── GameService.java
+│   │   │   │   ├── AchievementService.java
 │   │   │   │   ├── DailyChallengeService.java
+│   │   │   │   ├── TimeAttackService.java
 │   │   │   │   ├── SurvivalService.java
-│   │   │   │   ├── FriendsService.java
 │   │   │   │   ├── MultiplayerService.java
-│   │   │   │   └── PresenceService.java
+│   │   │   │   ├── FriendsService.java
+│   │   │   │   ├── PresenceService.java
+│   │   │   │   └── JwtUtil.java
 │   │   │   ├── config/          # Security & WebSocket config
 │   │   │   │   ├── SecurityConfig.java
 │   │   │   │   ├── WebSocketConfig.java
@@ -292,22 +324,35 @@ bulls-cows-game/                 # Git repository root
 │   │   │   └── GlobalExceptionHandler.java
 │   │   └── resources/
 │   │       ├── static/
-│   │       │   ├── css/         # Stylesheets
+│   │       │   ├── css/         # Stylesheets (15 modular files)
 │   │       │   │   ├── styles.css
+│   │       │   │   ├── variables.css
+│   │       │   │   ├── base.css
+│   │       │   │   ├── components.css
+│   │       │   │   ├── animations.css
+│   │       │   │   ├── dark-mode.css
+│   │       │   │   ├── responsive.css
+│   │       │   │   ├── header.css
+│   │       │   │   ├── modals.css
+│   │       │   │   ├── notifications.css
+│   │       │   │   ├── game-regular.css
 │   │       │   │   ├── game-daily.css
 │   │       │   │   ├── game-timeattack.css
 │   │       │   │   ├── game-survival.css
-│   │       │   │   ├── game-multiplayer.css
-│   │       │   │   └── components.css
+│   │       │   │   └── game-multiplayer.css
 │   │       │   ├── js/          # Modular frontend logic
 │   │       │   │   ├── state.js
+│   │       │   │   ├── config.js
 │   │       │   │   ├── auth.js
-│   │       │   │   ├── game.js
+│   │       │   │   ├── ui.js
+│   │       │   │   ├── utils.js
+│   │       │   │   ├── achievements.js
+│   │       │   │   ├── notifications.js
+│   │       │   │   ├── game-regular.js
 │   │       │   │   ├── game-daily.js
 │   │       │   │   ├── game-timeattack.js
 │   │       │   │   ├── game-survival.js
-│   │       │   │   ├── game-multiplayer.js
-│   │       │   │   └── main.js
+│   │       │   │   └── game-multiplayer.js
 │   │       │   ├── audio/       # Sound effects
 │   │       │   └── favicon/     # Icons
 │   │       └── templates/
@@ -410,7 +455,7 @@ bulls-cows-game/                 # Git repository root
 - **Database Tables**: 13 entities with complex relationships
 - **WebSocket Events**: 10+ real-time event types
 - **Sound Effects**: 4 audio files
-- **JavaScript Modules**: 11+ modular files (game modes, auth, UI, state, utils, achievements)
+- **JavaScript Modules**: 12 modular files (game modes, auth, UI, state, utils, achievements, notifications)
 - **Responsive Breakpoints**: 3 (mobile, tablet, desktop)
 - **Concurrent Session Support**: Thread-safe game session management
 
@@ -421,18 +466,6 @@ bulls-cows-game/                 # Git repository root
 - [ ] Tournament mode with brackets and prizes
 - [ ] Mobile native app (React Native/Flutter)
 - [ ] Player profiles with customizable avatars
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ---
 
