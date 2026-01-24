@@ -36,9 +36,10 @@
     <div id="game-header">
         <h1 class="game-title" id="game-title-header">Bulls & Cows 🎮</h1>
         <div id="controls">
-            <!-- Theme Toggle (Always visible) -->
-            <button id="theme-toggle" class="header-icon-btn" aria-label="Toggle dark mode" title="Theme">
-                <i class="fas fa-moon"></i>
+            <!-- Notifications Bell (Always visible) -->
+            <button id="notifications-bell" class="header-icon-btn" aria-label="Notifications" title="Notifications">
+                <i class="fas fa-bell"></i>
+                <span id="notifications-bell-badge" class="notification-bell-badge" style="display: none;">0</span>
             </button>
 
             <!-- Guest Controls (Visible when NOT logged in) -->
@@ -762,6 +763,68 @@
                     </div>
                 </div>
 
+                <!-- Theme Toggle -->
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <div class="setting-label">
+                            <i class="fas fa-moon" id="theme-icon"></i>
+                            <span>Dark Mode</span>
+                        </div>
+                        <div class="setting-description">Toggle dark/light theme</div>
+                    </div>
+                    <label class="theme-toggle-switch">
+                        <input type="checkbox" id="theme-toggle-checkbox" aria-label="Toggle dark mode">
+                        <span class="theme-toggle-slider"></span>
+                    </label>
+                </div>
+
+                <!-- Gameplay Preferences Section -->
+                <div class="setting-item clickable" id="gameplay-preferences-toggle">
+                    <div class="setting-info">
+                        <div class="setting-label">
+                            <i class="fas fa-gamepad"></i>
+                            <span>Gameplay Preferences</span>
+                        </div>
+                        <div class="setting-description">Customize your gaming experience</div>
+                    </div>
+                    <i class="fas fa-chevron-down toggle-arrow"></i>
+                </div>
+
+                <!-- Gameplay Preferences Content (Collapsible) -->
+                <div id="gameplay-preferences-content" class="how-to-play-content" style="display: none;">
+
+                    <!-- Auto-Submit Toggle -->
+                    <div class="gameplay-setting-item">
+                        <div class="gameplay-setting-info">
+                            <div class="gameplay-setting-label">
+                                <i class="fas fa-bolt"></i>
+                                <span>Auto-Submit</span>
+                            </div>
+                            <div class="gameplay-setting-description">Automatically submit when all digits are filled</div>
+                        </div>
+                        <label class="gameplay-toggle-switch">
+                            <input type="checkbox" id="auto-submit-toggle" aria-label="Toggle auto-submit">
+                            <span class="gameplay-toggle-slider"></span>
+                        </label>
+                    </div>
+
+                    <!-- Animations Toggle -->
+                    <div class="gameplay-setting-item">
+                        <div class="gameplay-setting-info">
+                            <div class="gameplay-setting-label">
+                                <i class="fas fa-magic"></i>
+                                <span>Animations</span>
+                            </div>
+                            <div class="gameplay-setting-description">Show confetti and floating numbers effects</div>
+                        </div>
+                        <label class="gameplay-toggle-switch">
+                            <input type="checkbox" id="animations-toggle" aria-label="Toggle animations" checked>
+                            <span class="gameplay-toggle-slider"></span>
+                        </label>
+                    </div>
+
+                </div>
+
                 <!-- How to Play Section -->
                 <div class="setting-item clickable" id="how-to-play-toggle">
                     <div class="setting-info">
@@ -947,17 +1010,131 @@
                     </div>
                 </div>
 
-                <!-- Future settings can be added here -->
-                <div class="setting-item disabled">
+                <!-- Account Management Section -->
+                <div class="setting-item clickable" id="account-management-toggle">
                     <div class="setting-info">
                         <div class="setting-label">
-                            <i class="fas fa-bell"></i>
-                            <span>Notifications</span>
+                            <i class="fas fa-user-cog"></i>
+                            <span>Account Management</span>
                         </div>
-                        <div class="setting-description">Coming soon...</div>
+                        <div class="setting-description">Update password, email, or delete account</div>
                     </div>
-                    <div class="toggle-btn-placeholder">
-                        <span class="coming-soon-badge">Soon</span>
+                    <i class="fas fa-chevron-down toggle-arrow"></i>
+                </div>
+
+                <!-- Account Management Content (Collapsible) -->
+                <div id="account-management-content" class="how-to-play-content" style="display: none;">
+
+                    <!-- Change Password (Collapsible) -->
+                    <div class="account-setting-item clickable" id="change-password-toggle">
+                        <div class="account-setting-header">
+                            <div class="account-setting-title">
+                                <i class="fas fa-lock"></i>
+                                <span>Change Password</span>
+                            </div>
+                            <i class="fas fa-chevron-down toggle-arrow"></i>
+                        </div>
+                    </div>
+                    <div id="change-password-form" class="account-form-content" style="display: none;">
+                        <div class="account-form">
+                            <input type="password" id="current-password" placeholder="Current Password" class="account-input">
+                            <input type="password" id="new-password" placeholder="New Password" class="account-input">
+                            <input type="password" id="confirm-new-password" placeholder="Confirm New Password" class="account-input">
+                            <div id="change-password-error" class="account-error"></div>
+                            <button id="change-password-btn" class="account-btn">
+                                <i class="fas fa-check"></i> Update Password
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Change Email (Collapsible) -->
+                    <div class="account-setting-item clickable" id="change-email-toggle">
+                        <div class="account-setting-header">
+                            <div class="account-setting-title">
+                                <i class="fas fa-envelope"></i>
+                                <span>Change Email</span>
+                            </div>
+                            <i class="fas fa-chevron-down toggle-arrow"></i>
+                        </div>
+                    </div>
+                    <div id="change-email-form" class="account-form-content" style="display: none;">
+                        <div class="account-form">
+                            <input type="email" id="new-email" placeholder="New Email Address" class="account-input">
+                            <input type="password" id="email-confirm-password" placeholder="Confirm Password" class="account-input">
+                            <div id="change-email-error" class="account-error"></div>
+                            <button id="change-email-btn" class="account-btn">
+                                <i class="fas fa-check"></i> Update Email
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Delete Account (Collapsible) -->
+                    <div class="account-setting-item danger-zone clickable" id="delete-account-toggle">
+                        <div class="account-setting-header">
+                            <div class="account-setting-title">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span>Danger Zone</span>
+                            </div>
+                            <i class="fas fa-chevron-down toggle-arrow"></i>
+                        </div>
+                    </div>
+                    <div id="delete-account-form" class="account-form-content danger-zone-content" style="display: none;">
+                        <div class="account-form">
+                            <p class="danger-warning">⚠️ This action cannot be undone. All your data will be permanently deleted.</p>
+                            <input type="password" id="delete-confirm-password" placeholder="Enter Password to Confirm" class="account-input">
+                            <div id="delete-account-error" class="account-error"></div>
+                            <button id="delete-account-btn" class="account-btn danger-btn">
+                                <i class="fas fa-trash-alt"></i> Delete My Account
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Notifications Modal -->
+    <div id="notifications-modal" class="modal" style="display: none;">
+        <div class="modal-content notifications-modal-content">
+            <button class="modal-close-btn" id="close-notifications-modal">
+                <i class="fas fa-times"></i>
+            </button>
+            <h2 class="notifications-modal-title">🔔 NOTIFICATIONS</h2>
+
+            <div class="notifications-modal-section">
+                <!-- Friend Requests -->
+                <div class="notification-item clickable" data-type="friend-requests">
+                    <div class="notification-header">
+                        <div class="notification-info">
+                            <span class="notification-icon">👥</span>
+                            <span class="notification-name">Friend Requests</span>
+                            <span class="notification-badge" id="friend-requests-badge" style="display: none;">0</span>
+                        </div>
+                        <i class="fas fa-chevron-down notification-arrow"></i>
+                    </div>
+                    <div class="notification-list-container" style="display: none;">
+                        <div id="friend-requests-list" class="notification-list">
+                            <!-- Friend requests will be dynamically inserted here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Challenge Notifications -->
+                <div class="notification-item clickable" data-type="challenge-notifications">
+                    <div class="notification-header">
+                        <div class="notification-info">
+                            <span class="notification-icon">⚔️</span>
+                            <span class="notification-name">Challenge Invites</span>
+                            <span class="notification-badge" id="challenge-notifications-badge" style="display: none;">0</span>
+                        </div>
+                        <i class="fas fa-chevron-down notification-arrow"></i>
+                    </div>
+                    <div class="notification-list-container" style="display: none;">
+                        <div id="challenge-notifications-list" class="notification-list">
+                            <!-- Challenge invites will be dynamically inserted here -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1070,6 +1247,7 @@
     <script src="/js/game-timeattack.js"></script>
     <script src="/js/game-daily.js"></script>
     <script src="/js/game-survival.js"></script>
+    <script src="/js/notifications.js"></script>
 
     <!-- SockJS and STOMP for WebSocket -->
     <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>

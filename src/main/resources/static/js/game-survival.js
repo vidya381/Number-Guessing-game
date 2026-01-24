@@ -240,6 +240,13 @@ window.SurvivalGame = {
             const inputs = document.querySelectorAll('#survival-input-container .digit-input');
             if (index < inputs.length - 1) {
                 inputs[index + 1].focus();
+            } else {
+                // Last input - check auto-submit preference
+                const autoSubmitEnabled = Utils.getGameplayPreference('autoSubmit');
+                if (autoSubmitEnabled) {
+                    // Auto-submit when all digits are filled
+                    this.submitGuess();
+                }
             }
         }
     },
