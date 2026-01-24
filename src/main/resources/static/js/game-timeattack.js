@@ -667,6 +667,17 @@ window.TimeAttackGame = {
         if (nextInput) {
             nextInput.focus();
             nextInput.select();
+        } else {
+            // Last input - check auto-submit preference
+            const autoSubmitEnabled = Utils.getGameplayPreference('autoSubmit');
+            if (autoSubmitEnabled) {
+                // Auto-submit when all digits are filled
+                if (containerId === 'ta-input-container') {
+                    this.submitTimeAttackGuess();
+                } else if (containerId === 'warmup-input-container') {
+                    this.submitWarmupGuess();
+                }
+            }
         }
     },
 

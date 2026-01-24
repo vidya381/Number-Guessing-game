@@ -1205,7 +1205,14 @@ const MultiplayerGame = {
                     if (this.nextElementSibling) {
                         this.nextElementSibling.focus();
                     } else {
-                        document.getElementById('mp-submit-guess').focus();
+                        // Last input - check auto-submit preference
+                        const autoSubmitEnabled = Utils.getGameplayPreference('autoSubmit');
+                        if (autoSubmitEnabled) {
+                            // Auto-submit when all digits are filled
+                            document.getElementById('mp-submit-guess').click();
+                        } else {
+                            document.getElementById('mp-submit-guess').focus();
+                        }
                     }
                 }
             });

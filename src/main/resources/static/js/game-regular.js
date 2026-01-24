@@ -122,7 +122,14 @@ window.RegularGame = {
                     if (this.nextElementSibling) {
                         this.nextElementSibling.focus();
                     } else {
-                        document.getElementById('submit-guess').focus();
+                        // Last input - check auto-submit preference
+                        const autoSubmitEnabled = Utils.getGameplayPreference('autoSubmit');
+                        if (autoSubmitEnabled) {
+                            // Auto-submit when all digits are filled
+                            RegularGame.submitGuess();
+                        } else {
+                            document.getElementById('submit-guess').focus();
+                        }
                     }
                 }
             });
