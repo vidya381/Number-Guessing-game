@@ -1431,7 +1431,7 @@ window.Utils = {
 
                 if (homePage && multiplayerTab) {
                     this.fadeOutElement(homePage, () => {
-                        multiplayerTab.style.display = 'block';
+                        multiplayerTab.style.display = 'flex';
                         this.fadeInElement(multiplayerTab);
                     });
                 }

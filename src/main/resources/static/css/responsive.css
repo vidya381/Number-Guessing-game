@@ -8,6 +8,7 @@
 /* ===================================== */
 
 @media screen and (min-width: 769px) {
+
     /* Ensure bottom nav is hidden on desktop */
     .bottom-nav {
         display: none !important;
@@ -29,10 +30,12 @@
 /* ===================================== */
 
 @media screen and (max-width: 768px) {
+
     /* Body and container adjustments */
     body {
         padding-top: 70px;
-        padding-bottom: 68px; /* Add padding for bottom nav */
+        padding-bottom: 68px;
+        /* Add padding for bottom nav */
     }
 
     /* Show bottom navigation on mobile */
@@ -410,7 +413,283 @@
         max-height: calc(100vh - 140px);
     }
 
-    /* Game pages */
+    /* Reduce container padding for more space */
+    .section {
+        padding: 12px 10px !important;
+    }
+
+    /* Hide "ENTER YOUR GUESS" title on mobile to save space */
+    .game-header h2 {
+        display: none !important;
+    }
+
+    /* Compact game stats layout */
+    .game-header {
+        margin-bottom: 10px !important;
+    }
+
+    .game-stats-inline {
+        justify-content: center !important;
+        gap: 12px !important;
+    }
+
+    /* Input and Submit Button - Vertical Stack Layout */
+    .input-submit-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center;
+        gap: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Show full text on mobile (button below inputs) */
+    .submit-btn .submit-text {
+        display: inline-block !important;
+    }
+
+    .submit-btn .submit-icon {
+        display: none !important;
+    }
+
+    /* Compact submit button */
+    .submit-btn {
+        width: 100% !important;
+        max-width: 280px !important;
+        height: auto !important;
+        min-width: auto !important;
+        padding: 12px 20px !important;
+        border-radius: 12px !important;
+        font-size: 0.9em !important;
+        margin-bottom: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    /* Digit input boxes - comfortable tappable size */
+    .digit-input {
+        width: 46px !important;
+        height: 46px !important;
+        font-size: 1.2em !important;
+    }
+
+    #input-container,
+    #daily-input-container,
+    #ta-input-container,
+    #survival-input-container,
+    #mp-input-container {
+        display: flex !important;
+        gap: 6px !important;
+        margin: 0 !important;
+        margin-bottom: 0 !important;
+        justify-content: center !important;
+    }
+
+    /* Remove digit input margins */
+    .digit-input {
+        margin: 0 !important;
+    }
+
+    /* Guess History - More space for deduction - consistent styling for all modes */
+    #guess-history,
+    #daily-guess-history,
+    #ta-guess-history,
+    #survival-guess-history,
+    #multiplayer-tab #mp-guess-history {
+        flex: 1 !important;
+        min-height: 0 !important; /* CRITICAL: Allow flex to constrain height */
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        background: rgba(255, 255, 255, 0.4) !important;
+        border-radius: 12px !important;
+        padding: 8px !important;
+    }
+
+    /* Custom scrollbar for all guess history - consistent look */
+    #guess-history::-webkit-scrollbar,
+    #daily-guess-history::-webkit-scrollbar,
+    #ta-guess-history::-webkit-scrollbar,
+    #survival-guess-history::-webkit-scrollbar,
+    #multiplayer-tab #mp-guess-history::-webkit-scrollbar {
+        width: 6px !important;
+    }
+
+    #guess-history::-webkit-scrollbar-track,
+    #daily-guess-history::-webkit-scrollbar-track,
+    #ta-guess-history::-webkit-scrollbar-track,
+    #survival-guess-history::-webkit-scrollbar-track,
+    #multiplayer-tab #mp-guess-history::-webkit-scrollbar-track {
+        background: rgba(167, 139, 250, 0.1) !important;
+        border-radius: 3px !important;
+    }
+
+    #guess-history::-webkit-scrollbar-thumb,
+    #daily-guess-history::-webkit-scrollbar-thumb,
+    #ta-guess-history::-webkit-scrollbar-thumb,
+    #survival-guess-history::-webkit-scrollbar-thumb,
+    #multiplayer-tab #mp-guess-history::-webkit-scrollbar-thumb {
+        background: rgba(var(--primary-color-rgb), 0.4) !important;
+        border-radius: 3px !important;
+    }
+
+    #guess-history::-webkit-scrollbar-thumb:hover,
+    #daily-guess-history::-webkit-scrollbar-thumb:hover,
+    #ta-guess-history::-webkit-scrollbar-thumb:hover,
+    #survival-guess-history::-webkit-scrollbar-thumb:hover,
+    #multiplayer-tab #mp-guess-history::-webkit-scrollbar-thumb:hover {
+        background: rgba(var(--primary-color-rgb), 0.6) !important;
+    }
+
+    body.dark-mode #guess-history,
+    body.dark-mode #daily-guess-history,
+    body.dark-mode #ta-guess-history,
+    body.dark-mode #survival-guess-history,
+    body.dark-mode #multiplayer-tab #mp-guess-history {
+        background: rgba(0, 0, 0, 0.2) !important;
+    }
+
+    body.dark-mode #guess-history::-webkit-scrollbar-thumb,
+    body.dark-mode #daily-guess-history::-webkit-scrollbar-thumb,
+    body.dark-mode #ta-guess-history::-webkit-scrollbar-thumb,
+    body.dark-mode #survival-guess-history::-webkit-scrollbar-thumb,
+    body.dark-mode #multiplayer-tab #mp-guess-history::-webkit-scrollbar-thumb {
+        background: rgba(96, 197, 242, 0.3) !important;
+    }
+
+    body.dark-mode #guess-history::-webkit-scrollbar-thumb:hover,
+    body.dark-mode #daily-guess-history::-webkit-scrollbar-thumb:hover,
+    body.dark-mode #ta-guess-history::-webkit-scrollbar-thumb:hover,
+    body.dark-mode #survival-guess-history::-webkit-scrollbar-thumb:hover,
+    body.dark-mode #multiplayer-tab #mp-guess-history::-webkit-scrollbar-thumb:hover {
+        background: rgba(96, 197, 242, 0.5) !important;
+    }
+
+    /* CRITICAL: Multiplayer tab needs flex properties */
+    #multiplayer-tab:not([style*="display: none"]) {
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+    }
+
+    /* CRITICAL: Multiplayer game view needs flex properties */
+    #multiplayer-tab #mp-game-view:not([style*="display: none"]) {
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        gap: 10px !important;
+        padding-bottom: 100px !important; /* Space for bottom nav and quit button */
+    }
+
+    /* Multiplayer input section - fixed size, don't flex */
+    #multiplayer-tab #mp-game-view .section:nth-child(1) {
+        flex-shrink: 0 !important;
+        flex-grow: 0 !important;
+    }
+
+    /* Multiplayer quit button - fixed at bottom */
+    #multiplayer-tab #mp-quit-game {
+        flex-shrink: 0 !important;
+        flex-grow: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Guess history section title */
+    #game-page .section:nth-child(2) h2,
+    #daily-challenge-page .section:nth-child(2) h2,
+    #time-attack-page .section:nth-child(2) h2,
+    #survival-page .section:nth-child(2) h2,
+    #multiplayer-tab #mp-game-view .section:nth-child(2) h2 {
+        font-size: 0.9em !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* ALL guess history sections need flex layout for proper scrolling */
+    #game-page .section:nth-child(2),
+    #daily-challenge-page .section:nth-child(2),
+    #time-attack-page .section:nth-child(2),
+    #survival-page .section:nth-child(2),
+    #multiplayer-tab #mp-game-view .section:nth-child(2) {
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 !important;
+        overflow: hidden !important;
+        padding: 12px 10px !important;
+        min-height: 150px !important;
+        max-height: 420px !important; /* Show at least 3 complete guess rows */
+    }
+
+    #game-page .section:nth-child(2) h2,
+    #daily-challenge-page .section:nth-child(2) h2,
+    #time-attack-page .section:nth-child(2) h2,
+    #survival-page .section:nth-child(2) h2,
+    #mp-game-view .section:nth-child(2) h2 {
+        flex-shrink: 0 !important;
+    }
+
+    /* Compact history items for mobile - apply to ALL history containers */
+    #guess-history .history-item,
+    #daily-guess-history .history-item,
+    #ta-guess-history .history-item,
+    #survival-guess-history .history-item,
+    #mp-guess-history .history-item,
+    .history-item {
+        padding: 6px 8px !important;
+        margin-bottom: 5px !important;
+        font-size: 0.9em !important;
+        gap: 6px !important;
+        flex-wrap: nowrap !important;
+    }
+
+    #guess-history .history-item .guess,
+    #daily-guess-history .history-item .guess,
+    #ta-guess-history .history-item .guess,
+    #survival-guess-history .history-item .guess,
+    #mp-guess-history .history-item .guess,
+    .history-item .guess {
+        font-size: 15px !important;
+        letter-spacing: 2px !important;
+        min-width: auto !important;
+    }
+
+    #guess-history .history-item .correct,
+    #guess-history .history-item .misplaced,
+    #daily-guess-history .history-item .correct,
+    #daily-guess-history .history-item .misplaced,
+    #ta-guess-history .history-item .correct,
+    #ta-guess-history .history-item .misplaced,
+    #survival-guess-history .history-item .correct,
+    #survival-guess-history .history-item .misplaced,
+    #mp-guess-history .history-item .correct,
+    #mp-guess-history .history-item .misplaced,
+    .history-item .correct,
+    .history-item .misplaced {
+        font-size: 13px !important;
+        padding: 2px 5px !important;
+        white-space: nowrap !important;
+        margin-right: 4px !important;
+    }
+
+    /* Game pages - add bottom padding for bottom nav */
+    #game-page,
+    #daily-challenge-page,
+    #time-attack-page,
+    #survival-page,
+    #multiplayer-tab {
+        padding-bottom: 80px !important;
+    }
+
+    /* Quit buttons - ensure they're visible */
+    #quit-game,
+    #quit-time-attack,
+    #survival-quit-btn,
+    #mp-quit-game,
+    .quit-btn {
+        margin-bottom: 20px !important;
+    }
+
     #game-page .section:nth-child(2),
     #time-attack-page .section:nth-child(2) {
         min-height: 200px;
@@ -519,6 +798,7 @@
 /* ===================================== */
 
 @media screen and (max-width: 600px) {
+
     /* Auth modal */
     .modal-content {
         max-width: 95%;
@@ -541,6 +821,7 @@
 /* ===================================== */
 
 @media screen and (max-width: 480px) {
+
     /* Header */
     .game-title {
         font-size: 28px;
@@ -703,6 +984,7 @@
 /* ===================================== */
 
 @media screen and (max-width: 360px) {
+
     /* Header */
     .game-title {
         font-size: 24px;
@@ -789,7 +1071,8 @@
     #time-attack-page .section:nth-child(2),
     #daily-challenge-page .section:nth-child(2),
     #survival-page .section:nth-child(2) {
-        min-height: 140px; /* Reduced to fit quit button on shorter screens */
+        min-height: 140px;
+        /* Reduced to fit quit button on shorter screens */
     }
 
     #game-status-display {
@@ -835,7 +1118,8 @@
     #game-page .section:nth-child(2),
     #time-attack-page .section:nth-child(2),
     #daily-challenge-page .section:nth-child(2) {
-        min-height: 120px; /* Reduced to fit quit button on very short screens */
+        min-height: 120px;
+        /* Reduced to fit quit button on very short screens */
     }
 
     #game-page .section:nth-child(2) h2,
@@ -904,7 +1188,8 @@
     #game-page .section:nth-child(2),
     #time-attack-page .section:nth-child(2),
     #daily-challenge-page .section:nth-child(2) {
-        min-height: 100px; /* Reduced to fit quit button on extremely short screens */
+        min-height: 100px;
+        /* Reduced to fit quit button on extremely short screens */
     }
 
     #game-page .section:nth-child(2) h2,
@@ -967,6 +1252,7 @@
 /* ===================================== */
 
 @media screen and (max-width: 600px) {
+
     #result-page,
     #time-attack-result-page,
     #daily-result-page,
@@ -985,6 +1271,7 @@
 }
 
 @media screen and (max-height: 700px) {
+
     #result-page,
     #time-attack-result-page,
     #daily-result-page,
@@ -998,6 +1285,7 @@
 /* ===================================== */
 
 @media print {
+
     /* Hide interactive elements */
     #game-header,
     #controls,
@@ -1028,5 +1316,26 @@
     #result-page {
         max-width: 100%;
         box-shadow: none;
+    }
+}
+
+/* ===================================== */
+/* VERY SMALL SCREENS (<360px) */
+/* ===================================== */
+@media screen and (max-width: 359px) {
+
+    /* Slightly smaller boxes for iPhone SE 1st gen (320px) */
+    .digit-input {
+        width: 42px !important;
+        height: 42px !important;
+        font-size: 1.1em !important;
+    }
+
+    #input-container,
+    #daily-input-container,
+    #ta-input-container,
+    #survival-input-container,
+    #mp-input-container {
+        gap: 5px !important;
     }
 }

@@ -1143,7 +1143,7 @@ const MultiplayerGame = {
 
     showGameUI() {
         document.getElementById('mp-friends-view').style.display = 'none';
-        document.getElementById('mp-game-view').style.display = 'block';
+        document.getElementById('mp-game-view').style.display = 'flex';
 
         // Update opponent info
         document.getElementById('mp-opponent-name').textContent =
