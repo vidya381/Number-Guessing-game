@@ -341,18 +341,20 @@
 .achievements-stats {
     display: flex;
     justify-content: space-around;
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
+/* Base styling for ALL stat-box (difficulty and achievements) */
 .stat-box {
     flex: 1;
     background: linear-gradient(135deg, rgba(139, 122, 191, 0.1) 0%, rgba(78, 168, 222, 0.05) 100%);
     border-radius: 20px;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
     border: 2px solid rgba(139, 122, 191, 0.2);
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .stat-box:hover {
@@ -371,6 +373,7 @@
     margin-bottom: 5px;
 }
 
+/* Stat label for ALL stat-box (achievements, difficulty, etc) */
 .stat-label {
     display: block;
     font-size: 13px;
@@ -381,22 +384,28 @@
     letter-spacing: 0.5px;
 }
 
+/* Stat-box stat-label styling */
+.stat-box .stat-label {
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
 .achievements-tabs {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 15px;
     justify-content: center;
 }
 
 .achievement-tab {
-    padding: 10px 25px;
+    padding: 8px 20px;
     border: 2px solid rgba(139, 122, 191, 0.3);
     background: transparent;
     color: var(--text-color);
-    border-radius: 20px;
+    border-radius: 18px;
     cursor: pointer;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     transition: all 0.3s ease;
 }
 
@@ -413,9 +422,9 @@
 
 .achievements-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 15px;
-    max-height: 400px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    max-height: 320px;
     overflow-y: auto;
     padding-right: 10px;
 }
@@ -441,10 +450,10 @@
 
 .achievement-item {
     background: var(--input-background);
-    border-radius: 20px;
-    padding: 20px;
+    border-radius: 15px;
+    padding: 15px;
     display: flex;
-    gap: 15px;
+    gap: 12px;
     align-items: flex-start;
     transition: all 0.3s ease;
     border: 2px solid rgba(139, 122, 191, 0.15);
@@ -479,13 +488,13 @@
 }
 
 .achievement-icon-wrapper {
-    min-width: 50px;
-    height: 50px;
-    border-radius: 15px;
+    min-width: 45px;
+    height: 45px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 22px;
     background: linear-gradient(135deg, rgba(139, 122, 191, 0.2) 0%, rgba(78, 168, 222, 0.1) 100%);
     border: 2px solid rgba(139, 122, 191, 0.3);
 }
@@ -511,32 +520,32 @@
 .achievement-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 5px;
+    gap: 6px;
+    margin-bottom: 4px;
 }
 
 .achievement-name {
     font-weight: 700;
-    font-size: 16px;
+    font-size: 15px;
     color: var(--text-color);
 }
 
 .achievement-badge-unlocked {
     background: linear-gradient(135deg, #52c98c 0%, #3d8e63 100%);
     color: white;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 8px;
+    font-size: 9px;
     font-weight: 700;
     text-transform: uppercase;
 }
 
 .achievement-description {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-color);
     opacity: 0.8;
     line-height: 1.4;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .achievement-meta {
@@ -573,45 +582,45 @@
 }
 
 .profile-title {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     text-align: center;
     color: var(--primary-color);
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
 }
 
-/* Profile Header */
+/* Profile Header - More Compact */
 .profile-header {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
+    gap: 15px;
+    padding: 15px;
     background: linear-gradient(135deg, rgba(139, 122, 191, 0.1) 0%, rgba(99, 211, 184, 0.1) 100%);
-    border-radius: 15px;
-    margin-bottom: 30px;
+    border-radius: 12px;
+    margin-bottom: 20px;
 }
 
 .profile-avatar {
-    font-size: 60px;
+    font-size: 48px;
     color: var(--primary-color);
 }
 
 .profile-user-info h3 {
-    margin: 0 0 5px 0;
-    font-size: 24px;
+    margin: 0 0 4px 0;
+    font-size: 20px;
     color: var(--text-color);
 }
 
 .profile-user-info p {
-    margin: 3px 0;
-    font-size: 14px;
+    margin: 2px 0;
+    font-size: 13px;
     color: var(--text-muted);
 }
 
 .profile-join-date {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
     font-style: italic;
 }
@@ -619,16 +628,16 @@
 /* Profile Stats Grid */
 .profile-stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin-bottom: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 25px;
 }
 
 .profile-stat-card {
     background: var(--card-background);
     border: 2px solid var(--primary-color);
     border-radius: 15px;
-    padding: 20px;
+    padding: 12px 10px;
     text-align: center;
     transition: all 0.3s ease;
     display: flex;
@@ -638,19 +647,33 @@
 }
 
 .profile-stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(139, 122, 191, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(139, 122, 191, 0.25);
+}
+
+/* Icon + Number horizontal container */
+.profile-stat-card .stat-icon-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .profile-stat-card i {
-    font-size: 28px;
+    font-size: 22px;
     color: var(--primary-color);
 }
 
 .stat-value {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 700;
     color: var(--accent-color);
+    line-height: 1;
+}
+
+.profile-stat-card .stat-label {
+    font-size: 12px;
+    margin-top: 0;
+    line-height: 1.2;
 }
 
 /* Profile Sections */
@@ -667,31 +690,17 @@
     letter-spacing: 0.3px; /* Reduced from 1px for tighter spacing */
 }
 
-/* Difficulty Breakdown - Box Style (matches Achievements) */
+/* Difficulty Breakdown - Uses stat-box styling */
 .difficulty-breakdown {
     display: flex;
     justify-content: space-around;
     gap: 12px;
 }
 
-.difficulty-box {
-    position: relative;
-    padding: 15px;
-}
-
-.difficulty-box .stat-label {
-    font-size: 13px; /* Match achievements stat-label */
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.difficulty-box .stat-number {
-    font-size: 32px; /* Match achievements stat-number */
-}
-
+/* Stat detail text (used in difficulty boxes) */
 .stat-detail {
     display: block;
-    font-size: 13px; /* Match other text in profile */
+    font-size: 13px;
     color: var(--text-muted);
     margin-top: 6px;
     opacity: 0.8;
@@ -756,10 +765,10 @@
 .recent-games-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    height: 250px; /* Fixed height instead of max-height */
-    min-height: 250px; /* Ensure minimum height */
-    max-height: 250px; /* Maximum height */
+    gap: 6px;
+    height: 200px; /* Reduced height for more compact look */
+    min-height: 200px;
+    max-height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 5px;
@@ -787,16 +796,16 @@
 .recent-game-item {
     background: var(--card-background);
     border: 2px solid rgba(139, 122, 191, 0.15);
-    border-radius: 10px;
-    padding: 10px 12px; /* Reduced padding */
+    border-radius: 8px;
+    padding: 8px 10px; /* More compact padding */
     display: flex;
     align-items: center;
-    gap: 12px; /* Reduced gap */
+    gap: 10px; /* Reduced gap */
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    flex-shrink: 0; /* Prevent items from shrinking */
-    min-height: 55px; /* Ensure minimum height for each item */
+    flex-shrink: 0;
+    min-height: 50px; /* Reduced minimum height */
 }
 
 .recent-game-item::before {
@@ -825,13 +834,13 @@
 
 /* Result Icon - Compact */
 .game-result-icon {
-    font-size: 24px; /* Reduced from 36px */
+    font-size: 20px; /* More compact */
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 35px; /* Reduced from 50px */
-    height: 35px;
+    width: 30px; /* More compact */
+    height: 30px;
 }
 
 .game-result-icon.won {
@@ -848,25 +857,25 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 5px; /* Reduced from 8px */
+    gap: 3px; /* More compact */
 }
 
 .game-top-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 /* Difficulty badges */
 .difficulty-badge {
     display: inline-block;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
 .difficulty-badge.difficulty-easy {
@@ -887,19 +896,19 @@
 /* Game stats inline */
 .game-stats-inline {
     display: flex;
-    gap: 12px;
-    font-size: 12px;
+    gap: 10px;
+    font-size: 11px;
     color: var(--text-muted);
 }
 
 .game-stats-inline span {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
 }
 
 .game-stats-inline i {
-    font-size: 11px;
+    font-size: 10px;
     opacity: 0.7;
 }
 
@@ -1619,8 +1628,8 @@ body.dark-mode .how-to-play-content {
         grid-template-columns: 1fr;
     }
 
+    /* Keep achievements horizontal like difficulty breakdown */
     .achievements-stats {
-        flex-direction: column;
         gap: 10px;
     }
 
@@ -1637,30 +1646,145 @@ body.dark-mode .how-to-play-content {
 /* Profile responsive */
 @media (max-width: 768px) {
     .profile-modal-content {
-        padding: 20px;
+        max-width: 95%;
+        padding: 15px 12px;
+        margin: 10px auto;
+    }
+
+    .profile-title {
+        font-size: 20px;
+        margin-bottom: 15px;
     }
 
     .profile-header {
         flex-direction: column;
         text-align: center;
+        padding: 12px;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .profile-avatar {
+        font-size: 40px;
+    }
+
+    .profile-user-info h3 {
+        font-size: 18px;
+    }
+
+    .profile-user-info p {
+        font-size: 12px;
     }
 
     .profile-stats-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
-    .profile-title {
-        font-size: 22px;
+    .profile-stat-card {
+        padding: 12px 8px;
     }
 
     .stat-value {
         font-size: 24px;
     }
+
+    .profile-section h3 {
+        font-size: 18px;
+    }
+
+    /* Keep stat-box (achievements & difficulty) compact on mobile */
+    .achievements-stats,
+    .difficulty-breakdown {
+        gap: 10px;
+    }
+
+    .stat-box {
+        padding: 12px 8px;
+    }
+
+    .stat-box .stat-number {
+        font-size: 28px;
+    }
+
+    .stat-box .stat-label {
+        font-size: 12px;
+    }
+
+    /* Compact achievement items on tablets */
+    .achievements-list {
+        max-height: 300px;
+        gap: 12px;
+    }
+
+    .achievement-item {
+        padding: 14px;
+    }
+
+    .achievement-icon-wrapper {
+        min-width: 42px;
+        height: 42px;
+        font-size: 21px;
+    }
+
+    .achievement-name {
+        font-size: 14px;
+    }
+
+    .achievement-description {
+        font-size: 12px;
+    }
 }
 
 @media (max-width: 480px) {
     .profile-stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr); /* Keep 2 columns for better space usage */
+        gap: 10px;
+    }
+
+    .profile-stat-card {
+        padding: 10px 6px; /* Reduce padding on very small screens */
+        gap: 6px;
+    }
+
+    .profile-stat-card .stat-icon-value {
+        gap: 6px;
+    }
+
+    .profile-stat-card i {
+        font-size: 18px; /* Slightly smaller icons */
+    }
+
+    .stat-value {
+        font-size: 20px; /* Slightly smaller values */
+    }
+
+    .profile-stat-card .stat-label {
+        font-size: 11px; /* Slightly smaller labels */
+    }
+
+    /* Keep stat-box sections (difficulty & achievements) as 3 in a row on mobile */
+    .difficulty-breakdown,
+    .achievements-stats {
+        gap: 8px;
+    }
+
+    .stat-box {
+        flex: 1;
+        min-width: 0; /* Allow boxes to shrink */
+        padding: 10px 5px;
+    }
+
+    .stat-box .stat-label {
+        font-size: 11px;
+    }
+
+    .stat-box .stat-number {
+        font-size: 24px;
+    }
+
+    .stat-detail {
+        font-size: 11px;
     }
 
     .difficulty-info {
@@ -1669,14 +1793,114 @@ body.dark-mode .how-to-play-content {
         gap: 5px;
     }
 
+    /* More compact recent games on mobile */
+    .recent-games-list {
+        height: 180px;
+        min-height: 180px;
+        max-height: 180px;
+        gap: 5px;
+    }
+
     .recent-game-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+        padding: 6px 8px;
+        gap: 8px;
+        min-height: 45px;
+    }
+
+    .game-result-icon {
+        font-size: 18px;
+        width: 26px;
+        height: 26px;
+    }
+
+    .difficulty-badge {
+        font-size: 9px;
+        padding: 2px 8px;
+    }
+
+    .game-stats-inline {
+        font-size: 10px;
+        gap: 8px;
+    }
+
+    /* Show only 5 recent games on mobile to reduce scrolling */
+    .recent-games-list .recent-game-item:nth-child(n+6) {
+        display: none;
     }
 
     .game-date {
         text-align: left;
+    }
+
+    /* Compact achievements on mobile - keep horizontal */
+    .achievements-tabs {
+        gap: 6px;
+        flex-wrap: nowrap;
+    }
+
+    .achievement-tab {
+        padding: 6px 15px;
+        font-size: 12px;
+    }
+
+    .achievements-list {
+        max-height: 280px;
+        gap: 10px;
+    }
+
+    .achievement-item {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .achievement-icon-wrapper {
+        min-width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .achievement-name {
+        font-size: 14px;
+    }
+
+    .achievement-description {
+        font-size: 11px;
+    }
+
+    .achievement-progress-bar {
+        height: 5px;
+    }
+
+    .achievement-progress-text {
+        font-size: 10px;
+    }
+
+    /* Compact profile header on very small screens */
+    .profile-title {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    .profile-header {
+        padding: 10px;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .profile-avatar {
+        font-size: 36px;
+    }
+
+    .profile-user-info h3 {
+        font-size: 16px;
+    }
+
+    .profile-user-info p {
+        font-size: 11px;
+    }
+
+    .profile-section h3 {
+        font-size: 16px;
     }
 }
 
