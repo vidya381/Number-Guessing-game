@@ -9,6 +9,13 @@ window.Auth = {
     // ==========================================
 
     initializeAuth: function() {
+        // Initialize notification bell visibility for mobile
+        const notificationsBell = document.getElementById('notifications-bell');
+        if (notificationsBell && window.innerWidth <= 768) {
+            // Start hidden on mobile (will be shown by updateAuthUI if logged in)
+            notificationsBell.classList.add('mobile-hidden');
+        }
+
         const storedToken = localStorage.getItem('authToken');
         const storedUser = localStorage.getItem('currentUser');
 
@@ -44,12 +51,15 @@ window.Auth = {
                 const data = await response.json();
 
                 // Update current user with fresh data from server
-                if (GameState.currentUser) {
-                    GameState.currentUser.coins = data.coins || 0;
-                    GameState.currentUser.currentWinStreak = data.currentWinStreak || 0;
-                    GameState.currentUser.bestWinStreak = data.bestWinStreak || 0;
-                    GameState.currentUser.totalGames = data.totalGames || 0;
-                    GameState.currentUser.totalWins = data.totalWins || 0;
+                if (GameState.currentUser && data.success && data.profile) {
+                    GameState.currentUser.coins = data.profile.coins || 0;
+                    GameState.currentUser.currentWinStreak = data.profile.currentWinStreak || 0;
+                    GameState.currentUser.bestWinStreak = data.profile.bestWinStreak || 0;
+                    GameState.currentUser.totalGames = data.profile.totalGames || 0;
+                    GameState.currentUser.totalWins = data.profile.totalWins || 0;
+
+                    // Update GameState streak
+                    GameState.currentStreak = data.profile.currentWinStreak || 0;
 
                     // Update localStorage with fresh data
                     localStorage.setItem('currentUser', JSON.stringify(GameState.currentUser));
@@ -86,6 +96,7 @@ window.Auth = {
         const coinCount = document.getElementById('coin-count');
         const dropdownUsername = document.getElementById('dropdown-username');
         const dropdownEmail = document.getElementById('dropdown-email');
+        const notificationsBell = document.getElementById('notifications-bell');
 
         if (!guestControls || !userControls) return;
 
@@ -93,6 +104,11 @@ window.Auth = {
             // Show user controls, hide guest controls
             guestControls.style.display = 'none';
             userControls.style.display = 'flex';
+
+            // Show notification bell on mobile for logged-in users
+            if (notificationsBell && window.innerWidth <= 768) {
+                notificationsBell.classList.remove('mobile-hidden');
+            }
 
             // Update dropdown user info
             if (dropdownUsername) dropdownUsername.textContent = GameState.currentUser.username || 'User';
@@ -111,6 +127,11 @@ window.Auth = {
             // Show guest controls, hide user controls
             guestControls.style.display = 'flex';
             userControls.style.display = 'none';
+
+            // Hide notification bell on mobile for guests
+            if (notificationsBell && window.innerWidth <= 768) {
+                notificationsBell.classList.add('mobile-hidden');
+            }
         }
 
         // Update hint button state

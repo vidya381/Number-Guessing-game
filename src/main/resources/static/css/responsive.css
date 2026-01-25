@@ -21,7 +21,7 @@
 @media screen and (max-width: 768px) {
     /* Body and container adjustments */
     body {
-        padding-top: 80px;
+        padding-top: 70px;
         padding-bottom: 68px; /* Add padding for bottom nav */
     }
 
@@ -30,10 +30,74 @@
         display: flex !important;
     }
 
-    /* Game header */
-    .game-header {
-        flex-direction: column;
-        align-items: flex-start;
+    /* Header adjustments for mobile */
+    #game-header {
+        padding: 10px 12px;
+        height: auto;
+    }
+
+    .game-title {
+        font-size: 20px !important;
+    }
+
+    #controls {
+        gap: 8px;
+    }
+
+    /* Hide desktop-only elements on mobile */
+    #guest-controls {
+        display: none !important;
+    }
+
+    .profile-dropdown-container {
+        display: none !important;
+    }
+
+    /* User controls - show only streak, coins, and notifications */
+    #user-controls {
+        gap: 8px;
+    }
+
+    /* Notification bell - hide by default on mobile (shown only when logged in via JS) */
+    #notifications-bell.mobile-hidden {
+        display: none !important;
+    }
+
+    /* Smaller header elements on mobile */
+    .header-icon-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    .header-streak {
+        height: 32px;
+        padding: 0 8px;
+        font-size: 12px;
+        min-width: 50px;
+        gap: 3px;
+    }
+
+    .header-streak i {
+        font-size: 12px;
+    }
+
+    .header-coins {
+        height: 32px;
+        padding: 0 8px;
+        font-size: 12px;
+        min-width: 50px;
+        gap: 3px;
+    }
+
+    .header-coins i {
+        font-size: 12px;
+    }
+
+    .notification-bell-badge {
+        font-size: 9px;
+        padding: 1px 4px;
+        min-width: 14px;
     }
 
     .game-stats-inline {

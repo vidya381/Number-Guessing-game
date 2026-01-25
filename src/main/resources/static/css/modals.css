@@ -916,6 +916,53 @@
     opacity: 0.6;
 }
 
+/* Profile Logout Section */
+.profile-logout-section {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 2px solid rgba(var(--primary-color-rgb), 0.1);
+    display: flex;
+    justify-content: center;
+}
+
+.profile-logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.profile-logout-btn i {
+    font-size: 18px;
+}
+
+.profile-logout-btn:hover {
+    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+.profile-logout-btn:active {
+    transform: translateY(0);
+}
+
+/* Dark mode */
+body.dark-mode .profile-logout-section {
+    border-top-color: rgba(167, 139, 250, 0.15);
+}
+
 /* ===================================== */
 /* SETTINGS MODAL                        */
 /* ===================================== */

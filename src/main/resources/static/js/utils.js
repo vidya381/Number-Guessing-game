@@ -1260,22 +1260,19 @@ window.Utils = {
         // Home button
         bottomNavHome.addEventListener('click', () => {
             this.setActiveBottomNavItem('home');
-            UI.showHomePage();
+            if (RegularGame && RegularGame.showHomePage) {
+                RegularGame.showHomePage();
+            }
         });
 
         // Profile button
         bottomNavProfile.addEventListener('click', () => {
             this.setActiveBottomNavItem('profile');
-            // If logged in, show profile modal; if logged out, show login modal
+            // If logged in, load and show profile; if logged out, show login modal
             if (GameState.authToken && GameState.currentUser) {
-                // Show profile modal
-                const profileModal = document.getElementById('profile-modal');
-                if (profileModal) {
-                    profileModal.style.display = 'flex';
-                    // Refresh profile data
-                    if (Auth && Auth.refreshUserData) {
-                        Auth.refreshUserData();
-                    }
+                // Load and show profile with data
+                if (UI && UI.loadAndShowProfile) {
+                    UI.loadAndShowProfile();
                 }
             } else {
                 // Show login modal for guests

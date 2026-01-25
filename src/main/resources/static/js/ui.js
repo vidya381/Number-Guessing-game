@@ -200,6 +200,7 @@ window.UI = {
         const profileBtn = document.getElementById('profile-btn');
         const profileModal = document.getElementById('profile-modal');
         const closeProfileBtn = document.getElementById('close-profile');
+        const profileLogoutBtn = document.getElementById('profile-logout-btn');
 
         if (profileBtn) {
             profileBtn.addEventListener('click', () => this.loadAndShowProfile());
@@ -216,6 +217,18 @@ window.UI = {
                 if (e.target === profileModal && Utils) {
                     Utils.closeModalWithAnimation(profileModal);
                 }
+            });
+        }
+
+        // Logout button in profile modal
+        if (profileLogoutBtn && profileModal && Utils) {
+            profileLogoutBtn.addEventListener('click', () => {
+                Utils.closeModalWithAnimation(profileModal);
+                setTimeout(() => {
+                    if (Auth) {
+                        Auth.logout();
+                    }
+                }, 300); // Wait for modal close animation
             });
         }
     },
