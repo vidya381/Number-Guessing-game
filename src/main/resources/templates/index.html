@@ -273,6 +273,30 @@
                         <span class="diff-name">HARD</span>
                     </button>
                 </div>
+
+                <!-- Leaderboard Section -->
+                <div class="modal-leaderboard-section">
+                    <h3 class="modal-leaderboard-title">🏆 LEADERBOARD</h3>
+
+                    <!-- Difficulty Filter Tabs -->
+                    <div class="modal-leaderboard-tabs">
+                        <button class="modal-lb-tab active" data-difficulty="0">Easy</button>
+                        <button class="modal-lb-tab" data-difficulty="1">Medium</button>
+                        <button class="modal-lb-tab" data-difficulty="2">Hard</button>
+                    </div>
+
+                    <!-- Leaderboard Container -->
+                    <div class="modal-leaderboard-container">
+                        <div class="modal-leaderboard-loading">Loading top players...</div>
+                        <div class="modal-leaderboard-list" style="display: none;">
+                            <!-- Leaderboard entries will be dynamically inserted here -->
+                        </div>
+                        <div class="modal-leaderboard-empty" style="display: none;">
+                            <i class="fas fa-trophy"></i>
+                            <p>No players yet. Be the first!</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -930,6 +930,24 @@ window.RegularGame = {
         if (playTimeAttack && timeAttackModal) {
             playTimeAttack.addEventListener('click', () => {
                 timeAttackModal.style.display = 'flex';
+                // Load leaderboard when modal opens (default to Easy)
+                this.loadModalLeaderboard('time-attack', 0);
+            });
+        }
+
+        // Time Attack modal leaderboard tabs
+        const taLeaderboardTabs = timeAttackModal?.querySelectorAll('.modal-lb-tab');
+        if (taLeaderboardTabs) {
+            taLeaderboardTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update active tab
+                    taLeaderboardTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Load leaderboard for selected difficulty
+                    const difficulty = parseInt(tab.dataset.difficulty);
+                    this.loadModalLeaderboard('time-attack', difficulty);
+                });
             });
         }
 
@@ -995,5 +1013,90 @@ window.RegularGame = {
                 }
             }
         });
+    },
+
+    // ==========================================
+    // MODAL LEADERBOARD
+    // ==========================================
+
+    loadModalLeaderboard: async function(mode, difficulty = 0) {
+        const modal = document.getElementById(`${mode}-modal`);
+        if (!modal) return;
+
+        const loadingDiv = modal.querySelector('.modal-leaderboard-loading');
+        const listDiv = modal.querySelector('.modal-leaderboard-list');
+        const emptyDiv = modal.querySelector('.modal-leaderboard-empty');
+
+        if (!loadingDiv || !listDiv || !emptyDiv) return;
+
+        // Show loading state
+        loadingDiv.style.display = 'block';
+        listDiv.style.display = 'none';
+        emptyDiv.style.display = 'none';
+
+        try {
+            const response = await fetch(`/api/time-attack/leaderboard/${difficulty}?limit=10`);
+
+            if (!response.ok) {
+                throw new Error('Failed to load leaderboard');
+            }
+
+            const leaderboard = await response.json();
+
+            // Hide loading
+            loadingDiv.style.display = 'none';
+
+            // Check if empty
+            if (!leaderboard || leaderboard.length === 0) {
+                emptyDiv.style.display = 'block';
+                return;
+            }
+
+            // Show list and render entries
+            listDiv.style.display = 'flex';
+            listDiv.innerHTML = '';
+
+            leaderboard.forEach((entry, index) => {
+                const rank = index + 1;
+                const entryDiv = document.createElement('div');
+                entryDiv.className = `modal-lb-entry rank-${rank}`;
+
+                const rankSpan = document.createElement('div');
+                rankSpan.className = 'modal-lb-rank';
+                rankSpan.textContent = rank > 3 ? rank : ''; // Medal emojis added via CSS
+
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'modal-lb-player';
+
+                const usernameSpan = document.createElement('div');
+                usernameSpan.className = 'modal-lb-username';
+                usernameSpan.textContent = entry.username || 'Anonymous';
+
+                const statsSpan = document.createElement('div');
+                statsSpan.className = 'modal-lb-stats';
+                const avgAttempts = entry.averageAttempts ? entry.averageAttempts.toFixed(1) : '--';
+                statsSpan.textContent = `Avg: ${avgAttempts} attempts`;
+
+                playerDiv.appendChild(usernameSpan);
+                playerDiv.appendChild(statsSpan);
+
+                const scoreSpan = document.createElement('div');
+                scoreSpan.className = 'modal-lb-score';
+                scoreSpan.textContent = `${entry.gamesWon || 0}`;
+
+                entryDiv.appendChild(rankSpan);
+                entryDiv.appendChild(playerDiv);
+                entryDiv.appendChild(scoreSpan);
+
+                listDiv.appendChild(entryDiv);
+            });
+        } catch (error) {
+            debug.error('Error loading modal leaderboard:', error);
+            loadingDiv.style.display = 'none';
+            emptyDiv.style.display = 'block';
+            if (emptyDiv.querySelector('p')) {
+                emptyDiv.querySelector('p').textContent = 'Failed to load leaderboard';
+            }
+        }
     }
 };

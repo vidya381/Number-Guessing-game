@@ -1337,6 +1337,10 @@ window.Utils = {
                         break;
                     case 'timeattack':
                         modalId = 'time-attack-modal';
+                        // Load leaderboard when modal opens
+                        if (RegularGame && RegularGame.loadModalLeaderboard) {
+                            setTimeout(() => RegularGame.loadModalLeaderboard('time-attack', 0), 100);
+                        }
                         break;
                     case 'survival':
                         modalId = 'survival-modal';
