@@ -1307,6 +1307,171 @@ window.Utils = {
         });
     },
 
+    setupMobileTiles: function() {
+        const tiles = document.querySelectorAll('.mode-tile');
+
+        tiles.forEach(tile => {
+            tile.addEventListener('click', () => {
+                const mode = tile.dataset.mode;
+                let modalId = '';
+
+                switch(mode) {
+                    case 'daily':
+                        modalId = 'daily-challenge-tile-modal';
+                        // Load daily challenge info
+                        if (DailyGame && DailyGame.loadDailyChallengeInfo) {
+                            DailyGame.loadDailyChallengeInfo();
+                        }
+                        break;
+                    case 'multiplayer':
+                        modalId = 'multiplayer-tile-modal';
+                        break;
+                    case 'timeattack':
+                        modalId = 'time-attack-modal';
+                        break;
+                    case 'survival':
+                        modalId = 'survival-modal';
+                        break;
+                    case 'practice':
+                        modalId = 'practice-tile-modal';
+                        break;
+                }
+
+                if (modalId) {
+                    const modal = document.getElementById(modalId);
+                    if (modal) {
+                        this.openModalWithAnimation(modal);
+                    }
+                }
+            });
+        });
+
+        // Setup tile modal button handlers
+        this.setupTileModalHandlers();
+
+        // Setup close buttons for tile modals
+        this.setupTileModalCloseButtons();
+    },
+
+    setupTileModalCloseButtons: function() {
+        const tileModals = [
+            'daily-challenge-tile-modal',
+            'multiplayer-tile-modal',
+            'practice-tile-modal'
+        ];
+
+        tileModals.forEach(modalId => {
+            const modal = document.getElementById(modalId);
+            if (!modal) return;
+
+            // Close button
+            const closeBtn = modal.querySelector('.modal-close-btn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    this.closeModalWithAnimation(modal);
+                });
+            }
+
+            // Click outside to close
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    this.closeModalWithAnimation(modal);
+                }
+            });
+        });
+    },
+
+    setupTileModalHandlers: function() {
+        // Daily Challenge tile modal
+        const playDailyTile = document.getElementById('play-daily-tile');
+        const viewDailyLeaderboardTile = document.getElementById('view-daily-leaderboard-tile');
+        const dailyTileModal = document.getElementById('daily-challenge-tile-modal');
+
+        if (playDailyTile && DailyGame) {
+            playDailyTile.addEventListener('click', () => {
+                if (dailyTileModal) dailyTileModal.style.display = 'none';
+                DailyGame.playDailyChallenge();
+            });
+        }
+
+        if (viewDailyLeaderboardTile && DailyGame) {
+            viewDailyLeaderboardTile.addEventListener('click', () => {
+                if (dailyTileModal) dailyTileModal.style.display = 'none';
+                DailyGame.loadDailyLeaderboard();
+            });
+        }
+
+        // Multiplayer tile modal
+        const playMultiplayerTile = document.getElementById('play-multiplayer-tile');
+        const multiplayerStatsTile = document.getElementById('multiplayer-stats-tile');
+        const multiplayerTileModal = document.getElementById('multiplayer-tile-modal');
+
+        if (playMultiplayerTile) {
+            playMultiplayerTile.addEventListener('click', () => {
+                if (multiplayerTileModal) multiplayerTileModal.style.display = 'none';
+
+                // Check login
+                if (!GameState.currentUser) {
+                    if (Achievements) {
+                        Achievements.showToast('Please log in to play multiplayer mode! 🔑', 'info');
+                    }
+                    const authModal = document.getElementById('auth-modal');
+                    if (authModal) {
+                        this.openModalWithAnimation(authModal);
+                    }
+                    if (Auth && Auth.showLoginForm) {
+                        Auth.showLoginForm();
+                    }
+                    return;
+                }
+
+                // Navigate to multiplayer
+                const homePage = document.getElementById('home-page');
+                const multiplayerTab = document.getElementById('multiplayer-tab');
+
+                if (homePage && multiplayerTab) {
+                    this.fadeOutElement(homePage, () => {
+                        multiplayerTab.style.display = 'block';
+                        this.fadeInElement(multiplayerTab);
+                    });
+                }
+
+                if (typeof MultiplayerGame !== 'undefined') {
+                    MultiplayerGame.init();
+                }
+
+                this.updateGameStatus('multiplayer');
+            });
+        }
+
+        // Practice tile modal
+        const playEasyTile = document.getElementById('play-easy-tile');
+        const playMediumTile = document.getElementById('play-medium-tile');
+        const playHardTile = document.getElementById('play-hard-tile');
+        const practiceTileModal = document.getElementById('practice-tile-modal');
+
+        if (playEasyTile && RegularGame) {
+            playEasyTile.addEventListener('click', () => {
+                if (practiceTileModal) practiceTileModal.style.display = 'none';
+                RegularGame.startGame(0);
+            });
+        }
+
+        if (playMediumTile && RegularGame) {
+            playMediumTile.addEventListener('click', () => {
+                if (practiceTileModal) practiceTileModal.style.display = 'none';
+                RegularGame.startGame(1);
+            });
+        }
+
+        if (playHardTile && RegularGame) {
+            playHardTile.addEventListener('click', () => {
+                if (practiceTileModal) practiceTileModal.style.display = 'none';
+                RegularGame.startGame(2);
+            });
+        }
+    },
+
     init: function() {
         this.detectFontAwesome();
         this.initializeDarkMode();
@@ -1317,6 +1482,7 @@ window.Utils = {
         this.setupAccountManagement();
         this.setupNotificationsModal();
         this.setupBottomNav();
+        this.setupMobileTiles();
         this.setupModalClickOutside();
 
         // Attach theme toggle checkbox event listener (in Settings)

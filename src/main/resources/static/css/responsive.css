@@ -12,6 +12,16 @@
     .bottom-nav {
         display: none !important;
     }
+
+    /* Hide mobile tiles on desktop */
+    .mobile-tiles-container {
+        display: none !important;
+    }
+
+    /* Show desktop banners */
+    .desktop-banners-container {
+        display: block !important;
+    }
 }
 
 /* ===================================== */
@@ -98,6 +108,292 @@
         font-size: 9px;
         padding: 1px 4px;
         min-width: 14px;
+    }
+
+    /* Home page - show tiles on mobile, hide banners */
+    .mobile-tiles-container {
+        display: flex !important;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 0;
+        justify-content: center;
+    }
+
+    .desktop-banners-container {
+        display: none !important;
+    }
+
+    /* Mode tiles - all same size */
+    .mode-tile {
+        width: calc(50% - 6px);
+        aspect-ratio: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background: var(--card-bg);
+        border: 2px solid rgba(var(--primary-color-rgb), 0.2);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 12px;
+        position: relative;
+        box-sizing: border-box;
+        overflow: visible;
+    }
+
+    /* Practice tile - same size, centered on new row */
+    .practice-tile {
+        width: calc(50% - 6px);
+    }
+
+    .mode-tile:active {
+        transform: scale(0.95);
+    }
+
+    .tile-icon {
+        font-size: 2em;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+        flex-shrink: 0;
+    }
+
+    .tile-name {
+        font-size: 0.7em;
+        font-weight: 700;
+        text-align: center;
+        color: var(--text-color);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        line-height: 1.1;
+        flex-shrink: 0;
+    }
+
+    /* Mobile tile badges - consistent sizing */
+    .mode-tile .tile-badge {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.55em !important;
+        font-weight: 800 !important;
+        padding: 0 10px !important;
+        height: 22px !important;
+        min-height: 22px !important;
+        max-height: 22px !important;
+        border-radius: 11px !important;
+        border: none !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        white-space: nowrap !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex-shrink: 0 !important;
+        line-height: 1 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Individual tile styles */
+    .daily-tile {
+        border-color: rgba(240, 179, 71, 0.3);
+    }
+
+    .daily-tile:active {
+        border-color: var(--warning-color);
+    }
+
+    .multiplayer-tile {
+        border-color: rgba(93, 211, 179, 0.3);
+    }
+
+    .multiplayer-tile:active {
+        border-color: var(--accent-color);
+    }
+
+    .mode-tile .multiplayer-badge {
+        background: linear-gradient(135deg, #5dd3b3 0%, #3eb89a 100%) !important;
+        color: white !important;
+    }
+
+    body.dark-mode .mode-tile .multiplayer-badge {
+        background: linear-gradient(135deg, #5dd3b3 0%, #4facb8 100%) !important;
+        color: white !important;
+    }
+
+    .timeattack-tile {
+        border-color: rgba(231, 76, 60, 0.3);
+    }
+
+    .timeattack-tile:active {
+        border-color: var(--error-color);
+    }
+
+    .mode-tile .timeattack-badge {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
+        color: white !important;
+    }
+
+    body.dark-mode .mode-tile .timeattack-badge {
+        background: linear-gradient(135deg, #ff6b6b 0%, #e74c3c 100%) !important;
+        color: white !important;
+    }
+
+    .survival-tile {
+        border-color: rgba(255, 107, 107, 0.3);
+    }
+
+    .survival-tile:active {
+        border-color: #ff6b6b;
+    }
+
+    .mode-tile .survival-badge {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%) !important;
+        color: white !important;
+    }
+
+    body.dark-mode .mode-tile .survival-badge {
+        background: linear-gradient(135deg, #ff7979 0%, #ff6b6b 100%) !important;
+        color: white !important;
+    }
+
+    .practice-tile {
+        border-color: rgba(var(--primary-color-rgb), 0.3);
+        margin: 0 auto;
+    }
+
+    .practice-tile:active {
+        border-color: var(--primary-color);
+    }
+
+    /* Smaller header on home page for mobile */
+    #game-status-display {
+        padding: 12px !important;
+        margin-bottom: 15px !important;
+    }
+
+    #game-status-text {
+        font-size: 1.3em !important;
+    }
+
+    #game-status-icon {
+        font-size: 20px !important;
+    }
+
+    .mode-tile .practice-badge {
+        background: linear-gradient(135deg, #8b7abf 0%, #6fa3d9 100%) !important;
+        color: white !important;
+    }
+
+    body.dark-mode .mode-tile .practice-badge {
+        background: linear-gradient(135deg, #a78bfa 0%, #7c6bc9 100%) !important;
+        color: white !important;
+    }
+
+    .mode-tile .daily-badge {
+        background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%) !important;
+        color: white !important;
+    }
+
+    body.dark-mode .mode-tile .daily-badge {
+        background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
+        color: white !important;
+    }
+
+    /* Modal actions for tile modals */
+    .modal-tile-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .modal-tile-play-btn,
+    .modal-tile-secondary-btn {
+        width: 100%;
+        padding: 14px 20px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.95em;
+        font-weight: 700;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .modal-tile-play-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        color: white;
+        box-shadow: 0 4px 15px rgba(var(--primary-color-rgb), 0.3);
+    }
+
+    .modal-tile-play-btn:active {
+        transform: translateY(1px);
+    }
+
+    .modal-tile-secondary-btn {
+        background: rgba(var(--primary-color-rgb), 0.1);
+        color: var(--primary-color);
+        border: 2px solid rgba(var(--primary-color-rgb), 0.3);
+    }
+
+    .modal-tile-secondary-btn:active {
+        background: rgba(var(--primary-color-rgb), 0.15);
+    }
+
+    /* Home page banners - more compact on mobile */
+    .daily-challenge-banner,
+    .multiplayer-banner,
+    .time-attack-banner,
+    .survival-banner {
+        padding: 15px !important;
+    }
+
+    .daily-challenge-header h2,
+    .multiplayer-header h2,
+    .time-attack-header h2,
+    .survival-header h2 {
+        font-size: 1.2em !important;
+    }
+
+    .daily-challenge-description,
+    .multiplayer-description,
+    .time-attack-description,
+    .survival-description {
+        font-size: 0.85em !important;
+        margin-bottom: 12px !important;
+    }
+
+    .daily-challenge-badge,
+    .multiplayer-badge,
+    .time-attack-badge,
+    .survival-badge {
+        font-size: 0.7em !important;
+        padding: 5px 12px !important;
+    }
+
+    .daily-challenge-info {
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .challenge-stat {
+        font-size: 0.8em !important;
+        padding: 6px 10px !important;
+    }
+
+    .banner-actions {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .banner-actions button {
+        width: 100% !important;
+        padding: 12px !important;
+        font-size: 0.85em !important;
     }
 
     .game-stats-inline {

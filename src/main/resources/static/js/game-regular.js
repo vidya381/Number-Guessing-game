@@ -840,7 +840,6 @@ window.RegularGame = {
                 Utils.fadeInElement(homePage);
                 if (UI) {
                     UI.updateStreakStats();
-                    UI.loadLeaderboard(this.gameJustCompleted);
                 }
                 this.gameJustCompleted = false;
             });
@@ -858,7 +857,6 @@ window.RegularGame = {
             if (multiplayerTab) multiplayerTab.style.display = 'none';
             if (UI) {
                 UI.updateStreakStats();
-                UI.loadLeaderboard(this.gameJustCompleted);
             }
             this.gameJustCompleted = false;
         }

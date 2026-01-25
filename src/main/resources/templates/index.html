@@ -109,8 +109,43 @@
         </div>
 
         <div id="home-page">
-            <!-- Daily Challenge Section -->
-            <section class="section daily-challenge-banner">
+            <!-- Mobile Tiles (shown only on mobile ≤768px) -->
+            <div class="mobile-tiles-container">
+                <div class="mode-tile daily-tile" data-mode="daily">
+                    <div class="tile-icon">🌟</div>
+                    <div class="tile-name">Daily Challenge</div>
+                    <div class="tile-badge daily-badge" id="daily-challenge-tile-badge">LOADING...</div>
+                </div>
+
+                <div class="mode-tile multiplayer-tile" data-mode="multiplayer">
+                    <div class="tile-icon">🎮</div>
+                    <div class="tile-name">Multiplayer</div>
+                    <div class="tile-badge multiplayer-badge">PvP</div>
+                </div>
+
+                <div class="mode-tile timeattack-tile" data-mode="timeattack">
+                    <div class="tile-icon">⚡</div>
+                    <div class="tile-name">Time Attack</div>
+                    <div class="tile-badge timeattack-badge">5 MIN</div>
+                </div>
+
+                <div class="mode-tile survival-tile" data-mode="survival">
+                    <div class="tile-icon">💀</div>
+                    <div class="tile-name">Survival</div>
+                    <div class="tile-badge survival-badge">5 ROUNDS</div>
+                </div>
+
+                <div class="mode-tile practice-tile" data-mode="practice">
+                    <div class="tile-icon">⚡</div>
+                    <div class="tile-name">Practice</div>
+                    <div class="tile-badge practice-badge">RELAX</div>
+                </div>
+            </div>
+
+            <!-- Desktop Banners (shown only on desktop >768px) -->
+            <div class="desktop-banners-container">
+                <!-- Daily Challenge Section -->
+                <section class="section daily-challenge-banner">
                 <div class="daily-challenge-header">
                     <h2>🌟 DAILY CHALLENGE</h2>
                     <div class="daily-challenge-badge">TODAY</div>
@@ -213,6 +248,8 @@
                     <button id="play-hard" class="difficulty-btn">HARD</button>
                 </div>
             </section>
+            </div>
+            <!-- End Desktop Banners -->
 
         </div>
 
@@ -256,6 +293,83 @@
                         <span class="diff-name">MEDIUM</span>
                     </button>
                     <button class="modal-difficulty-btn hard-diff" data-mode="survival" data-difficulty="2">
+                        <span class="diff-name">HARD</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Challenge Modal -->
+        <div id="daily-challenge-tile-modal" class="difficulty-modal daily-challenge-theme" style="display: none;">
+            <div class="difficulty-modal-content">
+                <button class="modal-close-btn" aria-label="Close">&times;</button>
+                <div class="modal-header">
+                    <div class="modal-icon">🌟</div>
+                    <h2>Daily Challenge</h2>
+                    <p id="daily-modal-description">Daily quest! All players face the same challenge</p>
+                </div>
+                <div id="daily-modal-info" class="daily-challenge-info">
+                    <div class="challenge-stat">
+                        <i class="fas fa-calendar-day"></i>
+                        <span id="challenge-date-modal">Loading...</span>
+                    </div>
+                    <div class="challenge-stat">
+                        <i class="fas fa-signal"></i>
+                        <span id="challenge-difficulty-modal">Loading...</span>
+                    </div>
+                    <div class="challenge-stat">
+                        <i class="fas fa-users"></i>
+                        <span id="challenge-players-modal">0 players</span>
+                    </div>
+                </div>
+                <div class="modal-tile-actions">
+                    <button id="play-daily-tile" class="modal-tile-play-btn daily-challenge-btn">
+                        <i class="fas fa-play"></i> PLAY NOW
+                    </button>
+                    <button id="view-daily-leaderboard-tile" class="modal-tile-secondary-btn">
+                        <i class="fas fa-trophy"></i> Leaderboard
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Multiplayer Modal -->
+        <div id="multiplayer-tile-modal" class="difficulty-modal multiplayer-theme" style="display: none;">
+            <div class="difficulty-modal-content">
+                <button class="modal-close-btn" aria-label="Close">&times;</button>
+                <div class="modal-header">
+                    <div class="modal-icon">🎮</div>
+                    <h2>Multiplayer Mode</h2>
+                    <p>Challenge your friends to a head-to-head race!</p>
+                </div>
+                <div class="modal-tile-actions">
+                    <button id="play-multiplayer-tile" class="modal-tile-play-btn multiplayer-btn">
+                        <i class="fas fa-users"></i> PLAY NOW
+                    </button>
+                    <button id="multiplayer-stats-tile" class="modal-tile-secondary-btn">
+                        <i class="fas fa-chart-bar"></i> STATS
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice Modal -->
+        <div id="practice-tile-modal" class="difficulty-modal practice-theme" style="display: none;">
+            <div class="difficulty-modal-content">
+                <button class="modal-close-btn" aria-label="Close">&times;</button>
+                <div class="modal-header">
+                    <div class="modal-icon">⚡</div>
+                    <h2>Practice Mode</h2>
+                    <p>Play at your own pace. No timers, no pressure!</p>
+                </div>
+                <div class="modal-difficulty-buttons">
+                    <button id="play-easy-tile" class="modal-difficulty-btn easy-diff">
+                        <span class="diff-name">EASY</span>
+                    </button>
+                    <button id="play-medium-tile" class="modal-difficulty-btn medium-diff">
+                        <span class="diff-name">MEDIUM</span>
+                    </button>
+                    <button id="play-hard-tile" class="modal-difficulty-btn hard-diff">
                         <span class="diff-name">HARD</span>
                     </button>
                 </div>
