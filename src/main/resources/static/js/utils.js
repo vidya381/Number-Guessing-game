@@ -1465,6 +1465,37 @@ window.Utils = {
             });
         }
 
+        if (multiplayerStatsTile) {
+            multiplayerStatsTile.addEventListener('click', () => {
+                // Check login
+                if (!GameState.currentUser) {
+                    if (Achievements) {
+                        Achievements.showToast('Please log in to view multiplayer stats! 🔑', 'info');
+                    }
+                    const authModal = document.getElementById('auth-modal');
+                    if (authModal) {
+                        this.openModalWithAnimation(authModal);
+                    }
+                    if (Auth && Auth.showLoginForm) {
+                        Auth.showLoginForm();
+                    }
+                    return;
+                }
+
+                // Close tile modal and open stats modal
+                if (multiplayerTileModal) multiplayerTileModal.style.display = 'none';
+
+                const multiplayerStatsModal = document.getElementById('multiplayer-stats-modal');
+                if (multiplayerStatsModal) {
+                    multiplayerStatsModal.style.display = 'flex';
+                    // Load stats if MultiplayerGame is available
+                    if (typeof MultiplayerGame !== 'undefined' && MultiplayerGame.loadStats) {
+                        MultiplayerGame.loadStats();
+                    }
+                }
+            });
+        }
+
         // Practice tile modal
         const playEasyTile = document.getElementById('play-easy-tile');
         const playMediumTile = document.getElementById('play-medium-tile');
