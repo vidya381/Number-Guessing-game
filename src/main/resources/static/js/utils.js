@@ -1250,6 +1250,66 @@ window.Utils = {
     // INITIALIZATION
     // ==========================================
 
+    setupBottomNav: function() {
+        const bottomNavHome = document.getElementById('bottom-nav-home');
+        const bottomNavProfile = document.getElementById('bottom-nav-profile');
+        const bottomNavSettings = document.getElementById('bottom-nav-settings');
+
+        if (!bottomNavHome || !bottomNavProfile || !bottomNavSettings) return;
+
+        // Home button
+        bottomNavHome.addEventListener('click', () => {
+            this.setActiveBottomNavItem('home');
+            UI.showHomePage();
+        });
+
+        // Profile button
+        bottomNavProfile.addEventListener('click', () => {
+            this.setActiveBottomNavItem('profile');
+            // If logged in, show profile modal; if logged out, show login modal
+            if (GameState.authToken && GameState.currentUser) {
+                // Show profile modal
+                const profileModal = document.getElementById('profile-modal');
+                if (profileModal) {
+                    profileModal.style.display = 'flex';
+                    // Refresh profile data
+                    if (Auth && Auth.refreshUserData) {
+                        Auth.refreshUserData();
+                    }
+                }
+            } else {
+                // Show login modal for guests
+                const authModal = document.getElementById('auth-modal');
+                if (authModal) {
+                    authModal.style.display = 'flex';
+                }
+                if (Auth && Auth.showLoginForm) {
+                    Auth.showLoginForm();
+                }
+            }
+        });
+
+        // Settings button
+        bottomNavSettings.addEventListener('click', () => {
+            this.setActiveBottomNavItem('settings');
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal) {
+                settingsModal.style.display = 'flex';
+            }
+        });
+    },
+
+    setActiveBottomNavItem: function(page) {
+        const allItems = document.querySelectorAll('.bottom-nav-item');
+        allItems.forEach(item => {
+            if (item.dataset.page === page) {
+                item.classList.add('active');
+            } else {
+                item.classList.remove('active');
+            }
+        });
+    },
+
     init: function() {
         this.detectFontAwesome();
         this.initializeDarkMode();
@@ -1259,6 +1319,7 @@ window.Utils = {
         this.setupGameplayPreferences();
         this.setupAccountManagement();
         this.setupNotificationsModal();
+        this.setupBottomNav();
         this.setupModalClickOutside();
 
         // Attach theme toggle checkbox event listener (in Settings)

@@ -4,6 +4,17 @@
  */
 
 /* ===================================== */
+/* DESKTOP (769px and above)             */
+/* ===================================== */
+
+@media screen and (min-width: 769px) {
+    /* Ensure bottom nav is hidden on desktop */
+    .bottom-nav {
+        display: none !important;
+    }
+}
+
+/* ===================================== */
 /* TABLET (768px and below)              */
 /* ===================================== */
 
@@ -11,6 +22,12 @@
     /* Body and container adjustments */
     body {
         padding-top: 80px;
+        padding-bottom: 68px; /* Add padding for bottom nav */
+    }
+
+    /* Show bottom navigation on mobile */
+    .bottom-nav {
+        display: flex !important;
     }
 
     /* Game header */
