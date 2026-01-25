@@ -403,13 +403,12 @@
     background: var(--input-background);
     border: 1px solid rgba(20, 184, 166, 0.12);
     border-radius: 8px;
-    padding: 10px;
+    padding: 12px 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 6px;
+    gap: 10px;
     transition: all 0.3s ease;
-    min-height: 52px;
     width: 100%;
     box-sizing: border-box;
 }
@@ -466,7 +465,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.4;
+    line-height: 1;
     letter-spacing: 0.01em;
 }
 
@@ -477,9 +476,9 @@
 .friend-actions {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 2px;
     flex-shrink: 0;
-    align-self: center;
 }
 
 .challenge-btn {
@@ -490,7 +489,7 @@
     border-radius: 4px;
     cursor: pointer;
     font-size: 0.85em;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
     width: 24px;
     height: 24px;
     min-width: 24px;
@@ -504,12 +503,11 @@
     flex-shrink: 0;
     overflow: visible;
     box-sizing: border-box;
-    transform: translateY(10px);
 }
 
 .challenge-btn:hover {
     background: linear-gradient(135deg, rgba(20, 184, 166, 0.6) 0%, rgba(6, 182, 212, 0.6) 100%) !important;
-    transform: translateY(8px);
+    transform: scale(1.1);
 }
 
 .remove-btn {
@@ -521,7 +519,7 @@
     cursor: pointer;
     font-size: 0.85em;
     font-weight: 600;
-    transition: background 0.2s ease;
+    transition: all 0.2s ease;
     width: 24px;
     height: 24px;
     min-width: 24px;
@@ -535,12 +533,11 @@
     flex-shrink: 0;
     overflow: visible;
     box-sizing: border-box;
-    transform: translateY(10px);
 }
 
 .remove-btn:hover {
     background: linear-gradient(135deg, rgba(239, 68, 68, 0.6) 0%, rgba(220, 38, 38, 0.6) 100%) !important;
-    transform: translateY(8px);
+    transform: scale(1.1);
 }
 
 .no-friends {
@@ -1381,12 +1378,25 @@ body.dark-mode .multiplayer-btn:hover {
     }
 
     .friend-card {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        gap: 8px;
     }
 
     .friend-actions {
-        width: 100%;
-        justify-content: flex-end;
+        flex-shrink: 0;
+        gap: 4px;
+    }
+
+    .friend-name {
+        font-size: 0.9em;
+    }
+
+    .challenge-btn,
+    .remove-btn {
+        width: 28px;
+        height: 28px;
+        min-width: 28px;
+        min-height: 28px;
     }
 }
 
@@ -1430,6 +1440,29 @@ body.dark-mode .multiplayer-btn:hover {
 
     .stat-value {
         font-size: 2em;
+    }
+
+    /* Extra compact friend cards for small screens */
+    .friend-card {
+        padding: 8px;
+        gap: 6px;
+    }
+
+    .friend-name {
+        font-size: 0.85em;
+    }
+
+    .friend-actions {
+        gap: 3px;
+    }
+
+    .challenge-btn,
+    .remove-btn {
+        width: 26px;
+        height: 26px;
+        min-width: 26px;
+        min-height: 26px;
+        font-size: 0.8em;
     }
 
     /* Extra compact multiplayer stats modal for small screens */
