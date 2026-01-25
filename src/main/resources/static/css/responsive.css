@@ -1256,17 +1256,123 @@
     #result-page,
     #time-attack-result-page,
     #daily-result-page,
+    #survival-result-page,
     #mp-result-page {
-        padding: 20px 15px;
+        padding: 12px;
+        padding-bottom: 90px; /* Extra space for bottom nav bar */
+        max-height: calc(100vh - 60px); /* Account for top nav */
+        overflow-y: auto;
+    }
+
+    /* Compact hero section in result pages */
+    #game-stats > div:first-child > div,
+    #time-attack-stats > div:first-child > div,
+    #daily-game-stats > div:first-child > div,
+    #survival-stats > div:first-child > div,
+    #mp-game-stats > div:first-child > div {
+        padding: 18px 15px !important;
+        border-radius: 15px !important;
+        margin-bottom: 15px !important;
+    }
+
+    /* Compact hero icons */
+    #game-stats > div:first-child > div > div:first-child,
+    #time-attack-stats > div:first-child > div > div:first-child,
+    #daily-game-stats > div:first-child > div > div:first-child,
+    #survival-stats > div:first-child > div > div:first-child,
+    #mp-game-stats > div:first-child > div > div:first-child {
+        font-size: 2em !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* Compact hero title */
+    #game-stats > div:first-child > div > div:nth-child(2),
+    #time-attack-stats > div:first-child > div > div:nth-child(2),
+    #daily-game-stats > div:first-child > div > div:nth-child(2),
+    #survival-stats > div:first-child > div > div:nth-child(2),
+    #mp-game-stats > div:first-child > div > div:nth-child(2) {
+        font-size: 1.5em !important;
+    }
+
+    /* Compact hero subtitle */
+    #game-stats > div:first-child > div > div:nth-child(3),
+    #time-attack-stats > div:first-child > div > div:nth-child(3),
+    #daily-game-stats > div:first-child > div > div:nth-child(3),
+    #survival-stats > div:first-child > div > div:nth-child(3),
+    #mp-game-stats > div:first-child > div > div:nth-child(3) {
+        font-size: 1em !important;
+        margin-top: 6px !important;
+    }
+
+    /* Compact hero difficulty text */
+    #game-stats > div:first-child > div > div:nth-child(4),
+    #time-attack-stats > div:first-child > div > div:nth-child(4),
+    #daily-game-stats > div:first-child > div > div:nth-child(4),
+    #survival-stats > div:first-child > div > div:nth-child(4),
+    #mp-game-stats > div:first-child > div > div:nth-child(4) {
+        font-size: 0.75em !important;
+        margin-top: 4px !important;
+    }
+
+    /* Compact stats grid */
+    #game-stats > div:nth-child(2),
+    #time-attack-stats > div:nth-child(2),
+    #daily-game-stats > div:nth-child(2),
+    #survival-stats > div:nth-child(2),
+    #mp-game-stats > div:nth-child(2) {
+        gap: 10px !important;
+        margin-bottom: 12px !important;
+    }
+
+    /* Compact stat cards */
+    #game-stats > div:nth-child(2) > div,
+    #time-attack-stats > div:nth-child(2) > div,
+    #daily-game-stats > div:nth-child(2) > div,
+    #survival-stats > div:nth-child(2) > div,
+    #mp-game-stats > div:nth-child(2) > div {
+        padding: 12px !important;
+        border-radius: 10px !important;
+    }
+
+    /* Compact stat icons */
+    #game-stats > div:nth-child(2) > div > i,
+    #time-attack-stats > div:nth-child(2) > div > i,
+    #daily-game-stats > div:nth-child(2) > div > i,
+    #survival-stats > div:nth-child(2) > div > i,
+    #mp-game-stats > div:nth-child(2) > div > i {
+        font-size: 1.5em !important;
+        margin-bottom: 6px !important;
+    }
+
+    /* Compact stat values */
+    #game-stats > div:nth-child(2) > div > div:first-of-type,
+    #time-attack-stats > div:nth-child(2) > div > div:first-of-type,
+    #daily-game-stats > div:nth-child(2) > div > div:first-of-type,
+    #survival-stats > div:nth-child(2) > div > div:first-of-type,
+    #mp-game-stats > div:nth-child(2) > div > div:first-of-type {
+        font-size: 1.4em !important;
+    }
+
+    /* Compact stat labels */
+    #game-stats > div:nth-child(2) > div > div:last-of-type,
+    #time-attack-stats > div:nth-child(2) > div > div:last-of-type,
+    #daily-game-stats > div:nth-child(2) > div > div:last-of-type,
+    #survival-stats > div:nth-child(2) > div > div:last-of-type,
+    #mp-game-stats > div:nth-child(2) > div > div:last-of-type {
+        font-size: 0.7em !important;
+        margin-top: 3px !important;
     }
 
     .result-button-group {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
+        margin-top: 12px;
     }
 
     .result-button-group button {
         width: 100%;
+        padding: 11px 14px !important;
+        font-size: 13px !important;
     }
 }
 
@@ -1275,8 +1381,131 @@
     #result-page,
     #time-attack-result-page,
     #daily-result-page,
+    #survival-result-page,
     #mp-result-page {
-        padding: 15px;
+        padding: 12px;
+        padding-bottom: 85px;
+    }
+}
+
+/* Extra compact for small screens */
+@media screen and (max-width: 480px) {
+    #result-page,
+    #time-attack-result-page,
+    #daily-result-page,
+    #survival-result-page,
+    #mp-result-page {
+        padding: 10px;
+        padding-bottom: 85px;
+    }
+
+    /* Extra compact hero section */
+    #game-stats > div:first-child > div,
+    #time-attack-stats > div:first-child > div,
+    #daily-game-stats > div:first-child > div,
+    #survival-stats > div:first-child > div,
+    #mp-game-stats > div:first-child > div {
+        padding: 15px 12px !important;
+        border-radius: 12px !important;
+        margin-bottom: 12px !important;
+    }
+
+    /* Extra compact hero icons */
+    #game-stats > div:first-child > div > div:first-child,
+    #time-attack-stats > div:first-child > div > div:first-child,
+    #daily-game-stats > div:first-child > div > div:first-child,
+    #survival-stats > div:first-child > div > div:first-child,
+    #mp-game-stats > div:first-child > div > div:first-child {
+        font-size: 1.8em !important;
+        margin-bottom: 6px !important;
+    }
+
+    /* Extra compact hero title */
+    #game-stats > div:first-child > div > div:nth-child(2),
+    #time-attack-stats > div:first-child > div > div:nth-child(2),
+    #daily-game-stats > div:first-child > div > div:nth-child(2),
+    #survival-stats > div:first-child > div > div:nth-child(2),
+    #mp-game-stats > div:first-child > div > div:nth-child(2) {
+        font-size: 1.3em !important;
+    }
+
+    /* Extra compact hero subtitle */
+    #game-stats > div:first-child > div > div:nth-child(3),
+    #time-attack-stats > div:first-child > div > div:nth-child(3),
+    #daily-game-stats > div:first-child > div > div:nth-child(3),
+    #survival-stats > div:first-child > div > div:nth-child(3),
+    #mp-game-stats > div:first-child > div > div:nth-child(3) {
+        font-size: 0.9em !important;
+        margin-top: 5px !important;
+    }
+
+    /* Extra compact hero difficulty text */
+    #game-stats > div:first-child > div > div:nth-child(4),
+    #time-attack-stats > div:first-child > div > div:nth-child(4),
+    #daily-game-stats > div:first-child > div > div:nth-child(4),
+    #survival-stats > div:first-child > div > div:nth-child(4),
+    #mp-game-stats > div:first-child > div > div:nth-child(4) {
+        font-size: 0.7em !important;
+        margin-top: 3px !important;
+    }
+
+    /* Extra compact stats grid */
+    #game-stats > div:nth-child(2),
+    #time-attack-stats > div:nth-child(2),
+    #daily-game-stats > div:nth-child(2),
+    #survival-stats > div:nth-child(2),
+    #mp-game-stats > div:nth-child(2) {
+        gap: 8px !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* Extra compact stat cards */
+    #game-stats > div:nth-child(2) > div,
+    #time-attack-stats > div:nth-child(2) > div,
+    #daily-game-stats > div:nth-child(2) > div,
+    #survival-stats > div:nth-child(2) > div,
+    #mp-game-stats > div:nth-child(2) > div {
+        padding: 10px 8px !important;
+        border-radius: 8px !important;
+    }
+
+    /* Extra compact stat icons */
+    #game-stats > div:nth-child(2) > div > i,
+    #time-attack-stats > div:nth-child(2) > div > i,
+    #daily-game-stats > div:nth-child(2) > div > i,
+    #survival-stats > div:nth-child(2) > div > i,
+    #mp-game-stats > div:nth-child(2) > div > i {
+        font-size: 1.3em !important;
+        margin-bottom: 5px !important;
+    }
+
+    /* Extra compact stat values */
+    #game-stats > div:nth-child(2) > div > div:first-of-type,
+    #time-attack-stats > div:nth-child(2) > div > div:first-of-type,
+    #daily-game-stats > div:nth-child(2) > div > div:first-of-type,
+    #survival-stats > div:nth-child(2) > div > div:first-of-type,
+    #mp-game-stats > div:nth-child(2) > div > div:first-of-type {
+        font-size: 1.3em !important;
+    }
+
+    /* Extra compact stat labels */
+    #game-stats > div:nth-child(2) > div > div:last-of-type,
+    #time-attack-stats > div:nth-child(2) > div > div:last-of-type,
+    #daily-game-stats > div:nth-child(2) > div > div:last-of-type,
+    #survival-stats > div:nth-child(2) > div > div:last-of-type,
+    #mp-game-stats > div:nth-child(2) > div > div:last-of-type {
+        font-size: 0.65em !important;
+        margin-top: 2px !important;
+    }
+
+    .result-button-group {
+        gap: 6px;
+        margin-top: 10px;
+    }
+
+    .result-button-group button {
+        padding: 10px 12px !important;
+        font-size: 12px !important;
     }
 }
 
