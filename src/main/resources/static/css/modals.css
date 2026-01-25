@@ -2024,8 +2024,8 @@ body.dark-mode .how-to-play-content {
 .notification-item {
     background: rgba(255, 255, 255, 0.6);
     border: 2px solid rgba(var(--primary-color-rgb), 0.15);
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
     overflow: hidden;
     transition: all 0.3s ease;
 }
@@ -2049,7 +2049,7 @@ body.dark-mode .how-to-play-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 15px;
+    padding: 14px 16px;
     cursor: pointer;
     user-select: none;
 }
@@ -2097,12 +2097,12 @@ body.dark-mode .how-to-play-content {
 .notification-list-container {
     border-top: 1px solid rgba(var(--primary-color-rgb), 0.1);
     background: rgba(255, 255, 255, 0.3);
-    padding: 0 15px 15px 15px;
+    padding: 0 15px 12px 15px;
     animation: slideDown 0.3s ease-out;
 }
 
 .notification-list {
-    max-height: 300px;
+    max-height: 280px;
     overflow-y: auto;
 }
 
@@ -2129,12 +2129,13 @@ body.dark-mode .how-to-play-content {
 .friend-request-item {
     background: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(var(--primary-color-rgb), 0.15);
-    border-radius: 8px;
-    padding: 8px 10px;
-    margin-bottom: 6px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     transition: all 0.2s ease;
 }
 
@@ -2152,30 +2153,34 @@ body.dark-mode .how-to-play-content {
 .friend-request-info {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
+    flex: 1;
 }
 
 .friend-request-username {
     font-weight: 600;
     color: var(--text-color);
-    font-size: 0.9em;
+    font-size: 14px;
 }
 
 .friend-request-time {
-    font-size: 0.7em;
+    font-size: 11px;
     color: var(--text-secondary);
 }
 
 .friend-request-actions {
     display: flex;
     gap: 6px;
+    flex-shrink: 0;
 }
 
 .friend-request-btn {
-    padding: 5px 10px;
+    padding: 6px 10px;
+    min-width: 55px;
+    min-height: 28px;
     border: none;
-    border-radius: 5px;
-    font-size: 0.8em;
+    border-radius: 6px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -2208,12 +2213,13 @@ body.dark-mode .how-to-play-content {
 .challenge-notification-item {
     background: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(var(--primary-color-rgb), 0.15);
-    border-radius: 8px;
-    padding: 8px 10px;
-    margin-bottom: 6px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     transition: all 0.2s ease;
 }
 
@@ -2231,17 +2237,18 @@ body.dark-mode .how-to-play-content {
 .challenge-notification-info {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
+    flex: 1;
 }
 
 .challenge-notification-username {
     font-weight: 600;
     color: var(--text-color);
-    font-size: 0.9em;
+    font-size: 14px;
 }
 
 .challenge-notification-details {
-    font-size: 0.75em;
+    font-size: 12px;
     color: var(--text-secondary);
     display: flex;
     gap: 6px;
@@ -2250,9 +2257,9 @@ body.dark-mode .how-to-play-content {
 
 .challenge-difficulty-badge {
     display: inline-block;
-    padding: 1px 5px;
-    border-radius: 3px;
-    font-size: 0.8em;
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
 }
@@ -2280,13 +2287,16 @@ body.dark-mode .how-to-play-content {
 .challenge-notification-actions {
     display: flex;
     gap: 6px;
+    flex-shrink: 0;
 }
 
 .challenge-notification-btn {
-    padding: 5px 10px;
+    padding: 6px 10px;
+    min-width: 55px;
+    min-height: 28px;
     border: none;
-    border-radius: 5px;
-    font-size: 0.8em;
+    border-radius: 6px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -2401,6 +2411,142 @@ body.dark-mode .challenge-difficulty-badge.medium {
 body.dark-mode .challenge-difficulty-badge.hard {
     background: rgba(231, 76, 60, 0.25);
     color: #ef5350;
+}
+
+/* Notifications responsive */
+@media (max-width: 768px) {
+    .notifications-modal-content {
+        max-width: 95%;
+        padding: 25px 20px;
+        border-radius: 20px;
+    }
+
+    .notifications-modal-title {
+        font-size: 22px;
+        margin-bottom: 18px;
+    }
+
+    .notifications-modal-section {
+        gap: 10px;
+    }
+
+    .notification-header {
+        padding: 12px 14px;
+    }
+
+    .notification-icon {
+        font-size: 18px;
+    }
+
+    .notification-name {
+        font-size: 14px;
+    }
+
+    .notification-list {
+        max-height: 250px;
+    }
+
+    .friend-request-item,
+    .challenge-notification-item {
+        padding: 10px;
+    }
+
+    .friend-request-username,
+    .challenge-notification-username {
+        font-size: 13px;
+    }
+
+    .friend-request-time {
+        font-size: 11px;
+    }
+
+    .challenge-notification-details {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .notifications-modal-content {
+        padding: 20px 15px;
+        border-radius: 18px;
+    }
+
+    .notifications-modal-title {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .notifications-modal-section {
+        gap: 8px;
+    }
+
+    .notification-item {
+        margin-bottom: 6px;
+    }
+
+    .notification-header {
+        padding: 10px 12px;
+    }
+
+    .notification-icon {
+        font-size: 17px;
+    }
+
+    .notification-name {
+        font-size: 13px;
+    }
+
+    .notification-badge {
+        padding: 2px 6px;
+        font-size: 11px;
+        min-width: 18px;
+    }
+
+    .notification-list {
+        max-height: 220px;
+    }
+
+    .notification-list-container {
+        padding: 0 12px 10px 12px;
+    }
+
+    .friend-request-item,
+    .challenge-notification-item {
+        padding: 8px 10px;
+        gap: 8px;
+    }
+
+    .friend-request-username,
+    .challenge-notification-username {
+        font-size: 13px;
+    }
+
+    .friend-request-time {
+        font-size: 10px;
+    }
+
+    .challenge-notification-details {
+        font-size: 10px;
+    }
+
+    .challenge-difficulty-badge {
+        padding: 1px 5px;
+        font-size: 9px;
+    }
+
+    /* Compact buttons on mobile */
+    .friend-request-btn,
+    .challenge-notification-btn {
+        padding: 6px 10px;
+        min-width: 52px;
+        min-height: 28px;
+        font-size: 11px;
+    }
+
+    .friend-request-actions,
+    .challenge-notification-actions {
+        gap: 5px;
+    }
 }
 
 /* ==========================================
@@ -2877,13 +3023,15 @@ body.dark-mode .danger-warning {
     max-width: 600px;
     max-height: 80vh;
     overflow-y: auto;
+    padding: 30px 25px;
+    border-radius: 25px;
 }
 
 .notifications-modal-title {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
     text-align: center;
-    margin: 0 0 25px 0;
+    margin: 0 0 22px 0;
     color: var(--primary-color);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -2892,7 +3040,7 @@ body.dark-mode .danger-warning {
 .notifications-modal-section {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 /* Dark mode for notifications modal */

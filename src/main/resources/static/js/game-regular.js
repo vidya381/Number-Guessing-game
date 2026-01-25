@@ -126,7 +126,12 @@ window.RegularGame = {
                         const autoSubmitEnabled = Utils.getGameplayPreference('autoSubmit');
                         if (autoSubmitEnabled) {
                             // Auto-submit when all digits are filled
+                            GameState.autoSubmitTriggered = true;
                             RegularGame.submitGuess();
+                            // Reset flag after a short delay
+                            setTimeout(() => {
+                                GameState.autoSubmitTriggered = false;
+                            }, 300);
                         } else {
                             document.getElementById('submit-guess').focus();
                         }
@@ -138,8 +143,8 @@ window.RegularGame = {
                 if (e.key === 'Backspace' && !this.value && this.previousElementSibling) {
                     this.previousElementSibling.focus();
                 }
-                // Submit on Enter key
-                if (e.key === 'Enter') {
+                // Submit on Enter key (only if auto-submit didn't just trigger)
+                if (e.key === 'Enter' && !GameState.autoSubmitTriggered) {
                     RegularGame.submitGuess();
                 }
             });

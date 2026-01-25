@@ -280,7 +280,12 @@ window.DailyGame = {
                 const autoSubmitEnabled = Utils.getGameplayPreference('autoSubmit');
                 if (autoSubmitEnabled) {
                     // Auto-submit when all digits are filled
+                    GameState.autoSubmitTriggered = true;
                     this.submitDailyGuess();
+                    // Reset flag after a short delay
+                    setTimeout(() => {
+                        GameState.autoSubmitTriggered = false;
+                    }, 300);
                 }
             }
         }
@@ -295,7 +300,7 @@ window.DailyGame = {
             inputs[index - 1].focus();
         } else if (e.key === 'ArrowRight' && index < inputs.length - 1) {
             inputs[index + 1].focus();
-        } else if (e.key === 'Enter') {
+        } else if (e.key === 'Enter' && !GameState.autoSubmitTriggered) {
             this.submitDailyGuess();
         }
     },
