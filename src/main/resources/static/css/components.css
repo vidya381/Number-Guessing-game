@@ -1172,4 +1172,9 @@ body.dark-mode .modal-lb-entry:hover {
         font-size: 16px;
         min-width: 70px;
     }
+
+    /* Hide leaderboard button in Daily modal on mobile since leaderboard is shown in modal */
+    #view-daily-leaderboard-tile {
+        display: none;
+    }
 }

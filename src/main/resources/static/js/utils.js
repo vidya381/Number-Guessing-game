@@ -1331,6 +1331,10 @@ window.Utils = {
                         if (DailyGame && DailyGame.loadDailyChallengeInfo) {
                             DailyGame.loadDailyChallengeInfo();
                         }
+                        // Load leaderboard when modal opens
+                        if (RegularGame && RegularGame.loadModalLeaderboard) {
+                            setTimeout(() => RegularGame.loadModalLeaderboard('daily-challenge'), 100);
+                        }
                         break;
                     case 'multiplayer':
                         modalId = 'multiplayer-tile-modal';
@@ -1344,6 +1348,10 @@ window.Utils = {
                         break;
                     case 'survival':
                         modalId = 'survival-modal';
+                        // Load leaderboard when modal opens
+                        if (RegularGame && RegularGame.loadModalLeaderboard) {
+                            setTimeout(() => RegularGame.loadModalLeaderboard('survival', 0), 100);
+                        }
                         break;
                     case 'practice':
                         modalId = 'practice-tile-modal';

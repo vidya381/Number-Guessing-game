@@ -958,6 +958,24 @@ window.RegularGame = {
         if (playSurvival && survivalModal) {
             playSurvival.addEventListener('click', () => {
                 survivalModal.style.display = 'flex';
+                // Load leaderboard when modal opens (default to Easy)
+                this.loadModalLeaderboard('survival', 0);
+            });
+        }
+
+        // Survival modal leaderboard tabs
+        const survivalLeaderboardTabs = survivalModal?.querySelectorAll('.modal-lb-tab');
+        if (survivalLeaderboardTabs) {
+            survivalLeaderboardTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update active tab
+                    survivalLeaderboardTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+
+                    // Load leaderboard for selected difficulty
+                    const difficulty = parseInt(tab.dataset.difficulty);
+                    this.loadModalLeaderboard('survival', difficulty);
+                });
             });
         }
 
@@ -1020,7 +1038,8 @@ window.RegularGame = {
     // ==========================================
 
     loadModalLeaderboard: async function(mode, difficulty = 0) {
-        const modal = document.getElementById(`${mode}-modal`);
+        const modalId = mode === 'daily-challenge' ? 'daily-challenge-tile-modal' : `${mode}-modal`;
+        const modal = document.getElementById(modalId);
         if (!modal) return;
 
         const loadingDiv = modal.querySelector('.modal-leaderboard-loading');
@@ -1035,7 +1054,19 @@ window.RegularGame = {
         emptyDiv.style.display = 'none';
 
         try {
-            const response = await fetch(`/api/time-attack/leaderboard/${difficulty}?limit=10`);
+            // Build API URL based on mode
+            let apiUrl;
+            if (mode === 'time-attack') {
+                apiUrl = `/api/time-attack/leaderboard/${difficulty}?limit=10`;
+            } else if (mode === 'survival') {
+                apiUrl = `/api/survival/leaderboard?difficulty=${difficulty}&limit=10`;
+            } else if (mode === 'daily-challenge') {
+                apiUrl = '/api/daily-challenge/leaderboard?limit=10';
+            } else {
+                throw new Error('Invalid mode');
+            }
+
+            const response = await fetch(apiUrl);
 
             if (!response.ok) {
                 throw new Error('Failed to load leaderboard');
