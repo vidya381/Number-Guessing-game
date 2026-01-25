@@ -961,6 +961,15 @@ window.Utils = {
             });
         }
 
+        // Close notification modal when clicking outside
+        if (notificationsModal) {
+            notificationsModal.addEventListener('click', (e) => {
+                if (e.target === notificationsModal) {
+                    this.closeModalWithAnimation(notificationsModal);
+                }
+            });
+        }
+
         // Setup collapsible notification items
         const notificationItems = document.querySelectorAll('#notifications-modal .notification-item');
         notificationItems.forEach(item => {
