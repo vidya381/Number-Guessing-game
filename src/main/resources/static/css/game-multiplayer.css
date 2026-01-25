@@ -1260,6 +1260,52 @@ body.dark-mode .multiplayer-btn:hover {
         max-width: 90%;
     }
 
+    /* Compact multiplayer stats modal for mobile */
+    #mp-stats-modal-content > div > div:first-child > div {
+        padding: 18px 15px !important;
+        border-radius: 15px !important;
+    }
+
+    #mp-stats-modal-content > div > div:first-child > div > div:first-child {
+        font-size: 2em !important;
+        margin-bottom: 8px !important;
+    }
+
+    #mp-stats-modal-content > div > div:first-child > div > div:nth-child(2) {
+        font-size: 1.5em !important;
+    }
+
+    #mp-stats-modal-content > div > div:first-child > div > div:nth-child(3) {
+        font-size: 1em !important;
+        margin-top: 6px !important;
+    }
+
+    #mp-stats-modal-content > div > div:first-child > div > div:nth-child(4) {
+        font-size: 0.75em !important;
+    }
+
+    #mp-stats-modal-content > div > div:nth-child(2) {
+        gap: 10px !important;
+    }
+
+    #mp-stats-modal-content > div > div:nth-child(2) > div {
+        padding: 12px !important;
+        border-radius: 10px !important;
+    }
+
+    #mp-stats-modal-content > div > div:nth-child(2) > div > i {
+        font-size: 1.5em !important;
+        margin-bottom: 6px !important;
+    }
+
+    #mp-stats-modal-content > div > div:nth-child(2) > div > div:first-of-type {
+        font-size: 1.4em !important;
+    }
+
+    #mp-stats-modal-content > div > div:nth-child(2) > div > div:last-of-type {
+        font-size: 0.7em !important;
+    }
+
     .opponent-info {
         flex-direction: column;
         gap: 10px;
@@ -1325,5 +1371,57 @@ body.dark-mode .multiplayer-btn:hover {
 
     .stat-value {
         font-size: 2em;
+    }
+
+    /* Extra compact multiplayer stats modal for small screens */
+    #mp-stats-modal-content > div > div:first-child {
+        margin-bottom: 15px !important;
+    }
+
+    #mp-stats-modal-content > div > div:first-child > div {
+        padding: 15px 12px !important;
+        border-radius: 12px !important;
+    }
+
+    #mp-stats-modal-content > div > div:first-child > div > div:first-child {
+        font-size: 1.8em !important;
+        margin-bottom: 6px !important;
+    }
+
+    #mp-stats-modal-content > div > div:first-child > div > div:nth-child(2) {
+        font-size: 1.3em !important;
+    }
+
+    #mp-stats-modal-content > div > div:first-child > div > div:nth-child(3) {
+        font-size: 0.9em !important;
+        margin-top: 5px !important;
+    }
+
+    #mp-stats-modal-content > div > div:first-child > div > div:nth-child(4) {
+        font-size: 0.7em !important;
+        margin-top: 3px !important;
+    }
+
+    #mp-stats-modal-content > div > div:nth-child(2) {
+        gap: 8px !important;
+    }
+
+    #mp-stats-modal-content > div > div:nth-child(2) > div {
+        padding: 10px !important;
+        border-radius: 8px !important;
+    }
+
+    #mp-stats-modal-content > div > div:nth-child(2) > div > i {
+        font-size: 1.3em !important;
+        margin-bottom: 5px !important;
+    }
+
+    #mp-stats-modal-content > div > div:nth-child(2) > div > div:first-of-type {
+        font-size: 1.3em !important;
+    }
+
+    #mp-stats-modal-content > div > div:nth-child(2) > div > div:last-of-type {
+        font-size: 0.65em !important;
+        margin-top: 3px !important;
     }
 }
