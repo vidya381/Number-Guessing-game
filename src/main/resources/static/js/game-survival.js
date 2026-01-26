@@ -245,7 +245,12 @@ window.SurvivalGame = {
                 const autoSubmitEnabled = Utils.getGameplayPreference('autoSubmit');
                 if (autoSubmitEnabled) {
                     // Auto-submit when all digits are filled
+                    GameState.autoSubmitTriggered = true;
                     this.submitGuess();
+                    // Reset flag after a short delay
+                    setTimeout(() => {
+                        GameState.autoSubmitTriggered = false;
+                    }, 300);
                 }
             }
         }
@@ -259,8 +264,8 @@ window.SurvivalGame = {
             inputs[index - 1].focus();
         }
 
-        // Enter - submit guess
-        if (e.key === 'Enter') {
+        // Enter - submit guess (only if auto-submit didn't just trigger)
+        if (e.key === 'Enter' && !GameState.autoSubmitTriggered) {
             this.submitGuess();
         }
     },

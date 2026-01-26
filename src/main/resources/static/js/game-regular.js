@@ -126,7 +126,12 @@ window.RegularGame = {
                         const autoSubmitEnabled = Utils.getGameplayPreference('autoSubmit');
                         if (autoSubmitEnabled) {
                             // Auto-submit when all digits are filled
+                            GameState.autoSubmitTriggered = true;
                             RegularGame.submitGuess();
+                            // Reset flag after a short delay
+                            setTimeout(() => {
+                                GameState.autoSubmitTriggered = false;
+                            }, 300);
                         } else {
                             document.getElementById('submit-guess').focus();
                         }
@@ -138,8 +143,8 @@ window.RegularGame = {
                 if (e.key === 'Backspace' && !this.value && this.previousElementSibling) {
                     this.previousElementSibling.focus();
                 }
-                // Submit on Enter key
-                if (e.key === 'Enter') {
+                // Submit on Enter key (only if auto-submit didn't just trigger)
+                if (e.key === 'Enter' && !GameState.autoSubmitTriggered) {
                     RegularGame.submitGuess();
                 }
             });
@@ -840,7 +845,6 @@ window.RegularGame = {
                 Utils.fadeInElement(homePage);
                 if (UI) {
                     UI.updateStreakStats();
-                    UI.loadLeaderboard(this.gameJustCompleted);
                 }
                 this.gameJustCompleted = false;
             });
@@ -858,7 +862,6 @@ window.RegularGame = {
             if (multiplayerTab) multiplayerTab.style.display = 'none';
             if (UI) {
                 UI.updateStreakStats();
-                UI.loadLeaderboard(this.gameJustCompleted);
             }
             this.gameJustCompleted = false;
         }
@@ -930,6 +933,29 @@ window.RegularGame = {
             });
         }
 
+        // Time Attack: difficulty buttons start game immediately
+        const taButtons = timeAttackModal?.querySelectorAll('.modal-difficulty-btn');
+        if (taButtons) {
+            taButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const difficulty = parseInt(btn.dataset.difficulty);
+                    timeAttackModal.style.display = 'none';
+
+                    if (window.TimeAttackGame) {
+                        TimeAttackGame.startTimeAttackSession(difficulty);
+                    }
+                });
+            });
+        }
+
+        // Time Attack: View Leaderboard button opens popup
+        const taViewLbBtn = timeAttackModal?.querySelector('.modal-view-leaderboard-btn');
+        if (taViewLbBtn) {
+            taViewLbBtn.addEventListener('click', () => {
+                this.openLeaderboardPopup('time-attack');
+            });
+        }
+
         // Survival modal
         const playSurvival = document.getElementById('play-survival');
         const survivalModal = document.getElementById('survival-modal');
@@ -940,27 +966,28 @@ window.RegularGame = {
             });
         }
 
-        // Handle difficulty selection in modals
-        document.querySelectorAll('.modal-difficulty-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const mode = btn.dataset.mode;
-                const difficulty = parseInt(btn.dataset.difficulty);
-
-                // Close the modal
-                if (mode === 'time-attack' && timeAttackModal) {
-                    timeAttackModal.style.display = 'none';
-                } else if (mode === 'survival' && survivalModal) {
+        // Survival: difficulty buttons start game immediately
+        const survivalButtons = survivalModal?.querySelectorAll('.modal-difficulty-btn');
+        if (survivalButtons) {
+            survivalButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const difficulty = parseInt(btn.dataset.difficulty);
                     survivalModal.style.display = 'none';
-                }
 
-                // Start the respective game mode
-                if (mode === 'time-attack' && window.TimeAttackGame) {
-                    TimeAttackGame.startTimeAttackSession(difficulty);
-                } else if (mode === 'survival' && window.SurvivalGame) {
-                    SurvivalGame.startSurvival(difficulty);
-                }
+                    if (window.SurvivalGame) {
+                        SurvivalGame.startSurvival(difficulty);
+                    }
+                });
             });
-        });
+        }
+
+        // Survival: View Leaderboard button opens popup
+        const survivalViewLbBtn = survivalModal?.querySelector('.modal-view-leaderboard-btn');
+        if (survivalViewLbBtn) {
+            survivalViewLbBtn.addEventListener('click', () => {
+                this.openLeaderboardPopup('survival');
+            });
+        }
 
         // Close buttons
         document.querySelectorAll('.modal-close-btn').forEach(btn => {
@@ -992,5 +1019,118 @@ window.RegularGame = {
                 }
             }
         });
+    },
+
+    // ==========================================
+    // MODAL LEADERBOARD
+    // ==========================================
+
+    loadModalLeaderboard: async function(mode, difficulty = 0, customModal = null) {
+        const modal = customModal || (() => {
+            const modalId = mode === 'daily-challenge' ? 'daily-challenge-tile-modal' : `${mode}-modal`;
+            return document.getElementById(modalId);
+        })();
+        if (!modal) return;
+
+        const loadingDiv = modal.querySelector('.modal-leaderboard-loading');
+        const listDiv = modal.querySelector('.modal-leaderboard-list');
+        const emptyDiv = modal.querySelector('.modal-leaderboard-empty');
+
+        if (!loadingDiv || !listDiv || !emptyDiv) return;
+
+        // Show loading state
+        loadingDiv.style.display = 'block';
+        listDiv.style.display = 'none';
+        emptyDiv.style.display = 'none';
+
+        try {
+            // Build API URL based on mode
+            let apiUrl;
+            if (mode === 'time-attack') {
+                apiUrl = `/api/time-attack/leaderboard/${difficulty}?limit=10`;
+            } else if (mode === 'survival') {
+                apiUrl = `/api/survival/leaderboard?difficulty=${difficulty}&limit=10`;
+            } else if (mode === 'daily-challenge') {
+                apiUrl = '/api/daily-challenge/leaderboard?limit=10';
+            } else {
+                throw new Error('Invalid mode');
+            }
+
+            const response = await fetch(apiUrl);
+
+            if (!response.ok) {
+                throw new Error('Failed to load leaderboard');
+            }
+
+            const leaderboard = await response.json();
+
+            // Hide loading
+            loadingDiv.style.display = 'none';
+
+            // Check if empty
+            if (!leaderboard || leaderboard.length === 0) {
+                emptyDiv.style.display = 'block';
+                return;
+            }
+
+            // Show list and render entries
+            listDiv.style.display = 'flex';
+            listDiv.innerHTML = '';
+
+            leaderboard.forEach((entry, index) => {
+                const rank = index + 1;
+                const entryDiv = document.createElement('div');
+                entryDiv.className = `modal-lb-entry rank-${rank}`;
+
+                const rankSpan = document.createElement('div');
+                rankSpan.className = 'modal-lb-rank';
+                rankSpan.textContent = rank > 3 ? rank : ''; // Medal emojis added via CSS
+
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'modal-lb-player';
+
+                const usernameSpan = document.createElement('div');
+                usernameSpan.className = 'modal-lb-username';
+                usernameSpan.textContent = entry.username || 'Anonymous';
+
+                const statsSpan = document.createElement('div');
+                statsSpan.className = 'modal-lb-stats';
+                const avgAttempts = entry.averageAttempts ? entry.averageAttempts.toFixed(1) : '--';
+                statsSpan.textContent = `Avg: ${avgAttempts} attempts`;
+
+                playerDiv.appendChild(usernameSpan);
+                playerDiv.appendChild(statsSpan);
+
+                const scoreSpan = document.createElement('div');
+                scoreSpan.className = 'modal-lb-score';
+                scoreSpan.textContent = `${entry.gamesWon || 0}`;
+
+                entryDiv.appendChild(rankSpan);
+                entryDiv.appendChild(playerDiv);
+                entryDiv.appendChild(scoreSpan);
+
+                listDiv.appendChild(entryDiv);
+            });
+        } catch (error) {
+            debug.error('Error loading modal leaderboard:', error);
+            loadingDiv.style.display = 'none';
+            emptyDiv.style.display = 'block';
+            if (emptyDiv.querySelector('p')) {
+                emptyDiv.querySelector('p').textContent = 'Failed to load leaderboard';
+            }
+        }
+    },
+
+    // ==========================================
+    // OPEN DESKTOP LEADERBOARD MODAL
+    // ==========================================
+
+    openLeaderboardPopup: function(mode) {
+        // Open the existing desktop-style leaderboard modals
+        if (mode === 'time-attack' && window.TimeAttackGame) {
+            TimeAttackGame.loadTimeAttackLeaderboard(0); // Default to Easy
+        } else if (mode === 'survival' && window.SurvivalGame) {
+            SurvivalGame.loadSurvivalLeaderboard(0); // Default to Easy
+        }
     }
 };

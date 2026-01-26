@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Bulls & Cows - Number Guessing Game</title>
     <!-- Modular CSS Files - Load in dependency order -->
     <link rel="stylesheet" href="/css/variables.css">
@@ -109,8 +109,43 @@
         </div>
 
         <div id="home-page">
-            <!-- Daily Challenge Section -->
-            <section class="section daily-challenge-banner">
+            <!-- Mobile Tiles (shown only on mobile ≤768px) -->
+            <div class="mobile-tiles-container">
+                <div class="mode-tile daily-tile" data-mode="daily">
+                    <div class="tile-icon">🌟</div>
+                    <div class="tile-name">Daily Challenge</div>
+                    <div class="tile-badge daily-badge" id="daily-challenge-tile-badge">LOADING...</div>
+                </div>
+
+                <div class="mode-tile multiplayer-tile" data-mode="multiplayer">
+                    <div class="tile-icon">🎮</div>
+                    <div class="tile-name">Multiplayer</div>
+                    <div class="tile-badge multiplayer-badge">PvP</div>
+                </div>
+
+                <div class="mode-tile timeattack-tile" data-mode="timeattack">
+                    <div class="tile-icon">⚡</div>
+                    <div class="tile-name">Time Attack</div>
+                    <div class="tile-badge timeattack-badge">5 MIN</div>
+                </div>
+
+                <div class="mode-tile survival-tile" data-mode="survival">
+                    <div class="tile-icon">💀</div>
+                    <div class="tile-name">Survival</div>
+                    <div class="tile-badge survival-badge">5 ROUNDS</div>
+                </div>
+
+                <div class="mode-tile practice-tile" data-mode="practice">
+                    <div class="tile-icon">⚡</div>
+                    <div class="tile-name">Practice</div>
+                    <div class="tile-badge practice-badge">RELAX</div>
+                </div>
+            </div>
+
+            <!-- Desktop Banners (shown only on desktop >768px) -->
+            <div class="desktop-banners-container">
+                <!-- Daily Challenge Section -->
+                <section class="section daily-challenge-banner">
                 <div class="daily-challenge-header">
                     <h2>🌟 DAILY CHALLENGE</h2>
                     <div class="daily-challenge-badge">TODAY</div>
@@ -213,6 +248,8 @@
                     <button id="play-hard" class="difficulty-btn">HARD</button>
                 </div>
             </section>
+            </div>
+            <!-- End Desktop Banners -->
 
         </div>
 
@@ -235,6 +272,28 @@
                     <button class="modal-difficulty-btn hard-diff" data-mode="time-attack" data-difficulty="2">
                         <span class="diff-name">HARD</span>
                     </button>
+                </div>
+
+                <!-- View Leaderboard Button -->
+                <button class="modal-view-leaderboard-btn" data-mode="time-attack">
+                    <span>🏆 LEADERBOARD</span>
+                </button>
+
+                <!-- Leaderboard Section (Hidden, used in popup) -->
+                <div class="modal-leaderboard-section">
+                    <h3 class="modal-leaderboard-title">🏆 EASY LEADERBOARD</h3>
+
+                    <!-- Leaderboard Container -->
+                    <div class="modal-leaderboard-container">
+                        <div class="modal-leaderboard-loading">Loading top players...</div>
+                        <div class="modal-leaderboard-list" style="display: none;">
+                            <!-- Leaderboard entries will be dynamically inserted here -->
+                        </div>
+                        <div class="modal-leaderboard-empty" style="display: none;">
+                            <i class="fas fa-trophy"></i>
+                            <p>No players yet. Be the first!</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -259,6 +318,122 @@
                         <span class="diff-name">HARD</span>
                     </button>
                 </div>
+
+                <!-- View Leaderboard Button -->
+                <button class="modal-view-leaderboard-btn" data-mode="survival">
+                    <span>🏆 LEADERBOARD</span>
+                </button>
+
+                <!-- Leaderboard Section (Hidden, used in popup) -->
+                <div class="modal-leaderboard-section">
+                    <h3 class="modal-leaderboard-title">🏆 EASY LEADERBOARD</h3>
+
+                    <!-- Leaderboard Container -->
+                    <div class="modal-leaderboard-container">
+                        <div class="modal-leaderboard-loading">Loading top players...</div>
+                        <div class="modal-leaderboard-list" style="display: none;">
+                            <!-- Leaderboard entries will be dynamically inserted here -->
+                        </div>
+                        <div class="modal-leaderboard-empty" style="display: none;">
+                            <i class="fas fa-trophy"></i>
+                            <p>No players yet. Be the first!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Daily Challenge Modal -->
+        <div id="daily-challenge-tile-modal" class="difficulty-modal daily-challenge-theme" style="display: none;">
+            <div class="difficulty-modal-content">
+                <button class="modal-close-btn" aria-label="Close">&times;</button>
+                <div class="modal-header">
+                    <div class="modal-icon">🌟</div>
+                    <h2>Daily Challenge</h2>
+                    <p id="daily-modal-description">Daily quest! All players face the same challenge</p>
+                </div>
+                <div id="daily-modal-info" class="daily-challenge-info">
+                    <div class="challenge-stat">
+                        <i class="fas fa-calendar-day"></i>
+                        <span id="challenge-date-modal">Loading...</span>
+                    </div>
+                    <div class="challenge-stat">
+                        <i class="fas fa-signal"></i>
+                        <span id="challenge-difficulty-modal">Loading...</span>
+                    </div>
+                    <div class="challenge-stat">
+                        <i class="fas fa-users"></i>
+                        <span id="challenge-players-modal">0 players</span>
+                    </div>
+                </div>
+                <div class="modal-tile-actions">
+                    <button id="play-daily-tile" class="modal-tile-play-btn daily-challenge-btn">
+                        <i class="fas fa-play"></i> PLAY NOW
+                    </button>
+                    <button id="view-daily-leaderboard-tile" class="modal-tile-secondary-btn">
+                        <i class="fas fa-trophy"></i> Leaderboard
+                    </button>
+                </div>
+
+                <!-- Leaderboard Section -->
+                <div class="modal-leaderboard-section">
+                    <h3 class="modal-leaderboard-title">🏆 TODAY'S LEADERBOARD</h3>
+
+                    <!-- Leaderboard Container (no tabs for daily - same challenge for everyone) -->
+                    <div class="modal-leaderboard-container">
+                        <div class="modal-leaderboard-loading">Loading top players...</div>
+                        <div class="modal-leaderboard-list" style="display: none;">
+                            <!-- Leaderboard entries will be dynamically inserted here -->
+                        </div>
+                        <div class="modal-leaderboard-empty" style="display: none;">
+                            <i class="fas fa-trophy"></i>
+                            <p>No players yet. Be the first!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Multiplayer Modal -->
+        <div id="multiplayer-tile-modal" class="difficulty-modal multiplayer-theme" style="display: none;">
+            <div class="difficulty-modal-content">
+                <button class="modal-close-btn" aria-label="Close">&times;</button>
+                <div class="modal-header">
+                    <div class="modal-icon">🎮</div>
+                    <h2>Multiplayer Mode</h2>
+                    <p>Challenge your friends to a head-to-head race!</p>
+                </div>
+                <div class="modal-tile-actions">
+                    <button id="play-multiplayer-tile" class="modal-tile-play-btn multiplayer-btn">
+                        <i class="fas fa-users"></i> PLAY NOW
+                    </button>
+                    <button id="multiplayer-stats-tile" class="modal-tile-secondary-btn">
+                        <i class="fas fa-chart-bar"></i> STATS
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice Modal -->
+        <div id="practice-tile-modal" class="difficulty-modal practice-theme" style="display: none;">
+            <div class="difficulty-modal-content">
+                <button class="modal-close-btn" aria-label="Close">&times;</button>
+                <div class="modal-header">
+                    <div class="modal-icon">⚡</div>
+                    <h2>Practice Mode</h2>
+                    <p>Play at your own pace. No timers, no pressure!</p>
+                </div>
+                <div class="modal-difficulty-buttons">
+                    <button id="play-easy-tile" class="modal-difficulty-btn easy-diff">
+                        <span class="diff-name">EASY</span>
+                    </button>
+                    <button id="play-medium-tile" class="modal-difficulty-btn medium-diff">
+                        <span class="diff-name">MEDIUM</span>
+                    </button>
+                    <button id="play-hard-tile" class="modal-difficulty-btn hard-diff">
+                        <span class="diff-name">HARD</span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -276,8 +451,13 @@
                         </button>
                     </div>
                 </div>
-                <div id="input-container"></div>
-                <button id="submit-guess">⚡ SUBMIT GUESS</button>
+                <div class="input-submit-wrapper">
+                    <div id="input-container"></div>
+                    <button id="submit-guess" class="submit-btn">
+                        <span class="submit-text">⚡ SUBMIT GUESS</span>
+                        <span class="submit-icon">→</span>
+                    </button>
+                </div>
 
                 <!-- Hints Display Container -->
                 <div id="hints-container" class="hints-display" style="display: none;">
@@ -300,8 +480,13 @@
                 <div class="game-header">
                     <h2>🌟 TODAY'S CHALLENGE</h2>
                 </div>
-                <div id="daily-input-container"></div>
-                <button id="submit-daily-guess">⚡ SUBMIT GUESS</button>
+                <div class="input-submit-wrapper">
+                    <div id="daily-input-container"></div>
+                    <button id="submit-daily-guess" class="submit-btn">
+                        <span class="submit-text">⚡ SUBMIT GUESS</span>
+                        <span class="submit-icon">→</span>
+                    </button>
+                </div>
             </section>
 
             <section class="section">
@@ -349,8 +534,13 @@
                         </div>
                     </div>
                 </div>
-                <div id="ta-input-container"></div>
-                <button id="submit-ta-guess">⚡ SUBMIT GUESS</button>
+                <div class="input-submit-wrapper">
+                    <div id="ta-input-container"></div>
+                    <button id="submit-ta-guess" class="submit-btn">
+                        <span class="submit-text">⚡ SUBMIT GUESS</span>
+                        <span class="submit-icon">→</span>
+                    </button>
+                </div>
                 <div id="ta-feedback" class="fade-in"></div>
             </section>
 
@@ -391,8 +581,13 @@
                         </div>
                     </div>
                 </div>
-                <div id="survival-input-container"></div>
-                <button id="survival-submit-guess">⚡ SUBMIT GUESS</button>
+                <div class="input-submit-wrapper">
+                    <div id="survival-input-container"></div>
+                    <button id="survival-submit-guess" class="submit-btn">
+                        <span class="submit-text">⚡ SUBMIT GUESS</span>
+                        <span class="submit-icon">→</span>
+                    </button>
+                </div>
                 <div id="survival-feedback" class="fade-in"></div>
             </section>
 
@@ -487,8 +682,13 @@
                             </div>
                         </div>
                     </div>
-                    <div id="mp-input-container"></div>
-                    <button id="mp-submit-guess">⚡ SUBMIT GUESS</button>
+                    <div class="input-submit-wrapper">
+                        <div id="mp-input-container"></div>
+                        <button id="mp-submit-guess" class="submit-btn">
+                            <span class="submit-text">⚡ SUBMIT GUESS</span>
+                            <span class="submit-icon">→</span>
+                        </button>
+                    </div>
                 </section>
 
                 <section class="section">
@@ -627,23 +827,31 @@
             <!-- Stats Grid -->
             <div class="profile-stats-grid">
                 <div class="profile-stat-card">
-                    <i class="fas fa-gamepad"></i>
-                    <span class="stat-value" id="profile-total-games">0</span>
+                    <div class="stat-icon-value">
+                        <i class="fas fa-gamepad"></i>
+                        <span class="stat-value" id="profile-total-games">0</span>
+                    </div>
                     <span class="stat-label">Total Games</span>
                 </div>
                 <div class="profile-stat-card">
-                    <i class="fas fa-trophy"></i>
-                    <span class="stat-value" id="profile-total-wins">0</span>
+                    <div class="stat-icon-value">
+                        <i class="fas fa-trophy"></i>
+                        <span class="stat-value" id="profile-total-wins">0</span>
+                    </div>
                     <span class="stat-label">Total Wins</span>
                 </div>
                 <div class="profile-stat-card">
-                    <i class="fas fa-percentage"></i>
-                    <span class="stat-value" id="profile-win-rate">0%</span>
+                    <div class="stat-icon-value">
+                        <i class="fas fa-percentage"></i>
+                        <span class="stat-value" id="profile-win-rate">0%</span>
+                    </div>
                     <span class="stat-label">Win Rate</span>
                 </div>
                 <div class="profile-stat-card">
-                    <i class="fas fa-star"></i>
-                    <span class="stat-value" id="profile-best-score">--</span>
+                    <div class="stat-icon-value">
+                        <i class="fas fa-star"></i>
+                        <span class="stat-value" id="profile-best-score">--</span>
+                    </div>
                     <span class="stat-label">Best Score</span>
                 </div>
             </div>
@@ -653,23 +861,31 @@
                 <h3>🔥 STREAKS</h3>
                 <div class="profile-stats-grid">
                     <div class="profile-stat-card">
-                        <i class="fas fa-fire"></i>
-                        <span class="stat-value" id="profile-current-streak">0</span>
+                        <div class="stat-icon-value">
+                            <i class="fas fa-fire"></i>
+                            <span class="stat-value" id="profile-current-streak">0</span>
+                        </div>
                         <span class="stat-label">Current Win Streak</span>
                     </div>
                     <div class="profile-stat-card">
-                        <i class="fas fa-award"></i>
-                        <span class="stat-value" id="profile-best-streak">0</span>
+                        <div class="stat-icon-value">
+                            <i class="fas fa-award"></i>
+                            <span class="stat-value" id="profile-best-streak">0</span>
+                        </div>
                         <span class="stat-label">Best Win Streak</span>
                     </div>
                     <div class="profile-stat-card">
-                        <i class="fas fa-calendar-check"></i>
-                        <span class="stat-value" id="profile-play-days">0</span>
+                        <div class="stat-icon-value">
+                            <i class="fas fa-calendar-check"></i>
+                            <span class="stat-value" id="profile-play-days">0</span>
+                        </div>
                         <span class="stat-label">Consecutive Days</span>
                     </div>
                     <div class="profile-stat-card">
-                        <i class="fas fa-calendar-alt"></i>
-                        <span class="stat-value" id="profile-best-play-days">0</span>
+                        <div class="stat-icon-value">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span class="stat-value" id="profile-best-play-days">0</span>
+                        </div>
                         <span class="stat-label">Best Day Streak</span>
                     </div>
                 </div>
@@ -736,6 +952,14 @@
                 <div class="recent-games-list" id="profile-recent-games">
                     <!-- Recent games will be inserted here -->
                 </div>
+            </div>
+
+            <!-- Logout Button (Mobile & Desktop) -->
+            <div class="profile-logout-section">
+                <button id="profile-logout-btn" class="profile-logout-btn">
+                    <i class="fas fa-power-off"></i>
+                    <span>Logout</span>
+                </button>
             </div>
         </div>
     </div>
@@ -1457,6 +1681,22 @@
             });
         });
     </script>
+
+    <!-- Bottom Navigation Bar (Mobile Only) -->
+    <nav id="bottom-nav" class="bottom-nav">
+        <button class="bottom-nav-item" id="bottom-nav-profile" data-page="profile">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </button>
+        <button class="bottom-nav-item active" id="bottom-nav-home" data-page="home">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </button>
+        <button class="bottom-nav-item" id="bottom-nav-settings" data-page="settings">
+            <i class="fas fa-cog"></i>
+            <span>Settings</span>
+        </button>
+    </nav>
 
     <div id="confetti-container"></div>
 </body>

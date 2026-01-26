@@ -19,6 +19,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
 }
 
 .modal-content {
@@ -40,18 +44,18 @@
     box-shadow: 0 15px 60px rgba(139, 122, 191, 0.35);
 }
 
-/* Modal Close Button (X button) */
+/* Modal Close Button (X button) - 44px minimum touch target */
 .modal-close-btn {
     position: absolute;
     top: 15px;
     right: 15px;
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     border: none;
     background: rgba(139, 122, 191, 0.1);
     color: var(--text-color);
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -341,18 +345,20 @@
 .achievements-stats {
     display: flex;
     justify-content: space-around;
-    gap: 15px;
-    margin-bottom: 25px;
+    gap: 12px;
+    margin-bottom: 20px;
 }
 
+/* Base styling for ALL stat-box (difficulty and achievements) */
 .stat-box {
     flex: 1;
     background: linear-gradient(135deg, rgba(139, 122, 191, 0.1) 0%, rgba(78, 168, 222, 0.05) 100%);
     border-radius: 20px;
-    padding: 20px;
+    padding: 15px;
     text-align: center;
     border: 2px solid rgba(139, 122, 191, 0.2);
     transition: all 0.3s ease;
+    position: relative;
 }
 
 .stat-box:hover {
@@ -371,6 +377,7 @@
     margin-bottom: 5px;
 }
 
+/* Stat label for ALL stat-box (achievements, difficulty, etc) */
 .stat-label {
     display: block;
     font-size: 13px;
@@ -381,22 +388,28 @@
     letter-spacing: 0.5px;
 }
 
+/* Stat-box stat-label styling */
+.stat-box .stat-label {
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
 .achievements-tabs {
     display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: 8px;
+    margin-bottom: 15px;
     justify-content: center;
 }
 
 .achievement-tab {
-    padding: 10px 25px;
+    padding: 8px 20px;
     border: 2px solid rgba(139, 122, 191, 0.3);
     background: transparent;
     color: var(--text-color);
-    border-radius: 20px;
+    border-radius: 18px;
     cursor: pointer;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     transition: all 0.3s ease;
 }
 
@@ -413,9 +426,9 @@
 
 .achievements-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 15px;
-    max-height: 400px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    max-height: 320px;
     overflow-y: auto;
     padding-right: 10px;
 }
@@ -441,10 +454,10 @@
 
 .achievement-item {
     background: var(--input-background);
-    border-radius: 20px;
-    padding: 20px;
+    border-radius: 15px;
+    padding: 15px;
     display: flex;
-    gap: 15px;
+    gap: 12px;
     align-items: flex-start;
     transition: all 0.3s ease;
     border: 2px solid rgba(139, 122, 191, 0.15);
@@ -479,13 +492,13 @@
 }
 
 .achievement-icon-wrapper {
-    min-width: 50px;
-    height: 50px;
-    border-radius: 15px;
+    min-width: 45px;
+    height: 45px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
+    font-size: 22px;
     background: linear-gradient(135deg, rgba(139, 122, 191, 0.2) 0%, rgba(78, 168, 222, 0.1) 100%);
     border: 2px solid rgba(139, 122, 191, 0.3);
 }
@@ -511,32 +524,32 @@
 .achievement-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 5px;
+    gap: 6px;
+    margin-bottom: 4px;
 }
 
 .achievement-name {
     font-weight: 700;
-    font-size: 16px;
+    font-size: 15px;
     color: var(--text-color);
 }
 
 .achievement-badge-unlocked {
     background: linear-gradient(135deg, #52c98c 0%, #3d8e63 100%);
     color: white;
-    padding: 2px 8px;
-    border-radius: 10px;
-    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 8px;
+    font-size: 9px;
     font-weight: 700;
     text-transform: uppercase;
 }
 
 .achievement-description {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-color);
     opacity: 0.8;
     line-height: 1.4;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
 }
 
 .achievement-meta {
@@ -573,45 +586,45 @@
 }
 
 .profile-title {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     text-align: center;
     color: var(--primary-color);
-    margin-bottom: 30px;
+    margin-bottom: 20px;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1.5px;
 }
 
-/* Profile Header */
+/* Profile Header - More Compact */
 .profile-header {
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
+    gap: 15px;
+    padding: 15px;
     background: linear-gradient(135deg, rgba(139, 122, 191, 0.1) 0%, rgba(99, 211, 184, 0.1) 100%);
-    border-radius: 15px;
-    margin-bottom: 30px;
+    border-radius: 12px;
+    margin-bottom: 20px;
 }
 
 .profile-avatar {
-    font-size: 60px;
+    font-size: 48px;
     color: var(--primary-color);
 }
 
 .profile-user-info h3 {
-    margin: 0 0 5px 0;
-    font-size: 24px;
+    margin: 0 0 4px 0;
+    font-size: 20px;
     color: var(--text-color);
 }
 
 .profile-user-info p {
-    margin: 3px 0;
-    font-size: 14px;
+    margin: 2px 0;
+    font-size: 13px;
     color: var(--text-muted);
 }
 
 .profile-join-date {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
     font-style: italic;
 }
@@ -619,16 +632,16 @@
 /* Profile Stats Grid */
 .profile-stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin-bottom: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 25px;
 }
 
 .profile-stat-card {
     background: var(--card-background);
     border: 2px solid var(--primary-color);
     border-radius: 15px;
-    padding: 20px;
+    padding: 12px 10px;
     text-align: center;
     transition: all 0.3s ease;
     display: flex;
@@ -638,19 +651,33 @@
 }
 
 .profile-stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(139, 122, 191, 0.3);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(139, 122, 191, 0.25);
+}
+
+/* Icon + Number horizontal container */
+.profile-stat-card .stat-icon-value {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .profile-stat-card i {
-    font-size: 28px;
+    font-size: 22px;
     color: var(--primary-color);
 }
 
 .stat-value {
-    font-size: 32px;
+    font-size: 26px;
     font-weight: 700;
     color: var(--accent-color);
+    line-height: 1;
+}
+
+.profile-stat-card .stat-label {
+    font-size: 12px;
+    margin-top: 0;
+    line-height: 1.2;
 }
 
 /* Profile Sections */
@@ -667,31 +694,17 @@
     letter-spacing: 0.3px; /* Reduced from 1px for tighter spacing */
 }
 
-/* Difficulty Breakdown - Box Style (matches Achievements) */
+/* Difficulty Breakdown - Uses stat-box styling */
 .difficulty-breakdown {
     display: flex;
     justify-content: space-around;
     gap: 12px;
 }
 
-.difficulty-box {
-    position: relative;
-    padding: 15px;
-}
-
-.difficulty-box .stat-label {
-    font-size: 13px; /* Match achievements stat-label */
-    font-weight: 600;
-    margin-bottom: 8px;
-}
-
-.difficulty-box .stat-number {
-    font-size: 32px; /* Match achievements stat-number */
-}
-
+/* Stat detail text (used in difficulty boxes) */
 .stat-detail {
     display: block;
-    font-size: 13px; /* Match other text in profile */
+    font-size: 13px;
     color: var(--text-muted);
     margin-top: 6px;
     opacity: 0.8;
@@ -756,10 +769,10 @@
 .recent-games-list {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    height: 250px; /* Fixed height instead of max-height */
-    min-height: 250px; /* Ensure minimum height */
-    max-height: 250px; /* Maximum height */
+    gap: 6px;
+    height: 200px; /* Reduced height for more compact look */
+    min-height: 200px;
+    max-height: 200px;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 5px;
@@ -787,16 +800,16 @@
 .recent-game-item {
     background: var(--card-background);
     border: 2px solid rgba(139, 122, 191, 0.15);
-    border-radius: 10px;
-    padding: 10px 12px; /* Reduced padding */
+    border-radius: 8px;
+    padding: 8px 10px; /* More compact padding */
     display: flex;
     align-items: center;
-    gap: 12px; /* Reduced gap */
+    gap: 10px; /* Reduced gap */
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
-    flex-shrink: 0; /* Prevent items from shrinking */
-    min-height: 55px; /* Ensure minimum height for each item */
+    flex-shrink: 0;
+    min-height: 50px; /* Reduced minimum height */
 }
 
 .recent-game-item::before {
@@ -825,13 +838,13 @@
 
 /* Result Icon - Compact */
 .game-result-icon {
-    font-size: 24px; /* Reduced from 36px */
+    font-size: 20px; /* More compact */
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 35px; /* Reduced from 50px */
-    height: 35px;
+    width: 30px; /* More compact */
+    height: 30px;
 }
 
 .game-result-icon.won {
@@ -848,25 +861,25 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 5px; /* Reduced from 8px */
+    gap: 3px; /* More compact */
 }
 
 .game-top-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 /* Difficulty badges */
 .difficulty-badge {
     display: inline-block;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.3px;
 }
 
 .difficulty-badge.difficulty-easy {
@@ -887,19 +900,19 @@
 /* Game stats inline */
 .game-stats-inline {
     display: flex;
-    gap: 12px;
-    font-size: 12px;
+    gap: 10px;
+    font-size: 11px;
     color: var(--text-muted);
 }
 
 .game-stats-inline span {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
 }
 
 .game-stats-inline i {
-    font-size: 11px;
+    font-size: 10px;
     opacity: 0.7;
 }
 
@@ -916,6 +929,53 @@
     opacity: 0.6;
 }
 
+/* Profile Logout Section */
+.profile-logout-section {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 2px solid rgba(var(--primary-color-rgb), 0.1);
+    display: flex;
+    justify-content: center;
+}
+
+.profile-logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 40px;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.profile-logout-btn i {
+    font-size: 18px;
+}
+
+.profile-logout-btn:hover {
+    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+.profile-logout-btn:active {
+    transform: translateY(0);
+}
+
+/* Dark mode */
+body.dark-mode .profile-logout-section {
+    border-top-color: rgba(167, 139, 250, 0.15);
+}
+
 /* ===================================== */
 /* SETTINGS MODAL                        */
 /* ===================================== */
@@ -923,11 +983,11 @@
 .settings-modal-content {
     max-width: 600px;
     max-height: 90vh;
-    padding: 35px 30px;
+    padding: 30px 25px;
     overflow-y: auto;
     overflow-x: hidden;
     scroll-behavior: smooth;
-    border-radius: 30px;
+    border-radius: 25px;
     /* Hide scrollbar but keep scroll functionality */
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
@@ -941,8 +1001,8 @@
 .settings-title {
     text-align: center;
     color: var(--primary-color);
-    margin: 0 0 30px 0;
-    font-size: 26px;
+    margin: 0 0 25px 0;
+    font-size: 24px;
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -952,19 +1012,19 @@
 .settings-section {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
 }
 
 /* Add visual separation between setting groups */
 .setting-item:not(:last-child) {
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 }
 
 .setting-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 18px 20px;
+    padding: 16px 18px;
     background: var(--card-background);
     border-radius: 12px;
     border: 1px solid rgba(var(--primary-color-rgb), 0.15);
@@ -994,33 +1054,34 @@
 .setting-label {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 16px;
+    gap: 8px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--text-color);
-    margin-bottom: 4px;
+    margin-bottom: 3px;
 }
 
 .setting-label i {
     color: var(--primary-color);
-    font-size: 18px;
+    font-size: 17px;
 }
 
 .setting-description {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-secondary);
+    line-height: 1.3;
 }
 
 .volume-control {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 
 .volume-slider {
     -webkit-appearance: none;
     appearance: none;
-    width: 150px;
+    width: 140px;
     height: 6px;
     border-radius: 5px;
     background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
@@ -1139,11 +1200,11 @@
 .how-to-play-content {
     background: linear-gradient(135deg, rgba(78, 168, 222, 0.08) 0%, rgba(93, 211, 179, 0.05) 100%);
     border-radius: 0 0 12px 12px;
-    padding: 20px;
+    padding: 18px;
     margin-top: 0;
     border-top: 1px solid rgba(var(--primary-color-rgb), 0.15);
     animation: slideDown 0.3s ease-out;
-    max-height: 60vh;
+    max-height: 55vh;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -1572,8 +1633,8 @@ body.dark-mode .how-to-play-content {
         grid-template-columns: 1fr;
     }
 
+    /* Keep achievements horizontal like difficulty breakdown */
     .achievements-stats {
-        flex-direction: column;
         gap: 10px;
     }
 
@@ -1590,30 +1651,145 @@ body.dark-mode .how-to-play-content {
 /* Profile responsive */
 @media (max-width: 768px) {
     .profile-modal-content {
-        padding: 20px;
+        max-width: 95%;
+        padding: 15px 12px;
+        margin: 10px auto;
+    }
+
+    .profile-title {
+        font-size: 20px;
+        margin-bottom: 15px;
     }
 
     .profile-header {
         flex-direction: column;
         text-align: center;
+        padding: 12px;
+        gap: 12px;
+        margin-bottom: 15px;
+    }
+
+    .profile-avatar {
+        font-size: 40px;
+    }
+
+    .profile-user-info h3 {
+        font-size: 18px;
+    }
+
+    .profile-user-info p {
+        font-size: 12px;
     }
 
     .profile-stats-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
-    .profile-title {
-        font-size: 22px;
+    .profile-stat-card {
+        padding: 12px 8px;
     }
 
     .stat-value {
         font-size: 24px;
     }
+
+    .profile-section h3 {
+        font-size: 18px;
+    }
+
+    /* Keep stat-box (achievements & difficulty) compact on mobile */
+    .achievements-stats,
+    .difficulty-breakdown {
+        gap: 10px;
+    }
+
+    .stat-box {
+        padding: 12px 8px;
+    }
+
+    .stat-box .stat-number {
+        font-size: 28px;
+    }
+
+    .stat-box .stat-label {
+        font-size: 12px;
+    }
+
+    /* Compact achievement items on tablets */
+    .achievements-list {
+        max-height: 300px;
+        gap: 12px;
+    }
+
+    .achievement-item {
+        padding: 14px;
+    }
+
+    .achievement-icon-wrapper {
+        min-width: 42px;
+        height: 42px;
+        font-size: 21px;
+    }
+
+    .achievement-name {
+        font-size: 14px;
+    }
+
+    .achievement-description {
+        font-size: 12px;
+    }
 }
 
 @media (max-width: 480px) {
     .profile-stats-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr); /* Keep 2 columns for better space usage */
+        gap: 10px;
+    }
+
+    .profile-stat-card {
+        padding: 10px 6px; /* Reduce padding on very small screens */
+        gap: 6px;
+    }
+
+    .profile-stat-card .stat-icon-value {
+        gap: 6px;
+    }
+
+    .profile-stat-card i {
+        font-size: 18px; /* Slightly smaller icons */
+    }
+
+    .stat-value {
+        font-size: 20px; /* Slightly smaller values */
+    }
+
+    .profile-stat-card .stat-label {
+        font-size: 11px; /* Slightly smaller labels */
+    }
+
+    /* Keep stat-box sections (difficulty & achievements) as 3 in a row on mobile */
+    .difficulty-breakdown,
+    .achievements-stats {
+        gap: 8px;
+    }
+
+    .stat-box {
+        flex: 1;
+        min-width: 0; /* Allow boxes to shrink */
+        padding: 10px 5px;
+    }
+
+    .stat-box .stat-label {
+        font-size: 11px;
+    }
+
+    .stat-box .stat-number {
+        font-size: 24px;
+    }
+
+    .stat-detail {
+        font-size: 11px;
     }
 
     .difficulty-info {
@@ -1622,14 +1798,114 @@ body.dark-mode .how-to-play-content {
         gap: 5px;
     }
 
+    /* More compact recent games on mobile */
+    .recent-games-list {
+        height: 180px;
+        min-height: 180px;
+        max-height: 180px;
+        gap: 5px;
+    }
+
     .recent-game-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+        padding: 6px 8px;
+        gap: 8px;
+        min-height: 45px;
+    }
+
+    .game-result-icon {
+        font-size: 18px;
+        width: 26px;
+        height: 26px;
+    }
+
+    .difficulty-badge {
+        font-size: 9px;
+        padding: 2px 8px;
+    }
+
+    .game-stats-inline {
+        font-size: 10px;
+        gap: 8px;
+    }
+
+    /* Show only 5 recent games on mobile to reduce scrolling */
+    .recent-games-list .recent-game-item:nth-child(n+6) {
+        display: none;
     }
 
     .game-date {
         text-align: left;
+    }
+
+    /* Compact achievements on mobile - keep horizontal */
+    .achievements-tabs {
+        gap: 6px;
+        flex-wrap: nowrap;
+    }
+
+    .achievement-tab {
+        padding: 6px 15px;
+        font-size: 12px;
+    }
+
+    .achievements-list {
+        max-height: 280px;
+        gap: 10px;
+    }
+
+    .achievement-item {
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .achievement-icon-wrapper {
+        min-width: 40px;
+        height: 40px;
+        font-size: 20px;
+    }
+
+    .achievement-name {
+        font-size: 14px;
+    }
+
+    .achievement-description {
+        font-size: 11px;
+    }
+
+    .achievement-progress-bar {
+        height: 5px;
+    }
+
+    .achievement-progress-text {
+        font-size: 10px;
+    }
+
+    /* Compact profile header on very small screens */
+    .profile-title {
+        font-size: 18px;
+        margin-bottom: 12px;
+    }
+
+    .profile-header {
+        padding: 10px;
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .profile-avatar {
+        font-size: 36px;
+    }
+
+    .profile-user-info h3 {
+        font-size: 16px;
+    }
+
+    .profile-user-info p {
+        font-size: 11px;
+    }
+
+    .profile-section h3 {
+        font-size: 16px;
     }
 }
 
@@ -1637,36 +1913,100 @@ body.dark-mode .how-to-play-content {
 @media (max-width: 768px) {
     .settings-modal-content {
         max-width: 95%;
-        padding: 30px 25px;
+        padding: 25px 20px;
+        border-radius: 20px;
     }
-}
 
-@media (max-width: 480px) {
     .settings-title {
         font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .settings-section {
+        gap: 8px;
     }
 
     .setting-item {
-        padding: 14px 16px;
+        padding: 15px 16px;
     }
 
     .setting-label {
         font-size: 14px;
+        gap: 7px;
     }
 
-    .toggle-btn {
-        width: 45px;
-        height: 45px;
-        font-size: 18px;
+    .setting-label i {
+        font-size: 16px;
+    }
+
+    .setting-description {
+        font-size: 11px;
+    }
+
+    .how-to-play-content {
+        padding: 16px;
+        max-height: 50vh;
     }
 
     .volume-slider {
-        width: 120px;
+        width: 130px;
+    }
+}
+
+@media (max-width: 480px) {
+    .settings-modal-content {
+        padding: 20px 15px;
+        border-radius: 18px;
+    }
+
+    .settings-title {
+        font-size: 20px;
+        margin-bottom: 18px;
+    }
+
+    .setting-item {
+        padding: 12px 14px;
+    }
+
+    .setting-label {
+        font-size: 13px;
+    }
+
+    .setting-label i {
+        font-size: 15px;
+    }
+
+    .setting-description {
+        font-size: 11px;
+    }
+
+    .toggle-btn {
+        width: 44px;
+        height: 44px;
+        font-size: 17px;
+    }
+
+    .volume-control {
+        gap: 8px;
+    }
+
+    .volume-slider {
+        width: 110px;
     }
 
     .volume-percentage {
-        font-size: 13px;
-        min-width: 40px;
+        font-size: 12px;
+        min-width: 38px;
+    }
+
+    .how-to-play-content {
+        padding: 14px;
+        max-height: 45vh;
+    }
+
+    .coming-soon-badge {
+        padding: 5px 10px;
+        font-size: 11px;
     }
 }
 
@@ -1688,8 +2028,8 @@ body.dark-mode .how-to-play-content {
 .notification-item {
     background: rgba(255, 255, 255, 0.6);
     border: 2px solid rgba(var(--primary-color-rgb), 0.15);
-    border-radius: 10px;
-    margin-bottom: 10px;
+    border-radius: 12px;
+    margin-bottom: 8px;
     overflow: hidden;
     transition: all 0.3s ease;
 }
@@ -1713,7 +2053,7 @@ body.dark-mode .how-to-play-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 15px;
+    padding: 14px 16px;
     cursor: pointer;
     user-select: none;
 }
@@ -1761,12 +2101,12 @@ body.dark-mode .how-to-play-content {
 .notification-list-container {
     border-top: 1px solid rgba(var(--primary-color-rgb), 0.1);
     background: rgba(255, 255, 255, 0.3);
-    padding: 0 15px 15px 15px;
+    padding: 0 15px 12px 15px;
     animation: slideDown 0.3s ease-out;
 }
 
 .notification-list {
-    max-height: 300px;
+    max-height: 280px;
     overflow-y: auto;
 }
 
@@ -1793,12 +2133,13 @@ body.dark-mode .how-to-play-content {
 .friend-request-item {
     background: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(var(--primary-color-rgb), 0.15);
-    border-radius: 8px;
-    padding: 8px 10px;
-    margin-bottom: 6px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     transition: all 0.2s ease;
 }
 
@@ -1816,30 +2157,34 @@ body.dark-mode .how-to-play-content {
 .friend-request-info {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
+    flex: 1;
 }
 
 .friend-request-username {
     font-weight: 600;
     color: var(--text-color);
-    font-size: 0.9em;
+    font-size: 14px;
 }
 
 .friend-request-time {
-    font-size: 0.7em;
+    font-size: 11px;
     color: var(--text-secondary);
 }
 
 .friend-request-actions {
     display: flex;
     gap: 6px;
+    flex-shrink: 0;
 }
 
 .friend-request-btn {
-    padding: 5px 10px;
+    padding: 6px 10px;
+    min-width: 55px;
+    min-height: 28px;
     border: none;
-    border-radius: 5px;
-    font-size: 0.8em;
+    border-radius: 6px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -1872,12 +2217,13 @@ body.dark-mode .how-to-play-content {
 .challenge-notification-item {
     background: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(var(--primary-color-rgb), 0.15);
-    border-radius: 8px;
-    padding: 8px 10px;
-    margin-bottom: 6px;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 10px;
     transition: all 0.2s ease;
 }
 
@@ -1895,17 +2241,18 @@ body.dark-mode .how-to-play-content {
 .challenge-notification-info {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 3px;
+    flex: 1;
 }
 
 .challenge-notification-username {
     font-weight: 600;
     color: var(--text-color);
-    font-size: 0.9em;
+    font-size: 14px;
 }
 
 .challenge-notification-details {
-    font-size: 0.75em;
+    font-size: 12px;
     color: var(--text-secondary);
     display: flex;
     gap: 6px;
@@ -1914,9 +2261,9 @@ body.dark-mode .how-to-play-content {
 
 .challenge-difficulty-badge {
     display: inline-block;
-    padding: 1px 5px;
-    border-radius: 3px;
-    font-size: 0.8em;
+    padding: 2px 6px;
+    border-radius: 5px;
+    font-size: 10px;
     font-weight: 600;
     text-transform: uppercase;
 }
@@ -1944,13 +2291,16 @@ body.dark-mode .how-to-play-content {
 .challenge-notification-actions {
     display: flex;
     gap: 6px;
+    flex-shrink: 0;
 }
 
 .challenge-notification-btn {
-    padding: 5px 10px;
+    padding: 6px 10px;
+    min-width: 55px;
+    min-height: 28px;
     border: none;
-    border-radius: 5px;
-    font-size: 0.8em;
+    border-radius: 6px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
@@ -2065,6 +2415,142 @@ body.dark-mode .challenge-difficulty-badge.medium {
 body.dark-mode .challenge-difficulty-badge.hard {
     background: rgba(231, 76, 60, 0.25);
     color: #ef5350;
+}
+
+/* Notifications responsive */
+@media (max-width: 768px) {
+    .notifications-modal-content {
+        max-width: 95%;
+        padding: 25px 20px;
+        border-radius: 20px;
+    }
+
+    .notifications-modal-title {
+        font-size: 22px;
+        margin-bottom: 18px;
+    }
+
+    .notifications-modal-section {
+        gap: 10px;
+    }
+
+    .notification-header {
+        padding: 12px 14px;
+    }
+
+    .notification-icon {
+        font-size: 18px;
+    }
+
+    .notification-name {
+        font-size: 14px;
+    }
+
+    .notification-list {
+        max-height: 250px;
+    }
+
+    .friend-request-item,
+    .challenge-notification-item {
+        padding: 10px;
+    }
+
+    .friend-request-username,
+    .challenge-notification-username {
+        font-size: 13px;
+    }
+
+    .friend-request-time {
+        font-size: 11px;
+    }
+
+    .challenge-notification-details {
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .notifications-modal-content {
+        padding: 20px 15px;
+        border-radius: 18px;
+    }
+
+    .notifications-modal-title {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .notifications-modal-section {
+        gap: 8px;
+    }
+
+    .notification-item {
+        margin-bottom: 6px;
+    }
+
+    .notification-header {
+        padding: 10px 12px;
+    }
+
+    .notification-icon {
+        font-size: 17px;
+    }
+
+    .notification-name {
+        font-size: 13px;
+    }
+
+    .notification-badge {
+        padding: 2px 6px;
+        font-size: 11px;
+        min-width: 18px;
+    }
+
+    .notification-list {
+        max-height: 220px;
+    }
+
+    .notification-list-container {
+        padding: 0 12px 10px 12px;
+    }
+
+    .friend-request-item,
+    .challenge-notification-item {
+        padding: 8px 10px;
+        gap: 8px;
+    }
+
+    .friend-request-username,
+    .challenge-notification-username {
+        font-size: 13px;
+    }
+
+    .friend-request-time {
+        font-size: 10px;
+    }
+
+    .challenge-notification-details {
+        font-size: 10px;
+    }
+
+    .challenge-difficulty-badge {
+        padding: 1px 5px;
+        font-size: 9px;
+    }
+
+    /* Compact buttons on mobile */
+    .friend-request-btn,
+    .challenge-notification-btn {
+        padding: 6px 10px;
+        min-width: 52px;
+        min-height: 28px;
+        font-size: 11px;
+    }
+
+    .friend-request-actions,
+    .challenge-notification-actions {
+        gap: 5px;
+    }
 }
 
 /* ==========================================
@@ -2541,13 +3027,15 @@ body.dark-mode .danger-warning {
     max-width: 600px;
     max-height: 80vh;
     overflow-y: auto;
+    padding: 30px 25px;
+    border-radius: 25px;
 }
 
 .notifications-modal-title {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 800;
     text-align: center;
-    margin: 0 0 25px 0;
+    margin: 0 0 22px 0;
     color: var(--primary-color);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -2556,7 +3044,7 @@ body.dark-mode .danger-warning {
 .notifications-modal-section {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 12px;
 }
 
 /* Dark mode for notifications modal */

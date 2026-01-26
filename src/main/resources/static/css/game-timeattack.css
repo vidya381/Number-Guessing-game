@@ -1115,14 +1115,10 @@ body.dark-mode .ta-leaderboard-icon {
 
     .leaderboard-header,
     .leaderboard-row {
-        grid-template-columns: 60px 160px 85px 70px;
-        gap: 12px;
-        font-size: 0.85em;
-        padding: 10px 15px;
-    }
-
-    .lb-avg {
-        display: none;
+        grid-template-columns: 50px 1fr 65px 65px;
+        gap: 8px;
+        font-size: 0.8em;
+        padding: 10px 12px;
     }
 
     .ta-leaderboard-modal-header {
@@ -1184,15 +1180,23 @@ body.dark-mode .ta-leaderboard-icon {
 
     .leaderboard-header,
     .leaderboard-row {
-        grid-template-columns: 50px 150px 80px;
-        gap: 10px;
-        font-size: 0.8em;
-        padding: 10px 12px;
+        grid-template-columns: 45px 1fr 55px 55px;
+        gap: 6px;
+        font-size: 0.75em;
+        padding: 8px 10px;
+    }
+
+    .lb-rank {
+        font-size: 1em !important;
+    }
+
+    .lb-username {
+        font-size: 0.95em;
     }
 
     .lb-wins,
     .lb-avg {
-        display: none;
+        font-size: 0.9em;
     }
 
     .lb-tab {

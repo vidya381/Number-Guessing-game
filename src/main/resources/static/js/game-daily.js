@@ -25,22 +25,36 @@ window.DailyGame = {
             if (response.ok) {
                 GameState.dailyChallenge.info = data;
 
-                // Update UI
+                // Update UI - both desktop banner and mobile modal
                 const dateEl = document.getElementById('challenge-date');
                 const difficultyEl = document.getElementById('challenge-difficulty');
                 const playersEl = document.getElementById('challenge-players');
 
-                if (dateEl && Utils) {
-                    dateEl.textContent = Utils.formatDate(data.challengeDate);
-                }
-                if (difficultyEl) {
-                    difficultyEl.textContent = data.difficultyText;
-                }
-                if (playersEl) {
-                    playersEl.textContent = `${data.totalPlayers} player${data.totalPlayers !== 1 ? 's' : ''}`;
+                const dateElModal = document.getElementById('challenge-date-modal');
+                const difficultyElModal = document.getElementById('challenge-difficulty-modal');
+                const playersElModal = document.getElementById('challenge-players-modal');
+
+                const formattedDate = Utils ? Utils.formatDate(data.challengeDate) : data.challengeDate;
+                const playersText = `${data.totalPlayers} player${data.totalPlayers !== 1 ? 's' : ''}`;
+
+                if (dateEl) dateEl.textContent = formattedDate;
+                if (difficultyEl) difficultyEl.textContent = data.difficultyText;
+                if (playersEl) playersEl.textContent = playersText;
+
+                if (dateElModal) dateElModal.textContent = formattedDate;
+                if (difficultyElModal) difficultyElModal.textContent = data.difficultyText;
+                if (playersElModal) playersElModal.textContent = playersText;
+
+                // Update mobile tile badge with difficulty (without digit info)
+                const tileBadge = document.getElementById('daily-challenge-tile-badge');
+                if (tileBadge) {
+                    // Extract just the difficulty name without digits info
+                    const difficultyName = data.difficultyText.split('(')[0].trim();
+                    tileBadge.textContent = difficultyName;
                 }
 
                 const playBtn = document.getElementById('play-daily-challenge');
+                const playBtnTile = document.getElementById('play-daily-tile');
                 const statusDiv = document.getElementById('daily-challenge-status');
 
                 if (data.alreadyAttempted && data.userAttempt) {
@@ -48,6 +62,19 @@ window.DailyGame = {
                     if (playBtn) {
                         playBtn.disabled = false; // Make it clickable for toggle
                         playBtn.innerHTML = '<i class="fas fa-check"></i> COMPLETED <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i>';
+                        playBtn.style.cursor = 'pointer';
+                    }
+
+                    // Update tile modal button
+                    if (playBtnTile) {
+                        playBtnTile.innerHTML = '<i class="fas fa-check"></i> COMPLETED';
+                        playBtnTile.disabled = true;
+                        playBtnTile.style.opacity = '0.7';
+                        playBtnTile.style.cursor = 'not-allowed';
+                    }
+
+                    // Continue with existing desktop banner logic
+                    if (playBtn) {
                         playBtn.style.cursor = 'pointer';
 
                         // Add toggle functionality
@@ -87,6 +114,15 @@ window.DailyGame = {
                         playBtn.style.cursor = 'pointer';
                         playBtn.onclick = null; // Remove toggle handler
                     }
+
+                    // Reset tile modal button
+                    if (playBtnTile) {
+                        playBtnTile.innerHTML = '<i class="fas fa-play"></i> PLAY NOW';
+                        playBtnTile.disabled = false;
+                        playBtnTile.style.opacity = '1';
+                        playBtnTile.style.cursor = 'pointer';
+                    }
+
                     if (statusDiv) {
                         statusDiv.style.display = 'none';
                     }
@@ -244,7 +280,12 @@ window.DailyGame = {
                 const autoSubmitEnabled = Utils.getGameplayPreference('autoSubmit');
                 if (autoSubmitEnabled) {
                     // Auto-submit when all digits are filled
+                    GameState.autoSubmitTriggered = true;
                     this.submitDailyGuess();
+                    // Reset flag after a short delay
+                    setTimeout(() => {
+                        GameState.autoSubmitTriggered = false;
+                    }, 300);
                 }
             }
         }
@@ -259,7 +300,7 @@ window.DailyGame = {
             inputs[index - 1].focus();
         } else if (e.key === 'ArrowRight' && index < inputs.length - 1) {
             inputs[index + 1].focus();
-        } else if (e.key === 'Enter') {
+        } else if (e.key === 'Enter' && !GameState.autoSubmitTriggered) {
             this.submitDailyGuess();
         }
     },

@@ -672,11 +672,16 @@ window.TimeAttackGame = {
             const autoSubmitEnabled = Utils.getGameplayPreference('autoSubmit');
             if (autoSubmitEnabled) {
                 // Auto-submit when all digits are filled
+                GameState.autoSubmitTriggered = true;
                 if (containerId === 'ta-input-container') {
                     this.submitTimeAttackGuess();
                 } else if (containerId === 'warmup-input-container') {
                     this.submitWarmupGuess();
                 }
+                // Reset flag after a short delay
+                setTimeout(() => {
+                    GameState.autoSubmitTriggered = false;
+                }, 300);
             }
         }
     },
@@ -689,8 +694,8 @@ window.TimeAttackGame = {
                 prevInput.focus();
                 prevInput.select();
             }
-        } else if (e.key === 'Enter') {
-            // Submit guess on Enter
+        } else if (e.key === 'Enter' && !GameState.autoSubmitTriggered) {
+            // Submit guess on Enter (only if auto-submit didn't just trigger)
             if (containerId === 'ta-input-container') {
                 this.submitTimeAttackGuess();
             }

@@ -396,25 +396,46 @@ window.Notifications = {
 
             if (response.ok) {
                 const data = await response.json();
-                if (Achievements) {
-                    Achievements.showToast(data.message || 'Challenge accepted! Starting game...', 'success');
-                }
-                // Reload challenge notifications to update the list
-                this.loadChallengeNotifications();
+                if (data.success) {
+                    if (Achievements) {
+                        Achievements.showToast('Challenge accepted! Starting game...', 'success');
+                    }
 
-                // Navigate to multiplayer page if available
-                if (typeof MultiplayerGame !== 'undefined' && MultiplayerGame.loadChallenges) {
-                    setTimeout(() => {
-                        // Switch to multiplayer page
-                        const homePage = document.getElementById('home-page');
-                        const multiplayerPage = document.getElementById('multiplayer-page');
+                    // Close notifications modal
+                    const notificationsModal = document.getElementById('notifications-modal');
+                    if (notificationsModal) {
+                        notificationsModal.style.display = 'none';
+                    }
 
-                        if (homePage && multiplayerPage && Utils) {
-                            Utils.fadeOutElement(homePage, () => {
-                                Utils.fadeInElement(multiplayerPage, 'flex');
-                            });
-                        }
-                    }, 1000);
+                    // Start the game immediately with the session data
+                    if (typeof MultiplayerGame !== 'undefined' && MultiplayerGame.startGame) {
+                        setTimeout(() => {
+                            // Switch to multiplayer tab
+                            const homePage = document.getElementById('home-page');
+                            const multiplayerTab = document.getElementById('multiplayer-tab');
+
+                            if (homePage && multiplayerTab && Utils) {
+                                Utils.fadeOutElement(homePage, () => {
+                                    Utils.fadeInElement(multiplayerTab, 'flex');
+                                    // Start the game with session data from API response
+                                    MultiplayerGame.startGame(
+                                        data.sessionId,
+                                        data.digitCount,
+                                        data.opponentUsername,
+                                        data.opponentId,
+                                        data.maxAttempts
+                                    );
+                                });
+                            }
+                        }, 500);
+                    }
+
+                    // Reload challenge notifications to update the list
+                    this.loadChallengeNotifications();
+                } else {
+                    if (Achievements) {
+                        Achievements.showToast(data.error || 'Failed to accept challenge', 'error');
+                    }
                 }
             } else {
                 const data = await response.json();

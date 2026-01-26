@@ -4,19 +4,399 @@
  */
 
 /* ===================================== */
+/* DESKTOP (769px and above)             */
+/* ===================================== */
+
+@media screen and (min-width: 769px) {
+
+    /* Ensure bottom nav is hidden on desktop */
+    .bottom-nav {
+        display: none !important;
+    }
+
+    /* Hide mobile tiles on desktop */
+    .mobile-tiles-container {
+        display: none !important;
+    }
+
+    /* Show desktop banners */
+    .desktop-banners-container {
+        display: block !important;
+    }
+}
+
+/* ===================================== */
 /* TABLET (768px and below)              */
 /* ===================================== */
 
 @media screen and (max-width: 768px) {
+
     /* Body and container adjustments */
     body {
-        padding-top: 80px;
+        padding-top: 70px;
+        padding-bottom: 68px;
+        /* Add padding for bottom nav */
     }
 
-    /* Game header */
-    .game-header {
+    /* Show bottom navigation on mobile */
+    .bottom-nav {
+        display: flex !important;
+    }
+
+    /* Header adjustments for mobile */
+    #game-header {
+        padding: 10px 12px;
+        height: auto;
+    }
+
+    .game-title {
+        font-size: 20px !important;
+    }
+
+    #controls {
+        gap: 8px;
+    }
+
+    /* Hide desktop-only elements on mobile */
+    #guest-controls {
+        display: none !important;
+    }
+
+    .profile-dropdown-container {
+        display: none !important;
+    }
+
+    /* User controls - show only streak, coins, and notifications */
+    #user-controls {
+        gap: 8px;
+    }
+
+    /* Notification bell - hide by default on mobile (shown only when logged in via JS) */
+    #notifications-bell.mobile-hidden {
+        display: none !important;
+    }
+
+    /* Smaller header elements on mobile */
+    .header-icon-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    .header-streak {
+        height: 32px;
+        padding: 0 8px;
+        font-size: 12px;
+        min-width: 50px;
+        gap: 3px;
+    }
+
+    .header-streak i {
+        font-size: 12px;
+    }
+
+    .header-coins {
+        height: 32px;
+        padding: 0 8px;
+        font-size: 12px;
+        min-width: 50px;
+        gap: 3px;
+    }
+
+    .header-coins i {
+        font-size: 12px;
+    }
+
+    .notification-bell-badge {
+        font-size: 9px;
+        padding: 1px 4px;
+        min-width: 14px;
+    }
+
+    /* Home page - show tiles on mobile, hide banners */
+    .mobile-tiles-container {
+        display: flex !important;
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 0;
+        justify-content: center;
+    }
+
+    .desktop-banners-container {
+        display: none !important;
+    }
+
+    /* Mode tiles - all same size */
+    .mode-tile {
+        width: calc(50% - 6px);
+        aspect-ratio: 1;
+        display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        background: var(--card-bg);
+        border: 2px solid rgba(var(--primary-color-rgb), 0.2);
+        border-radius: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 12px;
+        position: relative;
+        box-sizing: border-box;
+        overflow: visible;
+    }
+
+    /* Practice tile - same size, centered on new row */
+    .practice-tile {
+        width: calc(50% - 6px);
+    }
+
+    .mode-tile:active {
+        transform: scale(0.95);
+    }
+
+    .tile-icon {
+        font-size: 2em;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+        flex-shrink: 0;
+    }
+
+    .tile-name {
+        font-size: 0.7em;
+        font-weight: 700;
+        text-align: center;
+        color: var(--text-color);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        line-height: 1.1;
+        flex-shrink: 0;
+    }
+
+    /* Mobile tile badges - consistent sizing */
+    .mode-tile .tile-badge {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.55em !important;
+        font-weight: 800 !important;
+        padding: 0 10px !important;
+        height: 22px !important;
+        min-height: 22px !important;
+        max-height: 22px !important;
+        border-radius: 11px !important;
+        border: none !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.5px !important;
+        white-space: nowrap !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        flex-shrink: 0 !important;
+        line-height: 1 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    /* Individual tile styles */
+    .daily-tile {
+        border-color: rgba(240, 179, 71, 0.3);
+    }
+
+    .daily-tile:active {
+        border-color: var(--warning-color);
+    }
+
+    .multiplayer-tile {
+        border-color: rgba(93, 211, 179, 0.3);
+    }
+
+    .multiplayer-tile:active {
+        border-color: var(--accent-color);
+    }
+
+    .mode-tile .multiplayer-badge {
+        background: linear-gradient(135deg, #5dd3b3 0%, #3eb89a 100%) !important;
+        color: white !important;
+    }
+
+    body.dark-mode .mode-tile .multiplayer-badge {
+        background: linear-gradient(135deg, #5dd3b3 0%, #4facb8 100%) !important;
+        color: white !important;
+    }
+
+    .timeattack-tile {
+        border-color: rgba(231, 76, 60, 0.3);
+    }
+
+    .timeattack-tile:active {
+        border-color: var(--error-color);
+    }
+
+    .mode-tile .timeattack-badge {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
+        color: white !important;
+    }
+
+    body.dark-mode .mode-tile .timeattack-badge {
+        background: linear-gradient(135deg, #ff6b6b 0%, #e74c3c 100%) !important;
+        color: white !important;
+    }
+
+    .survival-tile {
+        border-color: rgba(255, 107, 107, 0.3);
+    }
+
+    .survival-tile:active {
+        border-color: #ff6b6b;
+    }
+
+    .mode-tile .survival-badge {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ff4757 100%) !important;
+        color: white !important;
+    }
+
+    body.dark-mode .mode-tile .survival-badge {
+        background: linear-gradient(135deg, #ff7979 0%, #ff6b6b 100%) !important;
+        color: white !important;
+    }
+
+    .practice-tile {
+        border-color: rgba(var(--primary-color-rgb), 0.3);
+        margin: 0 auto;
+    }
+
+    .practice-tile:active {
+        border-color: var(--primary-color);
+    }
+
+    /* Smaller header on home page for mobile */
+    #game-status-display {
+        padding: 12px !important;
+        margin-bottom: 15px !important;
+    }
+
+    #game-status-text {
+        font-size: 1.3em !important;
+    }
+
+    #game-status-icon {
+        font-size: 20px !important;
+    }
+
+    .mode-tile .practice-badge {
+        background: linear-gradient(135deg, #8b7abf 0%, #6fa3d9 100%) !important;
+        color: white !important;
+    }
+
+    body.dark-mode .mode-tile .practice-badge {
+        background: linear-gradient(135deg, #a78bfa 0%, #7c6bc9 100%) !important;
+        color: white !important;
+    }
+
+    .mode-tile .daily-badge {
+        background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%) !important;
+        color: white !important;
+    }
+
+    body.dark-mode .mode-tile .daily-badge {
+        background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%) !important;
+        color: white !important;
+    }
+
+    /* Modal actions for tile modals */
+    .modal-tile-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .modal-tile-play-btn,
+    .modal-tile-secondary-btn {
+        width: 100%;
+        padding: 14px 20px;
+        border-radius: 12px;
+        border: none;
+        cursor: pointer;
+        font-size: 0.95em;
+        font-weight: 700;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .modal-tile-play-btn {
+        background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        color: white;
+        box-shadow: 0 4px 15px rgba(var(--primary-color-rgb), 0.3);
+    }
+
+    .modal-tile-play-btn:active {
+        transform: translateY(1px);
+    }
+
+    .modal-tile-secondary-btn {
+        background: rgba(var(--primary-color-rgb), 0.1);
+        color: var(--primary-color);
+        border: 2px solid rgba(var(--primary-color-rgb), 0.3);
+    }
+
+    .modal-tile-secondary-btn:active {
+        background: rgba(var(--primary-color-rgb), 0.15);
+    }
+
+    /* Home page banners - more compact on mobile */
+    .daily-challenge-banner,
+    .multiplayer-banner,
+    .time-attack-banner,
+    .survival-banner {
+        padding: 15px !important;
+    }
+
+    .daily-challenge-header h2,
+    .multiplayer-header h2,
+    .time-attack-header h2,
+    .survival-header h2 {
+        font-size: 1.2em !important;
+    }
+
+    .daily-challenge-description,
+    .multiplayer-description,
+    .time-attack-description,
+    .survival-description {
+        font-size: 0.85em !important;
+        margin-bottom: 12px !important;
+    }
+
+    .daily-challenge-badge,
+    .multiplayer-badge,
+    .time-attack-badge,
+    .survival-badge {
+        font-size: 0.7em !important;
+        padding: 5px 12px !important;
+    }
+
+    .daily-challenge-info {
+        gap: 8px !important;
+        margin-bottom: 12px !important;
+        flex-wrap: wrap !important;
+    }
+
+    .challenge-stat {
+        font-size: 0.8em !important;
+        padding: 6px 10px !important;
+    }
+
+    .banner-actions {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .banner-actions button {
+        width: 100% !important;
+        padding: 12px !important;
+        font-size: 0.85em !important;
     }
 
     .game-stats-inline {
@@ -24,16 +404,322 @@
         justify-content: space-around;
     }
 
-    /* Game container adjustments */
+    /* Game container adjustments - account for top nav (60px) + bottom nav (70px) */
     #game-container {
-        max-height: calc(100vh - 100px);
+        max-height: calc(100vh - 140px);
+        min-height: 0;
     }
 
     #game-page {
-        max-height: calc(100vh - 140px);
+        max-height: 100%;
+        min-height: 0;
     }
 
-    /* Game pages */
+    /* Reduce container padding for more space */
+    .section {
+        padding: 12px 10px !important;
+    }
+
+    /* Ensure last section has proper bottom spacing on mobile */
+    #game-page .section:last-child,
+    #daily-challenge-page .section:last-child,
+    #time-attack-page .section:last-child,
+    #survival-page .section:last-child {
+        margin-bottom: 80px !important;
+        padding-bottom: 15px !important;
+    }
+
+    /* Hide "ENTER YOUR GUESS" title on mobile to save space */
+    .game-header h2 {
+        display: none !important;
+    }
+
+    /* Extra bottom padding for bottom nav - less aggressive than before */
+    #game-container {
+        padding-bottom: 20px !important;
+    }
+
+    #home-page,
+    #multiplayer-tab {
+        padding-bottom: 90px !important;
+    }
+
+    /* Ensure game pages can scroll properly */
+    #game-page,
+    #daily-challenge-page,
+    #time-attack-page,
+    #survival-page {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+
+    /* Compact game stats layout */
+    .game-header {
+        margin-bottom: 10px !important;
+    }
+
+    .game-stats-inline {
+        justify-content: center !important;
+        gap: 12px !important;
+    }
+
+    /* Input and Submit Button - Vertical Stack Layout */
+    .input-submit-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center;
+        gap: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /* Show full text on mobile (button below inputs) */
+    .submit-btn .submit-text {
+        display: inline-block !important;
+    }
+
+    .submit-btn .submit-icon {
+        display: none !important;
+    }
+
+    /* Compact submit button */
+    .submit-btn {
+        width: 100% !important;
+        max-width: 280px !important;
+        height: auto !important;
+        min-width: auto !important;
+        padding: 12px 20px !important;
+        border-radius: 12px !important;
+        font-size: 0.9em !important;
+        margin-bottom: 0 !important;
+        margin-top: 0 !important;
+    }
+
+    /* Digit input boxes - comfortable tappable size, unified design */
+    .digit-input {
+        width: 46px !important;
+        height: 46px !important;
+        font-size: 1.2em !important;
+    }
+
+    #input-container,
+    #daily-input-container,
+    #ta-input-container,
+    #survival-input-container,
+    #mp-input-container {
+        display: flex !important;
+        gap: 0 !important;
+        margin: 0 !important;
+        margin-bottom: 0 !important;
+        justify-content: center !important;
+    }
+
+    /* Remove digit input margins */
+    .digit-input {
+        margin: 0 !important;
+    }
+
+    /* Guess History - More space for deduction - consistent styling for all modes */
+    #guess-history,
+    #daily-guess-history,
+    #ta-guess-history,
+    #survival-guess-history,
+    #multiplayer-tab #mp-guess-history {
+        flex: 1 !important;
+        min-height: 0 !important; /* CRITICAL: Allow flex to constrain height */
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        -webkit-overflow-scrolling: touch !important;
+        background: rgba(255, 255, 255, 0.4) !important;
+        border-radius: 12px !important;
+        padding: 8px !important;
+    }
+
+    /* Custom scrollbar for all guess history - consistent look */
+    #guess-history::-webkit-scrollbar,
+    #daily-guess-history::-webkit-scrollbar,
+    #ta-guess-history::-webkit-scrollbar,
+    #survival-guess-history::-webkit-scrollbar,
+    #multiplayer-tab #mp-guess-history::-webkit-scrollbar {
+        width: 6px !important;
+    }
+
+    #guess-history::-webkit-scrollbar-track,
+    #daily-guess-history::-webkit-scrollbar-track,
+    #ta-guess-history::-webkit-scrollbar-track,
+    #survival-guess-history::-webkit-scrollbar-track,
+    #multiplayer-tab #mp-guess-history::-webkit-scrollbar-track {
+        background: rgba(167, 139, 250, 0.1) !important;
+        border-radius: 3px !important;
+    }
+
+    #guess-history::-webkit-scrollbar-thumb,
+    #daily-guess-history::-webkit-scrollbar-thumb,
+    #ta-guess-history::-webkit-scrollbar-thumb,
+    #survival-guess-history::-webkit-scrollbar-thumb,
+    #multiplayer-tab #mp-guess-history::-webkit-scrollbar-thumb {
+        background: rgba(var(--primary-color-rgb), 0.4) !important;
+        border-radius: 3px !important;
+    }
+
+    #guess-history::-webkit-scrollbar-thumb:hover,
+    #daily-guess-history::-webkit-scrollbar-thumb:hover,
+    #ta-guess-history::-webkit-scrollbar-thumb:hover,
+    #survival-guess-history::-webkit-scrollbar-thumb:hover,
+    #multiplayer-tab #mp-guess-history::-webkit-scrollbar-thumb:hover {
+        background: rgba(var(--primary-color-rgb), 0.6) !important;
+    }
+
+    body.dark-mode #guess-history,
+    body.dark-mode #daily-guess-history,
+    body.dark-mode #ta-guess-history,
+    body.dark-mode #survival-guess-history,
+    body.dark-mode #multiplayer-tab #mp-guess-history {
+        background: rgba(0, 0, 0, 0.2) !important;
+    }
+
+    body.dark-mode #guess-history::-webkit-scrollbar-thumb,
+    body.dark-mode #daily-guess-history::-webkit-scrollbar-thumb,
+    body.dark-mode #ta-guess-history::-webkit-scrollbar-thumb,
+    body.dark-mode #survival-guess-history::-webkit-scrollbar-thumb,
+    body.dark-mode #multiplayer-tab #mp-guess-history::-webkit-scrollbar-thumb {
+        background: rgba(96, 197, 242, 0.3) !important;
+    }
+
+    body.dark-mode #guess-history::-webkit-scrollbar-thumb:hover,
+    body.dark-mode #daily-guess-history::-webkit-scrollbar-thumb:hover,
+    body.dark-mode #ta-guess-history::-webkit-scrollbar-thumb:hover,
+    body.dark-mode #survival-guess-history::-webkit-scrollbar-thumb:hover,
+    body.dark-mode #multiplayer-tab #mp-guess-history::-webkit-scrollbar-thumb:hover {
+        background: rgba(96, 197, 242, 0.5) !important;
+    }
+
+    /* CRITICAL: Multiplayer tab needs flex properties */
+    #multiplayer-tab:not([style*="display: none"]) {
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        overflow: visible !important;
+    }
+
+    /* CRITICAL: Multiplayer game view needs flex properties */
+    #multiplayer-tab #mp-game-view:not([style*="display: none"]) {
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 !important;
+        min-height: 0 !important;
+        gap: 10px !important;
+        padding-bottom: 100px !important; /* Space for bottom nav and quit button */
+    }
+
+    /* Multiplayer input section - fixed size, don't flex */
+    #multiplayer-tab #mp-game-view .section:nth-child(1) {
+        flex-shrink: 0 !important;
+        flex-grow: 0 !important;
+    }
+
+    /* Multiplayer quit button - fixed at bottom */
+    #multiplayer-tab #mp-quit-game {
+        flex-shrink: 0 !important;
+        flex-grow: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* Guess history section title */
+    #game-page .section:nth-child(2) h2,
+    #daily-challenge-page .section:nth-child(2) h2,
+    #time-attack-page .section:nth-child(2) h2,
+    #survival-page .section:nth-child(2) h2,
+    #multiplayer-tab #mp-game-view .section:nth-child(2) h2 {
+        font-size: 0.9em !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* ALL guess history sections need flex layout for proper scrolling */
+    #game-page .section:nth-child(2),
+    #daily-challenge-page .section:nth-child(2),
+    #time-attack-page .section:nth-child(2),
+    #survival-page .section:nth-child(2),
+    #multiplayer-tab #mp-game-view .section:nth-child(2) {
+        display: flex !important;
+        flex-direction: column !important;
+        flex: 1 !important;
+        overflow: hidden !important;
+        padding: 12px 10px !important;
+        min-height: 150px !important;
+        max-height: 420px !important; /* Show at least 3 complete guess rows */
+    }
+
+    #game-page .section:nth-child(2) h2,
+    #daily-challenge-page .section:nth-child(2) h2,
+    #time-attack-page .section:nth-child(2) h2,
+    #survival-page .section:nth-child(2) h2,
+    #mp-game-view .section:nth-child(2) h2 {
+        flex-shrink: 0 !important;
+    }
+
+    /* Compact history items for mobile - apply to ALL history containers */
+    #guess-history .history-item,
+    #daily-guess-history .history-item,
+    #ta-guess-history .history-item,
+    #survival-guess-history .history-item,
+    #mp-guess-history .history-item,
+    .history-item {
+        padding: 6px 8px !important;
+        margin-bottom: 5px !important;
+        font-size: 0.9em !important;
+        gap: 6px !important;
+        flex-wrap: nowrap !important;
+    }
+
+    #guess-history .history-item .guess,
+    #daily-guess-history .history-item .guess,
+    #ta-guess-history .history-item .guess,
+    #survival-guess-history .history-item .guess,
+    #mp-guess-history .history-item .guess,
+    .history-item .guess {
+        font-size: 15px !important;
+        letter-spacing: 2px !important;
+        min-width: auto !important;
+    }
+
+    #guess-history .history-item .correct,
+    #guess-history .history-item .misplaced,
+    #daily-guess-history .history-item .correct,
+    #daily-guess-history .history-item .misplaced,
+    #ta-guess-history .history-item .correct,
+    #ta-guess-history .history-item .misplaced,
+    #survival-guess-history .history-item .correct,
+    #survival-guess-history .history-item .misplaced,
+    #mp-guess-history .history-item .correct,
+    #mp-guess-history .history-item .misplaced,
+    .history-item .correct,
+    .history-item .misplaced {
+        font-size: 13px !important;
+        padding: 2px 5px !important;
+        white-space: nowrap !important;
+        margin-right: 4px !important;
+    }
+
+    /* Game pages - add bottom padding for bottom nav */
+    #game-page,
+    #daily-challenge-page,
+    #time-attack-page,
+    #survival-page,
+    #multiplayer-tab {
+        padding-bottom: 80px !important;
+    }
+
+    /* Quit buttons - ensure they're visible */
+    #quit-game,
+    #quit-time-attack,
+    #survival-quit-btn,
+    #mp-quit-game,
+    .quit-btn {
+        margin-bottom: 20px !important;
+    }
+
     #game-page .section:nth-child(2),
     #time-attack-page .section:nth-child(2) {
         min-height: 200px;
@@ -112,12 +798,12 @@
         padding: 10px 20px;
     }
 
-    /* Digit inputs */
+    /* Digit inputs - unified connected design */
     .digit-input {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         font-size: 20px;
-        margin: 0 3px;
+        margin: 0;
     }
 
     /* Timer */
@@ -142,6 +828,7 @@
 /* ===================================== */
 
 @media screen and (max-width: 600px) {
+
     /* Auth modal */
     .modal-content {
         max-width: 95%;
@@ -164,6 +851,7 @@
 /* ===================================== */
 
 @media screen and (max-width: 480px) {
+
     /* Header */
     .game-title {
         font-size: 28px;
@@ -218,12 +906,12 @@
         right: -20px;
     }
 
-    /* Digit inputs */
+    /* Digit inputs - unified connected design */
     .digit-input {
-        width: 35px;
-        height: 35px;
+        width: 44px;
+        height: 44px;
         font-size: 18px;
-        margin: 0 2px;
+        margin: 0;
     }
 
     /* Timer */
@@ -326,6 +1014,7 @@
 /* ===================================== */
 
 @media screen and (max-width: 360px) {
+
     /* Header */
     .game-title {
         font-size: 24px;
@@ -357,12 +1046,12 @@
         font-size: 12px;
     }
 
-    /* Digit inputs */
+    /* Digit inputs - unified connected design */
     .digit-input {
-        width: 32px;
-        height: 32px;
+        width: 44px;
+        height: 44px;
         font-size: 16px;
-        margin: 0 2px;
+        margin: 0;
     }
 
     /* Buttons */
@@ -412,7 +1101,8 @@
     #time-attack-page .section:nth-child(2),
     #daily-challenge-page .section:nth-child(2),
     #survival-page .section:nth-child(2) {
-        min-height: 140px; /* Reduced to fit quit button on shorter screens */
+        min-height: 140px;
+        /* Reduced to fit quit button on shorter screens */
     }
 
     #game-status-display {
@@ -458,7 +1148,8 @@
     #game-page .section:nth-child(2),
     #time-attack-page .section:nth-child(2),
     #daily-challenge-page .section:nth-child(2) {
-        min-height: 120px; /* Reduced to fit quit button on very short screens */
+        min-height: 120px;
+        /* Reduced to fit quit button on very short screens */
     }
 
     #game-page .section:nth-child(2) h2,
@@ -493,7 +1184,7 @@
     #daily-input-container,
     #survival-input-container {
         padding: 12px;
-        gap: 6px;
+        gap: 0;
     }
 
     button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close) {
@@ -527,7 +1218,8 @@
     #game-page .section:nth-child(2),
     #time-attack-page .section:nth-child(2),
     #daily-challenge-page .section:nth-child(2) {
-        min-height: 100px; /* Reduced to fit quit button on extremely short screens */
+        min-height: 100px;
+        /* Reduced to fit quit button on extremely short screens */
     }
 
     #game-page .section:nth-child(2) h2,
@@ -564,7 +1256,7 @@
     #ta-input-container,
     #daily-input-container {
         padding: 10px;
-        gap: 5px;
+        gap: 0;
         min-height: 60px;
     }
 
@@ -590,29 +1282,260 @@
 /* ===================================== */
 
 @media screen and (max-width: 600px) {
+
     #result-page,
     #time-attack-result-page,
     #daily-result-page,
+    #survival-result-page,
     #mp-result-page {
-        padding: 20px 15px;
+        padding: 12px;
+        padding-bottom: 90px; /* Extra space for bottom nav bar */
+        max-height: calc(100vh - 60px); /* Account for top nav */
+        overflow-y: auto;
+    }
+
+    /* Compact hero section in result pages */
+    #game-stats > div:first-child > div,
+    #time-attack-stats > div:first-child > div,
+    #daily-game-stats > div:first-child > div,
+    #survival-stats > div:first-child > div,
+    #mp-game-stats > div:first-child > div {
+        padding: 18px 15px !important;
+        border-radius: 15px !important;
+        margin-bottom: 15px !important;
+    }
+
+    /* Compact hero icons */
+    #game-stats > div:first-child > div > div:first-child,
+    #time-attack-stats > div:first-child > div > div:first-child,
+    #daily-game-stats > div:first-child > div > div:first-child,
+    #survival-stats > div:first-child > div > div:first-child,
+    #mp-game-stats > div:first-child > div > div:first-child {
+        font-size: 2em !important;
+        margin-bottom: 8px !important;
+    }
+
+    /* Compact hero title */
+    #game-stats > div:first-child > div > div:nth-child(2),
+    #time-attack-stats > div:first-child > div > div:nth-child(2),
+    #daily-game-stats > div:first-child > div > div:nth-child(2),
+    #survival-stats > div:first-child > div > div:nth-child(2),
+    #mp-game-stats > div:first-child > div > div:nth-child(2) {
+        font-size: 1.5em !important;
+    }
+
+    /* Compact hero subtitle */
+    #game-stats > div:first-child > div > div:nth-child(3),
+    #time-attack-stats > div:first-child > div > div:nth-child(3),
+    #daily-game-stats > div:first-child > div > div:nth-child(3),
+    #survival-stats > div:first-child > div > div:nth-child(3),
+    #mp-game-stats > div:first-child > div > div:nth-child(3) {
+        font-size: 1em !important;
+        margin-top: 6px !important;
+    }
+
+    /* Compact hero difficulty text */
+    #game-stats > div:first-child > div > div:nth-child(4),
+    #time-attack-stats > div:first-child > div > div:nth-child(4),
+    #daily-game-stats > div:first-child > div > div:nth-child(4),
+    #survival-stats > div:first-child > div > div:nth-child(4),
+    #mp-game-stats > div:first-child > div > div:nth-child(4) {
+        font-size: 0.75em !important;
+        margin-top: 4px !important;
+    }
+
+    /* Compact stats grid */
+    #game-stats > div:nth-child(2),
+    #time-attack-stats > div:nth-child(2),
+    #daily-game-stats > div:nth-child(2),
+    #survival-stats > div:nth-child(2),
+    #mp-game-stats > div:nth-child(2) {
+        gap: 10px !important;
+        margin-bottom: 12px !important;
+    }
+
+    /* Compact stat cards */
+    #game-stats > div:nth-child(2) > div,
+    #time-attack-stats > div:nth-child(2) > div,
+    #daily-game-stats > div:nth-child(2) > div,
+    #survival-stats > div:nth-child(2) > div,
+    #mp-game-stats > div:nth-child(2) > div {
+        padding: 12px !important;
+        border-radius: 10px !important;
+    }
+
+    /* Compact stat icons */
+    #game-stats > div:nth-child(2) > div > i,
+    #time-attack-stats > div:nth-child(2) > div > i,
+    #daily-game-stats > div:nth-child(2) > div > i,
+    #survival-stats > div:nth-child(2) > div > i,
+    #mp-game-stats > div:nth-child(2) > div > i {
+        font-size: 1.5em !important;
+        margin-bottom: 6px !important;
+    }
+
+    /* Compact stat values */
+    #game-stats > div:nth-child(2) > div > div:first-of-type,
+    #time-attack-stats > div:nth-child(2) > div > div:first-of-type,
+    #daily-game-stats > div:nth-child(2) > div > div:first-of-type,
+    #survival-stats > div:nth-child(2) > div > div:first-of-type,
+    #mp-game-stats > div:nth-child(2) > div > div:first-of-type {
+        font-size: 1.4em !important;
+    }
+
+    /* Compact stat labels */
+    #game-stats > div:nth-child(2) > div > div:last-of-type,
+    #time-attack-stats > div:nth-child(2) > div > div:last-of-type,
+    #daily-game-stats > div:nth-child(2) > div > div:last-of-type,
+    #survival-stats > div:nth-child(2) > div > div:last-of-type,
+    #mp-game-stats > div:nth-child(2) > div > div:last-of-type {
+        font-size: 0.7em !important;
+        margin-top: 3px !important;
     }
 
     .result-button-group {
         flex-direction: column;
-        gap: 10px;
+        gap: 8px;
+        margin-top: 12px;
     }
 
     .result-button-group button {
         width: 100%;
+        padding: 11px 14px !important;
+        font-size: 13px !important;
     }
 }
 
 @media screen and (max-height: 700px) {
+
     #result-page,
     #time-attack-result-page,
     #daily-result-page,
+    #survival-result-page,
     #mp-result-page {
-        padding: 15px;
+        padding: 12px;
+        padding-bottom: 85px;
+    }
+}
+
+/* Extra compact for small screens */
+@media screen and (max-width: 480px) {
+    #result-page,
+    #time-attack-result-page,
+    #daily-result-page,
+    #survival-result-page,
+    #mp-result-page {
+        padding: 10px;
+        padding-bottom: 85px;
+    }
+
+    /* Extra compact hero section */
+    #game-stats > div:first-child > div,
+    #time-attack-stats > div:first-child > div,
+    #daily-game-stats > div:first-child > div,
+    #survival-stats > div:first-child > div,
+    #mp-game-stats > div:first-child > div {
+        padding: 15px 12px !important;
+        border-radius: 12px !important;
+        margin-bottom: 12px !important;
+    }
+
+    /* Extra compact hero icons */
+    #game-stats > div:first-child > div > div:first-child,
+    #time-attack-stats > div:first-child > div > div:first-child,
+    #daily-game-stats > div:first-child > div > div:first-child,
+    #survival-stats > div:first-child > div > div:first-child,
+    #mp-game-stats > div:first-child > div > div:first-child {
+        font-size: 1.8em !important;
+        margin-bottom: 6px !important;
+    }
+
+    /* Extra compact hero title */
+    #game-stats > div:first-child > div > div:nth-child(2),
+    #time-attack-stats > div:first-child > div > div:nth-child(2),
+    #daily-game-stats > div:first-child > div > div:nth-child(2),
+    #survival-stats > div:first-child > div > div:nth-child(2),
+    #mp-game-stats > div:first-child > div > div:nth-child(2) {
+        font-size: 1.3em !important;
+    }
+
+    /* Extra compact hero subtitle */
+    #game-stats > div:first-child > div > div:nth-child(3),
+    #time-attack-stats > div:first-child > div > div:nth-child(3),
+    #daily-game-stats > div:first-child > div > div:nth-child(3),
+    #survival-stats > div:first-child > div > div:nth-child(3),
+    #mp-game-stats > div:first-child > div > div:nth-child(3) {
+        font-size: 0.9em !important;
+        margin-top: 5px !important;
+    }
+
+    /* Extra compact hero difficulty text */
+    #game-stats > div:first-child > div > div:nth-child(4),
+    #time-attack-stats > div:first-child > div > div:nth-child(4),
+    #daily-game-stats > div:first-child > div > div:nth-child(4),
+    #survival-stats > div:first-child > div > div:nth-child(4),
+    #mp-game-stats > div:first-child > div > div:nth-child(4) {
+        font-size: 0.7em !important;
+        margin-top: 3px !important;
+    }
+
+    /* Extra compact stats grid */
+    #game-stats > div:nth-child(2),
+    #time-attack-stats > div:nth-child(2),
+    #daily-game-stats > div:nth-child(2),
+    #survival-stats > div:nth-child(2),
+    #mp-game-stats > div:nth-child(2) {
+        gap: 8px !important;
+        margin-bottom: 10px !important;
+    }
+
+    /* Extra compact stat cards */
+    #game-stats > div:nth-child(2) > div,
+    #time-attack-stats > div:nth-child(2) > div,
+    #daily-game-stats > div:nth-child(2) > div,
+    #survival-stats > div:nth-child(2) > div,
+    #mp-game-stats > div:nth-child(2) > div {
+        padding: 10px 8px !important;
+        border-radius: 8px !important;
+    }
+
+    /* Extra compact stat icons */
+    #game-stats > div:nth-child(2) > div > i,
+    #time-attack-stats > div:nth-child(2) > div > i,
+    #daily-game-stats > div:nth-child(2) > div > i,
+    #survival-stats > div:nth-child(2) > div > i,
+    #mp-game-stats > div:nth-child(2) > div > i {
+        font-size: 1.3em !important;
+        margin-bottom: 5px !important;
+    }
+
+    /* Extra compact stat values */
+    #game-stats > div:nth-child(2) > div > div:first-of-type,
+    #time-attack-stats > div:nth-child(2) > div > div:first-of-type,
+    #daily-game-stats > div:nth-child(2) > div > div:first-of-type,
+    #survival-stats > div:nth-child(2) > div > div:first-of-type,
+    #mp-game-stats > div:nth-child(2) > div > div:first-of-type {
+        font-size: 1.3em !important;
+    }
+
+    /* Extra compact stat labels */
+    #game-stats > div:nth-child(2) > div > div:last-of-type,
+    #time-attack-stats > div:nth-child(2) > div > div:last-of-type,
+    #daily-game-stats > div:nth-child(2) > div > div:last-of-type,
+    #survival-stats > div:nth-child(2) > div > div:last-of-type,
+    #mp-game-stats > div:nth-child(2) > div > div:last-of-type {
+        font-size: 0.65em !important;
+        margin-top: 2px !important;
+    }
+
+    .result-button-group {
+        gap: 6px;
+        margin-top: 10px;
+    }
+
+    .result-button-group button {
+        padding: 10px 12px !important;
+        font-size: 12px !important;
     }
 }
 
@@ -621,6 +1544,7 @@
 /* ===================================== */
 
 @media print {
+
     /* Hide interactive elements */
     #game-header,
     #controls,
@@ -651,5 +1575,44 @@
     #result-page {
         max-width: 100%;
         box-shadow: none;
+    }
+}
+
+/* ===================================== */
+/* VERY SMALL SCREENS (<360px) */
+/* ===================================== */
+@media screen and (max-width: 359px) {
+
+    /* Unified connected design for very small screens (320px) */
+    .digit-input {
+        width: 44px !important;
+        height: 44px !important;
+        font-size: 1.1em !important;
+    }
+
+    #input-container,
+    #daily-input-container,
+    #ta-input-container,
+    #survival-input-container,
+    #mp-input-container {
+        gap: 0 !important;
+    }
+
+    /* iPhone SE and similar - ensure proper scrolling */
+    #game-container {
+        max-height: calc(100vh - 130px) !important;
+        padding: 12px !important;
+        padding-bottom: 15px !important;
+    }
+
+    #game-page,
+    #daily-challenge-page,
+    #time-attack-page,
+    #survival-page {
+        gap: 10px !important;
+    }
+
+    .section {
+        padding: 12px !important;
     }
 }
