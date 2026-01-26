@@ -16,7 +16,10 @@ body {
     min-height: 100vh;
     margin: 0;
     padding: 20px;
-    padding-top: 90px;
+    padding-top: max(90px, calc(90px + env(safe-area-inset-top)));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+    padding-left: max(20px, env(safe-area-inset-left));
+    padding-right: max(20px, env(safe-area-inset-right));
     box-sizing: border-box;
     background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
     color: var(--text-color);
@@ -57,7 +60,7 @@ body {
 #game-container {
     width: 100%;
     max-width: 650px;
-    max-height: calc(100vh - 120px); /* Fit viewport minus header */
+    max-height: calc(100vh - 120px - env(safe-area-inset-top) - env(safe-area-inset-bottom)); /* Fit viewport minus header and safe areas */
     padding: 20px;
     box-sizing: border-box;
     margin: 0 auto;
