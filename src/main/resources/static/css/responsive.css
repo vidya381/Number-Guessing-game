@@ -465,7 +465,7 @@
         margin-top: 0 !important;
     }
 
-    /* Digit input boxes - comfortable tappable size */
+    /* Digit input boxes - comfortable tappable size, unified design */
     .digit-input {
         width: 46px !important;
         height: 46px !important;
@@ -478,7 +478,7 @@
     #survival-input-container,
     #mp-input-container {
         display: flex !important;
-        gap: 6px !important;
+        gap: 0 !important;
         margin: 0 !important;
         margin-bottom: 0 !important;
         justify-content: center !important;
@@ -768,12 +768,12 @@
         padding: 10px 20px;
     }
 
-    /* Digit inputs */
+    /* Digit inputs - unified connected design */
     .digit-input {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         font-size: 20px;
-        margin: 0 3px;
+        margin: 0;
     }
 
     /* Timer */
@@ -876,12 +876,12 @@
         right: -20px;
     }
 
-    /* Digit inputs */
+    /* Digit inputs - unified connected design */
     .digit-input {
-        width: 35px;
-        height: 35px;
+        width: 44px;
+        height: 44px;
         font-size: 18px;
-        margin: 0 2px;
+        margin: 0;
     }
 
     /* Timer */
@@ -1016,12 +1016,12 @@
         font-size: 12px;
     }
 
-    /* Digit inputs */
+    /* Digit inputs - unified connected design */
     .digit-input {
-        width: 32px;
-        height: 32px;
+        width: 44px;
+        height: 44px;
         font-size: 16px;
-        margin: 0 2px;
+        margin: 0;
     }
 
     /* Buttons */
@@ -1154,7 +1154,7 @@
     #daily-input-container,
     #survival-input-container {
         padding: 12px;
-        gap: 6px;
+        gap: 0;
     }
 
     button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close) {
@@ -1226,7 +1226,7 @@
     #ta-input-container,
     #daily-input-container {
         padding: 10px;
-        gap: 5px;
+        gap: 0;
         min-height: 60px;
     }
 
@@ -1553,10 +1553,10 @@
 /* ===================================== */
 @media screen and (max-width: 359px) {
 
-    /* Slightly smaller boxes for iPhone SE 1st gen (320px) */
+    /* Unified connected design for very small screens (320px) */
     .digit-input {
-        width: 42px !important;
-        height: 42px !important;
+        width: 44px !important;
+        height: 44px !important;
         font-size: 1.1em !important;
     }
 
@@ -1565,6 +1565,6 @@
     #ta-input-container,
     #survival-input-container,
     #mp-input-container {
-        gap: 5px !important;
+        gap: 0 !important;
     }
 }

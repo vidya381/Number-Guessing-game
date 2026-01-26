@@ -349,9 +349,10 @@ body.dark-mode [data-tooltip]:before {
     height: 60px;
     font-size: 28px;
     text-align: center;
-    margin: 0 4px;
+    margin: 0;
     border: 3px solid var(--input-border);
-    border-radius: 15px;
+    border-radius: 0;
+    border-right: none;
     background-color: var(--input-background);
     color: var(--primary-color);
     font-weight: 700;
@@ -360,7 +361,18 @@ body.dark-mode [data-tooltip]:before {
     transition: all 0.3s ease;
     -webkit-appearance: none;
     -moz-appearance: textfield;
-    box-shadow: 0 4px 12px rgba(139, 122, 191, 0.15);
+    box-shadow: 0 2px 8px rgba(139, 122, 191, 0.12);
+}
+
+.digit-input:first-child {
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+.digit-input:last-child {
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-right: 3px solid var(--input-border);
 }
 
 /* Dynamic sizing for different digit counts */
@@ -384,8 +396,9 @@ body.dark-mode [data-tooltip]:before {
 
 .digit-input:focus {
     border-color: var(--primary-color);
+    border-right: 3px solid var(--primary-color);
     outline: none;
-    transform: scale(1.08);
+    z-index: 20;
     box-shadow: 0 5px 20px var(--shadow-color);
     background-color: var(--card-hover-background);
 }

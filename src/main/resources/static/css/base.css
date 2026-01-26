@@ -281,7 +281,7 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
     display: flex;
     justify-content: center;
     flex-wrap: nowrap;
-    gap: 8px;
+    gap: 0;
     margin: 20px 0;
     padding: 15px;
     min-height: 75px;
@@ -293,7 +293,7 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
     display: flex;
     justify-content: center;
     flex-wrap: nowrap;
-    gap: 8px;
+    gap: 0;
     margin: 20px 0;
     padding: 15px;
     min-height: 75px;

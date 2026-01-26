@@ -742,12 +742,12 @@
     display: none;
 }
 
-/* Multiplayer input container - center and add spacing */
+/* Multiplayer input container - unified connected design */
 #mp-input-container {
     display: flex;
     justify-content: center;
     flex-wrap: nowrap;
-    gap: 8px;
+    gap: 0;
     margin: 20px 0;
     padding: 15px;
     min-height: 75px;
