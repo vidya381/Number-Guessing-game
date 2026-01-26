@@ -550,6 +550,15 @@ body.dark-mode #survival-leaderboard-content .leaderboard-row .lb-attempts {
         height: 65px;
         font-size: 28px;
     }
+
+    /* Leaderboard - compact but show all columns */
+    #survival-leaderboard-content .leaderboard-header,
+    #survival-leaderboard-content .leaderboard-row {
+        grid-template-columns: 50px 1fr 65px 65px;
+        gap: 8px;
+        font-size: 0.8em;
+        padding: 10px 12px;
+    }
 }
 
 @media screen and (max-width: 480px) {
@@ -574,5 +583,27 @@ body.dark-mode #survival-leaderboard-content .leaderboard-row .lb-attempts {
         width: 45px;
         height: 60px;
         font-size: 24px;
+    }
+
+    /* Leaderboard - very compact but show all columns */
+    #survival-leaderboard-content .leaderboard-header,
+    #survival-leaderboard-content .leaderboard-row {
+        grid-template-columns: 45px 1fr 55px 55px;
+        gap: 6px;
+        font-size: 0.75em;
+        padding: 8px 10px;
+    }
+
+    #survival-leaderboard-content .lb-rank {
+        font-size: 1em !important;
+    }
+
+    #survival-leaderboard-content .lb-username {
+        font-size: 0.95em;
+    }
+
+    #survival-leaderboard-content .lb-rounds,
+    #survival-leaderboard-content .lb-attempts {
+        font-size: 0.9em;
     }
 }

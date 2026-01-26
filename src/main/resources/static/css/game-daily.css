@@ -645,10 +645,10 @@ body.dark-mode #modal-daily-leaderboard-content .leaderboard-row.current-user {
 
     #modal-daily-leaderboard-content .leaderboard-header,
     #modal-daily-leaderboard-content .leaderboard-row {
-        grid-template-columns: 60px 170px 90px 90px;
-        gap: 12px;
-        font-size: 0.9em;
-        padding: 10px 15px;
+        grid-template-columns: 50px 1fr 70px 75px;
+        gap: 8px;
+        font-size: 0.8em;
+        padding: 10px 12px;
     }
 }
 
@@ -676,10 +676,23 @@ body.dark-mode #modal-daily-leaderboard-content .leaderboard-row.current-user {
 
     #modal-daily-leaderboard-content .leaderboard-header,
     #modal-daily-leaderboard-content .leaderboard-row {
-        grid-template-columns: 50px 140px 75px 75px;
-        gap: 10px;
-        font-size: 0.85em;
-        padding: 10px 12px;
+        grid-template-columns: 45px 1fr 60px 65px;
+        gap: 6px;
+        font-size: 0.75em;
+        padding: 8px 10px;
+    }
+
+    #modal-daily-leaderboard-content .lb-rank {
+        font-size: 1em !important;
+    }
+
+    #modal-daily-leaderboard-content .lb-username {
+        font-size: 0.95em;
+    }
+
+    #modal-daily-leaderboard-content .lb-attempts,
+    #modal-daily-leaderboard-content .lb-time {
+        font-size: 0.9em;
     }
 }
 

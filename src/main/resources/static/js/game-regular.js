@@ -930,24 +930,29 @@ window.RegularGame = {
         if (playTimeAttack && timeAttackModal) {
             playTimeAttack.addEventListener('click', () => {
                 timeAttackModal.style.display = 'flex';
-                // Load leaderboard when modal opens (default to Easy)
-                this.loadModalLeaderboard('time-attack', 0);
             });
         }
 
-        // Time Attack modal leaderboard tabs
-        const taLeaderboardTabs = timeAttackModal?.querySelectorAll('.modal-lb-tab');
-        if (taLeaderboardTabs) {
-            taLeaderboardTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Update active tab
-                    taLeaderboardTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
+        // Time Attack: difficulty buttons start game immediately
+        const taButtons = timeAttackModal?.querySelectorAll('.modal-difficulty-btn');
+        if (taButtons) {
+            taButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const difficulty = parseInt(btn.dataset.difficulty);
+                    timeAttackModal.style.display = 'none';
 
-                    // Load leaderboard for selected difficulty
-                    const difficulty = parseInt(tab.dataset.difficulty);
-                    this.loadModalLeaderboard('time-attack', difficulty);
+                    if (window.TimeAttackGame) {
+                        TimeAttackGame.startTimeAttackSession(difficulty);
+                    }
                 });
+            });
+        }
+
+        // Time Attack: View Leaderboard button opens popup
+        const taViewLbBtn = timeAttackModal?.querySelector('.modal-view-leaderboard-btn');
+        if (taViewLbBtn) {
+            taViewLbBtn.addEventListener('click', () => {
+                this.openLeaderboardPopup('time-attack');
             });
         }
 
@@ -958,48 +963,31 @@ window.RegularGame = {
         if (playSurvival && survivalModal) {
             playSurvival.addEventListener('click', () => {
                 survivalModal.style.display = 'flex';
-                // Load leaderboard when modal opens (default to Easy)
-                this.loadModalLeaderboard('survival', 0);
             });
         }
 
-        // Survival modal leaderboard tabs
-        const survivalLeaderboardTabs = survivalModal?.querySelectorAll('.modal-lb-tab');
-        if (survivalLeaderboardTabs) {
-            survivalLeaderboardTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Update active tab
-                    survivalLeaderboardTabs.forEach(t => t.classList.remove('active'));
-                    tab.classList.add('active');
+        // Survival: difficulty buttons start game immediately
+        const survivalButtons = survivalModal?.querySelectorAll('.modal-difficulty-btn');
+        if (survivalButtons) {
+            survivalButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const difficulty = parseInt(btn.dataset.difficulty);
+                    survivalModal.style.display = 'none';
 
-                    // Load leaderboard for selected difficulty
-                    const difficulty = parseInt(tab.dataset.difficulty);
-                    this.loadModalLeaderboard('survival', difficulty);
+                    if (window.SurvivalGame) {
+                        SurvivalGame.startSurvival(difficulty);
+                    }
                 });
             });
         }
 
-        // Handle difficulty selection in modals
-        document.querySelectorAll('.modal-difficulty-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const mode = btn.dataset.mode;
-                const difficulty = parseInt(btn.dataset.difficulty);
-
-                // Close the modal
-                if (mode === 'time-attack' && timeAttackModal) {
-                    timeAttackModal.style.display = 'none';
-                } else if (mode === 'survival' && survivalModal) {
-                    survivalModal.style.display = 'none';
-                }
-
-                // Start the respective game mode
-                if (mode === 'time-attack' && window.TimeAttackGame) {
-                    TimeAttackGame.startTimeAttackSession(difficulty);
-                } else if (mode === 'survival' && window.SurvivalGame) {
-                    SurvivalGame.startSurvival(difficulty);
-                }
+        // Survival: View Leaderboard button opens popup
+        const survivalViewLbBtn = survivalModal?.querySelector('.modal-view-leaderboard-btn');
+        if (survivalViewLbBtn) {
+            survivalViewLbBtn.addEventListener('click', () => {
+                this.openLeaderboardPopup('survival');
             });
-        });
+        }
 
         // Close buttons
         document.querySelectorAll('.modal-close-btn').forEach(btn => {
@@ -1037,9 +1025,11 @@ window.RegularGame = {
     // MODAL LEADERBOARD
     // ==========================================
 
-    loadModalLeaderboard: async function(mode, difficulty = 0) {
-        const modalId = mode === 'daily-challenge' ? 'daily-challenge-tile-modal' : `${mode}-modal`;
-        const modal = document.getElementById(modalId);
+    loadModalLeaderboard: async function(mode, difficulty = 0, customModal = null) {
+        const modal = customModal || (() => {
+            const modalId = mode === 'daily-challenge' ? 'daily-challenge-tile-modal' : `${mode}-modal`;
+            return document.getElementById(modalId);
+        })();
         if (!modal) return;
 
         const loadingDiv = modal.querySelector('.modal-leaderboard-loading');
@@ -1128,6 +1118,19 @@ window.RegularGame = {
             if (emptyDiv.querySelector('p')) {
                 emptyDiv.querySelector('p').textContent = 'Failed to load leaderboard';
             }
+        }
+    },
+
+    // ==========================================
+    // OPEN DESKTOP LEADERBOARD MODAL
+    // ==========================================
+
+    openLeaderboardPopup: function(mode) {
+        // Open the existing desktop-style leaderboard modals
+        if (mode === 'time-attack' && window.TimeAttackGame) {
+            TimeAttackGame.loadTimeAttackLeaderboard(0); // Default to Easy
+        } else if (mode === 'survival' && window.SurvivalGame) {
+            SurvivalGame.loadSurvivalLeaderboard(0); // Default to Easy
         }
     }
 };
