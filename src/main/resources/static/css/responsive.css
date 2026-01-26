@@ -404,13 +404,15 @@
         justify-content: space-around;
     }
 
-    /* Game container adjustments */
+    /* Game container adjustments - account for top nav (60px) + bottom nav (70px) */
     #game-container {
-        max-height: calc(100vh - 100px);
+        max-height: calc(100vh - 140px);
+        min-height: 0;
     }
 
     #game-page {
-        max-height: calc(100vh - 140px);
+        max-height: 100%;
+        min-height: 0;
     }
 
     /* Reduce container padding for more space */
@@ -418,9 +420,37 @@
         padding: 12px 10px !important;
     }
 
+    /* Ensure last section has proper bottom spacing on mobile */
+    #game-page .section:last-child,
+    #daily-challenge-page .section:last-child,
+    #time-attack-page .section:last-child,
+    #survival-page .section:last-child {
+        margin-bottom: 80px !important;
+        padding-bottom: 15px !important;
+    }
+
     /* Hide "ENTER YOUR GUESS" title on mobile to save space */
     .game-header h2 {
         display: none !important;
+    }
+
+    /* Extra bottom padding for bottom nav - less aggressive than before */
+    #game-container {
+        padding-bottom: 20px !important;
+    }
+
+    #home-page,
+    #multiplayer-tab {
+        padding-bottom: 90px !important;
+    }
+
+    /* Ensure game pages can scroll properly */
+    #game-page,
+    #daily-challenge-page,
+    #time-attack-page,
+    #survival-page {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
     }
 
     /* Compact game stats layout */
@@ -1566,5 +1596,23 @@
     #survival-input-container,
     #mp-input-container {
         gap: 0 !important;
+    }
+
+    /* iPhone SE and similar - ensure proper scrolling */
+    #game-container {
+        max-height: calc(100vh - 130px) !important;
+        padding: 12px !important;
+        padding-bottom: 15px !important;
+    }
+
+    #game-page,
+    #daily-challenge-page,
+    #time-attack-page,
+    #survival-page {
+        gap: 10px !important;
+    }
+
+    .section {
+        padding: 12px !important;
     }
 }

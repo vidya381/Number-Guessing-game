@@ -107,11 +107,12 @@ body.dark-mode .coin-icon {
     /* Reset ALL button defaults */
     all: unset;
 
-    /* EXACTLY match stat-badge size */
+    /* Increased touch target for mobile */
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 12px;
+    padding: 10px 14px;
+    min-height: 44px;
     border-radius: 16px;
     font-weight: 600;
     font-size: 0.85em;
