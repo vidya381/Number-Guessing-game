@@ -43,3 +43,4 @@ target/
 
 # Local documentation (keep local, don't commit)
 PROJECT_DESCRIPTION.md
+ORACLE_CLOUD_DEPLOYMENT.md

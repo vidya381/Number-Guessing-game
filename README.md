@@ -155,7 +155,7 @@ A modern, full-stack web implementation of the classic **Bulls and Cows** code-b
 ### **Backend**
 - **Framework**: Spring Boot 3.1.0
 - **Language**: Java 17
-- **Database**: PostgreSQL (Supabase hosted)
+- **Database**: PostgreSQL (Neon hosted)
 - **ORM**: Hibernate/JPA with HikariCP connection pooling
 - **Security**: JWT Authentication with BCrypt password hashing
 - **Real-time**: WebSocket with STOMP protocol over SockJS

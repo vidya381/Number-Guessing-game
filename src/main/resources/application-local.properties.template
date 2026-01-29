@@ -2,8 +2,11 @@
 # Copy this file to application-local.properties and fill in your actual values
 # application-local.properties is excluded from git for security
 
-# Supabase Database Password
-spring.datasource.password=your-actual-supabase-password-here
+# Neon Database Configuration
+# Full connection string provided by Neon
+spring.datasource.url=jdbc:postgresql://your-neon-host.neon.tech/neondb?sslmode=require
+spring.datasource.username=neondb_owner
+spring.datasource.password=your-actual-neon-password-here
 
 # JWT Secret (should be at least 32 characters for security)
 jwt.secret=your-actual-jwt-secret-key-at-least-32-characters-long

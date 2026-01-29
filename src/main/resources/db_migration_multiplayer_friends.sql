@@ -116,8 +116,8 @@ CREATE INDEX IF NOT EXISTS idx_player_progress_user ON multiplayer_player_progre
 -- Migration Complete
 -- ============================================================
 
--- To apply this migration to your Supabase database:
--- 1. Connect to your database using psql or Supabase SQL Editor
+-- To apply this migration to your Neon database:
+-- 1. Connect to your database using psql or Neon SQL Editor
 -- 2. Run this entire SQL file
 -- 3. Verify tables were created: \dt multiplayer* friend*
 -- 4. Verify indexes were created: \di idx_*
