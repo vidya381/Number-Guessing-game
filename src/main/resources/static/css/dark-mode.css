@@ -23,7 +23,7 @@ body.dark-mode button:not(.hint-button):not(.header-icon-btn):not(.auth-btn):not
 
 /* Remove glass effect from dark mode header */
 body.dark-mode #game-header {
-    background: linear-gradient(135deg, #252641 0%, #1e1f33 100%);
+    background: var(--card-background);
     backdrop-filter: none;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
     border-bottom: 1px solid rgba(167, 139, 250, 0.2);
@@ -38,7 +38,7 @@ body.dark-mode #sound-toggle i {
 }
 
 body.dark-mode .header-streak {
-    background: linear-gradient(135deg, #f1c40f 0%, #f39c12 100%);
+    background: #f1c40f;
     color: #1a1a1a;
     box-shadow: 0 4px 12px rgba(241, 196, 15, 0.4);
 }
@@ -52,7 +52,7 @@ body.dark-mode .header-streak i {
 }
 
 body.dark-mode .header-coins {
-    background: linear-gradient(135deg, #ffb300 0%, #ff8f00 100%);
+    background: #ffb300;
     color: #1a1a1a;
     box-shadow: 0 4px 12px rgba(255, 179, 0, 0.4);
 }
@@ -71,17 +71,17 @@ body.dark-mode .header-coins i {
 
 /* Make dark mode containers solid (no glass effect) */
 body.dark-mode #game-container {
-    background: linear-gradient(135deg, #252641 0%, #2a2847 100%);
+    background: var(--card-background);
     border: 1px solid rgba(167, 139, 250, 0.25);
 }
 
 body.dark-mode #game-status-display {
-    background: linear-gradient(135deg, #2d2f48 0%, #252641 100%);
+    background: var(--card-background);
     border: 1px solid rgba(167, 139, 250, 0.2);
 }
 
 body.dark-mode .section {
-    background: linear-gradient(135deg, #252641 0%, #2a2847 100%);
+    background: var(--card-background);
     border: 1px solid rgba(167, 139, 250, 0.15);
 }
 
@@ -102,7 +102,7 @@ body.dark-mode .coin-icon {
 
 /* Hint button */
 body.dark-mode .hint-button {
-    background: linear-gradient(135deg, rgba(255, 143, 0, 0.2) 0%, rgba(255, 111, 0, 0.25) 100%);
+    background: rgba(255, 143, 0, 0.2);
     border: 1px solid rgba(255, 143, 0, 0.4);
 }
 
@@ -136,25 +136,21 @@ body.dark-mode .floating-number:hover {
 
 /* Achievement toasts */
 body.dark-mode .achievement-toast {
-    background: linear-gradient(135deg, #2d2f48 0%, #252641 100%);
+    background: var(--card-background);
     border-color: var(--secondary-color);
     box-shadow: 0 10px 40px rgba(167, 139, 250, 0.4);
 }
 
 body.dark-mode .achievement-toast::before {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(78, 168, 222, 0.08) 100%);
+    background: rgba(167, 139, 250, 0.15);
 }
 
 body.dark-mode .achievement-toast-icon-wrapper {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+    background: var(--secondary-color);
 }
 
 body.dark-mode .achievement-toast-title {
-    color: #ffffff;
-    background: linear-gradient(135deg, #a78bfa 0%, #4ea8de 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
 }
 
 body.dark-mode .achievement-toast-description {
@@ -220,15 +216,15 @@ body.dark-mode .leaderboard-table tbody tr:hover {
 }
 
 body.dark-mode .leaderboard-table tr.rank-1 td {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 193, 7, 0.1) 100%);
+    background: rgba(255, 215, 0, 0.15);
 }
 
 body.dark-mode .leaderboard-table tr.rank-2 td {
-    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(158, 158, 158, 0.1) 100%);
+    background: rgba(192, 192, 192, 0.15);
 }
 
 body.dark-mode .leaderboard-table tr.rank-3 td {
-    background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(184, 115, 51, 0.1) 100%);
+    background: rgba(205, 127, 50, 0.15);
 }
 
 body.dark-mode .username-cell {
@@ -241,7 +237,7 @@ body.dark-mode .score-cell {
 
 /* Achievements modal */
 body.dark-mode .stat-box {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(78, 168, 222, 0.08) 100%);
+    background: rgba(167, 139, 250, 0.15);
     border-color: rgba(167, 139, 250, 0.3);
 }
 
@@ -268,17 +264,17 @@ body.dark-mode .achievement-item:hover {
 }
 
 body.dark-mode .achievement-icon-wrapper {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.2) 0%, rgba(78, 168, 222, 0.1) 100%);
+    background: rgba(167, 139, 250, 0.2);
     border-color: rgba(167, 139, 250, 0.4);
 }
 
 body.dark-mode .achievement-item.unlocked .achievement-icon-wrapper {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+    background: var(--secondary-color);
 }
 
 /* Profile modal */
 body.dark-mode .profile-header {
-    background: linear-gradient(135deg, rgba(139, 122, 191, 0.2) 0%, rgba(99, 211, 184, 0.2) 100%);
+    background: rgba(139, 122, 191, 0.2);
 }
 
 body.dark-mode .profile-stat-card:hover {
@@ -286,7 +282,7 @@ body.dark-mode .profile-stat-card:hover {
 }
 
 body.dark-mode .achievement-summary-card {
-    background: linear-gradient(135deg, rgba(139, 122, 191, 0.2) 0%, rgba(99, 211, 184, 0.2) 100%);
+    background: rgba(139, 122, 191, 0.2);
 }
 
 /* ===================================== */
@@ -308,15 +304,13 @@ body.dark-mode .time-attack-stat {
 }
 
 body.dark-mode .time-attack-result-stat {
-    background: linear-gradient(135deg, rgba(231, 76, 60, 0.15) 0%, rgba(192, 57, 43, 0.08) 100%);
+    background: rgba(231, 76, 60, 0.15);
     border-color: rgba(231, 76, 60, 0.3);
 }
 
 /* Daily Challenge */
 body.dark-mode .daily-challenge-banner {
-    background: linear-gradient(135deg,
-        rgba(240, 179, 71, 0.15) 0%,
-        rgba(93, 211, 179, 0.15) 100%) !important;
+    background: rgba(240, 179, 71, 0.15) !important;
     border: 2px solid rgba(240, 179, 71, 0.4) !important;
 }
 
@@ -359,22 +353,22 @@ body.dark-mode select:focus {
 /* ===================================== */
 
 body.dark-mode .setting-item {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.1) 0%, rgba(78, 168, 222, 0.05) 100%);
+    background: rgba(167, 139, 250, 0.1);
     border-color: rgba(167, 139, 250, 0.2);
 }
 
 body.dark-mode .setting-item:hover {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(78, 168, 222, 0.08) 100%);
+    background: rgba(167, 139, 250, 0.15);
     box-shadow: 0 4px 15px rgba(167, 139, 250, 0.2);
 }
 
 body.dark-mode .toggle-btn {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     box-shadow: 0 4px 15px rgba(167, 139, 250, 0.3);
 }
 
 body.dark-mode .toggle-btn:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--secondary-color);
     box-shadow: 0 6px 20px rgba(96, 197, 242, 0.4);
 }
 
@@ -383,12 +377,12 @@ body.dark-mode .volume-slider {
 }
 
 body.dark-mode .volume-slider::-webkit-slider-thumb {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: var(--primary-color);
     box-shadow: 0 2px 8px rgba(167, 139, 250, 0.4);
 }
 
 body.dark-mode .volume-slider::-moz-range-thumb {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: var(--primary-color);
     box-shadow: 0 2px 8px rgba(167, 139, 250, 0.4);
 }
 
@@ -407,12 +401,12 @@ body.dark-mode ::-webkit-scrollbar-track {
 }
 
 body.dark-mode ::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: var(--primary-color);
     border-radius: 5px;
 }
 
 body.dark-mode ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+    background: var(--secondary-color);
 }
 
 /* Firefox scrollbar */

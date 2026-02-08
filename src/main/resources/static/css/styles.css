@@ -30,23 +30,21 @@
     top: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(135deg, rgba(248, 247, 252, 0.95) 0%, rgba(243, 241, 250, 0.98) 100%);
+    background: var(--card-background);
     backdrop-filter: blur(10px);
     padding: 15px 25px;
     z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 4px 20px rgba(139, 122, 191, 0.12);
+    box-shadow: 0 4px 20px var(--shadow-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .game-title {
     font-family: 'Fredoka One', 'Rounded Mplus 1c', sans-serif;
     font-size: clamp(24px, 5vw, 36px);
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
     margin: 0;
     cursor: pointer;
     font-weight: 700;
@@ -65,7 +63,7 @@
     justify-content: center;
     align-items: center;
     font-size: 18px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
     border: none;
     cursor: pointer;
@@ -74,9 +72,9 @@
 }
 
 #theme-toggle:hover, #sound-toggle:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--primary-dark);
     transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(78, 168, 222, 0.35);
+    box-shadow: 0 6px 20px var(--shadow-color);
 }
 
 body {
@@ -90,7 +88,7 @@ body {
     padding: 20px;
     padding-top: 90px;
     box-sizing: border-box;
-    background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
+    background: var(--background-color);
     color: var(--text-color);
     transition: background 0.3s ease, color 0.3s ease;
 }
@@ -118,10 +116,10 @@ body {
     padding: 30px;
     box-sizing: border-box;
     margin: 0 auto;
-    background: linear-gradient(135deg, var(--card-background) 0%, rgba(253, 252, 255, 0.95) 100%);
+    background: var(--card-background);
     border-radius: 30px;
     box-shadow: var(--bubble-shadow);
-    border: 1px solid rgba(139, 122, 191, 0.12);
+    border: 1px solid var(--border-color);
 }
 
 .section {
@@ -183,26 +181,20 @@ body.dark-mode .card:hover {
 }
 
 h1, h3, h4 {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
     margin-bottom: 20px;
     font-weight: 700;
 }
 
 h2 {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
     margin-bottom: 20px;
     font-size: 24px;
     font-weight: 700;
 }
 
 button {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
     border: none;
     padding: 15px 30px;
@@ -218,9 +210,9 @@ button {
 }
 
 button:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--primary-dark);
     transform: translateY(var(--hover-lift)) scale(1.02);
-    box-shadow: 0 10px 30px rgba(78, 168, 222, 0.35);
+    box-shadow: 0 10px 30px var(--shadow-color);
 }
 
 button:active {
@@ -396,25 +388,22 @@ body.dark-mode h1,
 body.dark-mode h2,
 body.dark-mode h3,
 body.dark-mode h4 {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
 }
 
 body.dark-mode button {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     box-shadow: 0 6px 24px rgba(167, 139, 250, 0.35);
 }
 
 body.dark-mode button:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--secondary-color);
     box-shadow: 0 10px 35px rgba(96, 197, 242, 0.45);
 }
 
 /* Remove glass effect from dark mode header */
 body.dark-mode #game-header {
-    background: linear-gradient(135deg, #252641 0%, #1e1f33 100%);
+    background: var(--card-background);
     backdrop-filter: none;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
     border-bottom: 1px solid rgba(167, 139, 250, 0.2);
@@ -422,12 +411,12 @@ body.dark-mode #game-header {
 
 /* Make dark mode containers solid (no glass effect) */
 body.dark-mode #game-container {
-    background: linear-gradient(135deg, #252641 0%, #2a2847 100%);
+    background: var(--card-background);
     border: 1px solid rgba(167, 139, 250, 0.25);
 }
 
 body.dark-mode #game-status-display {
-    background: linear-gradient(135deg, #2d2f48 0%, #252641 100%);
+    background: var(--card-background);
     border: 1px solid rgba(167, 139, 250, 0.2);
 }
 
@@ -689,19 +678,19 @@ body.dark-mode .floating-number:hover {
 }
 
 #feedback.success {
-    background: linear-gradient(135deg, rgba(82, 201, 140, 0.15) 0%, rgba(82, 201, 140, 0.08) 100%);
+    background: rgba(82, 201, 140, 0.15);
     color: #3d8e63;
     border: 2px solid rgba(82, 201, 140, 0.4);
 }
 
 #feedback.error {
-    background: linear-gradient(135deg, rgba(239, 111, 111, 0.15) 0%, rgba(239, 111, 111, 0.08) 100%);
+    background: rgba(239, 111, 111, 0.15);
     color: #c94f4f;
     border: 2px solid rgba(239, 111, 111, 0.4);
 }
 
 #feedback.info {
-    background: linear-gradient(135deg, rgba(78, 168, 222, 0.15) 0%, rgba(78, 168, 222, 0.08) 100%);
+    background: rgba(78, 168, 222, 0.15);
     color: #3a7aa8;
     border: 2px solid rgba(78, 168, 222, 0.4);
 }
@@ -779,7 +768,7 @@ body.dark-mode .floating-number:hover {
     margin-top: 10px;
     margin-bottom: 20px;
     padding: 15px;
-    background: linear-gradient(135deg, var(--card-background) 0%, rgba(248, 247, 252, 0.8) 100%);
+    background: var(--card-background);
     border-radius: 15px;
     box-shadow: 0 2px 8px var(--shadow-color);
     transition: all 0.3s ease;
@@ -927,7 +916,7 @@ body.dark-mode .form-group input:focus {
 .auth-submit-btn {
     width: 100%;
     padding: 15px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
     border: none;
     border-radius: 25px;
@@ -939,7 +928,7 @@ body.dark-mode .form-group input:focus {
 }
 
 .auth-submit-btn:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--secondary-color);
     transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(78, 168, 222, 0.4);
 }
@@ -968,7 +957,7 @@ body.dark-mode .form-group input:focus {
 
 .auth-btn {
     padding: 10px 20px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
     border: none;
     border-radius: 25px;
@@ -980,7 +969,7 @@ body.dark-mode .form-group input:focus {
 }
 
 .auth-btn:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--secondary-color);
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 6px 22px rgba(78, 168, 222, 0.4);
 }
@@ -1036,7 +1025,7 @@ body.dark-mode .close-modal {
 }
 
 .leaderboard-table thead {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
 }
 
@@ -1079,17 +1068,17 @@ body.dark-mode .close-modal {
 }
 
 .leaderboard-table tr.rank-1 td {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 193, 7, 0.2) 100%);
+    background: rgba(255, 215, 0, 0.3);
     font-weight: 700;
 }
 
 .leaderboard-table tr.rank-2 td {
-    background: linear-gradient(135deg, rgba(192, 192, 192, 0.3) 0%, rgba(158, 158, 158, 0.2) 100%);
+    background: rgba(192, 192, 192, 0.3);
     font-weight: 700;
 }
 
 .leaderboard-table tr.rank-3 td {
-    background: linear-gradient(135deg, rgba(205, 127, 50, 0.3) 0%, rgba(184, 115, 51, 0.2) 100%);
+    background: rgba(205, 127, 50, 0.3);
     font-weight: 700;
 }
 
@@ -1101,19 +1090,13 @@ body.dark-mode .close-modal {
 
 .username-cell {
     font-weight: 700;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
 }
 
 .score-cell {
     text-align: center;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--accent-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--accent-color);
 }
 
 .winrate-cell {
@@ -1137,15 +1120,15 @@ body.dark-mode .leaderboard-table tbody tr:hover {
 }
 
 body.dark-mode .leaderboard-table tr.rank-1 td {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 193, 7, 0.1) 100%);
+    background: rgba(255, 215, 0, 0.15);
 }
 
 body.dark-mode .leaderboard-table tr.rank-2 td {
-    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(158, 158, 158, 0.1) 100%);
+    background: rgba(192, 192, 192, 0.15);
 }
 
 body.dark-mode .leaderboard-table tr.rank-3 td {
-    background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(184, 115, 51, 0.1) 100%);
+    background: rgba(205, 127, 50, 0.15);
 }
 
 /* Responsive leaderboard */

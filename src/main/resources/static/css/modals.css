@@ -127,7 +127,7 @@
 .auth-submit-btn {
     width: 100%;
     padding: 15px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
     border: none;
     border-radius: 25px;
@@ -139,7 +139,7 @@
 }
 
 .auth-submit-btn:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--secondary-color);
     transform: translateY(-2px);
     box-shadow: 0 8px 30px rgba(78, 168, 222, 0.4);
 }
@@ -173,7 +173,7 @@
     gap: 8px;
     padding: 0 20px;
     height: 45px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
     border: none;
     border-radius: 22.5px;
@@ -193,7 +193,7 @@
 }
 
 .auth-btn:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--secondary-color);
     transform: translateY(-2px) scale(1.05);
     box-shadow: 0 6px 22px rgba(78, 168, 222, 0.4);
 }
@@ -235,7 +235,7 @@
 }
 
 .leaderboard-table thead {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
 }
 
@@ -278,17 +278,17 @@
 }
 
 .leaderboard-table tr.rank-1 td {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 193, 7, 0.2) 100%);
+    background: rgba(255, 215, 0, 0.3);
     font-weight: 700;
 }
 
 .leaderboard-table tr.rank-2 td {
-    background: linear-gradient(135deg, rgba(192, 192, 192, 0.3) 0%, rgba(158, 158, 158, 0.2) 100%);
+    background: rgba(192, 192, 192, 0.3);
     font-weight: 700;
 }
 
 .leaderboard-table tr.rank-3 td {
-    background: linear-gradient(135deg, rgba(205, 127, 50, 0.3) 0%, rgba(184, 115, 51, 0.2) 100%);
+    background: rgba(205, 127, 50, 0.3);
     font-weight: 700;
 }
 
@@ -336,10 +336,7 @@
     color: var(--primary-color);
     margin: 0 0 25px 0;
     font-size: 28px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: var(--primary-color);
 }
 
 .achievements-stats {
@@ -352,7 +349,7 @@
 /* Base styling for ALL stat-box (difficulty and achievements) */
 .stat-box {
     flex: 1;
-    background: linear-gradient(135deg, rgba(139, 122, 191, 0.1) 0%, rgba(78, 168, 222, 0.05) 100%);
+    background: rgba(139, 122, 191, 0.1);
     border-radius: 20px;
     padding: 15px;
     text-align: center;
@@ -370,10 +367,7 @@
     display: block;
     font-size: 32px;
     font-weight: 700;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: var(--primary-color);
     margin-bottom: 5px;
 }
 
@@ -419,7 +413,7 @@
 }
 
 .achievement-tab.active {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
     border-color: var(--primary-color);
 }
@@ -472,7 +466,7 @@
     left: 0;
     width: 5px;
     height: 100%;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: var(--primary-color);
     opacity: 0;
     transition: opacity 0.3s ease;
 }
@@ -499,12 +493,12 @@
     align-items: center;
     justify-content: center;
     font-size: 22px;
-    background: linear-gradient(135deg, rgba(139, 122, 191, 0.2) 0%, rgba(78, 168, 222, 0.1) 100%);
+    background: rgba(139, 122, 191, 0.2);
     border: 2px solid rgba(139, 122, 191, 0.3);
 }
 
 .achievement-item.unlocked .achievement-icon-wrapper {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: var(--primary-color);
     border-color: var(--primary-color);
 }
 
@@ -535,7 +529,7 @@
 }
 
 .achievement-badge-unlocked {
-    background: linear-gradient(135deg, #52c98c 0%, #3d8e63 100%);
+    background: #52c98c;
     color: white;
     padding: 2px 7px;
     border-radius: 8px;
@@ -601,7 +595,7 @@
     align-items: center;
     gap: 15px;
     padding: 15px;
-    background: linear-gradient(135deg, rgba(139, 122, 191, 0.1) 0%, rgba(99, 211, 184, 0.1) 100%);
+    background: rgba(139, 122, 191, 0.1);
     border-radius: 12px;
     margin-bottom: 20px;
 }
@@ -716,7 +710,7 @@
 }
 
 .achievement-summary-card {
-    background: linear-gradient(135deg, rgba(139, 122, 191, 0.1) 0%, rgba(99, 211, 184, 0.1) 100%);
+    background: rgba(139, 122, 191, 0.1);
     border: 2px solid var(--primary-color);
     border-radius: 15px;
     padding: 20px;
@@ -823,11 +817,11 @@
 }
 
 .recent-game-item.won::before {
-    background: linear-gradient(180deg, #4CAF50, #81C784);
+    background: #4CAF50;
 }
 
 .recent-game-item.lost::before {
-    background: linear-gradient(180deg, #F44336, #E57373);
+    background: #F44336;
 }
 
 .recent-game-item:hover {
@@ -883,17 +877,17 @@
 }
 
 .difficulty-badge.difficulty-easy {
-    background: linear-gradient(135deg, #4CAF50, #66BB6A);
+    background: #4CAF50;
     color: white;
 }
 
 .difficulty-badge.difficulty-medium {
-    background: linear-gradient(135deg, #FF9800, #FFB74D);
+    background: #FF9800;
     color: white;
 }
 
 .difficulty-badge.difficulty-hard {
-    background: linear-gradient(135deg, #F44336, #E57373);
+    background: #F44336;
     color: white;
 }
 
@@ -944,7 +938,7 @@
     justify-content: center;
     gap: 10px;
     padding: 14px 40px;
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    background: #e74c3c;
     color: white;
     border: none;
     border-radius: 12px;
@@ -962,7 +956,7 @@
 }
 
 .profile-logout-btn:hover {
-    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+    background: #c0392b;
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
 }
@@ -1003,10 +997,7 @@ body.dark-mode .profile-logout-section {
     color: var(--primary-color);
     margin: 0 0 25px 0;
     font-size: 24px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-weight: 700;
 }
 
 .settings-section {
@@ -1027,12 +1018,13 @@ body.dark-mode .profile-logout-section {
     padding: 16px 18px;
     background: var(--card-background);
     border-radius: 12px;
-    border: 1px solid rgba(var(--primary-color-rgb), 0.15);
+    border: 1px solid var(--border-color);
     transition: all 0.3s ease;
 }
 
 .setting-item:hover {
     border-color: var(--primary-color);
+    background: var(--card-hover-background);
     box-shadow: 0 4px 15px var(--shadow-color);
     transform: translateY(-2px);
 }
@@ -1084,7 +1076,7 @@ body.dark-mode .profile-logout-section {
     width: 140px;
     height: 6px;
     border-radius: 5px;
-    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: var(--primary-color);
     outline: none;
     opacity: 0.8;
     transition: opacity 0.2s;
@@ -1100,7 +1092,7 @@ body.dark-mode .profile-logout-section {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: var(--primary-color);
     cursor: pointer;
     box-shadow: 0 2px 8px var(--shadow-color);
     transition: all 0.3s ease;
@@ -1115,7 +1107,7 @@ body.dark-mode .profile-logout-section {
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    background: var(--primary-color);
     cursor: pointer;
     border: none;
     box-shadow: 0 2px 8px var(--shadow-color);
@@ -1143,7 +1135,7 @@ body.dark-mode .profile-logout-section {
     justify-content: center;
     align-items: center;
     font-size: 20px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
     border: none;
     cursor: pointer;
@@ -1152,9 +1144,9 @@ body.dark-mode .profile-logout-section {
 }
 
 .toggle-btn:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--primary-dark);
     transform: scale(1.1);
-    box-shadow: 0 6px 16px rgba(78, 168, 222, 0.35);
+    box-shadow: 0 6px 16px var(--shadow-color);
 }
 
 .toggle-btn-placeholder {
@@ -1164,7 +1156,7 @@ body.dark-mode .profile-logout-section {
 
 .coming-soon-badge {
     padding: 6px 12px;
-    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+    background: #ffc107;
     color: white;
     font-size: 12px;
     font-weight: 700;
@@ -1198,7 +1190,7 @@ body.dark-mode .profile-logout-section {
 
 /* How to Play Content */
 .how-to-play-content {
-    background: linear-gradient(135deg, rgba(78, 168, 222, 0.08) 0%, rgba(93, 211, 179, 0.05) 100%);
+    background: rgba(78, 168, 222, 0.08);
     border-radius: 0 0 12px 12px;
     padding: 18px;
     margin-top: 0;
@@ -1421,15 +1413,15 @@ body.dark-mode .leaderboard-table tbody tr:hover {
 }
 
 body.dark-mode .leaderboard-table tr.rank-1 td {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 193, 7, 0.1) 100%);
+    background: rgba(255, 215, 0, 0.15);
 }
 
 body.dark-mode .leaderboard-table tr.rank-2 td {
-    background: linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(158, 158, 158, 0.1) 100%);
+    background: rgba(192, 192, 192, 0.15);
 }
 
 body.dark-mode .leaderboard-table tr.rank-3 td {
-    background: linear-gradient(135deg, rgba(205, 127, 50, 0.15) 0%, rgba(184, 115, 51, 0.1) 100%);
+    background: rgba(205, 127, 50, 0.15);
 }
 
 body.dark-mode .username-cell {
@@ -1442,7 +1434,7 @@ body.dark-mode .score-cell {
 
 /* Achievements dark mode */
 body.dark-mode .stat-box {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(78, 168, 222, 0.08) 100%);
+    background: rgba(167, 139, 250, 0.15);
     border-color: rgba(167, 139, 250, 0.3);
 }
 
@@ -1469,12 +1461,12 @@ body.dark-mode .achievement-item:hover {
 }
 
 body.dark-mode .achievement-icon-wrapper {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.2) 0%, rgba(78, 168, 222, 0.1) 100%);
+    background: rgba(167, 139, 250, 0.2);
     border-color: rgba(167, 139, 250, 0.4);
 }
 
 body.dark-mode .achievement-item.unlocked .achievement-icon-wrapper {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+    background: var(--secondary-color);
 }
 
 /* Dark mode scrollbar for achievements list */
@@ -1492,7 +1484,7 @@ body.dark-mode .achievements-list {
 
 /* Profile dark mode */
 body.dark-mode .profile-header {
-    background: linear-gradient(135deg, rgba(139, 122, 191, 0.2) 0%, rgba(99, 211, 184, 0.2) 100%);
+    background: rgba(139, 122, 191, 0.2);
 }
 
 body.dark-mode .profile-stat-card:hover {
@@ -1500,18 +1492,19 @@ body.dark-mode .profile-stat-card:hover {
 }
 
 body.dark-mode .achievement-summary-card {
-    background: linear-gradient(135deg, rgba(139, 122, 191, 0.2) 0%, rgba(99, 211, 184, 0.2) 100%);
+    background: rgba(139, 122, 191, 0.2);
 }
 
 /* Settings dark mode */
 body.dark-mode .setting-item {
     background: var(--input-background);
-    border-color: rgba(167, 139, 250, 0.2);
+    border-color: var(--border-color);
 }
 
 body.dark-mode .setting-item:hover {
-    border-color: var(--secondary-color);
-    box-shadow: 0 4px 15px rgba(167, 139, 250, 0.3);
+    border-color: var(--primary-color);
+    background: var(--card-hover-background);
+    box-shadow: 0 4px 15px var(--shadow-color);
 }
 
 body.dark-mode .volume-slider {
@@ -1538,7 +1531,7 @@ body.dark-mode .volume-percentage {
 }
 
 body.dark-mode .how-to-play-content {
-    background: linear-gradient(135deg, rgba(96, 197, 242, 0.1) 0%, rgba(110, 231, 192, 0.08) 100%);
+    background: rgba(96, 197, 242, 0.1);
 }
 
 body.dark-mode .rules-section h4 {
@@ -2016,7 +2009,7 @@ body.dark-mode .how-to-play-content {
 
 /* Notifications Content Container */
 .notifications-content {
-    background: linear-gradient(135deg, rgba(78, 168, 222, 0.08) 0%, rgba(93, 211, 179, 0.05) 100%);
+    background: rgba(78, 168, 222, 0.08);
     border-radius: 0 0 12px 12px;
     padding: 20px;
     margin-top: 0;
@@ -2345,7 +2338,7 @@ body.dark-mode .how-to-play-content {
 
 /* Dark Mode Support */
 body.dark-mode .notifications-content {
-    background: linear-gradient(135deg, rgba(96, 197, 242, 0.1) 0%, rgba(110, 231, 192, 0.08) 100%);
+    background: rgba(96, 197, 242, 0.1);
 }
 
 body.dark-mode .notification-item {
@@ -2578,7 +2571,7 @@ body.dark-mode .challenge-difficulty-badge.hard {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+    background: var(--border-color);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 30px;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -2591,10 +2584,10 @@ body.dark-mode .challenge-difficulty-badge.hard {
     width: 24px;
     left: 3px;
     bottom: 3px;
-    background: white;
+    background: var(--card-background);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 50%;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
 }
 
 .theme-toggle-slider:after {
@@ -2609,14 +2602,14 @@ body.dark-mode .challenge-difficulty-badge.hard {
 }
 
 .theme-toggle-switch input:checked + .theme-toggle-slider {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 8px rgba(var(--primary-color-rgb), 0.3);
 }
 
 .theme-toggle-switch input:checked + .theme-toggle-slider:before {
     transform: translateX(30px);
-    background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
-    box-shadow: 0 2px 8px rgba(255, 193, 7, 0.4);
+    background: var(--card-background);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .theme-toggle-switch input:checked + .theme-toggle-slider:after {
@@ -2637,11 +2630,12 @@ body.dark-mode .challenge-difficulty-badge.hard {
 
 /* Dark mode adjustments */
 body.dark-mode .theme-toggle-slider {
-    background: linear-gradient(135deg, #424242 0%, #303030 100%);
+    background: var(--border-color);
 }
 
 body.dark-mode .theme-toggle-switch input:checked + .theme-toggle-slider {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3), 0 0 12px rgba(var(--primary-color-rgb), 0.4);
 }
 
 /* ==========================================
@@ -2649,8 +2643,8 @@ body.dark-mode .theme-toggle-switch input:checked + .theme-toggle-slider {
    ========================================== */
 
 .gameplay-setting-item {
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(var(--primary-color-rgb), 0.15);
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 12px;
@@ -2665,8 +2659,8 @@ body.dark-mode .theme-toggle-switch input:checked + .theme-toggle-slider {
 }
 
 .gameplay-setting-item:hover {
-    background: rgba(255, 255, 255, 0.7);
-    border-color: rgba(var(--primary-color-rgb), 0.25);
+    background: var(--card-hover-background);
+    border-color: var(--primary-color);
 }
 
 .gameplay-setting-info {
@@ -2718,7 +2712,7 @@ body.dark-mode .theme-toggle-switch input:checked + .theme-toggle-slider {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+    background: #e0e0e0;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 26px;
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -2738,7 +2732,7 @@ body.dark-mode .theme-toggle-switch input:checked + .theme-toggle-slider {
 }
 
 .gameplay-toggle-switch input:checked + .gameplay-toggle-slider {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2), 0 0 8px rgba(var(--primary-color-rgb), 0.3);
 }
 
@@ -2781,21 +2775,21 @@ body.dark-mode .theme-toggle-switch input:checked + .theme-toggle-slider {
 
 /* Dark mode support */
 body.dark-mode .gameplay-setting-item {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(167, 139, 250, 0.2);
+    background: var(--input-background);
+    border-color: var(--border-color);
 }
 
 body.dark-mode .gameplay-setting-item:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(167, 139, 250, 0.35);
+    background: var(--card-hover-background);
+    border-color: var(--primary-color);
 }
 
 body.dark-mode .gameplay-toggle-slider {
-    background: linear-gradient(135deg, #424242 0%, #303030 100%);
+    background: #424242;
 }
 
 body.dark-mode .gameplay-toggle-switch input:checked + .gameplay-toggle-slider {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
 }
 
 body.dark-mode .gameplay-select {
@@ -2819,8 +2813,8 @@ body.dark-mode .gameplay-select:focus {
    ========================================== */
 
 .account-setting-item {
-    background: rgba(255, 255, 255, 0.5);
-    border: 1px solid rgba(var(--primary-color-rgb), 0.15);
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
     border-radius: 10px;
     padding: 15px;
     margin-bottom: 12px;
@@ -2832,8 +2826,8 @@ body.dark-mode .gameplay-select:focus {
 }
 
 .account-setting-item.clickable:hover {
-    background: rgba(255, 255, 255, 0.7);
-    border-color: rgba(var(--primary-color-rgb), 0.25);
+    background: var(--card-hover-background);
+    border-color: var(--primary-color);
     transform: translateY(-1px);
 }
 
@@ -2934,7 +2928,7 @@ body.dark-mode .gameplay-select:focus {
     padding: 12px 20px;
     border: none;
     border-radius: 8px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: white;
     font-size: 14px;
     font-weight: 700;
@@ -2948,7 +2942,7 @@ body.dark-mode .gameplay-select:focus {
 }
 
 .account-btn:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--secondary-color);
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(var(--primary-color-rgb), 0.4);
 }
@@ -2958,12 +2952,12 @@ body.dark-mode .gameplay-select:focus {
 }
 
 .account-btn.danger-btn {
-    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    background: #e74c3c;
     box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
 }
 
 .account-btn.danger-btn:hover {
-    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+    background: #c0392b;
     box-shadow: 0 6px 16px rgba(231, 76, 60, 0.5);
 }
 
@@ -2980,13 +2974,13 @@ body.dark-mode .gameplay-select:focus {
 
 /* Dark mode support */
 body.dark-mode .account-setting-item {
-    background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(167, 139, 250, 0.2);
+    background: var(--input-background);
+    border-color: var(--border-color);
 }
 
 body.dark-mode .account-setting-item.clickable:hover {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(167, 139, 250, 0.3);
+    background: var(--card-hover-background);
+    border-color: var(--primary-color);
 }
 
 body.dark-mode .account-setting-item.danger-zone {

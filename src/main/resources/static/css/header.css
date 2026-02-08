@@ -12,7 +12,7 @@
     top: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(135deg, rgba(248, 247, 252, 0.95) 0%, rgba(243, 241, 250, 0.98) 100%);
+    background: var(--card-background);
     backdrop-filter: blur(10px);
     padding: 15px 25px;
     padding-top: max(15px, env(safe-area-inset-top));
@@ -28,10 +28,7 @@
 .game-title {
     font-family: 'Fredoka One', 'Rounded Mplus 1c', sans-serif;
     font-size: clamp(24px, 5vw, 36px);
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
     margin: 0;
     cursor: pointer;
     font-weight: 700;
@@ -55,7 +52,7 @@
     justify-content: center;
     align-items: center;
     font-size: 20px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
     border: none;
     margin: 0;
@@ -67,9 +64,9 @@
 }
 
 .header-icon-btn:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--primary-dark);
     transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(78, 168, 222, 0.35);
+    box-shadow: 0 6px 20px var(--shadow-color);
 }
 
 /* Notification Bell Badge */
@@ -102,7 +99,7 @@
     justify-content: center;
     align-items: center;
     font-size: 18px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
     border: none;
     cursor: pointer;
@@ -111,9 +108,9 @@
 }
 
 #sound-toggle:hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--primary-dark);
     transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 20px rgba(78, 168, 222, 0.35);
+    box-shadow: 0 6px 20px var(--shadow-color);
 }
 
 /* ===================================== */
@@ -125,7 +122,7 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    background: linear-gradient(135deg, #ffd700 0%, #ffaa00 100%);
+    background: #ffd700;
     color: #2c3e50;
     padding: 0 16px;
     margin: 0;
@@ -159,7 +156,7 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    background: linear-gradient(135deg, #ffca28 0%, #ffa726 100%);
+    background: #ffca28;
     color: #2c3e50;
     padding: 0 16px;
     margin: 0;
@@ -233,7 +230,7 @@
     align-items: center;
     gap: 12px;
     padding: 16px;
-    background: linear-gradient(135deg, rgba(var(--primary-color-rgb), 0.1) 0%, rgba(var(--secondary-color-rgb), 0.05) 100%);
+    background: rgba(var(--primary-color-rgb), 0.1);
 }
 
 .dropdown-avatar {
@@ -298,7 +295,7 @@
 }
 
 .dropdown-item:hover {
-    background: linear-gradient(90deg, rgba(var(--primary-color-rgb), 0.12) 0%, rgba(var(--primary-color-rgb), 0.05) 100%);
+    background: rgba(var(--primary-color-rgb), 0.12);
     border-left-color: var(--primary-color);
     transform: translateX(2px);
 }
@@ -309,7 +306,7 @@
 }
 
 .dropdown-item:active {
-    background: linear-gradient(90deg, rgba(var(--primary-color-rgb), 0.2) 0%, rgba(var(--primary-color-rgb), 0.1) 100%);
+    background: rgba(var(--primary-color-rgb), 0.2);
     transform: translateX(1px);
 }
 
@@ -324,7 +321,7 @@
     left: 0;
     right: 0;
     height: 58px;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.85) 0%, rgba(255, 255, 255, 0.98) 100%);
+    background: rgba(255, 255, 255, 0.98);
     backdrop-filter: blur(20px);
     box-shadow: 0 -2px 20px rgba(139, 122, 191, 0.1);
     border-top: 1px solid rgba(139, 122, 191, 0.1);
@@ -375,7 +372,7 @@
 }
 
 .bottom-nav-item.active {
-    background: linear-gradient(135deg, #8b7abf 0%, #6fa3d9 100%);
+    background: var(--primary-color);
     color: white;
     box-shadow: 0 3px 10px rgba(139, 122, 191, 0.35);
 }
@@ -404,7 +401,7 @@
 
 /* Dark mode support for bottom nav */
 body.dark-mode .bottom-nav {
-    background: linear-gradient(180deg, rgba(30, 30, 40, 0.85) 0%, rgba(30, 30, 40, 0.98) 100%);
+    background: rgba(30, 30, 40, 0.98);
     border-top: 1px solid rgba(167, 139, 250, 0.15);
 }
 
@@ -413,7 +410,7 @@ body.dark-mode .bottom-nav-item {
 }
 
 body.dark-mode .bottom-nav-item.active {
-    background: linear-gradient(135deg, #a78bfa 0%, #5dd3b3 100%);
+    background: var(--primary-color);
     color: white;
     box-shadow: 0 3px 10px rgba(167, 139, 250, 0.4);
 }

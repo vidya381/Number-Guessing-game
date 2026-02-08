@@ -21,7 +21,7 @@ body {
     padding-left: max(20px, env(safe-area-inset-left));
     padding-right: max(20px, env(safe-area-inset-right));
     box-sizing: border-box;
-    background: linear-gradient(135deg, var(--background-gradient-start) 0%, var(--background-gradient-end) 100%);
+    background: var(--background-color);
     color: var(--text-color);
     transition: background 0.3s ease, color 0.3s ease;
 }
@@ -64,10 +64,10 @@ body {
     padding: 20px;
     box-sizing: border-box;
     margin: 0 auto;
-    background: linear-gradient(135deg, var(--card-background) 0%, rgba(253, 252, 255, 0.95) 100%);
+    background: var(--card-background);
     border-radius: 30px;
     box-shadow: var(--bubble-shadow);
-    border: 1px solid rgba(139, 122, 191, 0.12);
+    border: 1px solid var(--border-color);
     overflow-y: auto; /* Allow scrolling as fallback for extreme zoom */
     overflow-x: hidden;
     display: flex;
@@ -88,9 +88,9 @@ body {
 
 /* Game input section with inline stats */
 #game-page .section:nth-child(1), #daily-challenge-page .section:nth-child(1), #time-attack-page .section:nth-child(1), #survival-page .section:nth-child(1) {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.05) 0%, rgba(78, 168, 222, 0.05) 100%);
-    border: 2px solid rgba(167, 139, 250, 0.2);
-    box-shadow: 0 8px 32px rgba(139, 122, 191, 0.12);
+    background: var(--card-background);
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 8px 32px var(--shadow-color);
     position: relative;
 }
 
@@ -194,19 +194,13 @@ body.dark-mode .card:hover {
 /* ===================================== */
 
 h1, h3, h4 {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
     margin-bottom: 20px;
     font-weight: 700;
 }
 
 h2 {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
     margin-bottom: 20px;
     font-size: 24px;
     font-weight: 700;
@@ -218,7 +212,7 @@ h2 {
 
 /* Exclude header buttons, hint button, and modal buttons from generic styling */
 button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close) {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: var(--primary-color);
     color: var(--button-text-color);
     border: none;
     padding: 15px 30px;
@@ -234,9 +228,9 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
 }
 
 button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close):not(.challenge-btn):not(.remove-btn):hover {
-    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--secondary-dark) 100%);
+    background: var(--primary-dark);
     transform: translateY(var(--hover-lift)) scale(1.02);
-    box-shadow: 0 10px 30px rgba(78, 168, 222, 0.35);
+    box-shadow: 0 10px 30px var(--shadow-color);
 }
 
 button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close):not(.challenge-btn):not(.remove-btn):active {

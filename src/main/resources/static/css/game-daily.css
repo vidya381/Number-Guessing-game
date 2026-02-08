@@ -13,7 +13,7 @@
     gap: 20px;
     padding: 25px;
     margin: -25px -25px 25px -25px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: #667eea;
     border-radius: 28px 28px 0 0;
     position: relative;
     overflow: hidden;
@@ -33,7 +33,7 @@
 .daily-leaderboard-icon {
     width: 70px;
     height: 70px;
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.3) 0%, rgba(255, 245, 157, 0.25) 100%);
+    background: rgba(255, 215, 0, 0.3);
     border-radius: 18px;
     display: flex;
     align-items: center;
@@ -59,10 +59,7 @@
     margin: 0;
     font-size: 30px;
     font-weight: 800;
-    background: linear-gradient(135deg, #FFD700 0%, #FFF59D 50%, #FFD700 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: #FFD700;
     text-shadow: none;
     filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
     letter-spacing: 1px;
@@ -84,9 +81,7 @@
 /* ===================================== */
 
 .daily-challenge-banner {
-    background: linear-gradient(135deg,
-        rgba(240, 179, 71, 0.1) 0%,
-        rgba(93, 211, 179, 0.1) 100%) !important;
+    background: rgba(240, 179, 71, 0.1) !important;
     border: 2px solid rgba(240, 179, 71, 0.3) !important;
     position: relative;
     overflow: hidden;
@@ -117,7 +112,7 @@
 }
 
 .daily-challenge-badge {
-    background: linear-gradient(135deg, var(--warning-color) 0%, var(--accent-color) 100%);
+    background: var(--warning-color);
     color: white;
     padding: 6px 16px;
     border-radius: 20px;
@@ -175,16 +170,16 @@
 }
 
 .daily-challenge-btn {
-    background: linear-gradient(135deg, var(--warning-color) 0%, var(--accent-color) 100%);
+    background: var(--warning-color);
     min-width: 180px; /* Ensure button is wide enough for completed state */
 }
 
 .daily-challenge-btn:hover {
-    background: linear-gradient(135deg, #d4a947 0%, #c98d3a 100%);
+    background: #d4a947;
 }
 
 .daily-challenge-btn:disabled {
-    background: linear-gradient(135deg, #ccc 0%, #999 100%);
+    background: #ccc;
     cursor: not-allowed;
     opacity: 0.6;
 }
@@ -259,7 +254,7 @@
 #daily-challenge-page .section:nth-child(2) {
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, rgba(243, 156, 18, 0.03) 0%, rgba(230, 126, 34, 0.03) 100%);
+    background: rgba(243, 156, 18, 0.03);
     border: 1px solid rgba(167, 139, 250, 0.15);
     flex: 1; /* Take all remaining space */
     min-height: 150px; /* Reduced to ensure quit button fits */
@@ -317,12 +312,12 @@ body.dark-mode #daily-challenge-page .section:nth-child(2) #daily-guess-history:
 
 /* Dark mode enhancements */
 body.dark-mode #daily-challenge-page .section:nth-child(1) {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.08) 0%, rgba(78, 168, 222, 0.08) 100%);
+    background: rgba(167, 139, 250, 0.08);
     border: 2px solid rgba(167, 139, 250, 0.3);
 }
 
 body.dark-mode #daily-challenge-page .section:nth-child(2) {
-    background: linear-gradient(135deg, rgba(243, 156, 18, 0.06) 0%, rgba(230, 126, 34, 0.06) 100%);
+    background: rgba(243, 156, 18, 0.06);
     border: 1px solid rgba(167, 139, 250, 0.25);
 }
 
@@ -340,7 +335,7 @@ body.dark-mode #daily-challenge-page .section:nth-child(2) {
 
 #daily-result-page .leaderboard-btn {
     margin-top: 15px;
-    background: linear-gradient(135deg, var(--warning-color) 0%, var(--accent-color) 100%);
+    background: var(--warning-color);
 }
 
 #daily-result-page .leaderboard-btn:hover {
@@ -393,7 +388,7 @@ body.dark-mode #daily-challenge-page .section:nth-child(2) {
 }
 
 #modal-daily-leaderboard-content .leaderboard-header {
-    background: linear-gradient(135deg, var(--primary-color) 0%, rgba(var(--primary-color-rgb), 0.85) 100%);
+    background: var(--primary-color);
     color: white;
     font-weight: 700;
     border-radius: 10px;
@@ -481,7 +476,7 @@ body.dark-mode #daily-challenge-page .section:nth-child(2) {
 
 /* Highlight current user's row */
 #modal-daily-leaderboard-content .leaderboard-row.current-user {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.25) 0%, rgba(167, 139, 250, 0.15) 100%) !important;
+    background: rgba(167, 139, 250, 0.25) !important;
     border: 2px solid rgba(var(--primary-color-rgb), 0.5) !important;
     border-left: 4px solid var(--primary-color) !important;
     font-weight: 600;
@@ -493,9 +488,7 @@ body.dark-mode #daily-challenge-page .section:nth-child(2) {
 /* ===================================== */
 
 body.dark-mode .daily-challenge-banner {
-    background: linear-gradient(135deg,
-        rgba(240, 179, 71, 0.15) 0%,
-        rgba(93, 211, 179, 0.15) 100%) !important;
+    background: rgba(240, 179, 71, 0.15) !important;
     border: 2px solid rgba(240, 179, 71, 0.4) !important;
 }
 
@@ -527,18 +520,18 @@ body.dark-mode .daily-challenge-date {
 }
 
 body.dark-mode .daily-leaderboard-modal-header {
-    background: linear-gradient(135deg, #5a67d8 0%, #6b48a2 100%);
+    background: #5a67d8;
 }
 
 body.dark-mode .daily-leaderboard-icon {
-    background: linear-gradient(135deg, rgba(255, 215, 0, 0.25) 0%, rgba(255, 245, 157, 0.2) 100%);
+    background: rgba(255, 215, 0, 0.25);
     border-color: rgba(255, 215, 0, 0.4);
     color: #FFD700;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4), 0 0 35px rgba(255, 215, 0, 0.4);
 }
 
 body.dark-mode #modal-daily-leaderboard-content .leaderboard-header {
-    background: linear-gradient(135deg, rgba(var(--primary-color-rgb), 0.3) 0%, rgba(var(--primary-color-rgb), 0.2) 100%);
+    background: rgba(var(--primary-color-rgb), 0.3);
     border: 1px solid rgba(var(--primary-color-rgb), 0.4);
     box-shadow: 0 2px 8px rgba(var(--primary-color-rgb), 0.2);
     color: white;
@@ -584,7 +577,7 @@ body.dark-mode #modal-daily-leaderboard-content .leaderboard-row .lb-time {
 }
 
 body.dark-mode #modal-daily-leaderboard-content .leaderboard-row.current-user {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.15) 0%, rgba(167, 139, 250, 0.08) 100%) !important;
+    background: rgba(167, 139, 250, 0.15) !important;
     border: 2px solid rgba(167, 139, 250, 0.4) !important;
     border-left: 4px solid rgba(167, 139, 250, 0.8) !important;
     box-shadow: 0 2px 8px rgba(167, 139, 250, 0.15) !important;

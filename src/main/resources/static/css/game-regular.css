@@ -23,7 +23,7 @@
 #game-page .section:nth-child(2) {
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, rgba(243, 156, 18, 0.03) 0%, rgba(230, 126, 34, 0.03) 100%);
+    background: rgba(243, 156, 18, 0.03);
     border: 1px solid rgba(167, 139, 250, 0.15);
     flex: 1; /* Take all remaining space */
     min-height: 150px; /* Reduced to ensure quit button fits */
@@ -81,12 +81,12 @@ body.dark-mode #game-page .section:nth-child(2) #guess-history::-webkit-scrollba
 
 /* Dark mode enhancements */
 body.dark-mode #game-page .section:nth-child(1) {
-    background: linear-gradient(135deg, rgba(167, 139, 250, 0.08) 0%, rgba(78, 168, 222, 0.08) 100%);
+    background: rgba(167, 139, 250, 0.08);
     border: 2px solid rgba(167, 139, 250, 0.3);
 }
 
 body.dark-mode #game-page .section:nth-child(2) {
-    background: linear-gradient(135deg, rgba(243, 156, 18, 0.06) 0%, rgba(230, 126, 34, 0.06) 100%);
+    background: rgba(243, 156, 18, 0.06);
     border: 1px solid rgba(167, 139, 250, 0.25);
 }
 
@@ -169,19 +169,19 @@ body.dark-mode #game-page .section:nth-child(2) {
 }
 
 #feedback.success {
-    background: linear-gradient(135deg, rgba(82, 201, 140, 0.15) 0%, rgba(82, 201, 140, 0.08) 100%);
+    background: rgba(82, 201, 140, 0.15);
     color: #3d8e63;
     border: 2px solid rgba(82, 201, 140, 0.4);
 }
 
 #feedback.error {
-    background: linear-gradient(135deg, rgba(239, 111, 111, 0.15) 0%, rgba(239, 111, 111, 0.08) 100%);
+    background: rgba(239, 111, 111, 0.15);
     color: #c94f4f;
     border: 2px solid rgba(239, 111, 111, 0.4);
 }
 
 #feedback.info {
-    background: linear-gradient(135deg, rgba(78, 168, 222, 0.15) 0%, rgba(78, 168, 222, 0.08) 100%);
+    background: rgba(78, 168, 222, 0.15);
     color: #3a7aa8;
     border: 2px solid rgba(78, 168, 222, 0.4);
 }

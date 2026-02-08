@@ -7,7 +7,7 @@
 /* ===================================== */
 
 .multiplayer-banner {
-    background: linear-gradient(135deg, rgba(167, 243, 208, 0.4) 0%, rgba(207, 250, 254, 0.4) 100%);
+    background: rgba(167, 243, 208, 0.4);
     border-radius: 20px;
     padding: 30px;
     color: #2d2748;
@@ -84,11 +84,11 @@
 }
 
 .multiplayer-btn {
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+    background: #14b8a6;
 }
 
 .multiplayer-btn:hover {
-    background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+    background: #0d9488;
 }
 
 /* Connection Status */
@@ -215,10 +215,7 @@
     font-size: 1.2em;
     font-weight: 700;
     margin-bottom: 16px;
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: var(--primary-color);
     display: flex;
     align-items: center;
     gap: 8px;
@@ -506,7 +503,7 @@
 }
 
 .challenge-btn:hover {
-    background: linear-gradient(135deg, rgba(20, 184, 166, 0.6) 0%, rgba(6, 182, 212, 0.6) 100%) !important;
+    background: rgba(20, 184, 166, 0.6) !important;
     transform: scale(1.1);
 }
 
@@ -536,7 +533,7 @@
 }
 
 .remove-btn:hover {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.6) 0%, rgba(220, 38, 38, 0.6) 100%) !important;
+    background: rgba(239, 68, 68, 0.6) !important;
     transform: scale(1.1);
 }
 
@@ -603,12 +600,12 @@
 }
 
 .accept-btn {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    background: #22c55e;
     color: white;
 }
 
 .accept-btn:hover {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.6) 0%, rgba(22, 163, 74, 0.6) 100%) !important;
+    background: rgba(34, 197, 94, 0.6) !important;
     transform: translateY(9px) !important;
 }
 
@@ -618,7 +615,7 @@
 }
 
 .decline-btn:hover {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.6) 0%, rgba(220, 38, 38, 0.6) 100%) !important;
+    background: rgba(239, 68, 68, 0.6) !important;
     transform: translateY(9px) !important;
 }
 
@@ -674,17 +671,17 @@
 }
 
 .difficulty-badge.easy {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    background: #22c55e;
     color: white;
 }
 
 .difficulty-badge.medium {
-    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    background: #f59e0b;
     color: white;
 }
 
 .difficulty-badge.hard {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    background: #ef4444;
     color: white;
 }
 
@@ -718,12 +715,12 @@
 }
 
 .challenge-accept-btn {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+    background: #22c55e;
     color: white;
 }
 
 .challenge-accept-btn:hover {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.6) 0%, rgba(22, 163, 74, 0.6) 100%) !important;
+    background: rgba(34, 197, 94, 0.6) !important;
     transform: translateY(9px) !important;
 }
 
@@ -733,7 +730,7 @@
 }
 
 .challenge-decline-btn:hover {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.6) 0%, rgba(220, 38, 38, 0.6) 100%) !important;
+    background: rgba(239, 68, 68, 0.6) !important;
     transform: translateY(9px) !important;
 }
 
@@ -772,19 +769,19 @@
 
 /* Multiplayer-specific stat badges */
 .mp-vs-badge {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(168, 85, 247, 0.15) 100%);
+    background: rgba(139, 92, 246, 0.15);
     border-color: rgba(139, 92, 246, 0.3);
     font-weight: 600;
 }
 
 .mp-attempts-badge {
-    background: linear-gradient(135deg, rgba(34, 197, 94, 0.15) 0%, rgba(22, 163, 74, 0.15) 100%);
+    background: rgba(34, 197, 94, 0.15);
     border-color: rgba(34, 197, 94, 0.3);
     font-weight: 600;
 }
 
 .mp-opponent-attempts-badge {
-    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15) 0%, rgba(220, 38, 38, 0.15) 100%);
+    background: rgba(239, 68, 68, 0.15);
     border-color: rgba(239, 68, 68, 0.3);
     font-weight: 600;
 }
@@ -808,10 +805,7 @@
 
 /* Multiplayer theme for challenge modal */
 .multiplayer-theme .modal-icon {
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: #14b8a6;
 }
 
 /* Game Result Modal */
@@ -872,17 +866,11 @@
 }
 
 .game-result-modal.win .result-title {
-    background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: #22c55e;
 }
 
 .game-result-modal.loss .result-title {
-    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: #ef4444;
 }
 
 .result-title {
@@ -923,10 +911,7 @@
 .result-stat-value {
     font-size: 2em;
     font-weight: 700;
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: #14b8a6;
 }
 
 .result-actions {
@@ -937,7 +922,7 @@
 .play-again-btn {
     flex: 1;
     padding: 16px;
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+    background: #14b8a6;
     color: white;
     border: none;
     border-radius: 14px;
@@ -949,7 +934,7 @@
 }
 
 .play-again-btn:hover {
-    background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+    background: #0d9488;
     transform: translateY(-2px);
     box-shadow: 0 6px 16px rgba(20, 184, 166, 0.4);
 }
@@ -1013,10 +998,7 @@
     display: block;
     font-size: 2.2em;
     font-weight: 700;
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: #14b8a6;
 }
 
 .stat-card .stat-description {
@@ -1113,7 +1095,7 @@
 #mp-game-view .section:nth-child(2) {
     display: flex;
     flex-direction: column;
-    background: linear-gradient(135deg, rgba(243, 156, 18, 0.03) 0%, rgba(230, 126, 34, 0.03) 100%);
+    background: rgba(243, 156, 18, 0.03);
     border: 1px solid rgba(167, 139, 250, 0.15);
     flex: 1; /* Take all remaining space */
     min-height: 150px;
@@ -1174,7 +1156,7 @@ body.dark-mode #mp-game-view .section:nth-child(2) #mp-guess-history::-webkit-sc
 /* ===================================== */
 
 body.dark-mode .multiplayer-banner {
-    background: linear-gradient(135deg, rgba(20, 184, 166, 0.2) 0%, rgba(6, 182, 212, 0.2) 100%);
+    background: rgba(20, 184, 166, 0.2);
     border-color: rgba(20, 184, 166, 0.4);
 }
 
@@ -1193,11 +1175,11 @@ body.dark-mode .multiplayer-badge {
 }
 
 body.dark-mode .multiplayer-btn {
-    background: linear-gradient(135deg, #14b8a6 0%, #06b6d4 100%);
+    background: #14b8a6;
 }
 
 body.dark-mode .multiplayer-btn:hover {
-    background: linear-gradient(135deg, #0d9488 0%, #0891b2 100%);
+    background: #0d9488;
 }
 
 /* ===================================== */

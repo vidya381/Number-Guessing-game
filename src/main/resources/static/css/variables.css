@@ -24,33 +24,33 @@
 /* ===================================== */
 
 :root {
-    /* Softened Playful Bubble Design - Light Mode */
-    --primary-color: #8b7abf;
-    --primary-dark: #6b5a9f;
-    --secondary-color: #4ea8de;
-    --secondary-dark: #3a8bc4;
-    --accent-color: #5dd3b3;
-    --success-color: #52c98c;
-    --danger-color: #ef6f6f;
-    --warning-color: #f0b347;
-    --background-color: #ebe9f5;
-    --background-gradient-start: #f3f1fa;
-    --background-gradient-end: #e8e5f4;
-    --card-background: #f8f7fc;
-    --card-hover-background: #fdfcff;
-    --text-color: #3d3358;
-    --text-secondary: #7a6d99;
-    --text-muted: #9b8db8;
+    /* Cool Tones - Light Mode */
+    --primary-color: #0D9488;
+    --primary-dark: #0F766E;
+    --secondary-color: #0284C7;
+    --secondary-dark: #0369A1;
+    --accent-color: #059669;
+    --success-color: #16A34A;
+    --danger-color: #DC2626;
+    --warning-color: #EA580C;
+    --background-color: #F8FAFC;
+    --background-gradient-start: #F8FAFC;
+    --background-gradient-end: #F8FAFC;
+    --card-background: #FFFFFF;
+    --card-hover-background: #F1F5F9;
+    --text-color: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
     --button-text-color: #ffffff;
-    --shadow-color: rgba(139, 122, 191, 0.15);
-    --bubble-shadow: 0 8px 24px rgba(139, 122, 191, 0.2);
-    --input-background: #f5f3fb;
-    --input-border: #ddd8ed;
-    --border-color: #ddd8ed;
+    --shadow-color: rgba(13, 148, 136, 0.15);
+    --bubble-shadow: 0 8px 24px rgba(13, 148, 136, 0.2);
+    --input-background: #FFFFFF;
+    --input-border: #CBD5E1;
+    --border-color: #E2E8F0;
     --hover-lift: -4px;
-    --background-color-rgb: 235, 233, 245;
-    --primary-color-rgb: 139, 122, 191;
-    --secondary-color-rgb: 78, 168, 222;
+    --background-color-rgb: 248, 250, 252;
+    --primary-color-rgb: 13, 148, 136;
+    --secondary-color-rgb: 2, 132, 199;
 }
 
 /* ===================================== */
@@ -58,31 +58,31 @@
 /* ===================================== */
 
 body.dark-mode {
-    /* Refined Colorful Dark Mode */
-    --primary-color: #a78bfa;
-    --primary-dark: #8b6fd9;
-    --secondary-color: #60c5f2;
-    --secondary-dark: #4aabdb;
-    --accent-color: #6ee7c0;
-    --success-color: #6dd99f;
-    --danger-color: #ff8585;
-    --warning-color: #ffb84d;
-    --background-color: #1a1b2e;
-    --background-gradient-start: #1e1f33;
-    --background-gradient-end: #16172a;
-    --card-background: #252641;
-    --card-hover-background: #2d2f48;
-    --text-color: #e4e7f0;
-    --text-secondary: #a0a8c8;
-    --text-muted: #7a8399;
+    /* Cool Tones - Dark Mode */
+    --primary-color: #14B8A6;
+    --primary-dark: #0D9488;
+    --secondary-color: #38BDF8;
+    --secondary-dark: #0284C7;
+    --accent-color: #10B981;
+    --success-color: #22C55E;
+    --danger-color: #EF4444;
+    --warning-color: #F97316;
+    --background-color: #0F172A;
+    --background-gradient-start: #0F172A;
+    --background-gradient-end: #0F172A;
+    --card-background: #1E293B;
+    --card-hover-background: #334155;
+    --text-color: #F8FAFC;
+    --text-secondary: #CBD5E1;
+    --text-muted: #64748B;
     --button-text-color: #ffffff;
-    --shadow-color: rgba(167, 139, 250, 0.25);
-    --bubble-shadow: 0 8px 32px rgba(167, 139, 250, 0.3);
-    --input-background: #2d2f48;
-    --input-border: #3d405e;
-    --border-color: #3d405e;
+    --shadow-color: rgba(20, 184, 166, 0.25);
+    --bubble-shadow: 0 8px 32px rgba(20, 184, 166, 0.3);
+    --input-background: #334155;
+    --input-border: #475569;
+    --border-color: #334155;
     --hover-lift: -4px;
-    --background-color-rgb: 26, 27, 46;
-    --primary-color-rgb: 167, 139, 250;
-    --secondary-color-rgb: 96, 197, 242;
+    --background-color-rgb: 15, 23, 42;
+    --primary-color-rgb: 20, 184, 166;
+    --secondary-color-rgb: 56, 189, 248;
 }
