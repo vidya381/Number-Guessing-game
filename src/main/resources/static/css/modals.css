@@ -367,7 +367,7 @@
     display: block;
     font-size: 32px;
     font-weight: 700;
-    background: var(--primary-color);
+    color: var(--primary-color);
     margin-bottom: 5px;
 }
 
