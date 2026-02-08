@@ -18,7 +18,7 @@
     border-radius: 15px;
     box-shadow: 0 2px 8px var(--shadow-color);
     transition: all 0.3s ease;
-    border: 1px solid rgba(139, 122, 191, 0.12);
+    border: 1px solid rgba(13, 148, 136, 0.12);
 }
 
 #game-status-icon {
@@ -68,8 +68,8 @@
     align-items: center;
     gap: 6px;
     padding: 6px 12px;
-    background: rgba(167, 139, 250, 0.1);
-    border: 1px solid rgba(167, 139, 250, 0.2);
+    background: rgba(13, 148, 136, 0.1);
+    border: 1px solid rgba(13, 148, 136, 0.2);
     border-radius: 16px;
     font-weight: 600;
     font-size: 0.85em;
@@ -79,7 +79,7 @@
 
 .stat-badge:hover {
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(139, 122, 191, 0.2);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.2);
 }
 
 .stat-icon {
@@ -91,8 +91,8 @@
 }
 
 body.dark-mode .stat-badge {
-    background: rgba(167, 139, 250, 0.15);
-    border: 1px solid rgba(167, 139, 250, 0.3);
+    background: rgba(13, 148, 136, 0.15);
+    border: 1px solid rgba(13, 148, 136, 0.3);
 }
 
 body.dark-mode .coin-icon {
@@ -149,8 +149,8 @@ body.dark-mode .coin-icon {
 
 /* When locked, change to purple background */
 .hint-button[data-locked="true"] {
-    background: rgba(167, 139, 250, 0.1);
-    border: 1px solid rgba(167, 139, 250, 0.2);
+    background: rgba(13, 148, 136, 0.1);
+    border: 1px solid rgba(13, 148, 136, 0.2);
 }
 
 .hint-button .fa-coins {
@@ -362,7 +362,7 @@ body.dark-mode [data-tooltip]:before {
     transition: all 0.3s ease;
     -webkit-appearance: none;
     -moz-appearance: textfield;
-    box-shadow: 0 2px 8px rgba(139, 122, 191, 0.12);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.12);
 }
 
 .digit-input:first-child {
@@ -406,7 +406,7 @@ body.dark-mode [data-tooltip]:before {
 
 body.dark-mode .digit-input:focus {
     background-color: var(--card-background);
-    box-shadow: 0 5px 25px rgba(167, 139, 250, 0.4);
+    box-shadow: 0 5px 25px rgba(13, 148, 136, 0.4);
 }
 
 /* ===================================== */
@@ -423,19 +423,19 @@ body.dark-mode .digit-input:focus {
     margin-bottom: 8px;
     background: rgba(255, 255, 255, 0.6);
     border-radius: 12px;
-    border: 1px solid rgba(167, 139, 250, 0.1);
+    border: 1px solid rgba(13, 148, 136, 0.1);
     transition: all 0.2s ease;
 }
 
 body.dark-mode .history-item {
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(167, 139, 250, 0.15);
+    border: 1px solid rgba(13, 148, 136, 0.15);
 }
 
 .history-item:hover {
     transform: translateX(3px);
-    box-shadow: 0 2px 8px rgba(139, 122, 191, 0.15);
-    border-color: rgba(167, 139, 250, 0.3);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.15);
+    border-color: rgba(13, 148, 136, 0.3);
 }
 
 .history-item:last-child {
@@ -450,7 +450,7 @@ body.dark-mode .history-item {
 }
 
 .history-item .correct {
-    color: #2ecc71;
+    color: var(--success-color);
     margin-right: 10px;
     font-weight: 600;
     font-size: 16px;
@@ -658,7 +658,7 @@ body.dark-mode .mode-leaderboard-link:hover {
     max-width: 600px;
     width: 90%;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-    border: 2px solid rgba(139, 122, 191, 0.2);
+    border: 2px solid rgba(13, 148, 136, 0.2);
     position: relative;
     animation: slideUp 0.3s ease;
 }
@@ -719,7 +719,7 @@ body.dark-mode .mode-leaderboard-link:hover {
 
 .modal-difficulty-btn {
     padding: 20px 16px;
-    border: 2px solid rgba(139, 122, 191, 0.2);
+    border: 2px solid rgba(13, 148, 136, 0.2);
     border-radius: 15px;
     background: var(--card-background);
     cursor: pointer;
@@ -762,8 +762,8 @@ body.dark-mode .mode-leaderboard-link:hover {
 
 /* Easy Difficulty */
 .modal-difficulty-btn.easy-diff {
-    border-color: #22c55e;
-    background: #22c55e;
+    border-color: var(--success-color);
+    background: var(--success-color);
 }
 
 .modal-difficulty-btn.easy-diff .diff-name {
@@ -771,7 +771,7 @@ body.dark-mode .mode-leaderboard-link:hover {
 }
 
 .modal-difficulty-btn.easy-diff:hover {
-    background: #16a34a;
+    background: var(--success-color);
     box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
 }
 
@@ -816,7 +816,7 @@ body.dark-mode .mode-leaderboard-link:hover {
     padding: 10px 20px;
     background: transparent;
     color: var(--primary-color);
-    border: 2px solid rgba(139, 122, 191, 0.3);
+    border: 2px solid rgba(13, 148, 136, 0.3);
     border-radius: 12px;
     font-size: 0.85em;
     font-weight: 600;
@@ -827,7 +827,7 @@ body.dark-mode .mode-leaderboard-link:hover {
 }
 
 .modal-view-leaderboard-btn:hover {
-    background: rgba(139, 122, 191, 0.1);
+    background: rgba(13, 148, 136, 0.1);
     border-color: var(--primary-color);
     transform: translateY(-1px);
 }
@@ -865,7 +865,7 @@ body.dark-mode .mode-leaderboard-link:hover {
 /* Dark Mode */
 body.dark-mode .difficulty-modal-content {
     background: #2d2748;
-    border-color: rgba(167, 139, 250, 0.3);
+    border-color: rgba(13, 148, 136, 0.3);
 }
 
 body.dark-mode .modal-close-btn {
@@ -873,8 +873,8 @@ body.dark-mode .modal-close-btn {
 }
 
 body.dark-mode .modal-difficulty-btn.easy-diff {
-    background: #22c55e;
-    border-color: #22c55e;
+    background: var(--success-color);
+    border-color: var(--success-color);
 }
 
 body.dark-mode .modal-difficulty-btn.easy-diff .diff-name {
@@ -882,7 +882,7 @@ body.dark-mode .modal-difficulty-btn.easy-diff .diff-name {
 }
 
 body.dark-mode .modal-difficulty-btn.easy-diff:hover {
-    background: #16a34a;
+    background: var(--success-color);
     box-shadow: 0 8px 25px rgba(34, 197, 94, 0.5);
 }
 
@@ -921,7 +921,7 @@ body.dark-mode .modal-difficulty-btn.hard-diff:hover {
 .modal-leaderboard-section {
     margin-top: 30px;
     padding-top: 25px;
-    border-top: 2px solid rgba(139, 122, 191, 0.15);
+    border-top: 2px solid rgba(13, 148, 136, 0.15);
 }
 
 /* Hide leaderboard sections in all modals - use desktop leaderboard modals instead */
@@ -951,7 +951,7 @@ body.dark-mode .modal-difficulty-btn.hard-diff:hover {
 
 .modal-lb-tab {
     padding: 8px 20px;
-    border: 2px solid rgba(139, 122, 191, 0.3);
+    border: 2px solid rgba(13, 148, 136, 0.3);
     background: transparent;
     color: var(--text-color);
     border-radius: 18px;
@@ -962,7 +962,7 @@ body.dark-mode .modal-difficulty-btn.hard-diff:hover {
 }
 
 .modal-lb-tab:hover {
-    background: rgba(139, 122, 191, 0.1);
+    background: rgba(13, 148, 136, 0.1);
     border-color: var(--primary-color);
 }
 
@@ -985,17 +985,17 @@ body.dark-mode .modal-difficulty-btn.hard-diff:hover {
 }
 
 .modal-leaderboard-container::-webkit-scrollbar-track {
-    background: rgba(139, 122, 191, 0.1);
+    background: rgba(13, 148, 136, 0.1);
     border-radius: 3px;
 }
 
 .modal-leaderboard-container::-webkit-scrollbar-thumb {
-    background: rgba(139, 122, 191, 0.3);
+    background: rgba(13, 148, 136, 0.3);
     border-radius: 3px;
 }
 
 .modal-leaderboard-container::-webkit-scrollbar-thumb:hover {
-    background: rgba(139, 122, 191, 0.5);
+    background: rgba(13, 148, 136, 0.5);
 }
 
 /* Loading State */
@@ -1038,13 +1038,13 @@ body.dark-mode .modal-difficulty-btn.hard-diff:hover {
     gap: 12px;
     padding: 12px 15px;
     background: var(--card-background);
-    border: 2px solid rgba(139, 122, 191, 0.15);
+    border: 2px solid rgba(13, 148, 136, 0.15);
     border-radius: 12px;
     transition: all 0.3s ease;
 }
 
 .modal-lb-entry:hover {
-    border-color: rgba(139, 122, 191, 0.3);
+    border-color: rgba(13, 148, 136, 0.3);
     transform: translateX(3px);
 }
 
@@ -1130,16 +1130,16 @@ body.dark-mode .modal-difficulty-btn.hard-diff:hover {
 
 /* Dark mode */
 body.dark-mode .modal-leaderboard-section {
-    border-top-color: rgba(167, 139, 250, 0.2);
+    border-top-color: rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .modal-lb-entry {
     background: rgba(45, 39, 72, 0.5);
-    border-color: rgba(167, 139, 250, 0.2);
+    border-color: rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .modal-lb-entry:hover {
-    border-color: rgba(167, 139, 250, 0.4);
+    border-color: rgba(13, 148, 136, 0.4);
 }
 
 /* Responsive */

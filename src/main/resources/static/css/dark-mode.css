@@ -10,7 +10,7 @@
 /* ===================================== */
 
 body.dark-mode button:not(.hint-button):not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.achievement-toast-close) {
-    box-shadow: 0 6px 24px rgba(167, 139, 250, 0.35);
+    box-shadow: 0 6px 24px rgba(13, 148, 136, 0.35);
 }
 
 body.dark-mode button:not(.hint-button):not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.achievement-toast-close):hover {
@@ -26,7 +26,7 @@ body.dark-mode #game-header {
     background: var(--card-background);
     backdrop-filter: none;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
-    border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+    border-bottom: 1px solid rgba(13, 148, 136, 0.2);
 }
 
 /* Header buttons in dark mode use CSS variables (orange-blue gradient set by JavaScript) */
@@ -72,17 +72,17 @@ body.dark-mode .header-coins i {
 /* Make dark mode containers solid (no glass effect) */
 body.dark-mode #game-container {
     background: var(--card-background);
-    border: 1px solid rgba(167, 139, 250, 0.25);
+    border: 1px solid rgba(13, 148, 136, 0.25);
 }
 
 body.dark-mode #game-status-display {
     background: var(--card-background);
-    border: 1px solid rgba(167, 139, 250, 0.2);
+    border: 1px solid rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .section {
     background: var(--card-background);
-    border: 1px solid rgba(167, 139, 250, 0.15);
+    border: 1px solid rgba(13, 148, 136, 0.15);
 }
 
 /* ===================================== */
@@ -91,8 +91,8 @@ body.dark-mode .section {
 
 /* Stat badges */
 body.dark-mode .stat-badge {
-    background: rgba(167, 139, 250, 0.15);
-    border: 1px solid rgba(167, 139, 250, 0.3);
+    background: rgba(13, 148, 136, 0.15);
+    border: 1px solid rgba(13, 148, 136, 0.3);
 }
 
 /* Coin icon */
@@ -116,13 +116,13 @@ body.dark-mode [data-tooltip]:before {
 /* Digit inputs */
 body.dark-mode .digit-input:focus {
     background-color: var(--card-background);
-    box-shadow: 0 5px 25px rgba(167, 139, 250, 0.4);
+    box-shadow: 0 5px 25px rgba(13, 148, 136, 0.4);
 }
 
 /* Guess history */
 body.dark-mode .history-item {
     background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(167, 139, 250, 0.15);
+    border: 1px solid rgba(13, 148, 136, 0.15);
 }
 
 /* Floating numbers */
@@ -138,11 +138,11 @@ body.dark-mode .floating-number:hover {
 body.dark-mode .achievement-toast {
     background: var(--card-background);
     border-color: var(--secondary-color);
-    box-shadow: 0 10px 40px rgba(167, 139, 250, 0.4);
+    box-shadow: 0 10px 40px rgba(13, 148, 136, 0.4);
 }
 
 body.dark-mode .achievement-toast::before {
-    background: rgba(167, 139, 250, 0.15);
+    background: rgba(13, 148, 136, 0.15);
 }
 
 body.dark-mode .achievement-toast-icon-wrapper {
@@ -203,7 +203,7 @@ body.dark-mode .form-group input {
 
 body.dark-mode .form-group input:focus {
     background-color: var(--card-background);
-    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.35);
+    box-shadow: 0 4px 20px rgba(13, 148, 136, 0.35);
 }
 
 /* Leaderboard */
@@ -212,7 +212,7 @@ body.dark-mode .leaderboard-table {
 }
 
 body.dark-mode .leaderboard-table tbody tr:hover {
-    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.25);
+    box-shadow: 0 4px 20px rgba(13, 148, 136, 0.25);
 }
 
 body.dark-mode .leaderboard-table tr.rank-1 td {
@@ -237,35 +237,35 @@ body.dark-mode .score-cell {
 
 /* Achievements modal */
 body.dark-mode .stat-box {
-    background: rgba(167, 139, 250, 0.15);
-    border-color: rgba(167, 139, 250, 0.3);
+    background: rgba(13, 148, 136, 0.15);
+    border-color: rgba(13, 148, 136, 0.3);
 }
 
 body.dark-mode .stat-box:hover {
-    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.25);
+    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.25);
 }
 
 body.dark-mode .achievement-tab {
-    border-color: rgba(167, 139, 250, 0.4);
+    border-color: rgba(13, 148, 136, 0.4);
 }
 
 body.dark-mode .achievement-tab:hover {
-    background: rgba(167, 139, 250, 0.15);
+    background: rgba(13, 148, 136, 0.15);
 }
 
 body.dark-mode .achievement-item {
     background-color: #2d2f48;
-    border-color: rgba(167, 139, 250, 0.2);
+    border-color: rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .achievement-item:hover {
-    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.25);
+    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.25);
     border-color: var(--secondary-color);
 }
 
 body.dark-mode .achievement-icon-wrapper {
-    background: rgba(167, 139, 250, 0.2);
-    border-color: rgba(167, 139, 250, 0.4);
+    background: rgba(13, 148, 136, 0.2);
+    border-color: rgba(13, 148, 136, 0.4);
 }
 
 body.dark-mode .achievement-item.unlocked .achievement-icon-wrapper {
@@ -274,15 +274,15 @@ body.dark-mode .achievement-item.unlocked .achievement-icon-wrapper {
 
 /* Profile modal */
 body.dark-mode .profile-header {
-    background: rgba(139, 122, 191, 0.2);
+    background: rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .profile-stat-card:hover {
-    box-shadow: 0 8px 20px rgba(139, 122, 191, 0.5);
+    box-shadow: 0 8px 20px rgba(13, 148, 136, 0.5);
 }
 
 body.dark-mode .achievement-summary-card {
-    background: rgba(139, 122, 191, 0.2);
+    background: rgba(13, 148, 136, 0.2);
 }
 
 /* ===================================== */
@@ -345,7 +345,7 @@ body.dark-mode textarea:focus,
 body.dark-mode select:focus {
     background-color: var(--card-background);
     border-color: var(--primary-color);
-    box-shadow: 0 4px 15px rgba(167, 139, 250, 0.3);
+    box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
 }
 
 /* ===================================== */
@@ -353,18 +353,18 @@ body.dark-mode select:focus {
 /* ===================================== */
 
 body.dark-mode .setting-item {
-    background: rgba(167, 139, 250, 0.1);
-    border-color: rgba(167, 139, 250, 0.2);
+    background: rgba(13, 148, 136, 0.1);
+    border-color: rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .setting-item:hover {
-    background: rgba(167, 139, 250, 0.15);
-    box-shadow: 0 4px 15px rgba(167, 139, 250, 0.2);
+    background: rgba(13, 148, 136, 0.15);
+    box-shadow: 0 4px 15px rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .toggle-btn {
     background: var(--primary-color);
-    box-shadow: 0 4px 15px rgba(167, 139, 250, 0.3);
+    box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
 }
 
 body.dark-mode .toggle-btn:hover {
@@ -373,17 +373,17 @@ body.dark-mode .toggle-btn:hover {
 }
 
 body.dark-mode .volume-slider {
-    background: rgba(167, 139, 250, 0.15);
+    background: rgba(13, 148, 136, 0.15);
 }
 
 body.dark-mode .volume-slider::-webkit-slider-thumb {
     background: var(--primary-color);
-    box-shadow: 0 2px 8px rgba(167, 139, 250, 0.4);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.4);
 }
 
 body.dark-mode .volume-slider::-moz-range-thumb {
     background: var(--primary-color);
-    box-shadow: 0 2px 8px rgba(167, 139, 250, 0.4);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.4);
 }
 
 /* ===================================== */
@@ -451,18 +451,18 @@ body.dark-mode a:hover {
 /* Code blocks */
 body.dark-mode code,
 body.dark-mode pre {
-    background: rgba(167, 139, 250, 0.1);
-    border: 1px solid rgba(167, 139, 250, 0.2);
+    background: rgba(13, 148, 136, 0.1);
+    border: 1px solid rgba(13, 148, 136, 0.2);
     color: var(--secondary-color);
 }
 
 /* Selection */
 body.dark-mode ::selection {
-    background: rgba(167, 139, 250, 0.3);
+    background: rgba(13, 148, 136, 0.3);
     color: var(--text-color);
 }
 
 body.dark-mode ::-moz-selection {
-    background: rgba(167, 139, 250, 0.3);
+    background: rgba(13, 148, 136, 0.3);
     color: var(--text-color);
 }

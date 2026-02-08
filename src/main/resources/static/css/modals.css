@@ -32,16 +32,16 @@
     width: 90%;
     max-width: 420px;
     position: relative;
-    box-shadow: 0 10px 50px rgba(139, 122, 191, 0.25);
-    border: 1px solid rgba(139, 122, 191, 0.15);
+    box-shadow: 0 10px 50px rgba(13, 148, 136, 0.25);
+    border: 1px solid rgba(13, 148, 136, 0.15);
 }
 
 /* Wider modal for leaderboards */
 .modal-content-wide {
     max-width: 520px;
     padding: 25px;
-    border: 2px solid rgba(139, 122, 191, 0.25);
-    box-shadow: 0 15px 60px rgba(139, 122, 191, 0.35);
+    border: 2px solid rgba(13, 148, 136, 0.25);
+    box-shadow: 0 15px 60px rgba(13, 148, 136, 0.35);
 }
 
 /* Modal Close Button (X button) - 44px minimum touch target */
@@ -53,7 +53,7 @@
     height: 44px;
     border-radius: 50%;
     border: none;
-    background: rgba(139, 122, 191, 0.1);
+    background: rgba(13, 148, 136, 0.1);
     color: var(--text-color);
     font-size: 20px;
     cursor: pointer;
@@ -193,9 +193,9 @@
 }
 
 .auth-btn:hover {
-    background: var(--secondary-color);
+    background: var(--primary-dark);
     transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 22px rgba(78, 168, 222, 0.4);
+    box-shadow: 0 6px 22px var(--shadow-color);
 }
 
 #user-profile {
@@ -349,18 +349,18 @@
 /* Base styling for ALL stat-box (difficulty and achievements) */
 .stat-box {
     flex: 1;
-    background: rgba(139, 122, 191, 0.1);
+    background: rgba(13, 148, 136, 0.1);
     border-radius: 20px;
     padding: 15px;
     text-align: center;
-    border: 2px solid rgba(139, 122, 191, 0.2);
+    border: 2px solid rgba(13, 148, 136, 0.2);
     transition: all 0.3s ease;
     position: relative;
 }
 
 .stat-box:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(139, 122, 191, 0.2);
+    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.2);
 }
 
 .stat-number {
@@ -397,7 +397,7 @@
 
 .achievement-tab {
     padding: 8px 20px;
-    border: 2px solid rgba(139, 122, 191, 0.3);
+    border: 2px solid rgba(13, 148, 136, 0.3);
     background: transparent;
     color: var(--text-color);
     border-radius: 18px;
@@ -408,7 +408,7 @@
 }
 
 .achievement-tab:hover {
-    background: rgba(139, 122, 191, 0.1);
+    background: rgba(13, 148, 136, 0.1);
     border-color: var(--primary-color);
 }
 
@@ -454,7 +454,7 @@
     gap: 12px;
     align-items: flex-start;
     transition: all 0.3s ease;
-    border: 2px solid rgba(139, 122, 191, 0.15);
+    border: 2px solid rgba(13, 148, 136, 0.15);
     position: relative;
     overflow: hidden;
 }
@@ -477,7 +477,7 @@
 
 .achievement-item:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(139, 122, 191, 0.2);
+    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.2);
     border-color: var(--primary-color);
 }
 
@@ -493,8 +493,8 @@
     align-items: center;
     justify-content: center;
     font-size: 22px;
-    background: rgba(139, 122, 191, 0.2);
-    border: 2px solid rgba(139, 122, 191, 0.3);
+    background: rgba(13, 148, 136, 0.2);
+    border: 2px solid rgba(13, 148, 136, 0.3);
 }
 
 .achievement-item.unlocked .achievement-icon-wrapper {
@@ -529,7 +529,7 @@
 }
 
 .achievement-badge-unlocked {
-    background: #52c98c;
+    background: var(--success-color);
     color: white;
     padding: 2px 7px;
     border-radius: 8px;
@@ -595,7 +595,7 @@
     align-items: center;
     gap: 15px;
     padding: 15px;
-    background: rgba(139, 122, 191, 0.1);
+    background: rgba(13, 148, 136, 0.1);
     border-radius: 12px;
     margin-bottom: 20px;
 }
@@ -646,7 +646,7 @@
 
 .profile-stat-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(139, 122, 191, 0.25);
+    box-shadow: 0 6px 16px rgba(13, 148, 136, 0.25);
 }
 
 /* Icon + Number horizontal container */
@@ -710,7 +710,7 @@
 }
 
 .achievement-summary-card {
-    background: rgba(139, 122, 191, 0.1);
+    background: rgba(13, 148, 136, 0.1);
     border: 2px solid var(--primary-color);
     border-radius: 15px;
     padding: 20px;
@@ -723,7 +723,7 @@
 
 .achievement-summary-card:hover {
     transform: translateX(5px);
-    box-shadow: 0 4px 12px rgba(139, 122, 191, 0.3);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
 }
 
 .achievement-summary-card > i:first-child {
@@ -778,22 +778,22 @@
 }
 
 .recent-games-list::-webkit-scrollbar-track {
-    background: rgba(139, 122, 191, 0.1);
+    background: rgba(13, 148, 136, 0.1);
     border-radius: 3px;
 }
 
 .recent-games-list::-webkit-scrollbar-thumb {
-    background: rgba(139, 122, 191, 0.4);
+    background: rgba(13, 148, 136, 0.4);
     border-radius: 3px;
 }
 
 .recent-games-list::-webkit-scrollbar-thumb:hover {
-    background: rgba(139, 122, 191, 0.6);
+    background: rgba(13, 148, 136, 0.6);
 }
 
 .recent-game-item {
     background: var(--card-background);
-    border: 2px solid rgba(139, 122, 191, 0.15);
+    border: 2px solid rgba(13, 148, 136, 0.15);
     border-radius: 8px;
     padding: 8px 10px; /* More compact padding */
     display: flex;
@@ -817,7 +817,7 @@
 }
 
 .recent-game-item.won::before {
-    background: #4CAF50;
+    background: var(--success-color);
 }
 
 .recent-game-item.lost::before {
@@ -826,7 +826,7 @@
 
 .recent-game-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(139, 122, 191, 0.15);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.15);
     border-color: var(--primary-color);
 }
 
@@ -842,7 +842,7 @@
 }
 
 .game-result-icon.won {
-    color: #4CAF50;
+    color: var(--success-color);
 }
 
 .game-result-icon.lost {
@@ -877,7 +877,7 @@
 }
 
 .difficulty-badge.difficulty-easy {
-    background: #4CAF50;
+    background: var(--success-color);
     color: white;
 }
 
@@ -967,7 +967,7 @@
 
 /* Dark mode */
 body.dark-mode .profile-logout-section {
-    border-top-color: rgba(167, 139, 250, 0.15);
+    border-top-color: rgba(13, 148, 136, 0.15);
 }
 
 /* ===================================== */
@@ -1379,8 +1379,8 @@ body.dark-mode .modal-content {
 }
 
 body.dark-mode .modal-content-wide {
-    border: 2px solid rgba(167, 139, 250, 0.35);
-    box-shadow: 0 15px 60px rgba(167, 139, 250, 0.45);
+    border: 2px solid rgba(13, 148, 136, 0.35);
+    box-shadow: 0 15px 60px rgba(13, 148, 136, 0.45);
 }
 
 body.dark-mode .form-group input {
@@ -1391,7 +1391,7 @@ body.dark-mode .form-group input {
 
 body.dark-mode .form-group input:focus {
     background-color: var(--card-background);
-    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.35);
+    box-shadow: 0 4px 20px rgba(13, 148, 136, 0.35);
 }
 
 body.dark-mode .modal-close-btn {
@@ -1409,7 +1409,7 @@ body.dark-mode .leaderboard-table {
 }
 
 body.dark-mode .leaderboard-table tbody tr:hover {
-    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.25);
+    box-shadow: 0 4px 20px rgba(13, 148, 136, 0.25);
 }
 
 body.dark-mode .leaderboard-table tr.rank-1 td {
@@ -1434,35 +1434,35 @@ body.dark-mode .score-cell {
 
 /* Achievements dark mode */
 body.dark-mode .stat-box {
-    background: rgba(167, 139, 250, 0.15);
-    border-color: rgba(167, 139, 250, 0.3);
+    background: rgba(13, 148, 136, 0.15);
+    border-color: rgba(13, 148, 136, 0.3);
 }
 
 body.dark-mode .stat-box:hover {
-    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.25);
+    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.25);
 }
 
 body.dark-mode .achievement-tab {
-    border-color: rgba(167, 139, 250, 0.4);
+    border-color: rgba(13, 148, 136, 0.4);
 }
 
 body.dark-mode .achievement-tab:hover {
-    background: rgba(167, 139, 250, 0.15);
+    background: rgba(13, 148, 136, 0.15);
 }
 
 body.dark-mode .achievement-item {
     background-color: #2d2f48;
-    border-color: rgba(167, 139, 250, 0.2);
+    border-color: rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .achievement-item:hover {
-    box-shadow: 0 6px 20px rgba(167, 139, 250, 0.25);
+    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.25);
     border-color: var(--secondary-color);
 }
 
 body.dark-mode .achievement-icon-wrapper {
-    background: rgba(167, 139, 250, 0.2);
-    border-color: rgba(167, 139, 250, 0.4);
+    background: rgba(13, 148, 136, 0.2);
+    border-color: rgba(13, 148, 136, 0.4);
 }
 
 body.dark-mode .achievement-item.unlocked .achievement-icon-wrapper {
@@ -1484,15 +1484,15 @@ body.dark-mode .achievements-list {
 
 /* Profile dark mode */
 body.dark-mode .profile-header {
-    background: rgba(139, 122, 191, 0.2);
+    background: rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .profile-stat-card:hover {
-    box-shadow: 0 8px 20px rgba(139, 122, 191, 0.5);
+    box-shadow: 0 8px 20px rgba(13, 148, 136, 0.5);
 }
 
 body.dark-mode .achievement-summary-card {
-    background: rgba(139, 122, 191, 0.2);
+    background: rgba(13, 148, 136, 0.2);
 }
 
 /* Settings dark mode */
@@ -1508,7 +1508,7 @@ body.dark-mode .setting-item:hover {
 }
 
 body.dark-mode .volume-slider {
-    background: rgba(167, 139, 250, 0.25);
+    background: rgba(13, 148, 136, 0.25);
     opacity: 0.7;
 }
 
@@ -1517,17 +1517,17 @@ body.dark-mode .volume-slider:hover {
 }
 
 body.dark-mode .volume-slider::-webkit-slider-thumb {
-    background: rgba(167, 139, 250, 0.8);
-    box-shadow: 0 2px 8px rgba(167, 139, 250, 0.3);
+    background: rgba(13, 148, 136, 0.8);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
 }
 
 body.dark-mode .volume-slider::-moz-range-thumb {
-    background: rgba(167, 139, 250, 0.8);
-    box-shadow: 0 2px 8px rgba(167, 139, 250, 0.3);
+    background: rgba(13, 148, 136, 0.8);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.3);
 }
 
 body.dark-mode .volume-percentage {
-    color: rgba(167, 139, 250, 0.9);
+    color: rgba(13, 148, 136, 0.9);
 }
 
 body.dark-mode .how-to-play-content {
@@ -1550,12 +1550,12 @@ body.dark-mode .example-box code {
 
 body.dark-mode .game-mode-item {
     background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(167, 139, 250, 0.2);
+    border-color: rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .game-mode-item:hover {
-    border-color: rgba(167, 139, 250, 0.4);
-    box-shadow: 0 2px 8px rgba(167, 139, 250, 0.15);
+    border-color: rgba(13, 148, 136, 0.4);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.15);
 }
 
 body.dark-mode .game-mode-item.active {
@@ -2343,21 +2343,21 @@ body.dark-mode .notifications-content {
 
 body.dark-mode .notification-item {
     background: rgba(255, 255, 255, 0.03);
-    border-color: rgba(167, 139, 250, 0.2);
+    border-color: rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .notification-item:hover {
-    border-color: rgba(167, 139, 250, 0.4);
-    box-shadow: 0 2px 8px rgba(167, 139, 250, 0.15);
+    border-color: rgba(13, 148, 136, 0.4);
+    box-shadow: 0 2px 8px rgba(13, 148, 136, 0.15);
 }
 
 body.dark-mode .notification-item.active {
     border-color: var(--primary-color);
-    background: rgba(167, 139, 250, 0.08);
+    background: rgba(13, 148, 136, 0.08);
 }
 
 body.dark-mode .notification-list-container {
-    border-top-color: rgba(167, 139, 250, 0.15);
+    border-top-color: rgba(13, 148, 136, 0.15);
     background: rgba(255, 255, 255, 0.03);
 }
 
@@ -2367,13 +2367,13 @@ body.dark-mode .notification-list::-webkit-scrollbar-track {
 
 body.dark-mode .friend-request-item {
     background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(167, 139, 250, 0.2);
+    border-color: rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .friend-request-item:hover {
     background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(167, 139, 250, 0.4);
-    box-shadow: 0 2px 6px rgba(167, 139, 250, 0.2);
+    border-color: rgba(13, 148, 136, 0.4);
+    box-shadow: 0 2px 6px rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .friend-request-btn.decline {
@@ -2382,13 +2382,13 @@ body.dark-mode .friend-request-btn.decline {
 
 body.dark-mode .challenge-notification-item {
     background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(167, 139, 250, 0.2);
+    border-color: rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .challenge-notification-item:hover {
     background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(167, 139, 250, 0.4);
-    box-shadow: 0 2px 6px rgba(167, 139, 250, 0.2);
+    border-color: rgba(13, 148, 136, 0.4);
+    box-shadow: 0 2px 6px rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .challenge-notification-btn.decline {
@@ -2794,18 +2794,18 @@ body.dark-mode .gameplay-toggle-switch input:checked + .gameplay-toggle-slider {
 
 body.dark-mode .gameplay-select {
     background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(167, 139, 250, 0.3);
+    border-color: rgba(13, 148, 136, 0.3);
     color: var(--text-color);
 }
 
 body.dark-mode .gameplay-select:hover {
     background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(167, 139, 250, 0.5);
+    border-color: rgba(13, 148, 136, 0.5);
 }
 
 body.dark-mode .gameplay-select:focus {
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.2);
 }
 
 /* ==========================================
@@ -2999,14 +2999,14 @@ body.dark-mode .account-form-content.danger-zone-content {
 
 body.dark-mode .account-input {
     background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(167, 139, 250, 0.3);
+    border-color: rgba(13, 148, 136, 0.3);
     color: var(--text-color);
 }
 
 body.dark-mode .account-input:focus {
     background: rgba(255, 255, 255, 0.08);
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15);
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
 }
 
 body.dark-mode .danger-warning {

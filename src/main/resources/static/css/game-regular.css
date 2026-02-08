@@ -24,7 +24,7 @@
     display: flex;
     flex-direction: column;
     background: rgba(243, 156, 18, 0.03);
-    border: 1px solid rgba(167, 139, 250, 0.15);
+    border: 1px solid rgba(13, 148, 136, 0.15);
     flex: 1; /* Take all remaining space */
     min-height: 150px; /* Reduced to ensure quit button fits */
     overflow: hidden;
@@ -43,7 +43,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     background: rgba(255, 255, 255, 0.4);
-    border: 1px solid rgba(167, 139, 250, 0.1);
+    border: 1px solid rgba(13, 148, 136, 0.1);
     border-radius: 10px;
     padding: 10px;
 }
@@ -54,7 +54,7 @@
 }
 
 #game-page .section:nth-child(2) #guess-history::-webkit-scrollbar-track {
-    background: rgba(167, 139, 250, 0.1);
+    background: rgba(13, 148, 136, 0.1);
     border-radius: 4px;
 }
 
@@ -81,13 +81,13 @@ body.dark-mode #game-page .section:nth-child(2) #guess-history::-webkit-scrollba
 
 /* Dark mode enhancements */
 body.dark-mode #game-page .section:nth-child(1) {
-    background: rgba(167, 139, 250, 0.08);
-    border: 2px solid rgba(167, 139, 250, 0.3);
+    background: rgba(13, 148, 136, 0.08);
+    border: 2px solid rgba(13, 148, 136, 0.3);
 }
 
 body.dark-mode #game-page .section:nth-child(2) {
     background: rgba(243, 156, 18, 0.06);
-    border: 1px solid rgba(167, 139, 250, 0.25);
+    border: 1px solid rgba(13, 148, 136, 0.25);
 }
 
 /* Submit and quit buttons */
@@ -95,13 +95,13 @@ body.dark-mode #game-page .section:nth-child(2) {
     margin-top: 20px;
     font-size: 1.1em;
     padding: 15px 30px;
-    box-shadow: 0 4px 15px rgba(139, 122, 191, 0.3);
+    box-shadow: 0 4px 15px rgba(13, 148, 136, 0.3);
     transition: all 0.3s ease;
 }
 
 #game-page #submit-guess:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 25px rgba(139, 122, 191, 0.4);
+    box-shadow: 0 6px 25px rgba(13, 148, 136, 0.4);
 }
 
 #game-page #submit-guess:active {

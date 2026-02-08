@@ -308,7 +308,7 @@ window.TimeAttackGame = {
         if (!feedbackElement) return;
 
         feedbackElement.innerHTML = `
-            <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #52c98c 0%, #4ea8de 100%); border-radius: 15px; color: white; animation: tada 0.5s;">
+            <div style="text-align: center; padding: 20px; background: linear-gradient(135deg, #14532D 0%, #4ea8de 100%); border-radius: 15px; color: white; animation: tada 0.5s;">
                 <h3 style="margin: 0 0 10px 0;">🎉 CORRECT!</h3>
                 <p style="font-size: 2em; font-weight: bold; margin: 10px 0;">+${coins} <i class="fas fa-coins" style="color: #ffd700;"></i></p>
                 <p style="font-size: 0.9em; opacity: 0.9;">${attempts} attempts • ${timeSeconds}s</p>
@@ -465,7 +465,7 @@ window.TimeAttackGame = {
 
         const createStatCard = (icon, value, label, highlight = false) => {
             const card = document.createElement('div');
-            const bgColor = highlight ? 'linear-gradient(135deg, #52c98c 0%, #4ea8de 100%)' : 'rgba(167, 139, 250, 0.1)';
+            const bgColor = highlight ? 'linear-gradient(135deg, #14532D 0%, #4ea8de 100%)' : 'rgba(167, 139, 250, 0.1)';
             const textColor = highlight ? '#fff' : 'var(--text-color)';
             card.style.cssText = `background: ${bgColor}; padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);`;
             card.innerHTML = `
@@ -514,9 +514,9 @@ window.TimeAttackGame = {
 
             data.gameDetails.forEach((game, index) => {
                 const gameCard = document.createElement('div');
-                const difficultyColors = ['#52c98c', '#f39c12', '#e74c3c'];
+                const difficultyColors = ['#14532D', '#f39c12', '#e74c3c'];
                 const difficultyNames = ['EASY', 'MED', 'HARD'];
-                const diffColor = difficultyColors[GameState.timeAttack.difficulty] || '#52c98c';
+                const diffColor = difficultyColors[GameState.timeAttack.difficulty] || '#14532D';
 
                 gameCard.style.cssText = `
                     display: flex;

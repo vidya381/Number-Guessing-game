@@ -282,12 +282,12 @@
     }
 
     .mode-tile .practice-badge {
-        background: linear-gradient(135deg, #8b7abf 0%, #6fa3d9 100%) !important;
+        background: linear-gradient(135deg, var(--primary-color) 0%, #6fa3d9 100%) !important;
         color: white !important;
     }
 
     body.dark-mode .mode-tile .practice-badge {
-        background: linear-gradient(135deg, #a78bfa 0%, #7c6bc9 100%) !important;
+        background: linear-gradient(135deg, var(--primary-color) 0%, #7c6bc9 100%) !important;
         color: white !important;
     }
 
@@ -549,7 +549,7 @@
     #ta-guess-history::-webkit-scrollbar-track,
     #survival-guess-history::-webkit-scrollbar-track,
     #multiplayer-tab #mp-guess-history::-webkit-scrollbar-track {
-        background: rgba(167, 139, 250, 0.1) !important;
+        background: rgba(13, 148, 136, 0.1) !important;
         border-radius: 3px !important;
     }
 

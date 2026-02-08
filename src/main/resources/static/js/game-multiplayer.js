@@ -494,7 +494,7 @@ const MultiplayerGame = {
                     }
 
                     heroSection.innerHTML = `
-                        <div style="background: linear-gradient(135deg, #52c98c 0%, #4ea8de 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(82, 201, 140, 0.3);">
+                        <div style="background: linear-gradient(135deg, #14532D 0%, #4ea8de 100%); padding: 25px; border-radius: 20px; box-shadow: 0 8px 24px rgba(20, 83, 45, 0.3);">
                             <div style="font-size: 2.5em; margin-bottom: 10px;">🏆</div>
                             <div style="font-size: 2em; font-weight: 800; color: white; line-height: 1.2;">VICTORY!</div>
                             <div style="font-size: 1.2em; color: rgba(255,255,255,0.9); margin-top: 8px;">${statusMessage}</div>
@@ -1001,7 +1001,7 @@ const MultiplayerGame = {
             heroTitle = 'READY TO PLAY';
             heroSubtitle = 'Start your first match!';
         } else if (winRateNum >= 60) {
-            heroGradient = 'linear-gradient(135deg, #52c98c 0%, #4ea8de 100%)';
+            heroGradient = 'linear-gradient(135deg, #14532D 0%, #4ea8de 100%)';
             heroEmoji = '🏆';
             heroTitle = 'CHAMPION';
             heroSubtitle = `${stats.winRate} Win Rate`;

@@ -484,7 +484,7 @@ window.SurvivalGame = {
         heroSection.style.cssText = 'text-align: center; margin-bottom: 30px;';
         heroSection.innerHTML = `
             <h2 style="color: var(--primary-color); margin: 0 0 20px 0; font-size: 1.5em; font-weight: 700;">${title}</h2>
-            <div style="background: linear-gradient(135deg, ${completed ? '#52c98c 0%, #4ea8de' : '#8b0000 0%, #4a0000'} 100%); padding: 30px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 8px 24px ${completed ? 'rgba(82, 201, 140, 0.3)' : 'rgba(139, 0, 0, 0.3)'};">
+            <div style="background: linear-gradient(135deg, ${completed ? '#14532D 0%, #4ea8de' : '#8b0000 0%, #4a0000'} 100%); padding: 30px; border-radius: 20px; margin-bottom: 15px; box-shadow: 0 8px 24px ${completed ? 'rgba(20, 83, 45, 0.3)' : 'rgba(139, 0, 0, 0.3)'};">
                 <div style="font-size: 3.5em; font-weight: 800; color: #fff; line-height: 1;">
                     ${data.coinsEarned || 0} <i class="fas fa-coins" style="font-size: 0.8em; color: #ffd700;"></i>
                 </div>
@@ -499,7 +499,7 @@ window.SurvivalGame = {
 
         const createStatCard = (icon, value, label, highlight = false) => {
             const card = document.createElement('div');
-            const bgColor = highlight ? 'linear-gradient(135deg, #52c98c 0%, #4ea8de 100%)' : 'rgba(167, 139, 250, 0.1)';
+            const bgColor = highlight ? 'linear-gradient(135deg, #14532D 0%, #4ea8de 100%)' : 'rgba(167, 139, 250, 0.1)';
             const textColor = highlight ? '#fff' : 'var(--text-color)';
             card.style.cssText = `background: ${bgColor}; padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);`;
             card.innerHTML = `

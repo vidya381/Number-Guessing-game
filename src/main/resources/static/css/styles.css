@@ -1,28 +1,31 @@
 :root {
-    /* Softened Playful Bubble Design - Light Mode */
-    --primary-color: #8b7abf;
-    --primary-dark: #6b5a9f;
-    --secondary-color: #4ea8de;
-    --secondary-dark: #3a8bc4;
-    --accent-color: #5dd3b3;
-    --success-color: #52c98c;
-    --danger-color: #ef6f6f;
-    --warning-color: #f0b347;
-    --background-color: #ebe9f5;
-    --background-gradient-start: #f3f1fa;
-    --background-gradient-end: #e8e5f4;
-    --card-background: #f8f7fc;
-    --card-hover-background: #fdfcff;
-    --text-color: #3d3358;
-    --text-secondary: #7a6d99;
+    /* Cool Tones - Light Mode */
+    --primary-color: #0D9488;
+    --primary-dark: #0F766E;
+    --secondary-color: #0284C7;
+    --secondary-dark: #0369A1;
+    --accent-color: #065F46;
+    --success-color: #166534;
+    --danger-color: #DC2626;
+    --warning-color: #EA580C;
+    --background-color: #F8FAFC;
+    --background-gradient-start: #F8FAFC;
+    --background-gradient-end: #F8FAFC;
+    --card-background: #FFFFFF;
+    --card-hover-background: #F1F5F9;
+    --text-color: #0F172A;
+    --text-secondary: #475569;
+    --text-muted: #94A3B8;
     --button-text-color: #ffffff;
-    --shadow-color: rgba(139, 122, 191, 0.15);
-    --bubble-shadow: 0 8px 24px rgba(139, 122, 191, 0.2);
-    --input-background: #f5f3fb;
-    --input-border: #ddd8ed;
+    --shadow-color: rgba(13, 148, 136, 0.15);
+    --bubble-shadow: 0 8px 24px rgba(13, 148, 136, 0.2);
+    --input-background: #FFFFFF;
+    --input-border: #CBD5E1;
+    --border-color: #E2E8F0;
     --hover-lift: -4px;
-    --background-color-rgb: 235, 233, 245;
-    --primary-color-rgb: 139, 122, 191;
+    --background-color-rgb: 248, 250, 252;
+    --primary-color-rgb: 13, 148, 136;
+    --secondary-color-rgb: 2, 132, 199;
 }
 
 #game-header {
@@ -125,25 +128,25 @@ body {
 .section {
     background-color: var(--card-background);
     border-radius: 25px;
-    box-shadow: 0 4px 15px rgba(139, 122, 191, 0.08);
+    box-shadow: 0 4px 15px rgba(13, 148, 136, 0.08);
     padding: 25px;
     margin-bottom: 20px;
     transition: all 0.3s ease;
-    border: 1px solid rgba(139, 122, 191, 0.08);
+    border: 1px solid rgba(13, 148, 136, 0.08);
 }
 
 .section:hover {
     transform: translateY(-3px);
-    box-shadow: 0 6px 24px rgba(139, 122, 191, 0.15);
+    box-shadow: 0 6px 24px rgba(13, 148, 136, 0.15);
     background-color: var(--card-hover-background);
 }
 
 body.dark-mode .section {
-    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.15);
+    box-shadow: 0 4px 20px rgba(13, 148, 136, 0.15);
 }
 
 body.dark-mode .section:hover {
-    box-shadow: 0 8px 30px rgba(167, 139, 250, 0.25);
+    box-shadow: 0 8px 30px rgba(13, 148, 136, 0.25);
     background-color: #2d2f48;
 }
 
@@ -156,27 +159,27 @@ body.dark-mode .section:hover {
 .card {
     background-color: var(--card-background);
     border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(139, 122, 191, 0.1);
+    box-shadow: 0 5px 15px rgba(13, 148, 136, 0.1);
     padding: 25px;
     margin-bottom: 25px;
     transition: all 0.3s ease;
-    border: 1px solid rgba(139, 122, 191, 0.12);
+    border: 1px solid rgba(13, 148, 136, 0.12);
     z-index: 2;
 }
 
 .card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 28px rgba(139, 122, 191, 0.18);
+    box-shadow: 0 8px 28px rgba(13, 148, 136, 0.18);
     background-color: var(--card-hover-background);
 }
 
 body.dark-mode .card {
-    border: 1px solid rgba(167, 139, 250, 0.2);
-    box-shadow: 0 5px 20px rgba(167, 139, 250, 0.2);
+    border: 1px solid rgba(13, 148, 136, 0.2);
+    box-shadow: 0 5px 20px rgba(13, 148, 136, 0.2);
 }
 
 body.dark-mode .card:hover {
-    box-shadow: 0 10px 35px rgba(167, 139, 250, 0.3);
+    box-shadow: 0 10px 35px rgba(13, 148, 136, 0.3);
     background-color: #2d2f48;
 }
 
@@ -355,33 +358,37 @@ button:active {
 
 body.dark-mode .digit-input:focus {
     background-color: var(--card-background);
-    box-shadow: 0 5px 25px rgba(167, 139, 250, 0.4);
+    box-shadow: 0 5px 25px rgba(13, 148, 136, 0.4);
 }
 
 body.dark-mode {
-    /* Refined Colorful Dark Mode */
-    --primary-color: #a78bfa;
-    --primary-dark: #8b6fd9;
-    --secondary-color: #60c5f2;
-    --secondary-dark: #4aabdb;
-    --accent-color: #6ee7c0;
-    --success-color: #6dd99f;
-    --danger-color: #ff8585;
-    --warning-color: #ffb84d;
-    --background-color: #1a1b2e;
-    --background-gradient-start: #1e1f33;
-    --background-gradient-end: #16172a;
-    --card-background: #252641;
-    --text-color: #e4e7f0;
-    --text-secondary: #a0a8c8;
+    /* Cool Tones - Dark Mode */
+    --primary-color: #0D9488;
+    --primary-dark: #0F766E;
+    --secondary-color: #0284C7;
+    --secondary-dark: #0369A1;
+    --accent-color: #065F46;
+    --success-color: #14532D;
+    --danger-color: #DC2626;
+    --warning-color: #EA580C;
+    --background-color: #0F172A;
+    --background-gradient-start: #0F172A;
+    --background-gradient-end: #0F172A;
+    --card-background: #1E293B;
+    --card-hover-background: #334155;
+    --text-color: #F8FAFC;
+    --text-secondary: #CBD5E1;
+    --text-muted: #64748B;
     --button-text-color: #ffffff;
-    --shadow-color: rgba(167, 139, 250, 0.25);
-    --bubble-shadow: 0 8px 32px rgba(167, 139, 250, 0.3);
-    --input-background: #2d2f48;
-    --input-border: #3d405e;
+    --shadow-color: rgba(13, 148, 136, 0.25);
+    --bubble-shadow: 0 8px 32px rgba(13, 148, 136, 0.3);
+    --input-background: #334155;
+    --input-border: #475569;
+    --border-color: #334155;
     --hover-lift: -4px;
-    --background-color-rgb: 26, 27, 46;
-    --primary-color-rgb: 167, 139, 250;
+    --background-color-rgb: 15, 23, 42;
+    --primary-color-rgb: 13, 148, 136;
+    --secondary-color-rgb: 2, 132, 199;
 }
 
 body.dark-mode h1,
@@ -393,7 +400,7 @@ body.dark-mode h4 {
 
 body.dark-mode button {
     background: var(--primary-color);
-    box-shadow: 0 6px 24px rgba(167, 139, 250, 0.35);
+    box-shadow: 0 6px 24px rgba(13, 148, 136, 0.35);
 }
 
 body.dark-mode button:hover {
@@ -406,18 +413,18 @@ body.dark-mode #game-header {
     background: var(--card-background);
     backdrop-filter: none;
     box-shadow: 0 4px 25px rgba(0, 0, 0, 0.5);
-    border-bottom: 1px solid rgba(167, 139, 250, 0.2);
+    border-bottom: 1px solid rgba(13, 148, 136, 0.2);
 }
 
 /* Make dark mode containers solid (no glass effect) */
 body.dark-mode #game-container {
     background: var(--card-background);
-    border: 1px solid rgba(167, 139, 250, 0.25);
+    border: 1px solid rgba(13, 148, 136, 0.25);
 }
 
 body.dark-mode #game-status-display {
     background: var(--card-background);
-    border: 1px solid rgba(167, 139, 250, 0.2);
+    border: 1px solid rgba(13, 148, 136, 0.2);
 }
 
 #guess-history {
@@ -445,7 +452,7 @@ body.dark-mode #game-status-display {
 }
 
 .history-item .correct {
-    color: #2ecc71;
+    color: var(--success-color);
     margin-right: 10px;
 }
 
@@ -772,7 +779,7 @@ body.dark-mode .floating-number:hover {
     border-radius: 15px;
     box-shadow: 0 2px 8px var(--shadow-color);
     transition: all 0.3s ease;
-    border: 1px solid rgba(139, 122, 191, 0.1);
+    border: 1px solid rgba(13, 148, 136, 0.1);
 }
 
 #game-status-icon {
@@ -843,8 +850,8 @@ body.dark-mode .floating-number:hover {
     width: 90%;
     max-width: 420px;
     position: relative;
-    box-shadow: 0 10px 50px rgba(139, 122, 191, 0.25);
-    border: 1px solid rgba(139, 122, 191, 0.15);
+    box-shadow: 0 10px 50px rgba(13, 148, 136, 0.25);
+    border: 1px solid rgba(13, 148, 136, 0.15);
 }
 
 .close-modal {
@@ -903,7 +910,7 @@ body.dark-mode .floating-number:hover {
 
 body.dark-mode .form-group input:focus {
     background-color: var(--card-background);
-    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.35);
+    box-shadow: 0 4px 20px rgba(13, 148, 136, 0.35);
 }
 
 .error-message {
@@ -969,9 +976,9 @@ body.dark-mode .form-group input:focus {
 }
 
 .auth-btn:hover {
-    background: var(--secondary-color);
+    background: var(--primary-dark);
     transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 22px rgba(78, 168, 222, 0.4);
+    box-shadow: 0 6px 22px var(--shadow-color);
 }
 
 #user-profile {
@@ -1027,6 +1034,12 @@ body.dark-mode .close-modal {
 .leaderboard-table thead {
     background: var(--primary-color);
     color: var(--button-text-color);
+}
+
+body.dark-mode .leaderboard-table thead {
+    background: var(--card-background);
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--primary-color);
 }
 
 .leaderboard-table th {
@@ -1116,19 +1129,19 @@ body.dark-mode .leaderboard-table {
 }
 
 body.dark-mode .leaderboard-table tbody tr:hover {
-    box-shadow: 0 4px 20px rgba(167, 139, 250, 0.25);
+    box-shadow: 0 4px 20px rgba(13, 148, 136, 0.25);
 }
 
 body.dark-mode .leaderboard-table tr.rank-1 td {
-    background: rgba(255, 215, 0, 0.15);
+    background: rgba(255, 215, 0, 0.08);
 }
 
 body.dark-mode .leaderboard-table tr.rank-2 td {
-    background: rgba(192, 192, 192, 0.15);
+    background: rgba(192, 192, 192, 0.08);
 }
 
 body.dark-mode .leaderboard-table tr.rank-3 td {
-    background: rgba(205, 127, 50, 0.15);
+    background: rgba(205, 127, 50, 0.08);
 }
 
 /* Responsive leaderboard */
