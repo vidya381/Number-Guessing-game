@@ -231,7 +231,7 @@ h2 {
 /* ===================================== */
 
 /* Exclude header buttons, hint button, and modal buttons from generic styling */
-button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close) {
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close):not(.profile-logout-btn) {
     background: var(--primary-color);
     color: var(--button-text-color);
     border: none;
@@ -247,13 +247,13 @@ button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toas
     box-shadow: 0 6px 20px var(--shadow-color);
 }
 
-button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close):not(.challenge-btn):not(.remove-btn):hover {
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close):not(.challenge-btn):not(.remove-btn):not(.profile-logout-btn):hover {
     background: var(--primary-dark);
     transform: translateY(var(--hover-lift)) scale(1.02);
     box-shadow: 0 10px 30px var(--shadow-color);
 }
 
-button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close):not(.challenge-btn):not(.remove-btn):active {
+button:not(.header-icon-btn):not(.auth-btn):not(.dropdown-item):not(.simple-toast-close):not(.modal-close-btn):not(.hint-button):not(.achievement-toast-close):not(.challenge-btn):not(.remove-btn):not(.profile-logout-btn):active {
     transform: translateY(-2px) scale(0.98);
     box-shadow: 0 4px 15px var(--shadow-color);
 }
