@@ -186,7 +186,27 @@ body.dark-mode .card {
 
 body.dark-mode .card:hover {
     box-shadow: 0 10px 35px rgba(13, 148, 136, 0.3);
-    background-color: #2d2f48;
+    background-color: var(--card-hover-background);
+}
+
+/* Disable hover effects on result pages - they're informational, not interactive */
+#result-page.card:hover,
+#daily-result-page.card:hover,
+#time-attack-result-page.card:hover,
+#survival-result-page.card:hover,
+#mp-result-page.card:hover {
+    transform: none;
+    box-shadow: 0 10px 50px rgba(13, 148, 136, 0.25);
+    background-color: var(--card-background);
+}
+
+body.dark-mode #result-page.card:hover,
+body.dark-mode #daily-result-page.card:hover,
+body.dark-mode #time-attack-result-page.card:hover,
+body.dark-mode #survival-result-page.card:hover,
+body.dark-mode #mp-result-page.card:hover {
+    box-shadow: 0 5px 20px rgba(13, 148, 136, 0.2);
+    background-color: var(--card-background);
 }
 
 /* ===================================== */

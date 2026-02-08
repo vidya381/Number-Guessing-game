@@ -553,11 +553,13 @@ const MultiplayerGame = {
                 const createStatCard = (icon, value, label) => {
                     const card = document.createElement('div');
                     card.style.cssText = `
-                        background: rgba(167, 139, 250, 0.1);
+                        background: rgba(13, 148, 136, 0.1);
                         padding: 18px;
                         border-radius: 12px;
                         text-align: center;
-                        border: 1px solid rgba(167, 139, 250, 0.2);
+                        border: 1px solid rgba(13, 148, 136, 0.2);
+                        pointer-events: none;
+                        cursor: default;
                     `;
                     card.innerHTML = `
                         <i class="${icon}" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>
@@ -1032,28 +1034,28 @@ const MultiplayerGame = {
                 <!-- Stats Grid -->
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%;">
                 <!-- Total Games -->
-                <div style="background: rgba(167, 139, 250, 0.1); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);">
+                <div style="background: rgba(13, 148, 136, 0.1); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(13, 148, 136, 0.2);">
                     <i class="fas fa-gamepad" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>
                     <div style="font-size: 1.8em; font-weight: 700; color: var(--text-color); line-height: 1.2;">${stats.totalGames}</div>
                     <div style="font-size: 0.75em; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Total Games</div>
                 </div>
 
                 <!-- Wins -->
-                <div style="background: rgba(167, 139, 250, 0.1); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);">
+                <div style="background: rgba(13, 148, 136, 0.1); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(13, 148, 136, 0.2);">
                     <i class="fas fa-trophy" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>
                     <div style="font-size: 1.8em; font-weight: 700; color: var(--text-color); line-height: 1.2;">${stats.wins}</div>
                     <div style="font-size: 0.75em; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Wins</div>
                 </div>
 
                 <!-- Losses -->
-                <div style="background: rgba(167, 139, 250, 0.1); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);">
+                <div style="background: rgba(13, 148, 136, 0.1); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(13, 148, 136, 0.2);">
                     <i class="fas fa-times-circle" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>
                     <div style="font-size: 1.8em; font-weight: 700; color: var(--text-color); line-height: 1.2;">${stats.losses}</div>
                     <div style="font-size: 0.75em; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Losses</div>
                 </div>
 
                 <!-- Win Rate -->
-                <div style="background: rgba(167, 139, 250, 0.1); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);">
+                <div style="background: rgba(13, 148, 136, 0.1); padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(13, 148, 136, 0.2);">
                     <i class="fas fa-chart-line" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>
                     <div style="font-size: 1.8em; font-weight: 700; color: var(--text-color); line-height: 1.2;">${stats.winRate}</div>
                     <div style="font-size: 0.75em; color: var(--text-secondary); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Win Rate</div>

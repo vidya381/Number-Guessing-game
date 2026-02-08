@@ -694,11 +694,13 @@ window.RegularGame = {
         const createStatCard = (icon, value, label) => {
             const card = document.createElement('div');
             card.style.cssText = `
-                background: rgba(167, 139, 250, 0.1);
+                background: rgba(13, 148, 136, 0.1);
                 padding: 18px;
                 border-radius: 12px;
                 text-align: center;
-                border: 1px solid rgba(167, 139, 250, 0.2);
+                border: 1px solid rgba(13, 148, 136, 0.2);
+                pointer-events: none;
+                cursor: default;
             `;
             card.innerHTML = `
                 <i class="${icon}" style="font-size: 2em; color: var(--primary-color); margin-bottom: 8px;"></i>

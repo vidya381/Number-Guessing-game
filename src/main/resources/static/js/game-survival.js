@@ -499,9 +499,9 @@ window.SurvivalGame = {
 
         const createStatCard = (icon, value, label, highlight = false) => {
             const card = document.createElement('div');
-            const bgColor = highlight ? 'linear-gradient(135deg, #14532D 0%, #4ea8de 100%)' : 'rgba(167, 139, 250, 0.1)';
+            const bgColor = highlight ? 'linear-gradient(135deg, #14532D 0%, #4ea8de 100%)' : 'rgba(13, 148, 136, 0.1)';
             const textColor = highlight ? '#fff' : 'var(--text-color)';
-            card.style.cssText = `background: ${bgColor}; padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(167, 139, 250, 0.2);`;
+            card.style.cssText = `background: ${bgColor}; padding: 18px; border-radius: 12px; text-align: center; border: 1px solid rgba(13, 148, 136, 0.2); pointer-events: none; cursor: default;`;
             card.innerHTML = `
                 <i class="${icon}" style="font-size: 2em; color: ${highlight ? '#fff' : 'var(--primary-color)'}; margin-bottom: 8px;"></i>
                 <div style="font-size: 1.8em; font-weight: 700; color: ${textColor}; line-height: 1.2;">${value}</div>
