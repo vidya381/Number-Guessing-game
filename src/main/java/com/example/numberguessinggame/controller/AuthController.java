@@ -77,7 +77,7 @@ public class AuthController {
             }
 
             String token = userService.authenticateUser(username.trim(), password);
-            User user = userService.findByUsername(username.trim())
+            User user = userService.findByUsernameIgnoreCase(username.trim())
                     .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
             response.put("success", true);
