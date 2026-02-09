@@ -213,13 +213,15 @@
     }
 
     .mode-tile .multiplayer-badge {
-        background: linear-gradient(135deg, #5dd3b3 0%, #3eb89a 100%) !important;
-        color: white !important;
+        background: rgba(13, 148, 136, 0.2) !important;
+        color: var(--primary-color) !important;
+        border: 1px solid rgba(13, 148, 136, 0.4) !important;
     }
 
     body.dark-mode .mode-tile .multiplayer-badge {
-        background: linear-gradient(135deg, #5dd3b3 0%, #4facb8 100%) !important;
-        color: white !important;
+        background: rgba(13, 148, 136, 0.25) !important;
+        color: #5eead4 !important;
+        border: 1px solid rgba(13, 148, 136, 0.5) !important;
     }
 
     .timeattack-tile {
