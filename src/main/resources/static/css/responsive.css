@@ -34,8 +34,8 @@
     /* Body and container adjustments */
     body {
         padding-top: 70px;
-        padding-bottom: 68px;
-        /* Add padding for bottom nav */
+        padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px));
+        /* Add padding for bottom nav + safe area for mobile browsers */
     }
 
     /* Show bottom navigation on mobile */
