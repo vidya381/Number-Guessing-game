@@ -37,9 +37,9 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 4px;
     height: 100%;
-    background: rgba(13, 148, 136, 0.1);
+    background: var(--primary-color);
     pointer-events: none;
 }
 
@@ -95,7 +95,6 @@
     font-size: 18px;
     font-weight: 700;
     color: var(--text-color);
-    background: var(--primary-color);
 }
 
 .achievement-toast-description {
@@ -153,7 +152,7 @@ body.dark-mode .achievement-toast {
 }
 
 body.dark-mode .achievement-toast::before {
-    background: rgba(13, 148, 136, 0.15);
+    background: var(--primary-color);
 }
 
 body.dark-mode .achievement-toast-icon-wrapper {
@@ -162,7 +161,6 @@ body.dark-mode .achievement-toast-icon-wrapper {
 
 body.dark-mode .achievement-toast-title {
     color: #ffffff;
-    background: var(--primary-color);
 }
 
 body.dark-mode .achievement-toast-description {

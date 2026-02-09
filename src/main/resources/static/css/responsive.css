@@ -937,6 +937,31 @@
     #game-container {
         padding: 15px;
     }
+
+    /* Hint button - smaller on mobile to match stat badges */
+    .hint-button {
+        padding: 6px 10px;
+        min-height: 36px;
+        font-size: 0.8em;
+        gap: 4px;
+    }
+
+    /* Hints display - improved mobile styling */
+    .hints-display {
+        margin: 15px 0;
+        padding: 12px;
+        border-width: 1px;
+    }
+
+    .hints-display h3 {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .hint-item {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
 }
 
 /* ===================================== */
