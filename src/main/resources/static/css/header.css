@@ -329,10 +329,7 @@
     box-shadow: 0 -2px 20px rgba(13, 148, 136, 0.1);
     border-top: 1px solid rgba(13, 148, 136, 0.1);
     z-index: 999;
-    padding: 6px 10px calc(6px + env(safe-area-inset-bottom)) 10px;
-    padding-bottom: max(6px, env(safe-area-inset-bottom));
-    padding-left: max(10px, env(safe-area-inset-left));
-    padding-right: max(10px, env(safe-area-inset-right));
+    padding: 6px 10px;
     display: flex;
     justify-content: space-around;
     align-items: center;

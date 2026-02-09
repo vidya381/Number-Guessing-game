@@ -34,8 +34,7 @@
     /* Body and container adjustments */
     body {
         padding-top: 70px;
-        padding-bottom: calc(68px + env(safe-area-inset-bottom, 0px));
-        /* Add padding for bottom nav + safe area for mobile browsers */
+        padding-bottom: 68px;
     }
 
     /* Show bottom navigation on mobile */
@@ -860,7 +859,7 @@
     /* Profile modal - seamless full screen between header and nav on mobile */
     #profile-modal {
         top: 70px !important;
-        height: calc(100vh - 70px - 68px - env(safe-area-inset-bottom, 0px)) !important;
+        height: calc(100vh - 70px - 68px) !important;
         background-color: var(--card-background) !important;
         padding: 0;
         align-items: stretch;
@@ -884,9 +883,9 @@
         background-color: var(--card-background) !important;
     }
 
-    /* Profile close button - hide on mobile, use nav bar instead */
+    /* Profile close button - show on mobile */
     #profile-modal .modal-close-btn {
-        display: none !important;
+        display: flex !important;
     }
 
     #profile-modal .profile-title {
@@ -905,7 +904,7 @@
     /* Settings modal - seamless full screen between header and nav on mobile */
     #settings-modal {
         top: 70px !important;
-        height: calc(100vh - 70px - 68px - env(safe-area-inset-bottom, 0px)) !important;
+        height: calc(100vh - 70px - 68px) !important;
         background-color: var(--card-background) !important;
         padding: 0;
         align-items: stretch;
@@ -927,9 +926,9 @@
         background-color: var(--card-background) !important;
     }
 
-    /* Settings close button - hide on mobile, use nav bar instead */
+    /* Settings close button - show on mobile */
     #settings-modal .modal-close-btn {
-        display: none !important;
+        display: flex !important;
     }
 
     /* Generic sections */
