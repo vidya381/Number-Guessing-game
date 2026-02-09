@@ -25,7 +25,8 @@ public class UserService {
 
     @Transactional
     public User registerUser(String username, String email, String password) {
-        if (userRepository.existsByUsername(username)) {
+        // Check for duplicate username (case-insensitive)
+        if (userRepository.existsByUsernameIgnoreCase(username)) {
             throw new IllegalArgumentException("That username is taken. How about trying a different one?");
         }
 
@@ -44,7 +45,8 @@ public class UserService {
     }
 
     public String authenticateUser(String username, String password) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
+        // Use case-insensitive lookup for authentication
+        Optional<User> userOptional = userRepository.findByUsernameIgnoreCase(username);
 
         if (userOptional.isEmpty()) {
             throw new IllegalArgumentException("Username or password doesn't match. Double-check and try again!");
