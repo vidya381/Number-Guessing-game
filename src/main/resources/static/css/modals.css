@@ -367,7 +367,7 @@
     display: block;
     font-size: 32px;
     font-weight: 700;
-    color: var(--primary-color);
+    color: #ffffff;
     margin-bottom: 5px;
 }
 
@@ -664,7 +664,7 @@
 .stat-value {
     font-size: 26px;
     font-weight: 700;
-    color: var(--accent-color);
+    color: #ffffff;
     line-height: 1;
 }
 
