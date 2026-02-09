@@ -1,495 +1,288 @@
-# Bulls & Cows Game 🎮
+# Bulls & Cows Game
 
-A modern, full-stack web implementation of the classic **Bulls and Cows** code-breaking game. Featuring **5 unique game modes**, real-time multiplayer battles, a friends system, daily challenges, and survival mode, this game offers endless ways to test your code-breaking skills. Track your progress with achievements, compete on global leaderboards, earn coins, unlock hints, and enjoy a beautifully crafted gaming experience with both light and dark themes.
+Code-breaking game with 5 modes, real-time multiplayer, achievements, and daily challenges. Guess the secret number using bulls (correct position) and cows (wrong position) feedback.
 
-![Home Page](https://github.com/user-attachments/assets/c45093f9-49da-43b9-a8cc-0dca1789d9b2)
+![Java](https://img.shields.io/badge/Java-17-ED8B00?style=flat&logo=openjdk&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.1.0-6DB33F?style=flat&logo=spring-boot&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-14-336791?style=flat&logo=postgresql&logoColor=white)
+![WebSocket](https://img.shields.io/badge/WebSocket-STOMP-010101?style=flat&logo=socket.io&logoColor=white)
 
----
+**Live Demo:** https://bulls-cows-game.onrender.com
 
-## 🌟 Key Features
+> Hosted on Render free tier - first load takes 30-60 seconds if instance is sleeping.
 
-### 🎮 **Five Game Modes**
-1. **Practice Mode** - Classic gameplay with three difficulty levels (Easy: 3-digit, Medium: 4-digit, Hard: 5-digit), perfect for honing your skills
-2. **Daily Challenge** - New puzzle every 24 hours, compete globally for the best score, earn bonus coins and exclusive achievements
-3. **Time Attack** - Race against the clock! 60 seconds on Easy, 90 on Medium, 120 on Hard. Quick thinking required!
-4. **Survival Mode** - Endless progression with escalating difficulty. Start with Easy 3-digit codes, advance through Medium and Hard. One life - how far can you go?
-5. **Multiplayer 1v1 Race** - Challenge friends to real-time battles! First to solve wins, with attempt limits (7/10/13 per difficulty). Draws and forfeit handling included!
+## What it does
 
-#### Game Mode Screenshots
+Code-breaking game. Guess a secret number with unique digits, get feedback after each guess: bulls (correct digit in correct spot) and cows (correct digit in wrong spot). Five game modes, real-time multiplayer battles, 34 achievements, and global leaderboards.
+
+## Game Modes
+
+**Practice Mode**
+- 3 difficulty levels
+- Easy: 3 digits, 7 attempts, 3 coins
+- Medium: 4 digits, 10 attempts, 6 coins
+- Hard: 5 digits, 13 attempts, 9 coins
+
+**Daily Challenge**
+- Same puzzle for everyone, resets every 24 hours
+- One puzzle per day, multiple guesses allowed
+- Leaderboard ranks by attempts and time
+- Bonus coins and exclusive achievements
+
+**Time Attack**
+- 5-minute session, complete as many games as possible
+- Pick difficulty at start
+- 10-second penalty per hint
+- Coins per win: 3/6/9 by difficulty
 
 **Survival Mode**
+- 5 rounds at chosen difficulty
+- Attempts per round: 7/10/13 by difficulty
+- Can retry wrong guesses until attempts run out
+- Game ends if you exhaust attempts without solving
+- Coins per round cleared, bonus for completing all 5
 
-![Survival Mode](https://github.com/user-attachments/assets/fa715c25-51ea-4df9-b559-3e560a421980)
+**Multiplayer 1v1**
+- Challenge friends to real-time battles
+- Same secret number for both players
+- Attempt limits: 7/10/13 per difficulty
+- First to solve wins (or fewest attempts if both solve)
+- Forfeit and draw handling
 
-**Multiplayer 1v1 Mode**
+## Features
 
-![Multiplayer Mode](https://github.com/user-attachments/assets/ee622417-484d-4670-9092-40a0f12c1ce6)
+**Hint System**
+- Reveals one random unrevealed digit position
+- Costs: Easy=5 coins, Medium=8 coins, Hard=10 coins
+- Available in Practice, Time Attack, Survival
+- Can reveal all positions if you have enough coins
 
-### 🎯 **Game Mechanics**
-- **Three Difficulty Levels**: Easy (3-digit, 7 attempts), Medium (4-digit, 10 attempts), Hard (5-digit, 13 attempts)
-- **Bulls & Cows Feedback**:
-  - 🐂 **Bulls**: Correct digit in correct position
-  - 🐄 **Cows**: Correct digit in wrong position
-- **Real-time Timer**: Track how fast you solve the puzzle (crucial for Time Attack!)
-- **Visual Progress Indicators**: Animated attempt counter and timer
-- **Unique Digit Validation**: No repeating numbers allowed
-- **Confetti Celebration**: Epic win animations
-- **Coin Economy**: Earn coins for wins, spend on hints
-- **Hint System**: Reveal digits when stuck (costs coins)
+**Authentication**
+- JWT auth with BCrypt password hashing
+- Guest mode (can't access multiplayer or friends)
+- Secure password change and account deletion
 
-### 👤 **User System**
-- **Secure Authentication**: JWT-based login/registration
-- **Guest Mode**: Play without signing up (local stats only, no multiplayer/friends)
-- **User Profiles**: Comprehensive dashboard with:
-  - Total games & win rate
-  - Best score tracking
-  - Win streak counter
-  - Consecutive play days
-  - Difficulty breakdown with stats
-  - Mode-specific stats (Practice, Daily, Time Attack, Survival, Multiplayer)
-  - Recent game history
-  - Coin balance and achievements unlocked
+**Friends System**
+- Search users by username
+- Send/accept/decline friend requests
+- Online/offline presence indicators
+- Challenge friends to multiplayer
 
-![User Profile](https://github.com/user-attachments/assets/6ff3c9a4-8a4a-4209-8187-af3b77661d7d)
+**Achievements**
+- 34 achievements across multiple categories
+- First Steps: First Win, Perfect Game, Speed Demon
+- Winning Streaks: Hot Streak (3), On Fire (5), Unstoppable (10)
+- Mastery: Win 10/25/50 games per difficulty
+- Dedication: Marathon Runner, Century Club, Legendary
+- Special: Lucky Number, Comeback Kid, Early Bird, Night Owl, Weekend Warrior
+- Mode-specific for Daily, Time Attack, Survival, Multiplayer
+- Coin rewards on unlock
 
-### 👥 **Friends & Multiplayer**
-- **Friends System**:
-  - Search and add friends by username
-  - Real-time online/offline presence indicators
-  - Friend request management (send, accept, decline)
-  - Friends list with activity status
-- **1v1 Multiplayer Racing**:
-  - Challenge friends to real-time code-breaking battles
-  - Same secret number for both players - first to solve wins!
-  - Attempt limits per difficulty (7/10/13)
-  - Draw scenarios if no one solves or both solve in same attempts
-  - Fewest-attempts-wins tiebreaker
-  - Forfeit handling with proper notifications
-  - Live opponent progress tracking
-  - WebSocket-powered real-time updates
-  - Winner earns coins, stats update for both players
-  - Dedicated result pages for wins, losses, draws, and forfeits
+**User Profile**
+- Total games, wins, win rate
+- Best score and win streaks
+- Consecutive play days tracker
+- Stats by difficulty and mode
+- Recent game history
+- Coin balance
 
-![Notifications](https://github.com/user-attachments/assets/90bbeca8-a71c-4cb0-af75-0a48245b6df6)
+**Leaderboards**
+- Global rankings by score and win rate
+- Mode-specific leaderboards
+- Difficulty filters
+- Top 10 displayed
 
-### 🏆 **Achievement System**
-- **25+ Unique Achievements** across multiple categories:
-  - **First Steps**: First Win, Perfect Game, Speed Demon
-  - **Winning Streaks**: Hot Streak, On Fire, Unstoppable
-  - **Mastery**: Easy Master, Medium Master, Hard Master
-  - **Dedication**: Marathon Runner, Century Club, Legendary
-  - **Special**: Lucky Number, Comeback Kid, Early Bird, Night Owl, Weekend Warrior, Perfectionist
-  - **Mode-Specific**: Daily Challenge Champion, Time Attack Master, Survival achievements
-  - **Multiplayer**: First multiplayer win, winning streaks, rival achievements
-- **Achievement Notifications**: Beautiful toast popups on unlock with coin rewards
-- **Progress Tracking**: Filter by unlocked/locked achievements, view completion dates
+**UI/UX**
+- Light and dark theme toggle
+- Fully responsive (mobile, tablet, desktop)
+- Keyboard shortcuts (Enter, Escape, Ctrl+K)
+- Sound effects with volume control
+- Auto-submit when all digits filled
+- Guess history with bulls/cows feedback
+- Confetti on wins
 
-![Achievements](https://github.com/user-attachments/assets/b99ace30-f90e-45e1-8802-ef88139a46c8)
+## Technology Stack
 
-### 📊 **Leaderboard**
-- **Global Rankings**: Top 10 players by score and win rate
-- **Visual Distinctions**: Gold, silver, bronze for top 3
-- **Real-time Updates**: See where you rank among players
+### Frontend
+- Vanilla JavaScript (ES6+), HTML5, CSS3
+- STOMP.js for WebSocket client
+- Font Awesome 6 icons
+- Google Fonts (Fredoka One, Quicksand)
+- No frameworks - lightweight pure JS
 
-### 🎨 **Beautiful UI/UX**
-- **Dual Themes**: Toggle between light and dark mode
-- **Responsive Design**: Perfect on mobile, tablet, and desktop
-- **Smooth Animations**: Polished transitions and effects
-- **Floating Numbers Background**: Animated decorative elements
-- **Modern Bubble Design**: Playful, colorful interface
-- **Intuitive Controls**: Easy to learn, satisfying to use
+### Backend
+- Spring Boot 3.1.0 (Java 17)
+- PostgreSQL (Neon hosted)
+- Hibernate/JPA with HikariCP connection pooling
+- JWT auth with BCrypt
+- WebSocket (STOMP over SockJS)
+- Maven build
 
-### ⚙️ **Settings & Customization**
-- **Sound Volume Control**: Adjust or mute game sounds
-- **Theme Toggle**: Switch between light and dark mode
-- **Theme Persistence**: Your preferences are saved
-- **Gameplay Preferences**:
-  - Auto-Submit: Automatically submit when all digits are filled
-  - Animations: Toggle confetti and floating numbers effects
-- **Account Management**:
-  - Change Password: Secure password updates
-  - Change Email: Update email address
-  - Delete Account: Permanent account deletion with confirmation
-- **"How to Play" Guide**: Comprehensive in-app tutorial with:
-  - Game objective and rules
-  - Difficulty explanations
-  - Bulls & Cows mechanics with examples
-  - Scoring system details
-  - Pro tips for players
-- **Notifications**: Friend requests and challenge notifications in header
+### Architecture
 
-![Settings Modal](https://github.com/user-attachments/assets/36c0422d-e541-4d89-b36f-86b23eb8ff2b)
+```
+┌─────────────────────────────────────────────────────────────┐
+│                 Frontend (Vanilla JS SPA)                   │
+│  Game Modes │ Auth │ Friends │ Achievements │ Leaderboards  │
+└─────────────────┬───────────────┬───────────────────────────┘
+                  │               │
+            REST API          WebSocket
+                  │               │
+┌─────────────────▼───────────────▼───────────────────────────┐
+│                   Spring Boot Backend                       │
+│  Controllers → Services → Repositories                      │
+│  JWT Auth │ Session Management (ConcurrentHashMap)          │
+└─────────────────┬───────────────────────────────────────────┘
+                  │
+┌─────────────────▼───────────────────────────────────────────┐
+│              PostgreSQL Database (Neon)                     │
+│  13 entities: users, games, achievements, multiplayer, etc  │
+└─────────────────────────────────────────────────────────────┘
 
-### 🎵 **Sound Effects**
-- Correct guess feedback
-- Incorrect guess feedback
-- Victory celebration
-- Achievement unlock sounds
-- Volume control with visual slider
+REST API: Game actions, stats, CRUD operations (40+ endpoints)
+WebSocket: Real-time multiplayer, friend presence, notifications
+```
 
-### ⌨️ **Keyboard Shortcuts**
-- `Enter` - Submit your guess
-- `Escape` - Close modals
-- `Ctrl/Cmd + K` - Quick access to settings
-- **Arrow Keys** - Navigate between input boxes
-- **Number Keys** - Auto-advance to next input
-
-### 🔄 **Real-time Features (WebSocket)**
-- **Live Multiplayer Updates**: See opponent's progress in real-time
-- **Friend Presence**: Know when friends are online/offline
-- **Instant Notifications**: Challenge invites, game results, friend requests
-- **Automatic Reconnection**: SockJS fallback for reliability
-- **Event-Driven Architecture**: Efficient push-based updates
-- **Session Management**: Thread-safe concurrent game handling
-
-### 💬 **Smart Error Handling**
-- **User-Friendly Messages**: Clear, conversational error feedback
-- **Non-blocking Toasts**: Errors don't interrupt your flow
-- **Actionable Guidance**: Always tells you what to do next
-- **Consistent Tone**: Friendly throughout the entire app
-
----
-
-## 🛠️ Technology Stack
-
-### **Backend**
-- **Framework**: Spring Boot 3.1.0
-- **Language**: Java 17
-- **Database**: PostgreSQL (Neon hosted)
-- **ORM**: Hibernate/JPA with HikariCP connection pooling
-- **Security**: JWT Authentication with BCrypt password hashing
-- **Real-time**: WebSocket with STOMP protocol over SockJS
-- **Build Tool**: Maven
-- **Scheduled Tasks**: Spring @Scheduled for cleanups and daily challenges
-
-### **Frontend**
-- **Core**: HTML5, CSS3, Vanilla JavaScript (ES6+)
-- **Real-time**: STOMP.js client for WebSocket communication
-- **Icons**: Font Awesome 6
-- **Fonts**: Google Fonts (Fredoka One, Quicksand)
-- **Audio**: HTML5 Audio API for sound effects
-- **No Framework**: Pure, lightweight implementation
-- **State Management**: Centralized state.js module
-
-### **Architecture**
-- RESTful API design (40+ endpoints)
-- MVC Pattern (Model-View-Controller)
-- Repository Pattern for data access with custom JPQL queries
-- Service Layer with @Transactional business logic
+**Design patterns:**
+- MVC with service and repository layers
 - JWT stateless authentication
-- WebSocket event-driven architecture for real-time features
+- WebSocket event-driven architecture
 - ConcurrentHashMap for thread-safe session management
-- Modular frontend with separated game mode files
+- Repository pattern with custom JPQL queries
+- Scheduled tasks for daily challenges and cleanup
 
----
+## Database Schema
 
-## 🎮 How to Play
+**13 entities:**
+- `users` - Accounts, stats, coins, preferences
+- `games` - Game history across all modes
+- `achievements` / `user_achievements` - Definitions and unlocks
+- `daily_challenges` / `daily_challenge_attempts` - Daily puzzle system
+- `time_attack_sessions` - Active time attack games
+- `survival_sessions` - Active survival games
+- `friendships` / `friend_requests` - Friends system
+- `multiplayer_challenges` / `multiplayer_game_sessions` / `multiplayer_player_progress` - Multiplayer system
 
-### **Getting Started**
-1. Visit **[Bulls & Cows Game](https://bulls-cows-game.onrender.com)** or run locally
-2. Optional: Sign up for achievements, leaderboard access, and multiplayer features
-3. Choose from 5 game modes:
-   - **Practice**: Learn the ropes with classic gameplay
-   - **Daily Challenge**: Compete globally on the same daily puzzle
-   - **Time Attack**: Race against the clock
-   - **Survival**: Endless progression with escalating difficulty
-   - **Multiplayer**: Challenge friends to 1v1 battles
-4. Select your difficulty level and start guessing!
+**Relationships:**
+- One-to-Many: User → Games, User → Achievements
+- Many-to-Many: User ↔ Friends, User ↔ Multiplayer Sessions
+- Cascade deletes for data integrity
 
-### **Game Rules**
-- The secret code contains **unique digits only** (no repeating numbers)
-- Attempt limits vary by difficulty: Easy (7), Medium (10), Hard (13)
-- After each guess, you'll receive feedback:
-  - **Bulls (🐂)**: Correct digit in the correct position
-  - **Cows (🐄)**: Correct digit but in the wrong position
-- Earn coins for wins, unlock achievements, and climb leaderboards
+## Local Setup
 
-### **Example**
-```
-Secret Code:  1 2 3
-Your Guess:   1 3 2
-Feedback:     1 Bull (the "1") + 2 Cows (the "2" and "3")
-```
-
-### **Multiplayer Rules**
-- Both players solve the same secret number
-- First to solve wins the match
-- If no one solves, it's a draw
-- If both solve, fewest attempts wins
-- Winner earns coins and stats update for both players
-
-### **Coin Economy**
-- **Earn Coins**: Win games in any mode
-- **Spend Coins**: Purchase hints to reveal digits
-- **Achievements**: Some achievements award bonus coins
-
----
-
-## 🚀 Local Development
-
-### **Prerequisites**
-- Java 17 or higher
+### Prerequisites
+- Java 17+
 - Maven 3.6+
 - PostgreSQL 12+
 
-### **Setup Instructions**
+### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/vidya381/bulls-cows-game.git
-   cd bulls-cows-game
-   ```
-
-2. **Configure Database**
-
-   Create `src/main/resources/application-local.properties`:
-   ```properties
-   spring.datasource.url=jdbc:postgresql://localhost:5432/bulls_cows_db
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
-
-   spring.jpa.hibernate.ddl-auto=update
-   spring.jpa.show-sql=true
-
-   jwt.secret=your-secret-key-here
-   jwt.expiration=86400000
-   ```
-
-3. **Build and Run**
-   ```bash
-   # Using Maven
-   mvn spring-boot:run -Dspring-boot.run.profiles=local
-
-   # Or build JAR and run
-   mvn clean package
-   java -jar target/number-guessing-game-0.0.1-SNAPSHOT.jar
-   ```
-
-4. **Access the Application**
-   ```
-   http://localhost:8080
-   ```
-
-### **Development Features**
-- **Hot Reload**: Spring DevTools enabled
-- **LiveReload**: Auto-refresh on file changes
-- **H2 Console**: Available at `/h2-console` (if configured)
-
----
-
-## 📁 Project Structure
-
-```
-bulls-cows-game/                 # Git repository root
-├── src/
-│   ├── main/
-│   │   ├── java/com/example/numberguessinggame/
-│   │   │   ├── controller/      # REST API endpoints (9 controllers)
-│   │   │   │   ├── AuthController.java
-│   │   │   │   ├── UserController.java
-│   │   │   │   ├── DailyChallengeController.java
-│   │   │   │   ├── TimeAttackController.java
-│   │   │   │   ├── SurvivalController.java
-│   │   │   │   ├── MultiplayerController.java
-│   │   │   │   ├── FriendsController.java
-│   │   │   │   ├── AchievementController.java
-│   │   │   │   └── LeaderboardController.java
-│   │   │   ├── entity/          # JPA entities (13)
-│   │   │   │   ├── User.java
-│   │   │   │   ├── Game.java
-│   │   │   │   ├── Achievement.java
-│   │   │   │   ├── DailyChallenge.java
-│   │   │   │   ├── SurvivalSession.java
-│   │   │   │   ├── Friendship.java
-│   │   │   │   ├── FriendRequest.java
-│   │   │   │   ├── MultiplayerChallenge.java
-│   │   │   │   ├── MultiplayerGameSession.java
-│   │   │   │   └── ... (and more)
-│   │   │   ├── repository/      # Data access layer with JPQL
-│   │   │   ├── service/         # Business logic (9 services)
-│   │   │   │   ├── UserService.java
-│   │   │   │   ├── AchievementService.java
-│   │   │   │   ├── DailyChallengeService.java
-│   │   │   │   ├── TimeAttackService.java
-│   │   │   │   ├── SurvivalService.java
-│   │   │   │   ├── MultiplayerService.java
-│   │   │   │   ├── FriendsService.java
-│   │   │   │   ├── PresenceService.java
-│   │   │   │   └── JwtUtil.java
-│   │   │   ├── config/          # Security & WebSocket config
-│   │   │   │   ├── SecurityConfig.java
-│   │   │   │   ├── WebSocketConfig.java
-│   │   │   │   └── WebSocketEventListener.java
-│   │   │   ├── util/            # Helper utilities
-│   │   │   └── GlobalExceptionHandler.java
-│   │   └── resources/
-│   │       ├── static/
-│   │       │   ├── css/         # Stylesheets (15 modular files)
-│   │       │   │   ├── styles.css
-│   │       │   │   ├── variables.css
-│   │       │   │   ├── base.css
-│   │       │   │   ├── components.css
-│   │       │   │   ├── animations.css
-│   │       │   │   ├── dark-mode.css
-│   │       │   │   ├── responsive.css
-│   │       │   │   ├── header.css
-│   │       │   │   ├── modals.css
-│   │       │   │   ├── notifications.css
-│   │       │   │   ├── game-regular.css
-│   │       │   │   ├── game-daily.css
-│   │       │   │   ├── game-timeattack.css
-│   │       │   │   ├── game-survival.css
-│   │       │   │   └── game-multiplayer.css
-│   │       │   ├── js/          # Modular frontend logic
-│   │       │   │   ├── state.js
-│   │       │   │   ├── config.js
-│   │       │   │   ├── auth.js
-│   │       │   │   ├── ui.js
-│   │       │   │   ├── utils.js
-│   │       │   │   ├── achievements.js
-│   │       │   │   ├── notifications.js
-│   │       │   │   ├── game-regular.js
-│   │       │   │   ├── game-daily.js
-│   │       │   │   ├── game-timeattack.js
-│   │       │   │   ├── game-survival.js
-│   │       │   │   └── game-multiplayer.js
-│   │       │   ├── audio/       # Sound effects
-│   │       │   └── favicon/     # Icons
-│   │       └── templates/
-│   │           └── index.html   # Main SPA page
-│   └── test/                    # Unit & integration tests
-├── pom.xml                      # Maven dependencies
-├── Dockerfile                   # Container configuration
-├── README.md                    # This file
-└── .gitignore                   # Git ignore rules
+1. **Clone**
+```bash
+git clone https://github.com/vidya381/bulls-cows-game.git
+cd bulls-cows-game
 ```
 
----
+2. **Configure database**
 
-## 🔒 Security Features
+Create `src/main/resources/application-local.properties`:
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/bulls_cows_db
+spring.datasource.username=your_username
+spring.datasource.password=your_password
 
-- **JWT Authentication**: Stateless, secure token-based auth
-- **Password Encryption**: BCrypt hashing
-- **Input Validation**: Client and server-side
-- **SQL Injection Protection**: Parameterized queries
-- **XSS Prevention**: Input sanitization
-- **CORS Configuration**: Controlled access
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
 
----
+jwt.secret=your-secret-key-here
+jwt.expiration=86400000
+```
 
-## 📊 Database Schema
+3. **Build and run**
+```bash
+mvn spring-boot:run -Dspring-boot.run.profiles=local
 
-### **13 Database Entities**
+# Or build JAR
+mvn clean package
+java -jar target/number-guessing-game-0.0.1-SNAPSHOT.jar
+```
 
-**Core Tables:**
-- **users**: Player accounts, statistics, coin balance, preferences
-- **games**: Game history and results across all modes
-- **achievements**: Achievement definitions with coin rewards
-- **user_achievements**: Unlocked achievements per user with timestamps
+4. **Access**
+```
+http://localhost:8080
+```
 
-**Daily Challenge:**
-- **daily_challenges**: Daily puzzle configuration and metadata
-- **daily_challenge_attempts**: User attempts on daily challenges
+## Project Structure
 
-**Time Attack Mode:**
-- **time_attack_sessions**: Active time attack game sessions with timer state
+```
+bulls-cows-game/
+├── src/main/java/com/example/numberguessinggame/
+│   ├── controller/          # REST + WebSocket endpoints (9 controllers)
+│   ├── entity/              # JPA entities (13 models)
+│   ├── repository/          # Data access with JPQL
+│   ├── service/             # Business logic (9 services)
+│   ├── config/              # Security & WebSocket config
+│   └── util/                # Helper utilities
+├── src/main/resources/
+│   ├── static/
+│   │   ├── css/             # 15 modular stylesheets
+│   │   ├── js/              # Modular JS (game modes, auth, UI)
+│   │   └── audio/           # Sound effects
+│   └── templates/
+│       └── index.html       # Main SPA page
+└── pom.xml
+```
 
-**Survival Mode:**
-- **survival_sessions**: Active survival game sessions with current level and progression
+## How it Works
 
-**Friends System:**
-- **friendships**: Bidirectional friend relationships
-- **friend_requests**: Pending, accepted, and declined friend requests
+**Game Rules**
+- Secret code has unique digits (no repeats)
+- Bulls = correct digit in correct position
+- Cows = correct digit in wrong position
+- Win by guessing exact code within attempt limit
 
-**Multiplayer System:**
-- **multiplayer_challenges**: Challenge requests with expiration (10 min)
-- **multiplayer_game_sessions**: Active/completed 1v1 game sessions
-- **multiplayer_player_progress**: Per-player state in multiplayer games
+**Example:**
+```
+Secret:  1 2 3
+Guess:   1 3 2
+Result:  1 Bull (the "1") + 2 Cows (the "2" and "3")
+```
 
-### **Key Relationships**
-- User → Games (One-to-Many)
-- User → Achievements (Many-to-Many)
-- User → Friends (Many-to-Many bidirectional)
-- User → Multiplayer Sessions (Many-to-Many)
-- User → Daily Challenge Attempts (One-to-Many)
-- User → Survival Sessions (One-to-Many)
-- Proper foreign keys with CASCADE delete for data integrity
+**Coin Economy**
+- Earn: 3/6/9 coins per win (Easy/Medium/Hard)
+- Spend: 5/8/10 coins per hint (by difficulty)
+- Some achievements award bonus coins
 
----
+**Multiplayer**
+- Both players get same secret number
+- First to solve wins
+- Tiebreaker: fewest attempts wins
+- No solution within attempts: draw
+- Real-time updates via WebSocket
 
-## 🎨 UI/UX Highlights
+**Real-time Features**
+- Live multiplayer game updates
+- Friend online/offline presence
+- Challenge notifications
+- Auto-reconnection with SockJS fallback
 
-### **Design Philosophy**
-- **Clean & Modern**: Minimalist bubble design
-- **Intuitive**: Clear navigation and feedback
-- **Performant**: Optimized animations
-- **Accessible**: Keyboard shortcuts, ARIA labels
+## Security
 
-### **Color Palette**
-- **Primary**: Purple (#8b7abf)
-- **Secondary**: Blue (#4ea8de)
-- **Accent**: Teal (#5dd3b3)
-- **Success**: Green (#52c98c)
-- **Danger**: Red (#ef6f6f)
+- JWT stateless authentication
+- BCrypt password hashing
+- Parameterized queries (SQL injection protection)
+- Input sanitization (XSS prevention)
+- CORS configuration
+- Client and server-side validation
 
-### **Typography**
-- **Headings**: Fredoka One (playful, bold)
-- **Body**: Quicksand (clean, rounded)
+## Performance
 
----
-
-## 🌐 Live Demo
-
-**Play Now**: [https://bulls-cows-game.onrender.com](https://bulls-cows-game.onrender.com)
-
-> Note: Hosted on Render free tier - initial load may take 30-60 seconds if the instance is sleeping.
-
----
-
-## 📈 Project Stats
-
-- **Lines of Code**: 26,000+ (Java + JavaScript + CSS)
-- **Game Modes**: 5 unique game modes
-- **Achievements**: 25+ unique achievements
-- **API Endpoints**: 40+ RESTful endpoints
-- **Database Tables**: 13 entities with complex relationships
-- **WebSocket Events**: 10+ real-time event types
-- **Sound Effects**: 4 audio files
-- **JavaScript Modules**: 12 modular files (game modes, auth, UI, state, utils, achievements, notifications)
-- **Responsive Breakpoints**: 3 (mobile, tablet, desktop)
-- **Concurrent Session Support**: Thread-safe game session management
-
----
-
-## 🎯 Future Enhancements
-
-- [ ] Tournament mode with brackets and prizes
-- [ ] Mobile native app (React Native/Flutter)
-- [ ] Player profiles with customizable avatars
+- Thread-safe concurrent session management
+- HikariCP connection pooling
+- Scheduled cleanup (expired sessions, old games)
+- Modular frontend (separate files per game mode)
+- CSS custom properties for theming
 
 ---
 
-## 📝 License
-
-This project is open source and available for educational and portfolio purposes.
-
----
-
-## 🙏 Acknowledgments
-
-- Inspired by the classic Bulls and Cows code-breaking game
-- Built with passion for clean code and great UX
-- Thanks to the Spring Boot and open-source communities
-
----
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-- Open an [Issue](https://github.com/vidya381/bulls-cows-game/issues)
-- Check the **"How to Play"** guide in Settings
-- Review this README for feature details and technical information
-
----
-
-**Enjoy the game and may your guesses be ever in your favor!** 🎲🔢✨
+Built with Spring Boot, PostgreSQL, and Vanilla JavaScript. Uses WebSocket for real-time multiplayer and JWT for authentication.
