@@ -860,10 +860,12 @@
     /* Profile modal - seamless full screen between header and nav on mobile */
     #profile-modal {
         top: 70px !important;
-        height: calc(100vh - 70px - 68px) !important;
+        height: calc(100vh - 70px - 68px - env(safe-area-inset-bottom, 0px)) !important;
         background-color: var(--card-background) !important;
         padding: 0;
         align-items: stretch;
+        justify-content: flex-start !important;
+        z-index: 1001 !important; /* Just above header (1000) but below notifications */
     }
 
     #profile-modal .profile-modal-content {
@@ -903,10 +905,12 @@
     /* Settings modal - seamless full screen between header and nav on mobile */
     #settings-modal {
         top: 70px !important;
-        height: calc(100vh - 70px - 68px) !important;
+        height: calc(100vh - 70px - 68px - env(safe-area-inset-bottom, 0px)) !important;
         background-color: var(--card-background) !important;
         padding: 0;
         align-items: stretch;
+        justify-content: flex-start !important;
+        z-index: 1001 !important; /* Just above header (1000) but below notifications */
     }
 
     #settings-modal .modal-content {
