@@ -156,7 +156,7 @@
     align-items: center;
     justify-content: center;
     gap: 6px;
-    background: #ffca28;
+    background: #ffd700;
     color: #2c3e50;
     padding: 0 16px;
     margin: 0;
@@ -168,7 +168,7 @@
     line-height: 1;
     vertical-align: middle;
     box-sizing: border-box;
-    box-shadow: 0 4px 15px rgba(255, 202, 40, 0.4);
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
     transition: all 0.3s ease;
     cursor: default;
     flex-shrink: 0;
@@ -176,12 +176,12 @@
 
 .header-coins i {
     font-size: 16px;
-    color: #ff8f00;
+    color: #f39c12;
 }
 
 .header-coins:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 202, 40, 0.5);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
 }
 
 /* ===================================== */
