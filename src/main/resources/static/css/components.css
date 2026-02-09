@@ -30,7 +30,7 @@
 #game-status-text {
     margin: 0;
     font-size: 1.7em;
-    color: var(--text-color);
+    color: var(--primary-color);
 }
 
 /* ===================================== */

@@ -259,19 +259,19 @@ window.Utils = {
     updateThemeColors: function(isDarkMode) {
         const root = document.documentElement;
         if (isDarkMode) {
-            // Dark mode: Orange primary, Blue secondary
-            root.style.setProperty('--primary-color', '#f39c12');
-            root.style.setProperty('--secondary-color', '#4a90e2');
-            root.style.setProperty('--background-color', '#2c3e50');
-            root.style.setProperty('--card-background', '#34495e');
-            root.style.setProperty('--text-color', '#ecf0f1');
+            // Dark mode: Teal primary
+            root.style.setProperty('--primary-color', '#0D9488');
+            root.style.setProperty('--secondary-color', '#0284C7');
+            root.style.setProperty('--background-color', '#0F172A');
+            root.style.setProperty('--card-background', '#1E293B');
+            root.style.setProperty('--text-color', '#F8FAFC');
         } else {
-            // Light mode: Purple primary, Orange secondary
-            root.style.setProperty('--primary-color', '#6a4c93');
-            root.style.setProperty('--secondary-color', '#f39c12');
-            root.style.setProperty('--background-color', '#f0f0f0');
-            root.style.setProperty('--card-background', '#ffffff');
-            root.style.setProperty('--text-color', '#333333');
+            // Light mode: Teal primary
+            root.style.setProperty('--primary-color', '#0D9488');
+            root.style.setProperty('--secondary-color', '#0284C7');
+            root.style.setProperty('--background-color', '#F8FAFC');
+            root.style.setProperty('--card-background', '#FFFFFF');
+            root.style.setProperty('--text-color', '#0F172A');
         }
     },
 

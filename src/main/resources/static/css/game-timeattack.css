@@ -71,11 +71,11 @@
 }
 
 .time-attack-btn {
-    background: #f59e0b;
+    background: var(--primary-color) !important;
 }
 
 .time-attack-btn:hover {
-    background: #d97706;
+    background: var(--primary-dark) !important;
 }
 
 .time-attack-difficulty-select {

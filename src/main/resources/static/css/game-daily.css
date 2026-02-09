@@ -170,12 +170,12 @@
 }
 
 .daily-challenge-btn {
-    background: var(--warning-color);
+    background: var(--primary-color) !important;
     min-width: 180px; /* Ensure button is wide enough for completed state */
 }
 
 .daily-challenge-btn:hover {
-    background: #d4a947;
+    background: var(--primary-dark) !important;
 }
 
 .daily-challenge-btn:disabled {

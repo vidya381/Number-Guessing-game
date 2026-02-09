@@ -71,11 +71,11 @@
 }
 
 .survival-btn {
-    background: #dc2626;
+    background: var(--primary-color) !important;
 }
 
 .survival-btn:hover {
-    background: #b91c1c;
+    background: var(--primary-dark) !important;
 }
 
 .survival-difficulty-select {
