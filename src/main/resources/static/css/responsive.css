@@ -938,12 +938,12 @@
         padding: 15px;
     }
 
-    /* Hint button - smaller on mobile to match stat badges */
+    /* Hint button - match stat badge size exactly */
     .hint-button {
-        padding: 6px 10px;
-        min-height: 36px;
-        font-size: 0.8em;
-        gap: 4px;
+        padding: 6px 12px;
+        min-height: auto;
+        font-size: 0.85em;
+        gap: 6px;
     }
 
     /* Hints display - improved mobile styling */
