@@ -1269,6 +1269,16 @@ window.Utils = {
         // Home button
         bottomNavHome.addEventListener('click', () => {
             this.setActiveBottomNavItem('home');
+            // Close profile modal if open
+            const profileModal = document.getElementById('profile-modal');
+            if (profileModal && profileModal.style.display === 'flex') {
+                this.closeModalWithAnimation(profileModal);
+            }
+            // Close settings modal if open
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal && settingsModal.style.display === 'flex') {
+                this.closeModalWithAnimation(settingsModal);
+            }
             if (RegularGame && RegularGame.showHomePage) {
                 RegularGame.showHomePage();
             }
@@ -1276,7 +1286,18 @@ window.Utils = {
 
         // Profile button
         bottomNavProfile.addEventListener('click', () => {
+            // Check if profile is already open
+            const profileModal = document.getElementById('profile-modal');
+            if (profileModal && profileModal.style.display === 'flex') {
+                return; // Already viewing profile, do nothing
+            }
+
             this.setActiveBottomNavItem('profile');
+            // Close settings modal if open
+            const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal && settingsModal.style.display === 'flex') {
+                this.closeModalWithAnimation(settingsModal);
+            }
             // If logged in, load and show profile; if logged out, show login modal
             if (GameState.authToken && GameState.currentUser) {
                 // Load and show profile with data
@@ -1297,8 +1318,18 @@ window.Utils = {
 
         // Settings button
         bottomNavSettings.addEventListener('click', () => {
-            this.setActiveBottomNavItem('settings');
+            // Check if settings is already open
             const settingsModal = document.getElementById('settings-modal');
+            if (settingsModal && settingsModal.style.display === 'flex') {
+                return; // Already viewing settings, do nothing
+            }
+
+            this.setActiveBottomNavItem('settings');
+            // Close profile modal if open
+            const profileModal = document.getElementById('profile-modal');
+            if (profileModal && profileModal.style.display === 'flex') {
+                this.closeModalWithAnimation(profileModal);
+            }
             if (settingsModal) {
                 settingsModal.style.display = 'flex';
             }
