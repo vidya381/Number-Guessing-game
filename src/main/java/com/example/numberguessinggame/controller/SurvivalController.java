@@ -299,17 +299,7 @@ public class SurvivalController {
 
         User user = userOpt.get();
 
-        // Check coins
-        int hintCost = 10;
-        Integer userCoins = user.getCoins() != null ? user.getCoins() : 0;
-        if (userCoins < hintCost) {
-            return ResponseEntity.ok(Map.of(
-                    "success", false,
-                    "message", "Insufficient coins. Need " + hintCost + " coins."
-            ));
-        }
-
-        // Get session
+        // Get session first to determine difficulty
         SurvivalGameSession session = activeSessions.get(sessionId);
         if (session == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -321,6 +311,23 @@ public class SurvivalController {
             return ResponseEntity.ok(Map.of(
                     "success", false,
                     "message", "Session expired"
+            ));
+        }
+
+        // Difficulty-based hint cost: Easy=5, Medium=8, Hard=10
+        int hintCost = switch(session.getDifficulty()) {
+            case 0 -> 5;  // Easy
+            case 1 -> 8;  // Medium
+            case 2 -> 10; // Hard
+            default -> 10;
+        };
+
+        // Check coins
+        Integer userCoins = user.getCoins() != null ? user.getCoins() : 0;
+        if (userCoins < hintCost) {
+            return ResponseEntity.ok(Map.of(
+                    "success", false,
+                    "message", "Insufficient coins. Need " + hintCost + " coins."
             ));
         }
 

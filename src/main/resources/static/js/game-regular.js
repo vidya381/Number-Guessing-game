@@ -369,7 +369,6 @@ window.RegularGame = {
                 // Update local state
                 GameState.revealedHints.set(data.position, data.digit);
                 GameState.hintsUsed = data.hintsUsed;
-                GameState.nextHintCost = data.nextHintCost;
 
                 // Update user coins
                 GameState.currentUser.coins = data.remainingCoins;
@@ -447,8 +446,12 @@ window.RegularGame = {
             return;
         }
 
+        // Calculate hint cost based on difficulty
+        // Easy (0) = 5 coins, Medium (1) = 8 coins, Hard (2) = 10 coins
+        const hintCost = GameState.currentDifficulty === 0 ? 5 : GameState.currentDifficulty === 1 ? 8 : 10;
+
         // Recreate button HTML
-        hintBtn.innerHTML = `<span class="hint-text">Hint</span> <span class="hint-cost" id="hint-cost">${GameState.nextHintCost}</span> <i class="fas fa-coins"></i>`;
+        hintBtn.innerHTML = `<span class="hint-text">Hint</span> <span class="hint-cost" id="hint-cost">${hintCost}</span> <i class="fas fa-coins"></i>`;
 
         // Disable if not logged in
         if (!GameState.currentUser || !GameState.authToken) {
@@ -459,10 +462,10 @@ window.RegularGame = {
         }
 
         // Disable if insufficient coins
-        if (GameState.currentUser.coins < GameState.nextHintCost) {
+        if (GameState.currentUser.coins < hintCost) {
             hintBtn.disabled = true;
             hintBtn.setAttribute('data-locked', 'true');
-            hintBtn.setAttribute('data-tooltip', `Need ${GameState.nextHintCost} coins (you have ${GameState.currentUser.coins})`);
+            hintBtn.setAttribute('data-tooltip', `Need ${hintCost} coins (you have ${GameState.currentUser.coins})`);
             return;
         }
 
@@ -475,7 +478,6 @@ window.RegularGame = {
     resetHintState: function() {
         GameState.hintsUsed = 0;
         GameState.revealedHints.clear();
-        GameState.nextHintCost = 3;
 
         // Hide hints container
         const hintsContainer = document.getElementById('hints-container');

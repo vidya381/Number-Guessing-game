@@ -241,8 +241,14 @@ public class GameController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        // Calculate hint cost
-        int hintCost = gameSession.getNextHintCost();
+        // Calculate hint cost based on difficulty
+        // Easy (0) = 5 coins, Medium (1) = 8 coins, Hard (2) = 10 coins
+        int hintCost = switch(gameSession.getDifficulty()) {
+            case 0 -> 5;  // Easy
+            case 1 -> 8;  // Medium
+            case 2 -> 10; // Hard
+            default -> 10;
+        };
 
         // Get user and verify coins
         Optional<User> userOptional = userService.findById(userId);
@@ -289,7 +295,6 @@ public class GameController {
         response.put("digit", digit);
         response.put("costPaid", hintCost);
         response.put("remainingCoins", user.getCoins());
-        response.put("nextHintCost", gameSession.getNextHintCost());
         response.put("hintsUsed", gameSession.getHintsUsed());
 
         return ResponseEntity.ok(response);

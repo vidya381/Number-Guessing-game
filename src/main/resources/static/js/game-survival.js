@@ -812,7 +812,8 @@ window.SurvivalGame = {
             return;
         }
 
-        const hintCost = 10;
+        // Difficulty-based hint cost: Easy=5, Medium=8, Hard=10
+        const hintCost = GameState.survival.difficulty === 0 ? 5 : GameState.survival.difficulty === 1 ? 8 : 10;
         if (GameState.currentUser.coins < hintCost) {
             if (Achievements) {
                 Achievements.showToast(`Need ${hintCost} coins (you have ${GameState.currentUser.coins})`, 'error');
@@ -922,7 +923,8 @@ window.SurvivalGame = {
         const hintBtn = document.getElementById('survival-hint-btn');
         if (!hintBtn) return;
 
-        const hintCost = 10;
+        // Difficulty-based hint cost: Easy=5, Medium=8, Hard=10
+        const hintCost = GameState.survival.difficulty === 0 ? 5 : GameState.survival.difficulty === 1 ? 8 : 10;
 
         // Recreate button HTML
         hintBtn.innerHTML = `<span class="hint-text">Hint</span> <span class="hint-cost">${hintCost}</span> <i class="fas fa-coins"></i>`;
