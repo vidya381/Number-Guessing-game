@@ -31,6 +31,12 @@ window.SurvivalGame = {
             quitBtn.addEventListener('click', () => this.quitGame());
         }
 
+        // Hint button
+        const hintBtn = document.getElementById('survival-hint-btn');
+        if (hintBtn) {
+            hintBtn.addEventListener('click', () => this.getSurvivalHint());
+        }
+
         // Result page buttons
         const playAgainBtn = document.getElementById('survival-play-again');
         if (playAgainBtn) {
@@ -162,6 +168,10 @@ window.SurvivalGame = {
 
                 this.setupGameUI();
                 this.updateHUD();
+
+                // Reset and update hint system
+                this.resetSurvivalHintState();
+                this.updateSurvivalHintButton();
 
             } else {
                 debug.error('Survival start failed:', data);
@@ -413,6 +423,8 @@ window.SurvivalGame = {
                     setTimeout(() => {
                         this.setupGameUI();
                         this.updateHUD();
+                        // Reset hints for new round
+                        this.resetSurvivalHintState();
                     }, 2000);
                 }
             } else {
@@ -786,5 +798,175 @@ window.SurvivalGame = {
         } catch (error) {
             debug.error('Error ending session:', error);
         }
+    },
+
+    // ==========================================
+    // HINT SYSTEM
+    // ==========================================
+
+    getSurvivalHint: async function() {
+        if (!GameState.authToken || !GameState.currentUser) {
+            if (Achievements) {
+                Achievements.showToast('Login required to use hints!', 'error');
+            }
+            return;
+        }
+
+        const hintCost = 10;
+        if (GameState.currentUser.coins < hintCost) {
+            if (Achievements) {
+                Achievements.showToast(`Need ${hintCost} coins (you have ${GameState.currentUser.coins})`, 'error');
+            }
+            return;
+        }
+
+        const hintBtn = document.getElementById('survival-hint-btn');
+        const originalHTML = hintBtn.innerHTML;
+        hintBtn.disabled = true;
+        hintBtn.style.opacity = '0.5';
+
+        try {
+            const response = await Utils.fetchWithTimeout('/api/survival/get-hint', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${GameState.authToken}`
+                },
+                body: JSON.stringify({
+                    sessionId: GameState.survival.sessionId
+                }),
+                credentials: 'include'
+            }, 8000);
+
+            if (!response.ok) {
+                const errorInfo = Utils.handleFetchError(new Error(`HTTP ${response.status}`), response);
+                this.updateSurvivalHintButton();
+                hintBtn.style.opacity = '1';
+                if (Achievements) {
+                    Achievements.showToast(errorInfo.userMessage, 'error');
+                }
+                return;
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Update local state
+                if (!GameState.survival.revealedHints) {
+                    GameState.survival.revealedHints = new Map();
+                }
+                GameState.survival.revealedHints.set(data.position, data.digit);
+
+                // Update user coins
+                GameState.currentUser.coins = data.remainingCoins;
+                localStorage.setItem('currentUser', JSON.stringify(GameState.currentUser));
+
+                // Update UI
+                this.displaySurvivalHint(data.position, data.digit);
+                this.updateSurvivalHintButton();
+                hintBtn.style.opacity = '1';
+
+                if (Auth) {
+                    Auth.updateCoinDisplay();
+                    Auth.showCoinAnimation(-hintCost);
+                }
+
+                if (Achievements) {
+                    Achievements.showToast(`Hint revealed! Position ${data.position + 1} is ${data.digit} 💡`, 'success');
+                }
+            } else {
+                hintBtn.disabled = false;
+                hintBtn.style.opacity = '1';
+                if (Achievements) {
+                    Achievements.showToast(data.message || 'Failed to get hint', 'error');
+                }
+            }
+        } catch (error) {
+            hintBtn.innerHTML = originalHTML;
+            hintBtn.disabled = false;
+            hintBtn.style.opacity = '1';
+            const errorInfo = Utils.handleFetchError(error);
+            if (Achievements) {
+                Achievements.showToast(errorInfo.userMessage, 'error');
+            }
+        }
+    },
+
+    displaySurvivalHint: function(position, digit) {
+        const hintsContainer = document.getElementById('survival-hints-container');
+        const hintsList = document.getElementById('survival-hints-list');
+
+        if (!hintsContainer || !hintsList) return;
+
+        // Show container if first hint
+        if (hintsContainer.style.display === 'none') {
+            hintsContainer.style.display = 'block';
+        }
+
+        // Create hint item
+        const hintItem = document.createElement('div');
+        hintItem.className = 'hint-item';
+        hintItem.textContent = `Position ${position + 1} = ${digit}`;
+
+        // Add with animation
+        hintsList.appendChild(hintItem);
+
+        // Play sound effect
+        if (GameState.soundVolume > 0 && GameConfig) {
+            GameConfig.sounds.correct.currentTime = 0;
+            GameConfig.sounds.correct.play().catch(() => {});
+        }
+    },
+
+    updateSurvivalHintButton: function() {
+        const hintBtn = document.getElementById('survival-hint-btn');
+        if (!hintBtn) return;
+
+        const hintCost = 10;
+
+        // Recreate button HTML
+        hintBtn.innerHTML = `<span class="hint-text">Hint</span> <span class="hint-cost">${hintCost}</span> <i class="fas fa-coins"></i>`;
+
+        // Disable if not logged in
+        if (!GameState.currentUser || !GameState.authToken) {
+            hintBtn.disabled = true;
+            hintBtn.setAttribute('data-locked', 'true');
+            hintBtn.setAttribute('data-tooltip', 'Login required for hints');
+            return;
+        }
+
+        // Disable if insufficient coins
+        if (GameState.currentUser.coins < hintCost) {
+            hintBtn.disabled = true;
+            hintBtn.setAttribute('data-locked', 'true');
+            hintBtn.setAttribute('data-tooltip', `Need ${hintCost} coins (you have ${GameState.currentUser.coins})`);
+            return;
+        }
+
+        // Enable button
+        hintBtn.disabled = false;
+        hintBtn.removeAttribute('data-locked');
+        hintBtn.setAttribute('data-tooltip', 'Reveal one digit position');
+    },
+
+    resetSurvivalHintState: function() {
+        if (GameState.survival) {
+            GameState.survival.revealedHints = new Map();
+        }
+
+        // Hide hints container
+        const hintsContainer = document.getElementById('survival-hints-container');
+        if (hintsContainer) {
+            hintsContainer.style.display = 'none';
+        }
+
+        // Clear hints list
+        const hintsList = document.getElementById('survival-hints-list');
+        if (hintsList) {
+            hintsList.innerHTML = '';
+        }
+
+        // Update button
+        this.updateSurvivalHintButton();
     }
 };

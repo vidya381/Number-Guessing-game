@@ -536,6 +536,21 @@
                         </div>
                     </div>
                 </div>
+                <div class="game-stats-inline">
+                    <button id="ta-hint-btn" class="hint-button" data-tooltip="Reveal one digit (+10s penalty)">
+                        <span class="hint-text">Hint</span>
+                        <span class="hint-cost" id="ta-hint-cost">10</span>
+                        <i class="fas fa-coins"></i>
+                    </button>
+                    <div class="stat-badge">
+                        <span class="stat-icon">🎯</span>
+                        <span id="ta-attempts-display">0</span> attempts
+                    </div>
+                </div>
+                <div id="ta-hints-container" class="hints-display" style="display: none;">
+                    <h3>💡 Active Hints</h3>
+                    <div id="ta-hints-list" class="hints-list"></div>
+                </div>
                 <div class="input-submit-wrapper">
                     <div id="ta-input-container"></div>
                     <button id="submit-ta-guess" class="submit-btn">
@@ -582,6 +597,17 @@
                             <span id="survival-attempts-display">7/7</span>
                         </div>
                     </div>
+                </div>
+                <div class="game-stats-inline">
+                    <button id="survival-hint-btn" class="hint-button" data-tooltip="Reveal one digit position">
+                        <span class="hint-text">Hint</span>
+                        <span class="hint-cost" id="survival-hint-cost">10</span>
+                        <i class="fas fa-coins"></i>
+                    </button>
+                </div>
+                <div id="survival-hints-container" class="hints-display" style="display: none;">
+                    <h3>💡 Active Hints</h3>
+                    <div id="survival-hints-list" class="hints-list"></div>
                 </div>
                 <div class="input-submit-wrapper">
                     <div id="survival-input-container"></div>

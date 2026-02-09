@@ -90,6 +90,14 @@ window.TimeAttackGame = {
                 if (historyEl) historyEl.innerHTML = '';
                 if (feedbackEl) feedbackEl.textContent = '';
 
+                // Reset and update hint system
+                this.resetTimeAttackHintState();
+                this.updateTimeAttackHintButton();
+
+                // Update attempts display
+                const attemptsEl = document.getElementById('ta-attempts-display');
+                if (attemptsEl) attemptsEl.textContent = '0';
+
                 // Focus first input
                 document.querySelector('#ta-input-container .digit-input')?.focus();
             }
@@ -179,6 +187,13 @@ window.TimeAttackGame = {
             if (feedbackEl) feedbackEl.textContent = '';
             if (historyEl) historyEl.innerHTML = '';
 
+            // Reset hint system for new game
+            this.resetTimeAttackHintState();
+
+            // Reset attempts display
+            const attemptsEl = document.getElementById('ta-attempts-display');
+            if (attemptsEl) attemptsEl.textContent = '0';
+
             // Focus first input
             if (inputs[0]) inputs[0].focus();
 
@@ -212,6 +227,12 @@ window.TimeAttackGame = {
         }
 
         GameState.timeAttack.currentGame.attempts++;
+
+        // Update attempts display
+        const attemptsEl = document.getElementById('ta-attempts-display');
+        if (attemptsEl) {
+            attemptsEl.textContent = GameState.timeAttack.currentGame.attempts;
+        }
 
         try {
             const response = await fetch('/api/time-attack/guess', {
@@ -749,6 +770,12 @@ window.TimeAttackGame = {
             quitBtn.addEventListener('click', () => this.quitTimeAttackGame());
         }
 
+        // Hint button
+        const hintBtn = document.getElementById('ta-hint-btn');
+        if (hintBtn) {
+            hintBtn.addEventListener('click', () => this.getTimeAttackHint());
+        }
+
         // Result page buttons
         const playAgainBtn = document.getElementById('ta-play-again');
         if (playAgainBtn) {
@@ -794,6 +821,189 @@ window.TimeAttackGame = {
         });
 
         // Click-outside-to-close is now handled globally in utils.js
+    },
+
+    // ==========================================
+    // HINT SYSTEM
+    // ==========================================
+
+    getTimeAttackHint: async function() {
+        if (!GameState.authToken || !GameState.currentUser) {
+            if (Achievements) {
+                Achievements.showToast('Login required to use hints!', 'error');
+            }
+            return;
+        }
+
+        const hintCost = 10;
+        if (GameState.currentUser.coins < hintCost) {
+            if (Achievements) {
+                Achievements.showToast(`Need ${hintCost} coins (you have ${GameState.currentUser.coins})`, 'error');
+            }
+            return;
+        }
+
+        const hintBtn = document.getElementById('ta-hint-btn');
+        const originalHTML = hintBtn.innerHTML;
+        hintBtn.disabled = true;
+        hintBtn.style.opacity = '0.5';
+
+        try {
+            const response = await Utils.fetchWithTimeout('/api/time-attack/get-hint', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${GameState.authToken}`
+                },
+                body: JSON.stringify({
+                    sessionId: GameState.timeAttack.sessionId
+                }),
+                credentials: 'include'
+            }, 8000);
+
+            if (!response.ok) {
+                const errorInfo = Utils.handleFetchError(new Error(`HTTP ${response.status}`), response);
+                this.updateTimeAttackHintButton();
+                hintBtn.style.opacity = '1';
+                if (Achievements) {
+                    Achievements.showToast(errorInfo.userMessage, 'error');
+                }
+                return;
+            }
+
+            const data = await response.json();
+
+            if (data.success) {
+                // Update local state
+                if (!GameState.timeAttack.revealedHints) {
+                    GameState.timeAttack.revealedHints = new Map();
+                }
+                GameState.timeAttack.revealedHints.set(data.position, data.digit);
+
+                // Update user coins
+                GameState.currentUser.coins = data.remainingCoins;
+                localStorage.setItem('currentUser', JSON.stringify(GameState.currentUser));
+
+                // Apply 10 second time penalty
+                GameState.timeAttack.timeRemaining = Math.max(0, GameState.timeAttack.timeRemaining - 10);
+                this.updateTimeDisplay();
+
+                // Update UI
+                this.displayTimeAttackHint(data.position, data.digit);
+                this.updateTimeAttackHintButton();
+                hintBtn.style.opacity = '1';
+
+                if (Auth) {
+                    Auth.updateCoinDisplay();
+                    Auth.showCoinAnimation(-hintCost);
+                }
+
+                if (Achievements) {
+                    Achievements.showToast(`Hint revealed! Position ${data.position + 1} is ${data.digit} (-10s) 💡`, 'warning');
+                }
+            } else {
+                hintBtn.disabled = false;
+                hintBtn.style.opacity = '1';
+                if (Achievements) {
+                    Achievements.showToast(data.message || 'Failed to get hint', 'error');
+                }
+            }
+        } catch (error) {
+            hintBtn.innerHTML = originalHTML;
+            hintBtn.disabled = false;
+            hintBtn.style.opacity = '1';
+            const errorInfo = Utils.handleFetchError(error);
+            if (Achievements) {
+                Achievements.showToast(errorInfo.userMessage, 'error');
+            }
+        }
+    },
+
+    displayTimeAttackHint: function(position, digit) {
+        const hintsContainer = document.getElementById('ta-hints-container');
+        const hintsList = document.getElementById('ta-hints-list');
+
+        if (!hintsContainer || !hintsList) return;
+
+        // Show container if first hint
+        if (hintsContainer.style.display === 'none') {
+            hintsContainer.style.display = 'block';
+        }
+
+        // Create hint item
+        const hintItem = document.createElement('div');
+        hintItem.className = 'hint-item';
+        hintItem.textContent = `Position ${position + 1} = ${digit}`;
+
+        // Add with animation
+        hintsList.appendChild(hintItem);
+
+        // Play sound effect
+        if (GameState.soundVolume > 0 && GameConfig) {
+            GameConfig.sounds.correct.currentTime = 0;
+            GameConfig.sounds.correct.play().catch(() => {});
+        }
+    },
+
+    updateTimeAttackHintButton: function() {
+        const hintBtn = document.getElementById('ta-hint-btn');
+        if (!hintBtn) return;
+
+        const hintCost = 10;
+
+        // Recreate button HTML
+        hintBtn.innerHTML = `<span class="hint-text">Hint</span> <span class="hint-cost">${hintCost}</span> <i class="fas fa-coins"></i>`;
+
+        // Disable if not logged in
+        if (!GameState.currentUser || !GameState.authToken) {
+            hintBtn.disabled = true;
+            hintBtn.setAttribute('data-locked', 'true');
+            hintBtn.setAttribute('data-tooltip', 'Login required for hints');
+            return;
+        }
+
+        // Disable if insufficient coins
+        if (GameState.currentUser.coins < hintCost) {
+            hintBtn.disabled = true;
+            hintBtn.setAttribute('data-locked', 'true');
+            hintBtn.setAttribute('data-tooltip', `Need ${hintCost} coins (you have ${GameState.currentUser.coins})`);
+            return;
+        }
+
+        // Enable button
+        hintBtn.disabled = false;
+        hintBtn.removeAttribute('data-locked');
+        hintBtn.setAttribute('data-tooltip', 'Reveal one digit (+10s penalty)');
+    },
+
+    resetTimeAttackHintState: function() {
+        if (GameState.timeAttack) {
+            GameState.timeAttack.revealedHints = new Map();
+        }
+
+        // Hide hints container
+        const hintsContainer = document.getElementById('ta-hints-container');
+        if (hintsContainer) {
+            hintsContainer.style.display = 'none';
+        }
+
+        // Clear hints list
+        const hintsList = document.getElementById('ta-hints-list');
+        if (hintsList) {
+            hintsList.innerHTML = '';
+        }
+
+        // Update button
+        this.updateTimeAttackHintButton();
+    },
+
+    updateTimeDisplay: function() {
+        const timerElement = document.getElementById('ta-timer');
+        if (timerElement && GameState.timeAttack) {
+            const mins = Math.floor(GameState.timeAttack.timeRemaining / 60);
+            const secs = GameState.timeAttack.timeRemaining % 60;
+            timerElement.textContent = `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
     },
 
     // ==========================================

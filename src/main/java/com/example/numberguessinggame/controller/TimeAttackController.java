@@ -60,6 +60,7 @@ public class TimeAttackController {
         private Integer currentTargetNumber;
         private Long currentGameStartTime;
         private Integer currentGameAttempts;
+        private Set<Integer> revealedHintPositions;
 
         public TimeAttackGameSession(Long userId, Integer difficulty) {
             this.userId = userId;
@@ -70,6 +71,7 @@ public class TimeAttackController {
             this.gamesPlayed = 0;
             this.gameResults = new ArrayList<>();
             this.currentGameAttempts = 0;
+            this.revealedHintPositions = new HashSet<>();
         }
 
         public boolean isExpired() {
@@ -99,6 +101,8 @@ public class TimeAttackController {
         public Integer getCurrentGameAttempts() { return currentGameAttempts; }
         public void setCurrentGameAttempts(Integer currentGameAttempts) { this.currentGameAttempts = currentGameAttempts; }
         public void incrementCurrentGameAttempts() { this.currentGameAttempts++; }
+        public Set<Integer> getRevealedHintPositions() { return revealedHintPositions; }
+        public void resetRevealedHintPositions() { this.revealedHintPositions = new HashSet<>(); }
     }
 
     static class GameResult {
@@ -212,6 +216,7 @@ public class TimeAttackController {
         session.setCurrentTargetNumber(targetNumber);
         session.setCurrentGameStartTime(System.currentTimeMillis());
         session.setCurrentGameAttempts(0);
+        session.resetRevealedHintPositions();
 
         // Log target number for reference
         String difficultyName = session.getDifficulty() == 0 ? "Easy" : session.getDifficulty() == 1 ? "Medium" : "Hard";
@@ -355,6 +360,106 @@ public class TimeAttackController {
                     "attempts", session.getCurrentGameAttempts()
             ));
         }
+    }
+
+    /**
+     * Get hint for current game (reveals one digit position for 10 coins + 10 second penalty)
+     * POST /api/time-attack/get-hint
+     */
+    @PostMapping("/get-hint")
+    public ResponseEntity<?> getHint(
+            @RequestBody Map<String, String> request,
+            @RequestHeader("Authorization") String authHeader) {
+
+        String sessionId = request.get("sessionId");
+
+        // Validate auth
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "Authentication required"));
+        }
+
+        // Extract user
+        String token = authHeader.substring(7);
+        String username;
+        try {
+            username = jwtUtil.extractUsername(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "Invalid token"));
+        }
+
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "User not found"));
+        }
+
+        User user = userOpt.get();
+
+        // Check coins
+        int hintCost = 10;
+        Integer userCoins = user.getCoins() != null ? user.getCoins() : 0;
+        if (userCoins < hintCost) {
+            return ResponseEntity.ok(Map.of(
+                    "success", false,
+                    "message", "Insufficient coins. Need " + hintCost + " coins."
+            ));
+        }
+
+        // Get session
+        TimeAttackGameSession session = activeSessions.get(sessionId);
+        if (session == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("success", false, "message", "Session not found"));
+        }
+
+        if (session.isExpired()) {
+            activeSessions.remove(sessionId);
+            return ResponseEntity.ok(Map.of(
+                    "success", false,
+                    "message", "Session expired"
+            ));
+        }
+
+        // Get target number and find unrevealed positions
+        String target = String.valueOf(session.getCurrentTargetNumber());
+        List<Integer> unrevealedPositions = new ArrayList<>();
+        for (int i = 0; i < target.length(); i++) {
+            if (!session.getRevealedHintPositions().contains(i)) {
+                unrevealedPositions.add(i);
+            }
+        }
+
+        if (unrevealedPositions.isEmpty()) {
+            return ResponseEntity.ok(Map.of(
+                    "success", false,
+                    "message", "All digits already revealed"
+            ));
+        }
+
+        // Select random unrevealed position
+        Random random = new Random();
+        int position = unrevealedPositions.get(random.nextInt(unrevealedPositions.size()));
+        String digit = String.valueOf(target.charAt(position));
+
+        // Deduct coins
+        userService.spendCoins(user.getId(), hintCost);
+        User updatedUser = userService.findById(user.getId()).orElse(user);
+        int remainingCoins = updatedUser.getCoins() != null ? updatedUser.getCoins() : 0;
+
+        // Mark position as revealed
+        session.getRevealedHintPositions().add(position);
+
+        logger.info("Time Attack hint purchased - User: {}, Session: {}, Position: {}, Digit: {}, Coins: {} -> {}",
+                username, sessionId, position, digit, userCoins, remainingCoins);
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "position", position,
+                "digit", digit,
+                "remainingCoins", remainingCoins
+        ));
     }
 
     /**

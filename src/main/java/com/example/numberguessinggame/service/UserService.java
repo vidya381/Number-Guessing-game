@@ -182,6 +182,23 @@ public class UserService {
     }
 
     /**
+     * Spend coins (for hints, power-ups, etc.)
+     */
+    @Transactional
+    public void spendCoins(Long userId, int amount) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        Integer currentCoins = user.getCoins() != null ? user.getCoins() : 0;
+        if (currentCoins < amount) {
+            throw new IllegalArgumentException("Insufficient coins");
+        }
+
+        user.setCoins(currentCoins - amount);
+        userRepository.save(user);
+    }
+
+    /**
      * Verify if the provided password matches the user's password
      */
     public boolean verifyPassword(User user, String password) {

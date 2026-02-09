@@ -55,6 +55,7 @@ public class SurvivalController {
         // Current round state
         private Integer currentTargetNumber;
         private Integer currentRoundAttempts;
+        private Set<Integer> revealedHintPositions;
 
         public SurvivalGameSession(Long userId, Integer difficulty) {
             this.userId = userId;
@@ -64,6 +65,7 @@ public class SurvivalController {
             this.totalAttemptsUsed = 0;
             this.roundResults = new ArrayList<>();
             this.currentRoundAttempts = 0;
+            this.revealedHintPositions = new HashSet<>();
         }
 
         public boolean isExpired() {
@@ -83,6 +85,8 @@ public class SurvivalController {
         public void setCurrentTargetNumber(Integer currentTargetNumber) { this.currentTargetNumber = currentTargetNumber; }
         public Integer getCurrentRoundAttempts() { return currentRoundAttempts; }
         public void setCurrentRoundAttempts(Integer currentRoundAttempts) { this.currentRoundAttempts = currentRoundAttempts; }
+        public Set<Integer> getRevealedHintPositions() { return revealedHintPositions; }
+        public void resetRevealedHintPositions() { this.revealedHintPositions = new HashSet<>(); }
     }
 
     static class RoundResult {
@@ -261,6 +265,106 @@ public class SurvivalController {
     }
 
     /**
+     * Get hint for current round (reveals one digit position for 10 coins)
+     * POST /api/survival/get-hint
+     */
+    @PostMapping("/get-hint")
+    public ResponseEntity<?> getHint(
+            @RequestBody Map<String, String> request,
+            @RequestHeader("Authorization") String authHeader) {
+
+        String sessionId = request.get("sessionId");
+
+        // Validate auth
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "Authentication required"));
+        }
+
+        // Extract user
+        String token = authHeader.substring(7);
+        String username;
+        try {
+            username = jwtUtil.extractUsername(token);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "Invalid token"));
+        }
+
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if (userOpt.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("success", false, "message", "User not found"));
+        }
+
+        User user = userOpt.get();
+
+        // Check coins
+        int hintCost = 10;
+        Integer userCoins = user.getCoins() != null ? user.getCoins() : 0;
+        if (userCoins < hintCost) {
+            return ResponseEntity.ok(Map.of(
+                    "success", false,
+                    "message", "Insufficient coins. Need " + hintCost + " coins."
+            ));
+        }
+
+        // Get session
+        SurvivalGameSession session = activeSessions.get(sessionId);
+        if (session == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Map.of("success", false, "message", "Session not found"));
+        }
+
+        if (session.isExpired()) {
+            activeSessions.remove(sessionId);
+            return ResponseEntity.ok(Map.of(
+                    "success", false,
+                    "message", "Session expired"
+            ));
+        }
+
+        // Get target number and find unrevealed positions
+        String target = String.valueOf(session.getCurrentTargetNumber());
+        List<Integer> unrevealedPositions = new ArrayList<>();
+        for (int i = 0; i < target.length(); i++) {
+            if (!session.getRevealedHintPositions().contains(i)) {
+                unrevealedPositions.add(i);
+            }
+        }
+
+        if (unrevealedPositions.isEmpty()) {
+            return ResponseEntity.ok(Map.of(
+                    "success", false,
+                    "message", "All digits already revealed"
+            ));
+        }
+
+        // Select random unrevealed position
+        Random random = new Random();
+        int position = unrevealedPositions.get(random.nextInt(unrevealedPositions.size()));
+        String digit = String.valueOf(target.charAt(position));
+
+        // Deduct coins
+        userService.spendCoins(user.getId(), hintCost);
+        User updatedUser = userService.findById(user.getId()).orElse(user);
+        int remainingCoins = updatedUser.getCoins() != null ? updatedUser.getCoins() : 0;
+
+        // Mark position as revealed
+        session.getRevealedHintPositions().add(position);
+
+        logger.info("Survival hint purchased - User: {}, Session: {}, Round: {}, Position: {}, Digit: {}, Coins: {} -> {}",
+                username, sessionId, session.getCurrentRound(), position, digit, userCoins, remainingCoins);
+
+        return ResponseEntity.ok(Map.of(
+                "success", true,
+                "position", position,
+                "digit", digit,
+                "remainingCoins", remainingCoins
+        ));
+    }
+
+    /**
      * Complete current round (either won or lost)
      * POST /api/survival/round-complete
      */
@@ -312,6 +416,7 @@ public class SurvivalController {
                     // Move to next round
                     session.setCurrentRound(session.getCurrentRound() + 1);
                     session.setCurrentRoundAttempts(0);
+                    session.resetRevealedHintPositions();
 
                     // Generate new target for next round
                     int digitCount = 3 + session.getDifficulty();
